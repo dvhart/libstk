@@ -1,6 +1,6 @@
 #include <iostream>
-#include "event.h"
-#include "mouse_event.h"
+#include "libstk/event.h"
+#include "libstk/mouse_event.h"
 
 using std::cout;
 using std::endl;

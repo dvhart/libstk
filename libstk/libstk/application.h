@@ -5,10 +5,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
-#include "parent.h"
-#include "surface.h"
-#include "widget.h"
-#include "event_system.h"
+#include "libstk/parent.h"
+#include "libstk/surface.h"
+#include "libstk/widget.h"
+#include "libstk/event_system.h"
 
 namespace stk
 {

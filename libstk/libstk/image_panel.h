@@ -4,10 +4,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
-#include "rectangle.h"
-#include "widget.h"
-#include "container.h"
-#include "image.h"
+#include "libstk/rectangle.h"
+#include "libstk/widget.h"
+#include "libstk/container.h"
+#include "libstk/image.h"
 
 namespace stk
 {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "image.h"
+#include "libstk/image.h"
 
 using std::cout;
 using std::endl;

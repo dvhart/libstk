@@ -13,10 +13,10 @@ email                : dvhart@byu.edu
 #include <iostream>
 #include <string>
 
-#include "parent.h"
-#include "application.h"
-#include "widget.h"
-#include "container.h"
+#include "libstk/parent.h"
+#include "libstk/application.h"
+#include "libstk/widget.h"
+#include "libstk/container.h"
 
 using std::cout;
 using std::endl;

@@ -1,6 +1,6 @@
-#include "widget.h"
-#include "container.h"
-#include "app.h"
+#include "libstk/widget.h"
+#include "libstk/container.h"
+#include "libstk/app.h"
 
 #include <iostream>
 #include <typeinfo>

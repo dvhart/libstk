@@ -5,8 +5,8 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 
-#include "widget.h"
-#include "container.h"
+#include "libstk/widget.h"
+#include "libstk/container.h"
 
 namespace stk
 {

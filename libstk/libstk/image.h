@@ -3,7 +3,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "rectangle.h"
+#include "libstk/rectangle.h"
 
 namespace stk
 {

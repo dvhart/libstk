@@ -1,10 +1,10 @@
 #include <iostream>
 #include <boost/weak_ptr.hpp>
 
-#include "widget.h"
-#include "container.h"
-#include "exceptions.h"
-#include "mouse_event.h"
+#include "libstk/widget.h"
+#include "libstk/container.h"
+#include "libstk/exceptions.h"
+#include "libstk/mouse_event.h"
 
 using std::cout;
 using std::endl;

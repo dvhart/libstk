@@ -19,13 +19,13 @@ email                : dvhart@byu.edu
 #include <list>
 #include <iostream>
 #include <cmath>
-#include "surface.h"
-#include "rectangle.h"
-#include "point.h"
-#include "edge.h"
-#include "exceptions.h"
-#include "image.h"
-#include "stk.h"
+#include "libstk/surface.h"
+#include "libstk/rectangle.h"
+#include "libstk/point.h"
+#include "libstk/edge.h"
+#include "libstk/exceptions.h"
+#include "libstk/image.h"
+#include "libstk/stk.h"
 
 using std::cout;
 using std::endl;

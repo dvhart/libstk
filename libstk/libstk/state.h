@@ -3,9 +3,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "widget.h"
-#include "container.h"
-#include "application.h"
+#include "libstk/widget.h"
+#include "libstk/container.h"
+#include "libstk/application.h"
 
 namespace stk
 {

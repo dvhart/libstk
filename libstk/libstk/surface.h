@@ -24,10 +24,10 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "point.h"
-#include "rectangle.h"
-#include "graphics_context.h"
-#include "stk.h"
+#include "libstk/point.h"
+#include "libstk/rectangle.h"
+#include "libstk/graphics_context.h"
+#include "libstk/stk.h"
 
 using std::cout;
 using std::endl;

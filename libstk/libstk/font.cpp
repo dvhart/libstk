@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "font.h"
-#include "exceptions.h"
+#include "libstk/font.h"
+#include "libstk/exceptions.h"
 
 using std::wstring;
 using std::string;
@@ -132,4 +132,3 @@ namespace stk
 	
 	
 } // namespace stk
-

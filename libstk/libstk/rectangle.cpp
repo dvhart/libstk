@@ -1,5 +1,5 @@
 #include <iostream>
-#include "rectangle.h"
+#include "libstk/rectangle.h"
 
 namespace stk
 {
@@ -68,4 +68,3 @@ std::ostream& operator<<(std::ostream& os, const stk::rectangle& rect)
 		 << " w:" << rect.width() << ", h:" << rect.height(); 
 	return os;
 }
-

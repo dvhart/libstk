@@ -1,7 +1,7 @@
 #include <iostream>
-#include "label.h"
-#include "widget.h"
-#include "theme.h"
+#include "libstk/label.h"
+#include "libstk/widget.h"
+#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;

@@ -2,7 +2,7 @@
 #define STK_MOUSE_EVENT_H
 
 #include <boost/shared_ptr.hpp>
-#include "event.h"
+#include "libstk/event.h"
 
 namespace stk
 {

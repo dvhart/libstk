@@ -1,5 +1,5 @@
-#include "event.h"
-#include "key_event.h"
+#include "libstk/event.h"
+#include "libstk/key_event.h"
 
 namespace stk
 {

@@ -6,9 +6,9 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 
-#include "parent.h"
-#include "keycode.h"
-#include "combiners.h"
+#include "libstk/parent.h"
+#include "libstk/keycode.h"
+#include "libstk/combiners.h"
 
 namespace stk
 {

@@ -3,9 +3,9 @@
 // we need to determine how exactly this mapping works
 // ***********************************************************
 
-#include "surface_sdl.h"
-#include "surface.h"
-#include "stk.h"
+#include "libstk/surface_sdl.h"
+#include "libstk/surface.h"
+#include "libstk/stk.h"
 #include <math.h>
 #include <vector>
 #include <list>

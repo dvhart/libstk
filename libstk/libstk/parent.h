@@ -2,8 +2,8 @@
 #define STK_PARENT_H
 
 #include <boost/shared_ptr.hpp>
-#include "event_handler.h"
-#include "drawable.h"
+#include "libstk/event_handler.h"
+#include "libstk/drawable.h"
 
 namespace stk
 {

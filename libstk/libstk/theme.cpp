@@ -1,8 +1,8 @@
-#include "theme.h"
-#include "graphics_context.h"
-#include "exceptions.h"
+#include "libstk/theme.h"
+#include "libstk/graphics_context.h"
+#include "libstk/exceptions.h"
 
-#include <font_mngr.h>
+#include "libstk/font_mngr.h"
 
 namespace stk
 {

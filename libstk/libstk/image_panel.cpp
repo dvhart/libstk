@@ -1,6 +1,6 @@
-#include "image_panel.h"
-#include "image.h"
-#include "theme.h"
+#include "libstk/image_panel.h"
+#include "libstk/image.h"
+#include "libstk/theme.h"
 
 namespace stk
 {

@@ -2,9 +2,9 @@
  * A simple test of the surface_sdl backend surface class
  */
 
-#include "surface_sdl.h"
-#include "rectangle.h"
-#include "exceptions.h"
+#include "libstk/surface_sdl.h"
+#include "libstk/rectangle.h"
+#include "libstk/exceptions.h"
 #include <iostream>
 #include <SDL/SDL.h>
 
@@ -86,4 +86,3 @@ int main()
 		cout << "Exception caught: " << e.message() << endl;
 	}
 }
-

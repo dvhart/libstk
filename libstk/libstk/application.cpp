@@ -9,14 +9,14 @@
 #include <boost/weak_ptr.hpp>
 #include <unistd.h>
 
-#include "application.h"
-#include "event_system.h"
-#include "surface.h"
-#include "exceptions.h"
-#include "event.h"
-#include "key_event.h"
-#include "mouse_event.h"
-#include "state.h"
+#include "libstk/application.h"
+#include "libstk/event_system.h"
+#include "libstk/surface.h"
+#include "libstk/exceptions.h"
+#include "libstk/event.h"
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
+#include "libstk/state.h"
 
 using std::cout;
 using std::endl;
@@ -226,5 +226,3 @@ namespace stk
 		return current_state_.lock()->focus_last(); 
 	}
 }
-
-

@@ -1,13 +1,13 @@
 #include <iostream>
-#include "button.h"
-#include "widget.h"
-#include "theme.h"
+#include "libstk/button.h"
+#include "libstk/widget.h"
+#include "libstk/theme.h"
 
 // FIXME: should we include these like this, or maybe in one events.h file for convenience ?
-#include "event.h"
-#include "key_event.h"
-#include "mouse_event.h"
-#include "keycode.h"
+#include "libstk/event.h"
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
+#include "libstk/keycode.h"
 
 using std::cout;
 using std::endl;

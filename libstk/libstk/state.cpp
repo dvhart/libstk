@@ -2,10 +2,10 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include "state.h"
-#include "container.h"
-#include "application.h"
-#include "theme.h"
+#include "libstk/state.h"
+#include "libstk/container.h"
+#include "libstk/application.h"
+#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;
@@ -105,5 +105,3 @@ namespace stk
 	}
 	
 }
-
-

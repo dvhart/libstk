@@ -2,8 +2,8 @@
 #define STK_EVENT_SYSTEM_SDL_H
 
 #include <SDL/SDL.h>
-#include "keycode.h"
-#include "event_system.h"
+#include "libstk/keycode.h"
+#include "libstk/event_system.h"
 
 /* possible event calls in SDL
 	 currently we only use SDL_PollEvent, which calls SDL_PumpEvents

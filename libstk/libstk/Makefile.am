@@ -33,17 +33,20 @@ libstk_la_SOURCES =\
 	font_mngr.h font_mngr.cpp\
 	exceptions.h 
 
-library_includedir=$(includedir)/libstk-1.0/libstk
+library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
 library_include_HEADERS= \
-	event_system.h event_system_sdl.h event_system_dfb.h glyph.h  \
-	font.h rectangle.h surface.h surface_sdl.h \
-	surface_dfb.h event.h mouse_event.h key_event.h \
-	event_handler.h drawable.h parent.h application.h \
-	widget.h container.h state.h list.h \
-	combo.h list_item.h button.h progress.h \
-	image_panel.h image.h label.h theme.h font_mngr.h \
-	exceptions.h 
+	aa_filter.h      event_system.h      key_event.h    state.h \
+	application.h    event_system_dfb.h  keycode.h      stk.h	\
+	button.h         event_system_sdl.h  label.h        surface.h	\
+	combiners.h      exceptions.h        list.h         surface_dfb.h \
+	combo.h          font.h              list_item.h    surface_sdl.h \
+	container.h      font_mngr.h         mouse_event.h  theme.h	\
+	drawable.h       glyph.h             parent.h       widget.h 	\
+	edge.h           graphics_context.h  point.h		\
+	event.h          image.h             progress.h 	\
+	event_handler.h  image_panel.h       rectangle.h	
+
 
 bin_PROGRAMS      = test_app
 test_app_SOURCES  = test_app.cpp

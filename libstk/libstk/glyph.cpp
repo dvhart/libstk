@@ -1,5 +1,5 @@
 #include <iostream>
-#include "glyph.h"
+#include "libstk/glyph.h"
 
 namespace stk
 {
@@ -30,4 +30,3 @@ namespace stk
 	}
 	
 } // namespace stk
-

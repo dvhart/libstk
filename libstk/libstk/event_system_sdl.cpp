@@ -1,8 +1,8 @@
 #include <SDL/SDL.h>
 #include <iostream>
-#include "event_system_sdl.h"
-#include "key_event.h"
-#include "mouse_event.h"
+#include "libstk/event_system_sdl.h"
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
 
 using std::cout;
 using std::endl;

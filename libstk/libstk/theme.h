@@ -3,12 +3,12 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "surface.h"
-#include "rectangle.h"
-#include "image_panel.h"
-#include "image.h"
-#include "list.h"
-#include "list_item.h"
+#include "libstk/surface.h"
+#include "libstk/rectangle.h"
+#include "libstk/image_panel.h"
+#include "libstk/image.h"
+#include "libstk/list.h"
+#include "libstk/list_item.h"
 
 namespace stk
 {

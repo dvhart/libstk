@@ -1,9 +1,9 @@
 #ifndef STK_RECTANGLE_H
 #define STK_RECTANGLE_H
 
-#include "stk.h" // is this where we should define MIN,MAX,color etc... ?
-#include "point.h"
-#include "exceptions.h"
+#include "libstk/stk.h" // is this where we should define MIN,MAX,color etc... ?
+#include "libstk/point.h"
+#include "libstk/exceptions.h"
 
 namespace stk
 {

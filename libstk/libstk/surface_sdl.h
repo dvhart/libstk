@@ -9,10 +9,10 @@ email                : dvhart@byu.edu
 #ifndef STK_SURFACE_SDL_H
 #define STK_SURFACE_SDL_H
 
-#include "surface.h"
-#include "point.h"
-#include "edge.h"
-#include "stk.h"
+#include "libstk/surface.h"
+#include "libstk/point.h"
+#include "libstk/edge.h"
+#include "libstk/stk.h"
 #include <string>
 #include <vector>
 #include <SDL/SDL.h>

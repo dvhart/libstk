@@ -5,7 +5,7 @@
 #include <boost/weak_ptr.hpp>
 #include <string>
 #include <map>
-#include "font.h"
+#include "libstk/font.h"
 
 namespace stk
 {

@@ -4,21 +4,21 @@
 #include <boost/signal.hpp>
 #include <boost/bind.hpp>
 
-#include "application.h"
-#include "state.h"
-#include "button.h"
-#include "image_panel.h"
-#include "image.h"
-#include "list.h"
-#include "list_item.h"
-#include "progress.h"
-#include "label.h"
-#include "event_system.h"
-#include "event_system_sdl.h"
-#include "surface.h"
-#include "surface_sdl.h"
-#include "theme.h"
-#include "exceptions.h"
+#include "libstk/application.h"
+#include "libstk/state.h"
+#include "libstk/button.h"
+#include "libstk/image_panel.h"
+#include "libstk/image.h"
+#include "libstk/list.h"
+#include "libstk/list_item.h"
+#include "libstk/progress.h"
+#include "libstk/label.h"
+#include "libstk/event_system.h"
+#include "libstk/event_system_sdl.h"
+#include "libstk/surface.h"
+#include "libstk/surface_sdl.h"
+#include "libstk/theme.h"
+#include "libstk/exceptions.h"
 
 using namespace stk;
 using std::cout;

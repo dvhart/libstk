@@ -1,9 +1,9 @@
-#include "list.h"
-#include "theme.h"
-#include "event.h"
-#include "key_event.h"
-#include "mouse_event.h"
-#include "keycode.h"
+#include "libstk/list.h"
+#include "libstk/theme.h"
+#include "libstk/event.h"
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
+#include "libstk/keycode.h"
 
 namespace stk
 {

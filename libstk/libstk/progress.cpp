@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
-#include "progress.h"
-#include "widget.h"
-#include "theme.h"
+#include "libstk/progress.h"
+#include "libstk/widget.h"
+#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;

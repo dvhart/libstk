@@ -1,7 +1,7 @@
 #ifndef STK_EVENT_HANDLER_H
 #define STK_EVENT_HANDLER_H
 
-#include "event.h"
+#include "libstk/event.h"
 
 namespace stk
 {
@@ -24,4 +24,3 @@ namespace stk
 } // namespace stk
 
 #endif
-
