@@ -54,6 +54,20 @@ namespace stk
 		}
 	}
 	
+	widget::ptr container::first_child()
+	{
+		if (children_.size() == 0)
+			throw error_message_exception("container::first_child - container has 0 children");
+		return children_[0];
+	}
+	
+	widget::ptr container::last_child()
+	{
+		if (children_.size() == 0)
+			throw error_message_exception("container::first_child - container has 0 children");
+		return children_[children_.size()-1];
+	}
+	
 	void container::add(widget::ptr item)
 	{
 		children_.push_back(item);

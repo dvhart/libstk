@@ -61,6 +61,8 @@ namespace stk
 			// x,y.  It will call widget_at on a child that is a container to find
 			virtual widget::ptr widget_at(int x, int y);
 			virtual void delegate_mouse_event(mouse_event::ptr me);
+			virtual widget::ptr first_child();
+			virtual widget::ptr last_child();
 			virtual bool is_container() { return true; } // FIXME: shouldn't this be in widget too
 			// FIXME :carter: implement all this
 			virtual widget::ptr get_active_child() // called when the tree parser for

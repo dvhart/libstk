@@ -208,15 +208,13 @@ namespace stk
 	widget::ptr application::focus_next()
 	{ 
 		cout << "application::focus_next()" << endl;
-		return current_state_.lock()->get_active_child(); // bad name, perhaps get_first?
-		//return (*states_.begin())->get_active_child(); 
+		return current_state_.lock()->first_child(); 
 	}
 	// FIXME
 	widget::ptr application::focus_prev()
 	{ 
 		cout << "application::focus_prev()" << endl;
-		return current_state_.lock()->get_active_child(); // bad name, perhaps get_last?
-		//return (*states_.begin())->get_active_child();
+		return current_state_.lock()->last_child(); 
 	}
 
 	state::weak_ptr application::current_state()
