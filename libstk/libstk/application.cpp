@@ -133,11 +133,6 @@ namespace stk
 		return boost::shared_ptr<widget>((widget *)((*states_.begin()).get()));
 	}
 
-	// FIXME :Carter: Throw something? add_child is meaningless for an application
-	void application::add_child(widget::ptr widget)
-	{
-	}
-	
 	state::weak_ptr application::current_state()
 	{
 		return current_state_;

@@ -13,6 +13,7 @@ email                : dvhart@byu.edu
 #include <iostream>
 #include <string>
 
+#include "application.h"
 #include "widget.h"
 #include "container.h"
 
@@ -24,10 +25,16 @@ namespace stk
 
 	widget::widget(boost::shared_ptr<container> parent) : parent_(parent)
 	{
-		cout << "widget::widget()" << endl;
-		cout << "widget::widget() - parent pointer is " << std::hex << parent.get() << endl;
+		cout << "widget::widget(container)" << endl;
+		cout << "widget::widget(container) - parent pointer is " << std::hex << parent.get() << endl;
+		parent->add_child(boost::shared_ptr<widget>(this));
 	}
 
+	widget::widget(boost::shared_ptr<application> parent) : parent_(parent)
+	{
+		cout << "widget::widget(application)" << endl;
+		cout << "widget::widget(application) - parent pointer is " << std::hex << parent.get() << endl;
+	}
 
 	widget::~widget()
 	{
@@ -62,10 +69,6 @@ namespace stk
 	boost::shared_ptr<widget> widget::focus_prev()
 	{ 
 		return parent_.get()->focus_prev(); 
-	}
-
-	void widget::add_child(boost::shared_ptr<widget>) 
-	{
 	}
 
 }

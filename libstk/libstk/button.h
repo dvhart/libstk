@@ -15,9 +15,11 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<button> ptr;
 			typedef boost::weak_ptr<button> weak_ptr;
+
 		private:
+			
 		protected:
-			button() { }; // empty constructor, needed for creating derived classes ?
+			
 		public:
 			button(container::ptr parent, std::string label, 
 					int x, int y, int width, int height);

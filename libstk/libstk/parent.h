@@ -11,6 +11,10 @@ namespace stk
 
 	class parent : public event_handler, public drawable
 	{
+		public:
+			typedef boost::shared_ptr<parent> ptr;
+			typedef boost::weak_ptr<parent> weak_ptr;
+
 		private:
 			
 		protected:
@@ -18,7 +22,6 @@ namespace stk
 		public:
 			parent() { };
 			virtual ~parent() { };
-			virtual void add_child(boost::shared_ptr<widget>) = 0;
 			virtual boost::shared_ptr<widget> focus_next() = 0;
 			virtual boost::shared_ptr<widget> focus_prev() = 0;
 

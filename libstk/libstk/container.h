@@ -5,6 +5,7 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include "application.h"
 #include "widget.h"
 
 namespace stk
@@ -14,11 +15,12 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<container> ptr;
 			typedef boost::weak_ptr<container> weak_ptr;
+
 		private:
-			std::vector<widget::ptr > children_;
+			std::vector<widget::ptr> children_;
 			
 		protected:
-			container() { }; // FIXME: empty constructor, needed for state since state assigns its own parent ??
+			container(application::ptr parent);
 			
 		public:
 			container(container::ptr parent);

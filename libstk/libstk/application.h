@@ -20,12 +20,13 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<application> ptr;
 			typedef boost::weak_ptr<application> weak_ptr;
+
 		private:
 			boost::shared_ptr<stk::surface> surface_;
 			boost::shared_ptr<stk::event_system> event_system_;
 			std::list<boost::shared_ptr<stk::state> > states_;
 			
-			boost::weak_ptr<state> current_state_; 
+			boost::weak_ptr<stk::state> current_state_; 
 			widget::weak_ptr current_widget_;
 			widget::weak_ptr hover_widget_; 
 			
@@ -58,8 +59,6 @@ namespace stk
 			/// \todo Carter: I think it is, have to talk about this one
 			virtual widget::ptr focus_next();
 			virtual widget::ptr focus_prev();
-			/// \todo Maybe this one should throw an exception ?
-			void add_child(widget::ptr);
 			
 			// do we want to make these available?
 			// or should they be strictly internal to application ? 

@@ -13,7 +13,12 @@ namespace stk
 
 	container::container(boost::shared_ptr<container> parent) : widget(parent)
 	{
-		cout << "container::container()" << endl;
+		cout << "container::container(container)" << endl;
+	}
+	
+	container::container(boost::shared_ptr<application> parent) : widget(parent)
+	{
+		cout << "container::container(application)" << endl;
 	}
 
 	container::~container()

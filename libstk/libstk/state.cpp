@@ -11,11 +11,11 @@ using std::endl;
 namespace stk
 {
 
-	state::state(boost::shared_ptr<application> parent) 
+	state::state(boost::shared_ptr<application> parent) : container(parent)
 	{
 		cout << "state::state()" << endl;
 		cout << "state::state() - parent pointer is " << std::hex << parent.get() << endl;
-		container::parent_ = parent;
+		parent->add_state(boost::shared_ptr<state>(this));
 	}
 
 	state::~state()

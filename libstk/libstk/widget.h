@@ -11,6 +11,7 @@
 
 namespace stk
 {
+	class application;
 	class container;
 	class state;
 	
@@ -19,11 +20,11 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<widget> ptr; 
 			typedef boost::weak_ptr<widget> weak_ptr;
+			
 		private:
 
 		protected:
-			// won't compile for dvhart without it...
-			widget() { }; // empty constructor, needed for creating derived classes ? 
+			widget(boost::shared_ptr<application> parent);
 			boost::weak_ptr<parent> parent_;
 			int x_;
 			int y_;
@@ -45,7 +46,6 @@ namespace stk
 			// parent interface
 			virtual boost::shared_ptr<widget> focus_next();
 			virtual boost::shared_ptr<widget> focus_prev();
-			virtual void add_child(boost::shared_ptr<widget>);
 			
 			boost::signal<bool ()> on_focus;
 			boost::signal<bool ()> on_unfocus;
