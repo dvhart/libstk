@@ -14,7 +14,7 @@
 #ifndef STK_HOTKEY_H
 #define STK_HOTKEY_H
 
-#include <boost/signal.h>
+#include <boost/signal.hpp>
 #include <libstk/keycode.h>
 
 namespace stk
