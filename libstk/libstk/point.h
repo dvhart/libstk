@@ -1,14 +1,14 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: point.h
  * DESCRIPTION: A simple point class with += and -= defined.
- *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 10/Dec/2003  LAST UPDATE: 20/May/2003
+ *     AUTHORS: Darren Hart, Marc Strämke
+ *  START DATE: 10/Dec/2003  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
  *              with the source as license.txt or at 
  *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *************************************************************************************************/
 
 #ifndef STK_POINT_H
 #define STK_POINT_H

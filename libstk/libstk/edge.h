@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: edge.h
  * DESCRIPTION: Edge class used by the surface classes to draw polygons.
  *     AUTHORS: Darren Hart
- *  START DATE: 10/Dec/2002  LAST UPDATE: 13/May/2003
+ *  START DATE: 10/Dec/2002  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_EDGE_H
 #define STK_EDGE_H
@@ -25,47 +24,17 @@ namespace stk
                 ymax_(ymax), xbot_(xbot), xinc_num_(xinc_num),
             xinc_den_(xinc_den), xinc_(0), xinc_dir_(((xinc_num>0)?1:-1))
         {}
-        ;
-        int ymax() const
-        {
-            return ymax_;
-        };
-        int xbot() const
-        {
-            return xbot_;
-        };
-        int xinc_num() const
-        {
-            return xinc_num_;
-        };
-        int xinc_den() const
-        {
-            return xinc_den_;
-        };
-        int xinc() const
-        {
-            return xinc_;
-        };
-        void ymax(int ymax)
-        {
-            ymax_ = ymax;
-        };
-        void xbot(int xbot)
-        {
-            xbot_ = xbot;
-        };
-        void xinc_num(int xinc_num)
-        {
-            xinc_num_ = xinc_num;
-        };
-        void xinc_den(int xinc_den)
-        {
-            xinc_den_ = xinc_den;
-        };
-        void xinc(int xinc)
-        {
-            xinc_ = xinc;
-        };
+            
+        int ymax() const { return ymax_; }
+        void ymax(int ymax) { ymax_ = ymax; }
+        int xbot() const { return xbot_; }
+        void xbot(int xbot) { xbot_ = xbot; }
+        int xinc_num() const { return xinc_num_; }
+        void xinc_num(int xinc_num) { xinc_num_ = xinc_num; }
+        int xinc_den() const { return xinc_den_; }
+        void xinc_den(int xinc_den) { xinc_den_ = xinc_den; }
+        int xinc() const { return xinc_; }
+        void xinc(int xinc) { xinc_ = xinc; }
 
         void step()
         {
@@ -78,7 +47,7 @@ namespace stk
                 else
                     xinc_ += xinc_den_;
             }
-        };
+        }
 
         bool operator<(const edge &ed) const
         {
@@ -86,7 +55,7 @@ namespace stk
                 return true;
             else
                 return false;
-        };
+        }
     };
 }
 

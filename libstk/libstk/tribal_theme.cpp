@@ -529,7 +529,7 @@ namespace stk
             gc->line_color(color_manager::get()->get_color(color_properties(outline_color_pressed_str, surface)));
             gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_pressed_str, surface)));
         }
-        else if(focused_)
+        else if (focused_)
         {
             gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
 

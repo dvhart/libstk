@@ -1,17 +1,16 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: sdl_data.h (FIXME: new name welcome!) 
  * DESCRIPTION: A singleton class used to handle SDL initialization.
  *     AUTHORS: Darren Hart 
- *  START DATE: 28/May/2003  LAST UPDATE: 28/May/2003
+ *  START DATE: 28/May/2003  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
-#ifndef SDL_DATA_H
-#define SDL_DATA_H
+#ifndef STK_SDL_DATA_H
+#define STK_SDL_DATA_H
 
 #include <boost/smart_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -46,7 +45,6 @@ namespace stk
             return first_init_;
         }
     };
-
 }
 
 #endif

@@ -9,6 +9,9 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
+#ifndef STK_SURFACE_FBDEV_H
+#define STK_SURFACE_FBDEV_H
+
 #include <vector>
 #include <libstk/surface.h>
 #include <libstk/surface_impl.h>
@@ -64,3 +67,5 @@ namespace stk
         bool init();
     };
 } //end namespace stk
+
+#endif

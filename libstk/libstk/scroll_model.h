@@ -1,17 +1,17 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: scroll_model.h
  * DESCRIPTION: Class describing the modell (MVC term) behind scrolling 
- *     AUTHORS: Marc Straemke, Darren Hart
- *  START DATE: 13/May/2003  LAST UPDATE: 13/May/2003
+ *     AUTHORS: Marc Strämke, Darren Hart
+ *  START DATE: 13/May/2003  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
  *              with the source as license.txt or at 
  *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *************************************************************************************************/
 
-#ifndef SCROLL_MODEL_H
-#define SCROLL_MODEL_H
+#ifndef STK_SCROLL_MODEL_H
+#define STK_SCROLL_MODEL_H
 
 #include <boost/smart_ptr.hpp>
 #include <boost/signal.hpp>

@@ -64,6 +64,11 @@ int main(int argc, char* argv[])
  
     try
     {
+
+#ifdef HAVE_LOGGING
+        logger::get()->add_target(&cout, LL_Info);
+#endif
+        
         std::string surface_type;
         if (argc < 2)
         {
@@ -201,7 +206,7 @@ int main(int argc, char* argv[])
         // create an edit_box
         cout << "test_app - creating edit_box" << endl;
         edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", rectangle(340, 440, 260, 30));
-        test_edit->on_release.connect(&print_edit_box_text);
+        test_edit->on_confirm.connect(&print_edit_box_text);
         
         // add a timer (quit after 30 seconds)
         cout << "test_app - creating timer to quit after 30 seconds" << endl;

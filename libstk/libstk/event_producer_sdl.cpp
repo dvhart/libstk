@@ -95,17 +95,42 @@ namespace stk
     keycode event_producer_sdl::sdl2stk_key(SDLKey sdl_key)
     {
         keycode key;
+
+        // FIXME: handle other keys and the Shift modifier
+        
+        // handle key ranges
+        if (sdl_key >= SDLK_a && sdl_key <= SDLK_z)
+        {
+            key = (keycode)(key_a + (keycode)(sdl_key - SDLK_a));
+            return key;
+        }
+        if (sdl_key >= SDLK_0 && sdl_key <= SDLK_9)
+        {
+            key = (keycode)(key_0 + (keycode)(sdl_key - SDLK_0));
+            return key;
+        }
+        if (sdl_key >= SDLK_KP0 && sdl_key <= SDLK_KP9)
+        {
+            // FIXME: use stk keypad codes (don't exist atm)
+            key = (keycode)(key_0 + (keycode)(sdl_key - SDLK_KP0));
+            return key;
+        }
+ 
+        
         switch (sdl_key)
         {
-            // FIXME: fill this in, take advantage of ascii codes if possible
+        // FIXME: fill this in, take advantage of ascii codes if possible
+        case SDLK_BACKSPACE:
+            key = key_backspace;
+            break;
+        case SDLK_TAB:
+            key = key_tab;
+            break;
         case SDLK_ESCAPE:
             key = key_esc;
             break;
         case SDLK_RETURN:
             key = key_enter;
-            break;
-        case SDLK_TAB:
-            key = key_tab;
             break;
         case SDLK_LEFT:
             key = left_arrow;

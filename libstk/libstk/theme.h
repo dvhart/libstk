@@ -1,4 +1,4 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: theme.h
  * DESCRIPTION: The theme class implements the pimpl idiom to provide access to
  *              the user defined user_theme which is used for storage and 
@@ -7,10 +7,12 @@
  *  START DATE: 17/Mar/2003  LAST UPDATE: 13/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
+
+#ifndef STK_THEME_H
+#define STK_THEME_H
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -48,3 +50,5 @@ namespace stk
         // ie draw_corner(), etc.
     };
 }
+
+#endif

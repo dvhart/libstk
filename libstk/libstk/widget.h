@@ -43,11 +43,13 @@ namespace stk
         rectangle rect_;
 
         // widget attributes
+        // FIXME: add visible_
         bool focusable_;
         /// used for animation by the draw routine, or ignored for non-animated widgets
         int frame_;
 
         // drawing related attributes
+        // FIXME: handle mouse presses for pressed in widget::handle_event
         bool pressed_; // does this belong in button only ?
         // it is nice to have it here so that handle_event can handle
         // the common cases, see handle_event()

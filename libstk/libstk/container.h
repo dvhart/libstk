@@ -2,8 +2,8 @@
  *    FILENAME: container.h 
  * DESCRIPTION: Libstk composite class of the composite pattern, component
  *              defines the component poriton of the pattern.
- *     AUTHORS: Dirk Hoerner, Marc Straemke, Darren Hart
- *  START DATE: 17/Sep/2002  LAST UPDATE: 13/Jul/2003
+ *     AUTHORS: Dirk Hoerner, Marc Strämke, Darren Hart
+ *  START DATE: 17/Sep/2002  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

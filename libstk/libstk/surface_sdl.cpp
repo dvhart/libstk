@@ -54,7 +54,7 @@ namespace stk
         {
             SDL_InitSubSystem(SDL_INIT_VIDEO);
             sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), bpp,
-                                            SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+                                            SDL_HWSURFACE | SDL_DOUBLEBUF /*| SDL_FULLSCREEN*/);
             
         }
         // this is not the first surface, so make one size rect of the same format as the first

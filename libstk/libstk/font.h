@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: font.h
  * DESCRIPTION: Font class for caching glyphs.
- *     AUTHORS: Vernon Mauery, Marc Straemke 
- *  START DATE: 15/Mar/2003  LAST UPDATE: 13/May/2003
+ *     AUTHORS: Vernon Mauery, Marc Strämke, Darren Hart
+ *  START DATE: 15/Mar/2003  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_FONT_H
 #define STK_FONT_H

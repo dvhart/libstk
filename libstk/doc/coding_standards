@@ -7,7 +7,15 @@ RFC, Draft
 
 2:Code formatting:
 2.1:Indentation use the Ansi Identation style {} on their own line etc, look @ astyle docu for complete spec(astyle.sf.net)
-2.2:operators have to be seperated by spaces , like int i = 1; not int i=1; 
+2.2: Spaces
+2.3.1: Every comma should be followed be a space
+2.3.2: All assignment and comparator operators (=, |=, &=, ==, <, >, <=, >=, !=, etc.) should be 
+       wrapped by single spaces
+2.3.3: Arithmetic operators (+, -, *, /, etc) need not be wrapped by single spaces as equations can
+       become unnecessariliy long with them (this is left to the developer's discretion)
+2.3.4: All condition keywords (if, while, for, etc.) should be followed by a single space, ie if ()
+2.3.5: Parenthesis may have a single whitespace separating their conents if it added legibility,
+       (this is left to the developer's discretion), ie if ( (a & 0x10) && (b & 0x01) )
 
 3:Property Accessor Methods
-3:.1 property() and property(T val), not get_property() and set_property()
+3:1 property() and property(T val), not get_property() and set_property()

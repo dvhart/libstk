@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: edit_box.h
  * DESCRIPTION: An edit box widget.
- *     AUTHORS: Dirk Hoerner
+ *     AUTHORS: Dirk Hoerner, Darren Hart
  *  START DATE: 23/Jun/2003  LAST UPDATE: 23/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_EDIT_BOX_H
 #define STK_EDIT_BOX_H
@@ -52,8 +51,11 @@ namespace stk
 		}
 
 		// signals
-		boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_press;
-		boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_release;
+                /// called when the text is changed
+		boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_change;
+                /// called when the user presses enter in the box
+                /// FIXME: what is a better name for this signal ?
+		boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_confirm;
 		
 		virtual void draw(surface::ptr surface, const rectangle& clip_rect);
 		virtual void handle_event(event::ptr e);

@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: glyph.h
  * DESCRIPTION: A single character of a font.
- *     AUTHORS: Vernon Mauery
- *  START DATE: 17/Mar/2003  LAST UPDATE: 13/May/2003
+ *     AUTHORS: Vernon Mauery, Darren Hart
+ *  START DATE: 17/Mar/2003  LAST UPDATE: 26/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_GLYPH_H
 #define STK_GLYPH_H
@@ -76,9 +75,7 @@ namespace stk
         {
             return index_;
         }
-    }
-    ; //class glyph
-
+    }; //class glyph
 } // namespace stk
 
 #endif
