@@ -16,8 +16,7 @@ namespace stk
 		private:
 
 		protected:
-			scroll_decorator(container::ptr parent, const rectangle& rect, 
-					widget::ptr component);
+			scroll_decorator(container::ptr parent, const rectangle& rect); 
 			/// the height of the scroll area
 			int vrange_;
 			/// the width of the scroll area
@@ -29,8 +28,31 @@ namespace stk
 			
 		public:
 			static scroll_decorator::ptr create(container::ptr parent, 
-					const rectangle& rect, widget::ptr component);
+					const rectangle& rect);
 			~scroll_decorator();
+			
+			/********** DRAWABLE INTERFACE **********/
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+			/********** END DRAWABLE INTERFACE **********/
+				
+			/********** PARENT INTERFACE **********/
+			/// Assign the first item added to component_, setting v and h ranges.
+			/// Subsequent adds get passed along to component_.
+			virtual void add(widget::ptr item) 
+			{ 
+				if (!component_)
+				{
+					component_ = item;
+					vrange_ = component_->height();
+					hrange_ = component_->width();
+				}
+				else
+				{
+					component_->add(item); 
+				}
+			}
+			virtual void remove(widget::ptr item) { component_->remove(item); }
+			/********** END PARENT INTERFACE **********/
 
 			/********** SCROLL DECORATOR INTERFACE **********/
 			/// Whether or not to draw the verticle scrollbar

@@ -21,7 +21,6 @@ namespace stk
 			
 		protected:
 			std::vector<widget::ptr> children_;
-			container(container::ptr parent, const rectangle& rect);
 			container(parent::ptr parent, const rectangle& rect);
 			rectangle redraw_rect_; 
 			
@@ -61,15 +60,13 @@ namespace stk
 			
 			/********** CONTAINER INTERFACE **********/
 			// the container interface really defines the composite methods
-			// that parent (which should be called component) declared
+			// that parent and widget declared
 			
 			/// Returns a widget::ptr to the container's first child that contains
 			/// x,y.  It will call widget_at on a child that is a container.
 			virtual widget::ptr widget_at(int x, int y);
-			
 			/// Pass mouse events down to widgets.
 			virtual void delegate_mouse_event(mouse_event::ptr me);
-			
 			// FIXME :carter: implement all this
 			virtual widget::ptr get_active_child() // called when the tree parser for
 			{ return  *children_.begin(); }        // widget cycling switches focus 

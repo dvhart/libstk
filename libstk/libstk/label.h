@@ -31,7 +31,7 @@ namespace stk
 			std::wstring text() const { return text_; }
 			void text(const std::wstring& t) { text_ = t; }
 
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 	};
 	
 } // namespace stk

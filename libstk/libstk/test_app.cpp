@@ -90,12 +90,10 @@ int main(int argc, char* argv[])
 		cout << "test_app - creating an image_panel in a scroll panel" << endl;
 		label::ptr test_label3 = label::create(test_state, std::wstring(L"Clipped Image"), 
 			rectangle(10, 50, 150, 30));
-		/*
 		scroll_decorator::ptr test_scroll = scroll_decorator::create(test_state, 
 				rectangle(10, 90, 350, 200));
 		image_panel::ptr test_image_panel = image_panel::create(test_scroll, 
 				rectangle(10, 90, 400, 400), image::create("parrots.ppm"));
-		*/
 
 		// create a list
 		cout << "test_app - creating a list with items" << endl;

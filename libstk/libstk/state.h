@@ -9,7 +9,7 @@
 
 namespace stk
 {
-	class state : public stk::container
+	class state : public container
 	{
 		public:
 			typedef boost::shared_ptr<state> ptr;
@@ -33,7 +33,7 @@ namespace stk
 
 			// drawable interface
 			//virtual surface::ptr surface(); 
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			//virtual void redraw(bool val, const rectangle& rect);
 	};
 }

@@ -3,7 +3,7 @@
 
 namespace stk
 {
-	image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect, 
+	image_panel::ptr image_panel::create(widget::ptr parent, const rectangle& rect, 
 			image::ptr img)
 	{
 		image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
@@ -11,7 +11,7 @@ namespace stk
 		return new_image_panel;
 	}
 	
-	image_panel::image_panel(container::ptr parent, const rectangle& rect, image::ptr img)
+	image_panel::image_panel(widget::ptr parent, const rectangle& rect, image::ptr img)
 		: widget(parent, rect), image_(img)
 	{
 		cout << "image_panel::image_panel()" << endl;

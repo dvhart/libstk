@@ -20,14 +20,14 @@ namespace stk
 		private:
 			
 		protected:
-			image_panel(container::ptr parent, const rectangle& rect, 
+			image_panel(widget::ptr parent, const rectangle& rect, 
 					image::ptr img);
 			image::ptr image_;
 			int width_;
 			int height_;
 			
 		public:
-			static image_panel::ptr create(container::ptr parent, 
+			static image_panel::ptr create(widget::ptr parent, 
 					const rectangle& _rect, image::ptr img);
 			virtual ~image_panel();
 
@@ -35,7 +35,7 @@ namespace stk
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/
-			virtual void draw(surface::ptr surface);
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/

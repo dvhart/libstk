@@ -24,8 +24,8 @@ namespace stk
 		protected:
 			/// the widget decorated by this decorator
 			widget::ptr component_;
-			decorator(container::ptr parent, const rectangle& rect, 
-					widget::ptr component) : widget(parent, rect), component_(component)
+			decorator(container::ptr parent, const rectangle& rect) 
+				: widget(parent, rect)
 			{
 			}
 
@@ -33,46 +33,64 @@ namespace stk
 			virtual ~decorator() { }
 			
 			/********** EVENT HANDLER INTERFACE **********/
-			virtual void handle_event(event::ptr e) { component_->handle_event(e); }
+			/// fixme: this has the potential for an infinite loop as the component_ may try to
+			/// pass the event back to its parent (this)
+			virtual void handle_event(event::ptr e) 
+			{ 
+				cout << "decorator::handle_event()" << endl;
+				component_->handle_event(e);
+			}
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/
+			// fixme: infinite loop
 			virtual surface::ptr surface() { return component_->surface(); }
-			virtual void draw(surface::ptr surface) { component_->draw(surface); }
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle())
+			{ 
+				if (clip_rect.empty())
+					component_->draw(surface, rect_);
+				else
+					component_->draw(surface, clip_rect);
+			}
+			
+			// fixme: infinite loop
 			virtual void redraw(const rectangle& rect) { component_->redraw(rect); }
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/
+			// fixme: infinite loop
 			virtual widget::ptr focus_next() { return component_->focus_next(); }
+			// fixme: infinite loop
 			virtual widget::ptr focus_prev() { return component_->focus_prev(); }
-			virtual void add(widget::ptr item) { component_->add(item); }
+			/// Assign the first item added to component_.
+			/// Subsequent adds get passed along to component_.
+			virtual void add(widget::ptr item) 
+			{ 
+				if (!component_)
+					component_ = item;
+				else
+					component_->add(item); 
+			}
 			virtual void remove(widget::ptr item) { component_->remove(item); }
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
-			//rectangle rect() { return component_->rect(); }
-			//bool contains(int x, int y) { return component_->contains(x, y); }
-			//bool intersects(const rectangle& rect) { return component_->intersects(rect); }
 			virtual bool is_container() { return component_->is_container(); }
-
-			// widget attribute accessor methods
-			// FIXME: have the setters return bool ? 
-			// (ie label would return false for a focus(true) call) ?
-			/// Return a bool indicating if the widget is focusable
+			/// Return a bool indicating if component_ is focusable
 			bool focusable() { return component_->focusable(); }
-			/// Set the focusable property of the widget
+			/// Set the focusable property of component_
 			void focusable(bool val) { component_->focusable(val); }
-			/// Return the tab index of the widget
+			/// Return the tab index of component_
 			/// \todo this is currently not implemented
 			int tab() { return component_->tab(); }
-			/// Set the tab index of the widget
+			/// Set the tab index of component_ 
 			/// \todo this is currently not implemented
 			void tab(int val) { component_->tab(val); }
-			/// Return the pressed property of the widget
+			/// Return the pressed property of component_
 			bool pressed() { return component_->pressed(); }
-			/// Return the focused property of the widget
+			/// Return the focused property of component_
 			bool focused() { return component_->focused(); }
-			/// Return the hover property of the widget
+			/// Return the hover property of component_
 			bool hover() { return component_->hover(); } 
 
 			// FIXME: hmmm... how to map these to the component signals... ???
@@ -86,6 +104,14 @@ namespace stk
 			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keyup;
 			*/
 			/********** END WIDGET INTERFACE **********/
+			
+			/********** COMPOSITE INTERFACE **********/
+			// FIXME: make these throw an exception or something
+			virtual widget::ptr widget_at(int x, int y) { return component_->widget_at(x, y); }
+			virtual void delegate_mouse_event(mouse_event::ptr me) { component_->delegate_mouse_event(me); }
+			virtual widget::ptr get_active_child() { return component_->get_active_child(); }
+			virtual rectangle redraw_rect() { return component_->redraw_rect(); } 
+			/********** END COMPOSITE INTERFACE **********/
 
 	};
 }

@@ -1,11 +1,3 @@
-/***************************************************************************
-	stk_widget.cpp  -  description
-	-------------------
-begin                : Sat Apr 27 2002
-copyright            : (C) 2002 by Darren Hart
-email                : dvhart@byu.edu
- ***************************************************************************/
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -24,17 +16,9 @@ using std::endl;
 namespace stk
 {
 
-	widget::widget(container::ptr parent, const rectangle& rect)
-		: parent_(parent), rect_(rect), focusable_(false), 
-	    pressed_(false), focused_(false), hover_(false), tab_(0), frame_(0)
-	{
-		cout << "widget::widget(container)" << endl;
-	}
-
-	/// fixme: why do we need this one again?
 	widget::widget(parent::ptr parent, const rectangle& rect)
 		: parent_(parent), rect_(rect), focusable_(false), 
-	    pressed_(false), focused_(true), hover_(false), tab_(0)
+	    pressed_(false), focused_(false), hover_(false), tab_(0), frame_(0)
 	{
 		cout << "widget::widget(parent)" << endl;
 	}
@@ -81,6 +65,7 @@ namespace stk
 		// do not call parent->handle_event() here, the derived widget is responsible
 		// for that if they so desire (ie they don't handle an event)
 
+		cout << "widget::handle_event() done" << endl;
 	}
 
 	// drawable interface

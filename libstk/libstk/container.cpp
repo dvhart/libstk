@@ -11,16 +11,6 @@ using std::endl;
 
 namespace stk
 {
-
-	container::container(boost::shared_ptr<container> parent, const rectangle& rect) : 
-		widget(parent, rect)
-	{
-		cout << "container::container(container)" << endl;
-		focusable_ = false;
-		redraw_rect_ = parent->surface()->rect();
-	}
-	
-	// why do we need this one again ?
 	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : 
 		widget(parent, rect)
 	{

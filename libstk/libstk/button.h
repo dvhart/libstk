@@ -41,7 +41,7 @@ namespace stk
 			virtual void handle_event(event::ptr e);
 
 			// drawable interface
-			virtual void draw(surface::ptr surface);
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			// using defaults (widget.h)
 
 			// parent interface

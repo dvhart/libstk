@@ -9,6 +9,7 @@
 #include "libstk/parent.h"
 #include "libstk/keycode.h"
 #include "libstk/combiners.h"
+#include "libstk/mouse_event.h"
 
 namespace stk
 {
@@ -25,9 +26,6 @@ namespace stk
 		private:
 
 		protected:
-			// FIXME: what can we do to use container::ptr, etc here ?
-			widget(boost::shared_ptr<container> parent, 
-				const rectangle& rect=rectangle(0,0,0,0));
 			widget(parent::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
 			parent::weak_ptr parent_;
 			
@@ -55,7 +53,7 @@ namespace stk
 
 			/********** DRAWABLE INTERFACE **********/
 			virtual surface::ptr surface(); 
-			//virtual void draw(surface::ptr surface);
+			//virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			virtual void redraw(const rectangle& rect);
 			/********** END DRAWABLE INTERFACE **********/
 			
@@ -103,6 +101,15 @@ namespace stk
 			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keyup;
 			/********** END WIDGET INTERFACE **********/
 
+			/********** COMPOSITE INTERFACE **********/
+			// FIXME: make these throw an exception or something
+			virtual widget::ptr widget_at(int x, int y) { return widget::ptr(); }
+			virtual void delegate_mouse_event(mouse_event::ptr me) { }
+			virtual widget::ptr get_active_child() { return widget::ptr(); }
+			virtual rectangle redraw_rect() { return rectangle(); } 
+			/********** END COMPOSITE INTERFACE **********/
+
+			
 			/*
 			//some cool things we can do with boost::signals
 

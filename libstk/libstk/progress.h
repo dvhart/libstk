@@ -45,7 +45,7 @@ namespace stk
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/
-			virtual void draw(surface::ptr surface);
+			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/

@@ -8,6 +8,7 @@
 #include "libstk/list.h"
 #include "libstk/list_item.h"
 #include "libstk/progress.h"
+#include "libstk/scroll_decorator.h"
 #include "libstk/spinner.h"
 #include "libstk/state.h"
 
@@ -54,7 +55,7 @@ namespace stk
 	const color font_color_pressed_    = surface->gen_color(font_color_pressed_str_);
 	*/
 	
-	void state::draw(surface::ptr surface)
+	void state::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "state::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
@@ -64,7 +65,7 @@ namespace stk
 		container::draw(surface); // this will draw all the children - document this for theme howto
 	}
 	
-	void button::draw(surface::ptr surface)
+	void button::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "button::draw()" << endl;
 		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
@@ -122,7 +123,7 @@ namespace stk
 		surface->draw_text(interior_rect, label_);
 	}
 
-	void progress::draw(surface::ptr surface)
+	void progress::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "progress::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
@@ -139,7 +140,7 @@ namespace stk
 		surface->draw_text(rect_, label_);
 	}
 	
-	void label::draw(surface::ptr surface)
+	void label::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "label::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
@@ -159,18 +160,18 @@ namespace stk
 		}
 	}
 
-	void image_panel::draw(surface::ptr surface)
+	void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "image_panel::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		gc->line_color(surface->gen_color(outline_color_focused_str)); 
 		surface->gc(gc);
-		surface->clip_rect(rect_);
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		surface->draw_rect(rect_);
 		surface->draw_image(rect_.x1()+10, rect_.y1()+10, image_);
 	}
 	
-	void list::draw(surface::ptr surface)
+	void list::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "list::draw()" << endl;
 		float sel;
@@ -226,14 +227,14 @@ namespace stk
 		}
 	}
 	
-	void list_item::draw(surface::ptr surface)
+	void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "list_item::draw()" << endl;
 		// draw list is responsible for setting the graphics context!!
 		surface->draw_text(rect_, label_);
 	}
 
-	void spinner::draw(surface::ptr surface)
+	void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		cout << "spinner::draw()" << endl;
 		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
@@ -286,6 +287,17 @@ namespace stk
 		// draw the selected item
 		items_[selected_]->rect(interior_rect);
 		items_[selected_]->draw(surface);
+	}
+	
+	void scroll_decorator::draw(surface::ptr surface, const rectangle& clip_rect)
+	{
+		cout << "scroll_decorator::draw()" << endl;
+		decorator::draw(surface, clip_rect);
+		
+		graphics_context::ptr gc = graphics_context::create();
+		gc->line_color(surface->gen_color(outline_color_normal_str));
+		surface->gc(gc);
+		surface->draw_rect(rect_);
 	}
 	
 }
