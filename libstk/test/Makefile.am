@@ -25,7 +25,10 @@ endif
 
 
 library_includedir  = $(includedir)/libstk-$(VERSION)/libstk
-INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) -I$(top_srcdir)  
+INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) -I$(top_srcdir) \
+	   -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+	   -DPACKAGE_PIXMAPS_DIR=\""$(datadir)/libstk/pixmaps"\" \
+	   -DPACKAGE_FONTS_DIR=\""$(datadir)/libstk/fonts"\" 
 
 bin_PROGRAMS              = $(tests_sdl) $(tests_dfb) $(tests_fbdev) timer_test test_area
 hello_world_SOURCES       = hello_world.cpp
