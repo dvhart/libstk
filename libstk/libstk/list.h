@@ -21,11 +21,12 @@
 #include <libstk/container.h>
 #include <libstk/list_item.h>
 #include <libstk/scroll_model.h>
+#include <libstk/scrollable.h>
 
 namespace stk
 {
     /// \todo is widget right.. not a container ?
-    class list : public widget
+    class list : public widget, public scrollable
     {
     public:
         typedef boost::shared_ptr<list> ptr;
@@ -35,17 +36,14 @@ namespace stk
 
     protected:
         int current_;
-        list(container::ptr parent, const rectangle& rect,
-             scroll_model::ptr v_scroll = scroll_model::create());
+        list(container::ptr parent, const rectangle& rect);
         std::vector<list_item::ptr> items_;
 
         // scrolling members
-        scroll_model::ptr v_scroll_;
-        boost::signals::connection v_scroll_con;
+        boost::signals::connection v_scroll_con_;
 
     public:
-        static list::ptr create(container::ptr parent, const rectangle& rect,
-                                scroll_model::ptr v_scroll = scroll_model::create());
+        static list::ptr create(container::ptr parent, const rectangle& rect);
         virtual ~list();
 
         /********** EVENT HANDLER INTERFACE **********/
@@ -62,6 +60,9 @@ namespace stk
         //virtual widget::ptr focus_prev();
         /********** END COMPONENT INTERFACE **********/
 
+        /********** SCROLLABLE INTERFACE **********/
+        virtual void v_scroll(scroll_model::ptr value);
+        /********** END SCROLLABLE INTERFACE **********/
 
         /********** LIST INTERFACE **********/
         /// Appends a new item to the listbox, returns the index of the object added
@@ -73,8 +74,6 @@ namespace stk
         virtual list_item::ptr operator[](int index); /// returns the list_item at the specified location
         virtual void clear();   /// Erases the entire content of the list
         virtual int size();     /// Returns the number of elements in the list
-        scroll_model::ptr v_scroll();
-        void v_scroll(scroll_model::ptr value);
         // list signals FIXME: what should the signature of the slots be ?
         boost::signal<bool (), combiner::logical_or<bool> > on_update_selection;
         boost::signal<bool (), combiner::logical_or<bool> > on_update_current;

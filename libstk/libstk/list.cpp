@@ -20,20 +20,20 @@
 
 namespace stk
 {
-    list::ptr list::create(container::ptr parent, const rectangle& rect,
-                           scroll_model::ptr v_scroll)
+    list::ptr list::create(container::ptr parent, const rectangle& rect)
     {
-        list::ptr new_list(new list(parent, rect, v_scroll));
+        list::ptr new_list(new list(parent, rect));
         parent->add(new_list);
         return new_list;
     }
 
-    list::list(container::ptr parent, const rectangle& rect,
-               scroll_model::ptr v_scroll) : widget(parent, rect), current_(0), v_scroll_(v_scroll)
+    list::list(container::ptr parent, const rectangle& rect) : widget(parent, rect), scrollable(),
+        current_(0)
     {
         INFO("constructor");
         focusable(true);
         v_scroll_->vis_size(height());
+        h_scroll_->vis_size(width());
     }
 
     list::~list()
@@ -57,7 +57,7 @@ namespace stk
                 y += items_[current_]->height();
                 if (y > me->y()-y1()) break;
             }
-            if(current_<items_.size()) // Crashes otherwise
+            if ((unsigned int)current_ < items_.size()) // Crashes otherwise
                 items_[current_]->selected(true);
             redraw(rect());
             return;
@@ -173,15 +173,12 @@ namespace stk
     {
         return items_.size();
     }
-    scroll_model::ptr list::v_scroll()
-    {
-        return v_scroll_;
-    }
+    
     void list::v_scroll(scroll_model::ptr value)
     {
-        v_scroll_con.disconnect();
-        v_scroll_=value;
-//        v_scroll_con=value->on_change.connect(boost::bind(&widget::redraw,(widget*)this,rect(),NULL,false));
+        v_scroll_con_.disconnect();
+        v_scroll_ = value;
+//        v_scroll_con_=value->on_change.connect(boost::bind(&widget::redraw,(widget*)this,rect(),NULL,false));
         v_scroll_->size(height());
         v_scroll_->vis_size(height());
     }

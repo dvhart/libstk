@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
                 std::wstring(L"Loading - %p %d %f"), rectangle(10, 440, 320, 30), 100);
         test_progress->percent(0.64);
 
-        // create an image in a scroll panel
+        // create an image in a scroll box
         INFO("app - creating an image_panel in a scroll_box");
         label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"),
                 rectangle(10, 50, 150, 30));
@@ -174,7 +174,9 @@ int main(int argc, char* argv[])
 
         // create a list
         INFO("app - creating a list with items");
-        list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));
+        scroll_box::ptr list_scroll_box = scroll_box::create(test_state, 
+                rectangle(370, 90, 150, 200), true, true);
+        list::ptr test_list = list::create(list_scroll_box, rectangle());
         list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia");
         list_item::ptr test_item_2 = list_item::create(test_list, L"Canada");
         list_item::ptr test_item_3 = list_item::create(test_list, L"China");

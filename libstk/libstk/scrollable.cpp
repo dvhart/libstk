@@ -17,6 +17,8 @@ namespace stk
     scrollable::scrollable()
     {
         INFO("constructor");
+        v_scroll_ = scroll_model::create();
+        h_scroll_ = scroll_model::create();
     }
 
     scrollable::~scrollable()
@@ -24,16 +26,4 @@ namespace stk
         INFO("destructor");
     }
     
-    void scrollable::h_scroll(scroll_model::ptr model)
-    {
-        h_scroll_con_.disconnect();
-        h_scroll_ = model;
-    }
-
-    void scrollable::v_scroll(scroll_model::ptr model)
-    {
-        v_scroll_con_.disconnect();
-        v_scroll_ = model;
-    }
-
 } // namespace stk

@@ -17,30 +17,32 @@
 #include <boost/weak_ptr.hpp>
 #include <libstk/container.h>
 #include <libstk/scroll_model.h>
+#include <libstk/scrollable.h>
 
 namespace stk
 {
-    class viewport : public container
+    class viewport : public container, public scrollable
     {
     public:
         typedef boost::shared_ptr<viewport> ptr;
         typedef boost::weak_ptr<viewport> weak_ptr;
-
+        
+        // fixme: we shouldn't need these !
+        using scrollable::h_scroll;
+        using scrollable::v_scroll;
     private:
 
     protected:
         viewport(container::ptr parent, const rectangle& rect);
 
-        scroll_model::ptr h_scroll_;
         boost::signals::connection h_scroll_con;
-        scroll_model::ptr v_scroll_;
         boost::signals::connection v_scroll_con;
 
         /// helper function to redraw the whole widget
         void redraw();
     public:
         static viewport::ptr create(container::ptr parent, const rectangle& rect);
-        ~viewport();
+        virtual ~viewport();
 
         /********** DRAWABLE INTERFACE **********/
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
@@ -57,11 +59,11 @@ namespace stk
         /********** END COMPONENT INTERFACE **********/
 
         /********** VIEWPORT INTERFACE **********/
-        scroll_model::ptr h_scroll() { return h_scroll_; }
-        void h_scroll(scroll_model::ptr value);
+        //virtual scroll_model::ptr h_scroll() { return scrollable::h_scroll(); }
+        virtual void h_scroll(scroll_model::ptr value);
 
-        scroll_model::ptr v_scroll() { return v_scroll_; }
-        void v_scroll(scroll_model::ptr value);
+        //virtual scroll_model::ptr v_scroll() { return scrollable::v_scroll(); }
+        virtual void v_scroll(scroll_model::ptr value);
         /********** END VIEWPORT INTERFACE **********/
     };
 }

@@ -19,16 +19,17 @@ namespace stk
             scroll_model::ptr model)
     {
         scroll_bar::ptr new_scroll_bar(new scroll_bar(parent, rect, model));
-        new_scroll_bar->scroll_con_ = model->on_change.connect(
+        new_scroll_bar->scroll_con_ = new_scroll_bar->model_->on_change.connect(
                 boost::bind(&scroll_bar::redraw, new_scroll_bar.get()));
         parent->add(new_scroll_bar);
         return new_scroll_bar;
     }
 
     scroll_bar::scroll_bar(container::ptr parent, const rectangle& rect, scroll_model::ptr model) 
-        : widget(parent, rect), model_(model)
+        : widget(parent, rect)
     {
         INFO("constructor");
+        model_ = (model ? model : scroll_model::create()); 
         focusable_ = true;
     }
 

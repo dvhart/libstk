@@ -17,7 +17,6 @@
 #include <boost/weak_ptr.hpp>
 
 #include <libstk/widget.h>
-#include <libstk/container.h>
 #include <libstk/scroll_model.h>
 
 namespace stk
@@ -30,9 +29,7 @@ namespace stk
 
         protected:
             scroll_model::ptr v_scroll_;
-            boost::signals::connection v_scroll_con_;
             scroll_model::ptr h_scroll_;
-            boost::signals::connection h_scroll_con_;
 
         public:
             scrollable();
@@ -40,10 +37,10 @@ namespace stk
 
             /********** SCROLLABLE INTERFACE **********/
             virtual scroll_model::ptr h_scroll() { return h_scroll_; }
-            virtual void h_scroll(scroll_model::ptr model);
+            virtual void h_scroll(scroll_model::ptr model) { h_scroll_ = model; }
 
             virtual scroll_model::ptr v_scroll() { return v_scroll_; }
-            virtual void v_scroll(scroll_model::ptr model);
+            virtual void v_scroll(scroll_model::ptr model) { v_scroll_ = model; }
             /********** END SCROLLABLE INTERFACE **********/
     };
 } // end namespace

@@ -27,7 +27,8 @@ namespace stk
         return new_viewport;
     }
 
-    viewport::viewport(container::ptr parent, const rectangle& rect) : container(parent, rect)
+    viewport::viewport(container::ptr parent, const rectangle& rect) : 
+        container(parent, rect), scrollable()
     {
         INFO("constructor");
         focusable_ = true;
@@ -54,8 +55,8 @@ namespace stk
     void viewport::v_scroll(scroll_model::ptr value)
     {
         v_scroll_con.disconnect();
-        v_scroll_=value;
-        v_scroll_con=value->on_change.connect(boost::bind(&viewport::redraw, this));
+        v_scroll_ = value;
+        v_scroll_con = value->on_change.connect(boost::bind(&viewport::redraw, this));
         v_scroll_->size(height());
         v_scroll_->vis_size(height());
         if (!children_.empty())
@@ -79,8 +80,8 @@ namespace stk
         rectangle rect;
 
         // Fixme, this should really be using for each shouldnt it?
-        for(unsigned int i=0;i<children_.size();i++)
-            rect+=children_[i]->rect();
+        for(unsigned int i = 0; i < children_.size(); i++)
+            rect += children_[i]->rect();
 
         h_scroll()->size(rect.x2());
         v_scroll()->size(rect.y2());

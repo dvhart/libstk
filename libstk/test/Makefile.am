@@ -22,11 +22,11 @@ else
  tests_fbdev  = 
 endif
 
-if PRINTING
- tests_printing = printing_test
-else
+#if PRINTING
+# tests_printing = printing_test
+#else
  tests_printing = 
-endif
+#endif
 
 
 library_includedir  = $(includedir)/libstk-$(VERSION)/libstk
@@ -44,12 +44,11 @@ timer_test_SOURCES        = timer_test.cpp
 test_area_SOURCES         = test_area.cpp 
 printing_test_SOURCES	  = printing_test.cpp
 
-# FIXME: fix the way we link to the library here
 hello_world_LDADD       = $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la
 test_app_LDADD          = $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la
 hydra_LDADD             = $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la
 xine_test_LDADD         = $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la 
 xine_test_LDFLAGS       = `xine-config --libs`
 timer_test_LDADD        = $(top_srcdir)/libstk/libstk.la
-test_area_LDADD       = $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la
+test_area_LDADD         = $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la
 printing_test_LDADD     = -lboost_signals -lboost_thread $(top_srcdir)/libstk/libstk.la -lijs 

@@ -16,6 +16,7 @@
 #include <boost/weak_ptr.hpp>
 #include <libstk/container.h>
 #include <libstk/scroll_bar.h>
+#include <libstk/scrollable.h>
 #include <libstk/viewport.h>
 
 namespace stk
@@ -29,17 +30,24 @@ namespace stk
     private:
 
     protected:
-        // FIXME: consider scroll_bar show properties { never, always, if_needed }
         scroll_box(container::ptr parent, const rectangle& rect);
 
-        bool constructed_;
+        // FIXME: this is not thread safe
+        bool check_scrollable_;
+        // FIXME: use an enum with always, never, auto
+        bool v_policy_;
+        bool h_policy_;
+        rectangle child_rect_;
+        
         scroll_bar::ptr h_scroll_bar_;
         scroll_bar::ptr v_scroll_bar_;
         viewport::ptr viewport_;
+        widget::ptr child_;
 
     public:
+        // FIXME: consider scroll_bar show properties { never, always, if_needed }
         static scroll_box::ptr create(container::ptr parent, const rectangle& rect, 
-                bool v_scroll, bool h_scroll);
+                bool v_policy, bool h_policy);
         ~scroll_box();
 
         /********** DRAWABLE INTERFACE **********/
@@ -57,11 +65,14 @@ namespace stk
         /********** END COMPONENT INTERFACE **********/
 
         /********** SCROLL BOX INTERFACE **********/
-        scroll_model::ptr h_scroll() { return viewport_->h_scroll(); }
+        scroll_model::ptr h_scroll();
         void h_scroll(scroll_model::ptr model); 
 
-        scroll_model::ptr v_scroll() { return viewport_->v_scroll(); }
+        scroll_model::ptr v_scroll();
         void v_scroll(scroll_model::ptr model);
+
+        // FIXME: use an enum with always, never, auto
+        void scroll_policies(bool h_policy, bool v_policy);
         /********** END SCROLL BOX INTERFACE **********/
     };
 }
