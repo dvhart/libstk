@@ -134,7 +134,7 @@ namespace stk
     
     void surface_dfb::lock()
     {
-        surface->Lock(surface, DSLF_WRITE|DSLF_READ, &screen, &pitch);
+        surface->Lock(surface, (DFBSurfaceLockFlags)(DSLF_WRITE|DSLF_READ), &screen, &pitch);
 //        INFO("Locked surface! screen pointer @" << screen << " pitch is " << pitch);
         locked=true;
     }
