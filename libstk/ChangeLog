@@ -1,3 +1,131 @@
+2003-06-23 10:34  carter
+
+	* libstk/: application.cpp, application.h: Reverted Darrens
+	mistakes *gg* (back incorporated my changes before darren changed
+	indentation)
+
+2003-06-22 08:34  carter
+
+	* libstk/: spinner.cpp, spinner.h, tribal_theme.cpp: Changed
+	spinner so that the scrolling direction is only dependent on the
+	mouse location (upper/lower half) if its in the area of the skin
+	where the arrows are drawn
+
+2003-06-14 21:16  dvhart
+
+	* libstk/application.cpp, libstk/application.h, libstk/button.cpp,
+	libstk/button.h, libstk/color_manager.cpp, libstk/color_manager.h,
+	libstk/combiners.h, libstk/component.h, libstk/container.cpp,
+	libstk/container.h, libstk/drawable.h, libstk/edge.h,
+	libstk/event.h, libstk/event_handler.h, libstk/event_producer.h,
+	libstk/event_producer_sdl.cpp, libstk/event_producer_sdl.h,
+	libstk/event_system.cpp, libstk/event_system.h,
+	libstk/exceptions.h, libstk/font.cpp, libstk/font.h,
+	libstk/font_manager.cpp, libstk/font_manager.h, libstk/glyph.cpp,
+	libstk/glyph.h, libstk/graphics_context.h, libstk/hotkey.h,
+	libstk/image.cpp, libstk/image.h, libstk/image_panel.cpp,
+	libstk/image_panel.h, libstk/key_event.cpp, libstk/key_event.h,
+	libstk/keycode.h, libstk/label.cpp, libstk/label.h,
+	libstk/list.cpp, libstk/list.h, libstk/list_item.cpp,
+	libstk/list_item.h, libstk/mouse_event.cpp, libstk/mouse_event.h,
+	libstk/point.h, libstk/posix_time.cpp, libstk/posix_time.h,
+	libstk/progress.cpp, libstk/progress.h, libstk/rectangle.cpp,
+	libstk/rectangle.h, libstk/scroll_model.cpp, libstk/scroll_model.h,
+	libstk/sdl_data.cpp, libstk/sdl_data.h, libstk/spinner.cpp,
+	libstk/spinner.h, libstk/state.cpp, libstk/state.h, libstk/stk.h,
+	libstk/stk_types.h, libstk/surface.h, libstk/surface_impl.h,
+	libstk/surface_sdl.cpp, libstk/surface_sdl.h, libstk/theme.cpp,
+	libstk/theme.h, libstk/time_value.h, libstk/timer.cpp,
+	libstk/timer.h, libstk/tribal_theme.cpp, libstk/tribal_theme.h,
+	libstk/viewport.cpp, libstk/viewport.h, libstk/widget.cpp,
+	libstk/widget.h, test/hello_world.cpp, test/surface_bm.cpp,
+	test/test_app.cpp: formatting with 4 spaces and namespace
+	indentation, no public/private/protected indention
+
+2003-06-12 06:50  carter
+
+	* libstk/: Makefile.am, application.cpp, application.h, widget.cpp:
+	Added Functionality in stk::application for switching between
+	States
+
+2003-06-10 13:59  dvhart
+
+	* libstk/Makefile.am, libstk/event_system.cpp,
+	libstk/event_system.h, libstk/surface_sdl.cpp, test/Makefile.am:
+	basic locking implemented in event_system
+
+2003-06-10 10:07  dvhart
+
+	* libstk/event_producer.h: event_producer header
+
+2003-06-09 21:22  dvhart
+
+	* source_header.txt, libstk/Makefile.am, libstk/application.cpp,
+	libstk/application.h, libstk/event.h,
+	libstk/event_producer_sdl.cpp, libstk/event_producer_sdl.h,
+	libstk/event_system.cpp, libstk/event_system.h,
+	libstk/event_system_dfb.cpp, libstk/event_system_dfb.h,
+	libstk/event_system_sdl.cpp, libstk/event_system_sdl.h,
+	test/hello_world.cpp, test/test_app.cpp: Primary Purpose: implement
+	new event system model with one singleton event   system and an
+	arbitrary number of producers, employing either/both push	
+	and pull event production.  moved event constructor to protected
+	add operator()! to event add event_producer abstract base class
+	made event_system non-abstract and a singleton modified
+	event_system to handle event_producers from various backends
+	converted event_system_sdl to event_producer_sdl   event producers'
+	create() method should call
+	event_system::get()->add_producer(new_producer) updated application
+	to use the singleton event_system updated test applications to use
+	new event system model TODO: add scoped_lock() to the event_system
+	around the events_ queue operations
+
+2003-06-03 17:10  dvhart
+
+	* libstk/hotkey.h: hotkey build fix
+
+2003-06-03 16:59  dvhart
+
+	* libstk/Makefile.am, libstk/component.h,
+	libstk/graphics_context.h, libstk/hotkey.h, libstk/rectangle.h,
+	libstk/stk.h, libstk/stk_types.h, libstk/surface.h,
+	libstk/surface_impl.h, libstk/surface_sdl.h, test/test_app.cpp: new
+	hotkey class and build fix using stk_types.h in addition to stk.h
+
+2003-06-03 16:04  dvhart
+
+	* libstk/stk.h, test/hello_world.cpp, test/surface_bm.cpp,
+	test/test_app.cpp: simplified application header use by adding
+	standard libstk headers to stk.h
+
+2003-06-03 15:39  dvhart
+
+	* Makefile.am, configure.in, libstk/Makefile.am,
+	libstk/application.h, libstk/button.h, libstk/color_manager.h,
+	libstk/component.h, libstk/container.h, libstk/drawable.h,
+	libstk/event_handler.h, libstk/event_system.h,
+	libstk/event_system_sdl.h, libstk/font.h, libstk/font_manager.h,
+	libstk/graphics_context.h, libstk/image.h, libstk/image_panel.h,
+	libstk/key_event.h, libstk/label.h, libstk/list.h,
+	libstk/list_item.h, libstk/mouse_event.h, libstk/progress.h,
+	libstk/rectangle.h, libstk/sdl_data.h, libstk/spinner.h,
+	libstk/state.h, libstk/surface.h, libstk/surface_bm.cpp,
+	libstk/surface_impl.h, libstk/surface_sdl.h, libstk/test_app.cpp,
+	libstk/theme.h, libstk/time_value.h, libstk/timer.h,
+	libstk/tribal_theme.h, libstk/viewport.h, libstk/widget.h,
+	test/Makefile.am, test/hello_world.cpp, test/parrots.ppm,
+	test/surface_bm.cpp, test/test_app.cpp: fixed headers to include
+	like <libstk/foo.h> and moved tests to the test directory
+
+2003-05-30 14:19  dvhart
+
+	* libstk/test_app.cpp: functional hotkey implementation in
+	test_app.cpp (F1 Quits)
+
+2003-05-30 00:26  dvhart
+
+	* ChangeLog: Changelog
+
 2003-05-30 00:26  dvhart
 
 	* ChangeLog, libstk/application.cpp, libstk/container.cpp,

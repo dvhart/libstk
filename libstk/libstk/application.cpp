@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: application.cpp
  * DESCRIPTION: Application class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
  *  START DATE: 03/Mar/2003  LAST UPDATE: 13/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -138,7 +137,7 @@ namespace stk
                     cout << "application::run() - passing event to focused_widget_" << endl;
                     widget::ptr ptr = focused_widget_.lock();
                     if (!ptr)
-                        cout << "application::run() - no current widget, pass to state ???" << endl;
+                        cout << "application::run() - no current widget, pass to state ?" << endl;
                     else
                         ptr->handle_event(event_);
                 }
@@ -195,61 +194,63 @@ namespace stk
         case event::key_down:
             break;
         case event::key_up:
+        {
+            // FIXME :Carter: shouldnt this be a polymorphic cast?
+            key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+            //cout << "application::handle_event() - key pressed: " << ke->key() << endl;
+            switch ( ke->key() )
             {
-                // FIXME :Carter: shouldnt this be a polymorphic cast?
-                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                //cout << "application::handle_event() - key pressed: " << ke->key() << endl;
-                switch ( ke->key() )
+            case key_esc:
+                quit();
+                break;
+            case key_tab:
+            case right_arrow:
+            case down_arrow:
+            {
+                cout << "application::handle_event() - next pressed" << endl;
+                component::weak_ptr prev_focused_widget = focused_widget_;
+                focused_widget_ = prev_focused_widget.lock()->focus_next();
+                component::weak_ptr temp_widget = prev_focused_widget;
+                while (!focused_widget_.lock())
                 {
-                case key_esc:
-                    quit();
-                    break;
-                case key_tab:
-                case right_arrow:
-                case down_arrow:
-                    {
-                        cout << "application::handle_event() - next pressed" << endl;
-                        component::weak_ptr prev_focused_widget = focused_widget_;
-                        focused_widget_ = prev_focused_widget.lock()->focus_next();
-                        component::weak_ptr temp_widget = prev_focused_widget;
-                        while (!focused_widget_.lock())
-                        {
-                            temp_widget = temp_widget.lock()->parent();
-                            if (!temp_widget.lock())
-                                throw error_message_exception("application::handle_event() - unable to find next focusable widget");
-                            focused_widget_ = temp_widget.lock()->focus_next();
-                        }
-                        prev_focused_widget.lock()->handle_event(event::create(event::un_focus));
-                        focused_widget_.lock()->handle_event(event::create(event::focus));
-                        break;
-                    }
-                case key_enter:
-                    cout << "application::handle_event() - enter pressed" << endl;
-                    break;
-                case left_arrow:
-                case up_arrow:
-                    {
-                        cout << "application::handle_event() - prev pressed" << endl;
-                        component::weak_ptr prev_focused_widget = focused_widget_;
-                        focused_widget_ = focused_widget_.lock()->focus_prev();
-                        component::weak_ptr temp_widget = prev_focused_widget;
-                        while (!focused_widget_.lock())
-                        {
-                            temp_widget = temp_widget.lock()->parent();
-                            if (!temp_widget.lock())
-                                throw error_message_exception("application::handle_event() - unable to find previous focusable widget");
-                            focused_widget_ = temp_widget.lock()->focus_prev();
-                        }
-                        prev_focused_widget.lock()->handle_event(event::create(event::un_focus));
-                        focused_widget_.lock()->handle_event(event::create(event::focus));
-                        break;
-                    }
-                default:
-                    // unhandled key
-                    break;
+                    temp_widget = temp_widget.lock()->parent();
+                    if (!temp_widget.lock())
+                        throw error_message_exception("application::handle_event() - "
+                                                      "unable to find next focusable widget");
+                    focused_widget_ = temp_widget.lock()->focus_next();
                 }
+                prev_focused_widget.lock()->handle_event(event::create(event::un_focus));
+                focused_widget_.lock()->handle_event(event::create(event::focus));
                 break;
             }
+            case key_enter:
+                cout << "application::handle_event() - enter pressed" << endl;
+                break;
+            case left_arrow:
+            case up_arrow:
+            {
+                cout << "application::handle_event() - prev pressed" << endl;
+                component::weak_ptr prev_focused_widget = focused_widget_;
+                focused_widget_ = focused_widget_.lock()->focus_prev();
+                component::weak_ptr temp_widget = prev_focused_widget;
+                while (!focused_widget_.lock())
+                {
+                    temp_widget = temp_widget.lock()->parent();
+                    if (!temp_widget.lock())
+                        throw error_message_exception("application::handle_event() - "
+                                                      "unable to find previous focusable widget");
+                    focused_widget_ = temp_widget.lock()->focus_prev();
+                }
+                prev_focused_widget.lock()->handle_event(event::create(event::un_focus));
+                focused_widget_.lock()->handle_event(event::create(event::focus));
+                break;
+            }
+            default:
+                // unhandled key
+                break;
+            }
+            break;
+        }
         case event::mouse_down:
             break;
         case event::mouse_up:
@@ -281,7 +282,7 @@ namespace stk
     }
     void application::current_state(state::ptr new_cur_state)
     {
-        current_state_=new_cur_state;
+        current_state_ = new_cur_state;
         new_cur_state->redraw(new_cur_state->rect());
     }
 

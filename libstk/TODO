@@ -24,9 +24,11 @@ write it!!!!
 OTHER
 ======
 image loader class
-	just png for now but we will want at least jpg as well for user app so
-	loaders should be able to be added.
+    just png for now but we will want at least jpg as well for user app so
+    loaders should be able to be added.
 Better font loading error messages.
+list::create(boost::shared_ptr< list > parent, std::wstring label, std::string data)
+    we are mixing std::string and std::wstring here
 
 WIDGETS TO WRITE
 ================
