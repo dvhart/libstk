@@ -4,6 +4,23 @@ AM_CXXFLAGS = -Wall
 lib_LTLIBRARIES  =\
 	libstk.la
 
+
+if DFB
+ headers_dfb=backend_dfb.h surface_dfb.h
+ sources_dfb=backend_dfb.cpp backend_dfb.h surface_dfb.cpp surface_dfb.h 
+ libs_dfb=-ldirectfb
+endif
+
+if SDL
+ headers_sdl= event_producer_sdl.h sdl_data.h    surface_sdl.h
+ sources_sdl= 	event_producer_sdl.h event_producer_sdl.cpp \
+		surface_sdl.h surface_sdl.cpp \
+		sdl_data.h sdl_data.cpp 
+endif
+
+
+
+
 libstk_la_SOURCES =\
 	application.h	application.cpp \
 	button.h button.cpp \
@@ -13,7 +30,6 @@ libstk_la_SOURCES =\
 	container.h container.cpp \
 	drawable.h \
 	event_system.h event_system.cpp \
-	event_producer_sdl.h event_producer_sdl.cpp \
 	exceptions.h \
 	event.h \
 	event_handler.h \
@@ -32,8 +48,6 @@ libstk_la_SOURCES =\
 	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	rectangle.h rectangle.cpp \
-	surface_sdl.h surface_sdl.cpp \
-	sdl_data.h sdl_data.cpp \
 	scroll_bar.h scroll_bar.cpp \
 	scroll_box.h scroll_box.cpp \
 	scroll_model.h scroll_model.cpp \
@@ -46,28 +60,31 @@ libstk_la_SOURCES =\
 	timer.h timer.cpp \
 	tribal_theme.h tribal_theme.cpp \
 	viewport.h viewport.cpp \
-	widget.h widget.cpp
+	widget.h widget.cpp \
+	logging.h logging.cpp \
+	$(sources_sdl) $(sources_dfb) event_producer_elotouch.cpp event_producer_elotouch.h
+
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
+
 
 
 library_include_HEADERS= \
 	aa_filter.h      event_system.h      key_event.h    state.h \
 	application.h    keycode.h      stk.h	\
-	button.h         event_producer_sdl.h  label.h        surface.h	\
+	button.h         label.h        surface.h	\
 	combiners.h      exceptions.h        list.h          \
-	combo.h          font.h              list_item.h    surface_sdl.h \
+	combo.h          font.h              list_item.h  \
 	container.h      font_manager.h      mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             component.h    widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h     viewport.h          sdl_data.h     hotkey.h \
-	stk_types.h scroll_bar.h event_producer.h 
-
+	posix_time.h     viewport.h               hotkey.h \
+	stk_types.h scroll_bar.h event_producer.h $(headers_sdl) $(headers_dfb) config.h  event_producer_elotouch.h
 
 # FIXME: do the autotools thing for freetype
-libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ 
+libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb)
 
-INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir)
+INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) -I/usr/local/include/directfb/

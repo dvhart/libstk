@@ -62,8 +62,9 @@
 #include <libstk/state.h>
 #include <libstk/stk_types.h>
 #include <libstk/surface.h>
+#include <libstk/logging.h>
 //#include <libstk/surface_dfb.h> // backend specific
-#include <libstk/surface_impl.h>
+//#include <libstk/surface_impl.h> // only needed by backend not by user code
 //#include <libstk/surface_sdl.h> // backend specific
 #include <libstk/theme.h>
 #include <libstk/time_value.h>

@@ -85,7 +85,9 @@ namespace stk
             focused_widget_ = (*states_.begin())->get_active_child();
             focused_widget_.lock()->handle_event(event::create(event::focus));
         }
-
+        
+        current_state_.lock()->redraw(surface_->rect());
+        
         // enter the main application loop: draw, handle_events, call timers
         // FIXME: we have to do something about all these .lock() calls!!!
         event::ptr event_ = event::create(event::none); // should we use create here ?
