@@ -54,6 +54,9 @@ namespace stk
         void text(std::wstring& text)
         {
             text_ = text;
+            // Usually keeping the selection when putting a new text in is not a good idea
+            selection_start_=0;
+            selection_end_=0;
             redraw(rect());
         }
 

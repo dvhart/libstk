@@ -150,12 +150,14 @@ namespace stk
         case event::mouse_up:
         {
             pressed_ = false;
+            redraw(rect());
             return;
             break;
         }
         case event::mouse_leave:
         {
             pressed_ = false;
+            redraw(rect());
             return;
             break;
         }
