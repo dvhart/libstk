@@ -25,6 +25,7 @@ libstk_la_SOURCES =\
 	combo.h combo.cpp \
 	list_item.h list_item.cpp \
 	button.h button.cpp \
+	progress.h progress.cpp \
 	image.h image.cpp \
 	label.h label.cpp \
 	theme.h theme.cpp \
@@ -55,6 +56,7 @@ test_app_SOURCES  = \
 	combo.h combo.cpp \
 	list_item.h list_item.cpp \
 	button.h button.cpp \
+	progress.h progress.cpp \
 	image.h image.cpp \
 	label.h label.cpp \
 	theme.h theme.cpp \

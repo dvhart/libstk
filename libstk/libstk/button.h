@@ -34,7 +34,7 @@ namespace stk
 			virtual void handle_event(event::ptr e);
 
 			// drawable interface
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void draw(surface::ptr surface);
 			// using defaults (widget.h)
 
 			// parent interface

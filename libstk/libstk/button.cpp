@@ -33,7 +33,7 @@ namespace stk
 	{
 	}
 
-	void button::draw(boost::shared_ptr<stk::surface> surface)
+	void button::draw(surface::ptr surface)
 	{
 		theme::instance()->draw_button(rect_, label_, active_, focused_, hover_);
 	}

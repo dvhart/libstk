@@ -82,6 +82,23 @@ namespace stk
 		surface_->draw_text(rect, label);
 	}
 
+	void theme::draw_progress(const rectangle& rect, const std::wstring& label, float percent)
+	{
+		//cout << "theme::draw_progress()" << endl;
+		graphics_context::ptr gc = graphics_context::create();
+		gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+		gc->line_color(surface_->gen_color("0x0000FFFF")); 
+		stk::font::ptr bob = font::create("Arial.ttf", 25);
+		gc->font(bob);
+		gc->font_fill_color(surface_->gen_color(127, 0, 80, 0xff));
+		surface_->gc(gc);
+		rectangle progress_rect = rect;
+		progress_rect.width((int)(rect.width()*percent));	
+		surface_->fill_rect(progress_rect);
+		surface_->draw_rect(rect);
+		surface_->draw_text(rect, label);
+	}
+	
 	void theme::draw_label(const rectangle& rect, const std::wstring& text)
 	{
 		//cout << "theme::draw_label()" << endl;

@@ -28,6 +28,7 @@ namespace stk
 			virtual void draw_state(const rectangle& rect);
 			virtual void draw_button(const rectangle& rect, const std::wstring& label, 
 				bool active, bool focused, bool hover);
+			virtual void draw_progress(const rectangle& rect, const std::wstring& label, float range); 
 			virtual void draw_label(const rectangle& rect, const std::wstring& text);
 	};
 }
