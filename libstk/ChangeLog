@@ -1,3 +1,20 @@
+2003-06-26 00:03  dvhart
+
+	* TODO, libstk/event_system.cpp, libstk/font_manager.cpp,
+	libstk/font_manager.h, libstk/tribal_theme.cpp,
+	libstk/viewport.cpp: updated tribal_theme to use cached fonts,
+	fixed broken font_properties < operator (now get_font() works),
+	font_manager::get() now returns a font_manager::ptr for consistency
+	and safety
+
+2003-06-25 19:59  dvhart
+
+	* project: removed project script from cvs repository
+
+2003-06-25 19:53  dvhart
+
+	* ChangeLog: updated changelog
+
 2003-06-25 19:52  dvhart
 
 	* libstk/: button.cpp, button.h, combiners.h, container.cpp,
