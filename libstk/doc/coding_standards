@@ -8,3 +8,6 @@ RFC, Draft
 2:Code formatting:
 2.1:Indentation use the Ansi Identation style {} on their own line etc, look @ astyle docu for complete spec(astyle.sf.net)
 2.2:operators have to be seperated by spaces , like int i = 1; not int i=1; 
+
+3:Property Accessor Methods
+3:.1 property() and property(T val), not get_property() and set_property()
