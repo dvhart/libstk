@@ -46,28 +46,26 @@ struct no_op
 	bool operator()() { cout << "no_op::operator()" << endl; return true; }
 };
 
-
-struct hotkey_action
-{
-	bool operator()()	{ cout << "hotkey::operator()" << endl; return true; }
-	void testa() { cout << "no_op::testa()" << endl; } 
-	bool testb() { cout << "no_op::testb()" << endl; return true; }
-	boost::signal<void ()> siga;
-	boost::signal<bool ()> sigb;
-};
-
-template <typename T>
 struct hotkey
 {
-		boost::function<T ()> slot_;
-		hotkey(boost::function<T ()> slot) : slot_(slot) { }
-		bool operator()(stk::keycode key) 
+	stk::keycode key_;
+	boost::signal<bool ()> sig;
+	
+	hotkey(stk::keycode key) : key_(key) { }
+	
+	bool operator()(stk::keycode key)
+	{ 
+		cout << "hotkey::operator() - received a " << key << endl;
+		if (!sig.empty() && key == key_) 
 		{
-			cout << "hotkey::operator() - " << std::hex << key << endl;
-			slot_();
-			return true;
+			cout << "\texecuting slot\n\t";
+			sig();
 		}
+		cout << endl;
+		return true;
+	}
 };
+
 
 bool scroll_slot(stk::scroll_model::ptr target,int increment)
 {
@@ -118,24 +116,17 @@ int main(int argc, char* argv[])
 		
 		// create some buttons with hotkeys F1-F4
 		cout << "test_app - creating buttons, binding F1-F4" << endl;
-		button::ptr test_button3 = button::create(test_state, L"F1", rectangle(10, 400, 100, 30));
+		button::ptr test_button_F1 = button::create(test_state, L"F1 (Quit)", rectangle(10, 400, 100, 30));
+		test_button_F1->on_release.connect( test_button->on_release );
 		button::ptr test_button4 = button::create(test_state, L"F2", rectangle(120, 400, 100, 30));
 		button::ptr test_button5 = button::create(test_state, L"F3", rectangle(230, 400, 100, 30));
 		button::ptr test_button6 = button::create(test_state, L"F4", rectangle(340, 400, 100, 30));	
 
-		/*
-		// WORKING ON GETTING HOTKEYS TO BUILD
-		no_op t_no_op;
-		hotkey_action t_hotkey_action;
-		t_hotkey_action.siga.connect(t_no_op);
-		boost::shared_ptr<hotkey_action> p_hotkey_action(&t_hotkey_action);
-		//hotkey<bool> hotkey_( boost::bind(&stk::button::on_release, test_button3.get()) ); // BROKEN
-		hotkey<bool> hotkey_( boost::bind(&hotkey_action::testb, p_hotkey_action.get()) ); // WORKS
-		//hotkey<bool> hotkey_( boost::bind(&no_op::sigb, p_no_op.get()) ); // BROKEN
-		//boost::function<bool ()> tf = boost::bind(&no_op::sigb, p_no_op.get()); // BROKEN
-		test_state->on_keyup.connect(hotkey_);
+		// HOTKEYS
+		hotkey hotkey_F1(f1);
+		hotkey_F1.sig.connect(test_button_F1->on_release);
+		test_state->on_keyup.connect(boost::ref(hotkey_F1));
 		// END HOTKEYS
-		*/
 		
 		// create a progress bar
 		cout << "test_app - creating a progress bar" << endl;
