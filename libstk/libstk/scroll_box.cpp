@@ -158,9 +158,9 @@ namespace stk
             // resize the child rect 
             child_rect_ = rect(); child_rect_.position(point(0, 0));
             if(hbar)
-                child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
-            if(vbar)
                 child_rect_.y2(child_rect_.y2() - scroll_bar::default_size);
+            if(vbar)
+                child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
             if (child_) child_->rect(child_rect_);
             
             if (h_scroll_bar_ && !hbar)
