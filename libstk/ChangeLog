@@ -1,3 +1,11 @@
+2003-05-30 00:26  dvhart
+
+	* ChangeLog, libstk/application.cpp, libstk/container.cpp,
+	libstk/event_system_sdl.cpp, libstk/keycode.h, libstk/state.cpp,
+	libstk/test_app.cpp, libstk/tribal_theme.cpp, libstk/widget.cpp:
+	initial attempt at hotkeys, comments in test_app.cpp as to why it
+	isn't working
+
 2003-05-28 23:19  dvhart
 
 	* libstk/: button.cpp, list.cpp, list_item.cpp, progress.cpp,
