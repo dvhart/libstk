@@ -131,7 +131,7 @@ namespace stk
 		// DELETEME check for out of bounds
 		if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
 		{
-			//throw std::string("surface_sdl::put_pixel() - pixel coords out of bounds");
+			//throw error_message_exception("surface_sdl::put_pixel() - pixel coords out of bounds");
 			cout << "surface_sdl::put_pixel() - pixel coords out of bounds" << endl;
 			return;
 		}
@@ -185,7 +185,7 @@ namespace stk
 		// DELETEME check for out of bounds
 		if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
 		{
-			//throw std::string("surface_sdl::get_pixel() - pixel coords out of bounds");
+			//throw error_message_exception("surface_sdl::get_pixel() - pixel coords out of bounds");
 			cout << "surface_sdl::get_pixel() - pixel coords out of bounds" << endl;
 			return 0;
 		}

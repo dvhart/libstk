@@ -204,7 +204,7 @@ namespace stk
 			virtual void draw_poly(const std::vector<point> points);
 			// define the text interface... should we pass a rect and
 			// clip to that?
-			virtual void draw_text(int x, int y, const std::wstring &text, int kerning_mode=0);
+			virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode=0);
 
 			// antialiased draw routines
 			virtual void draw_line_aa(int x1, int y1, int x2, int y2);

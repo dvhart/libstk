@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <boost/shared_ptr.hpp>
+#include "rectangle.h"
 #include "glyph.h"
 
 /*
@@ -35,6 +36,7 @@ namespace stk
 			virtual ~font();
 			const stk::glyph::ptr glyph(wchar_t c); 
 			int draw_len(const std::wstring& text, int kerning_mode=0);
+			int chars_in_rect(const rectangle& rect, const std::wstring& text, int kerning_mode=0);
 			int kerning(wchar_t left, wchar_t right, int kerning_mode=0);
 			int height() const { return height_; }
 			int width() const { return width_; }

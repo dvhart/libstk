@@ -13,6 +13,7 @@
 #include "surface.h"
 #include "surface_sdl.h"
 #include "theme.h"
+#include "exceptions.h"
 
 using namespace stk;
 using std::cout;
@@ -37,7 +38,7 @@ int main(int argc, char* argv[])
 	// initialize sdl
 	// FIXME: where should this be done ?, perhaps in an application factory?
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		throw std::string("Unable to init SDL: " + std::string(SDL_GetError()));
+		throw error_message_exception(std::string("Unable to init SDL: ") + std::string(SDL_GetError()));
 	atexit(SDL_Quit);
 		
 	// create the surface

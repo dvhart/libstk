@@ -15,15 +15,16 @@ email                : dvhart@byu.edu
  *                                                                         *
  ***************************************************************************/
 
+#include <vector>
+#include <list>
+#include <iostream>
+#include <cmath>
 #include "surface.h"
 #include "rectangle.h"
 #include "point.h"
 #include "edge.h"
 #include "stk.h"
-#include <vector>
-#include <list>
-#include <iostream>
-#include <cmath>
+#include "exceptions.h"
 
 using std::cout;
 using std::endl;
@@ -598,36 +599,34 @@ namespace stk
 				p_iter_b->x(), p_iter_b->y());
 	}
 
-	void surface::draw_text(int x, int y, const std::wstring &text, int kerning_mode)
+	void surface::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
 	{
-		//cout << "surface::draw_text - begin" << endl;
-
 		// ignore the bounds and stuff for now
-		// FIXME: add bounding boxes later
+		int x = rect.x1();
+		int y = rect.y1();
 		// get the font from the gc
 		font::ptr fon = gc_->font();
 		if (fon == NULL)
-		{
-			cout << "surface::draw_text: gc's font is null" << endl;
-			return;
-		}
+			throw error_message_exception("surface::draw_text: gc's font is null");
+		// find the number of chars that fit in the rect
+		int chars_to_draw = fon->chars_in_rect(rect, text);
 		color fill_color = gc_->font_fill_color();
 		// loop through the text and draw each character
 		int fh = fon->height();
-		for (int i=0; i<text.length(); i++)
+		for (int i=0; i<chars_to_draw; i++)
 		{
 			// get the glyph
 			glyph::ptr bmp = fon->glyph(text[i]);
 			int w = bmp->width();
 			int by = bmp->bearing_y() >> 6;
 			int bx = bmp->bearing_x() >> 6;
-			//cout << "surface::draw_text - " << (char)text[i] << ", bearingY="<<std::dec<< by << ", bearingX="<<bx<<endl;
 			boost::shared_array<unsigned char> bits = bmp->bitmap();
 			// draw it
 			for (int dy=0; dy<bmp->height(); dy++)
 			{
 				for (int dx=0; dx<w; dx++)
 				{
+					// clip to the rect
 					unsigned char nc = bits[dy*w + dx];
 					draw_pixel_aa(x+dx+bx, y+dy+fh-by, nc, fill_color);
 				}
@@ -635,8 +634,6 @@ namespace stk
 			x += (bmp->advance_x() >> 6);
 			if (i<text.length()-1) x += (fon->kerning(text[i], text[i+1]) >> 6);
 		}
-		
-		//cout << "surface::draw_text - end" << endl;
 	}
 
 	// antialiased draw routines

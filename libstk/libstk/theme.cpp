@@ -1,5 +1,6 @@
 #include "theme.h"
 #include "graphics_context.h"
+#include "exceptions.h"
 
 namespace stk
 {
@@ -22,7 +23,7 @@ namespace stk
 
 	theme::ptr theme::instance() 
 	{
-		if (!instance_) throw std::string("theme::instance() - instance_ null, call theme::create() first");
+		if (!instance_) throw error_message_exception("theme::instance() - instance_ null, call theme::create() first");
 		return instance_;
 	}
 	
@@ -86,11 +87,11 @@ namespace stk
 			gc->font_fill_color(surface_->gen_color(127, 0, 80, 0xff));
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
-			surface_->draw_text(rect.x1(), rect.y1(), text);
+			surface_->draw_text(rect, text);
 		}
-		catch (std::string e)
+		catch (exception e)
 		{
-			cout << "theme::draw_label: error: " << e << endl;
+			cout << "theme::draw_label: error: " << e.to_string() << endl;
 		}
 	}
 }
