@@ -1,7 +1,7 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: A generic image class.
- *     AUTHORS: Darren Hart, Marc Strämke
+ *     AUTHORS: Darren Hart, Marc Strämke, Chris Slade
  *  START DATE: 2003/Mar/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
@@ -128,6 +128,8 @@ namespace stk
     protected:
         image(stk::surface::ptr onscreen_surface, const std::string& filename = "");
         image(stk::surface::ptr onscreen_surface, const rectangle& rect);
+        void resize(image::ptr new_img, double x_factor, double y_factor);
+        color data_protect(int x, int y);//for the scalling
         void init_pixels();
         int width_;
         int height_;
@@ -147,6 +149,8 @@ namespace stk
         void write(const std::string filename);
         void write_png(const std::string filename);
         void write_jpeg(const std::string filename);
+
+        image::ptr scale(int x_size, int y_size, bool maintain_aspec = false);
         
         //color pixel(int x, int y) const; // \FIXME Needed anymore if we are using offscreen surfaces?
         //void pixel(int x, int y, color new_color); // \FIXME Needed anymore if we are using offscreen surfaces?

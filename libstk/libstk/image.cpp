@@ -438,4 +438,168 @@ namespace stk
         throw image_write_exception("image::write_jpeg() No support for writting JPEG files compiled in!")
 #endif
     }
+
+    image::ptr image::scale(int x_size, int y_size, bool maintain_aspec)
+    {
+        image::ptr ret;
+        if (maintain_aspec) 
+        {
+            //scale to a bounding box
+            int new_width, new_height;
+            double factor = ((double)x_size)/offscreen_surface->rect().width();
+            new_height = (int)(offscreen_surface->rect().height()*factor);
+            if (new_height > y_size)
+            {
+                factor = ((double)y_size)/offscreen_surface->rect().height();
+                new_height = (int)(offscreen_surface->rect().height()*factor);
+                new_width = (int)(offscreen_surface->rect().width()*factor);
+            }
+            else
+                new_width = (int)(offscreen_surface->rect().width()*factor);
+            INFO("Bounding Scale: width = " << new_width << " height = " << new_height);
+            ret = image::create(offscreen_surface, rectangle(0, 0, new_width, new_height));
+            ret->offscreen_surface->clip_rect(rectangle(0, 0, new_width, new_height));
+            resize(ret, factor, factor);
+        }
+        else
+        {
+            double x_factor = ((double)x_size)/offscreen_surface->rect().width();
+            double y_factor = ((double)y_size)/offscreen_surface->rect().height();
+            ret = image::create(offscreen_surface, rectangle(0, 0, x_size, y_size));
+            ret->offscreen_surface->clip_rect(rectangle(0, 0, x_size, y_size));
+            resize(ret, x_factor, y_factor);
+        }
+        return ret;
+    }
+    void image::resize(image::ptr new_img, double x_factor, double y_factor)
+    {
+	
+        INFO("Resizing X: " << x_factor << " Y: " << y_factor);
+        int new_width = new_img->offscreen_surface->rect().width();
+        int new_height = new_img->offscreen_surface->rect().height(); 
+        if (x_factor < 1 && y_factor < 1)
+        {
+            INFO("SCALLING DOWN");
+            int sc_x = (int)((1.0/x_factor) + .5);
+            int sc_y = (int)((1.0/x_factor) + .5);
+            for (int y=0; y < new_height; y++)
+                for (int x=0; x < new_width; x++)
+                {
+                    // (take an average of a group of pixels)
+                    double r_sum = 0;
+                    double g_sum = 0;
+                    double b_sum = 0;
+                    double a_sum = 0;
+                    for (int iy=0; iy < sc_y; iy++)
+                    {
+                        for (int ix=0; ix < sc_x; ix++)
+                        {
+                            color pix = data_protect(sc_x*x+ix, sc_y*y+iy);
+                            r_sum += ((pix & 0xFF000000) >> 24);
+                            g_sum += ((pix & 0x00FF0000) >> 16);
+                            b_sum += ((pix & 0x0000FF00) >> 8);
+                            a_sum += (pix & 0x000000FF);
+                        }
+                    }
+                    r_sum /= (sc_x*sc_y);
+                    g_sum /= (sc_x*sc_y);
+                    b_sum /= (sc_x*sc_y);
+                    a_sum /= (sc_x*sc_y);
+                    color new_pix = new_img->offscreen_surface->gen_color((unsigned char)r_sum, (unsigned char)g_sum,
+                            (unsigned char)b_sum, (unsigned char)a_sum);
+                    new_img->offscreen_surface->draw_pixel(x, y, new_pix);
+                }
+        }
+        else if (x_factor >= 1 && y_factor >= 1)
+        {
+            // interpolate between the points
+            INFO("SCALLING UP");
+            double x_s = 1/x_factor;
+            double y_s = 1/y_factor;
+            for (int y=0; y < new_height; y++)
+            {
+                for (int x=0; x < new_width; x++)
+                {
+                    color pix = offscreen_surface->read_pixel((int)(x*x_s), (int)(y*y_s));
+                    new_img->offscreen_surface->draw_pixel(x, y, pix);
+                }
+            }
+        }
+        else if (x_factor < 1 && y_factor >= 1)
+        {
+            INFO("SCALLING X DOWN AND SCALLING Y UP");
+            int sc_x = (int)((1.0/x_factor) + .5);
+            double sc_y = 1/y_factor;
+            for (int y=0; y < new_height; y++)
+                for (int x=0; x < new_width; x++)
+                {
+                    // (take an average of a group of x pixels interpolate between y pixels)
+                    double r_sum = 0;
+                    double g_sum = 0;
+                    double b_sum = 0;
+                    double a_sum = 0;
+                    for (int ix=0; ix < sc_x; ix++)
+                    {
+                        color pix = data_protect(sc_x*x+ix, (int)(y*sc_y));
+                        r_sum += ((pix & 0xFF000000) >> 24);
+                        g_sum += ((pix & 0x00FF0000) >> 16);
+                        b_sum += ((pix & 0x0000FF00) >> 8);
+                        a_sum += (pix & 0x000000FF);
+                    }
+                    r_sum /= (sc_x);
+                    g_sum /= (sc_x);
+                    b_sum /= (sc_x);
+                    a_sum /= (sc_x);
+                    color new_pix = new_img->offscreen_surface->gen_color((unsigned char)r_sum, (unsigned char)g_sum,
+                            (unsigned char)b_sum, (unsigned char)a_sum);
+                    new_img->offscreen_surface->draw_pixel(x, y, new_pix);
+                }
+
+        }
+        else
+        {
+            INFO("SCALLING X UP AND SCALLING X DOWN");
+            double sc_x = 1/x_factor;
+            int sc_y = (int)((1.0/x_factor) + .5);
+            for (int y=0; y < new_height; y++)
+                for (int x=0; x < new_width; x++)
+                {
+                    // (take an average of a group of y pixels interpolate between x pixels)
+                    double r_sum = 0;
+                    double g_sum = 0;
+                    double b_sum = 0;
+                    double a_sum = 0;
+                    for (int iy=0; iy < sc_y; iy++)
+                    {
+                            color pix = data_protect((int)(x*sc_x), sc_y*y+iy);
+                            r_sum += ((pix & 0xFF000000) >> 24);
+                            g_sum += ((pix & 0x00FF0000) >> 16);
+                            b_sum += ((pix & 0x0000FF00) >> 8);
+                            a_sum += (pix & 0x000000FF);
+                    }
+                    r_sum /= (sc_y);
+                    g_sum /= (sc_y);
+                    b_sum /= (sc_y);
+                    a_sum /= (sc_y);
+                    color new_pix = new_img->offscreen_surface->gen_color((unsigned char)r_sum, (unsigned char)g_sum,
+                            (unsigned char)b_sum, (unsigned char)a_sum);
+                    new_img->offscreen_surface->draw_pixel(x, y, new_pix);
+                }
+
+        }
+    }
+
+    color image::data_protect(int x, int y)
+    {
+        //all zeros
+        color ret = (color)0x00000000; 
+        if (x >= 0 && x < offscreen_surface->rect().width() &&
+                y >= 0 && y < offscreen_surface->rect().height())
+        {
+            ret = offscreen_surface->read_pixel(x, y);
+            ret = offscreen_surface->rgba_color(ret);
+        }
+        return ret;
+    }
+
 }
