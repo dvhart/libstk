@@ -1,8 +1,8 @@
 /**************************************************************************************************
  *     CVS $Id$
- * DESCRIPTION: Edit box widget implementation
- *     AUTHORS: Dirk Hörner, Darren Hart, Chris Slade
- *  START DATE: 2003/Jun/23
+ * DESCRIPTION: A Text edit box widget implementation
+ *     AUTHORS: Chris Slade
+ *  START DATE: 2003/Oct/3
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "libstk/edit_box.h"
+#include "libstk/text_area.h"
 #include "libstk/container.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
@@ -20,15 +20,15 @@
 
 namespace stk
 {
-    edit_box::ptr edit_box::create(container::ptr parent, const std::wstring& text, 
+    text_area::ptr text_area::create(container::ptr parent, const std::wstring& text, 
             const rectangle& rect)
     {
-        edit_box::ptr new_edit_box(new edit_box(parent, text, rect));
-        parent->add(new_edit_box);
-        return new_edit_box;
+        text_area::ptr new_text_area(new text_area(parent, text, rect));
+        parent->add(new_text_area);
+        return new_text_area;
     }
 
-    edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect) 
+    text_area::text_area(container::ptr parent, const std::wstring& text, const rectangle& rect) 
         : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0), 
           pressed_(false)
     {
@@ -36,13 +36,13 @@ namespace stk
         focusable(true);
     }
 
-    edit_box::~edit_box()
+    text_area::~text_area()
     {
         INFO("destructor");
     }
 
     // event handler
-    void edit_box::handle_event(event::ptr e)
+    void text_area::handle_event(event::ptr e)
     {
         switch (e->type())
         {
@@ -90,7 +90,6 @@ namespace stk
                 break;
             case key_enter:
                 redraw(rect());
-                on_confirm(text_);
                 return;
                 break;
             case key_leftarrow:

@@ -1,16 +1,16 @@
 /**************************************************************************************************
  *     CVS $Id$
- * DESCRIPTION: An edit box widget.
- *     AUTHORS: Dirk Hörner, Darren Hart, Chris Slade
- *  START DATE: 2003/Jun/23
+ * DESCRIPTION: A text edit box widget.
+ *     AUTHORS: Chris Slade
+ *  START DATE: 2003/Oct/3
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-#ifndef STK_EDIT_BOX_H
-#define STK_EDIT_BOX_H
+#ifndef STK_TEXT_AREA_H
+#define STK_TEXT_AREA_H
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -21,11 +21,11 @@
 
 namespace stk
 {
-    class edit_box : public widget
+    class text_area : public widget
     {
     public:
-        typedef boost::shared_ptr<edit_box> ptr;
-        typedef boost::weak_ptr<edit_box> weak_ptr;
+        typedef boost::shared_ptr<text_area> ptr;
+        typedef boost::weak_ptr<text_area> weak_ptr;
 
     private:
         /// return the character index under the x, y coordinate
@@ -37,14 +37,13 @@ namespace stk
         bool pressed_; //used to tell if selecting
 
     protected:
-        edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect);
+        text_area(container::ptr parent, const std::wstring& text, const rectangle& rect);
 
     public:
-        //static edit_box::ptr create(container::ptr parent, const rectangle& rect);
-        static edit_box::ptr create(container::ptr parent, const std::wstring& text,
+        static text_area::ptr create(container::ptr parent, const std::wstring& text,
                 const rectangle& rect);
 
-        virtual ~edit_box();
+        virtual ~text_area();
 
         std::wstring text() const
         {
@@ -59,9 +58,6 @@ namespace stk
         // signals
         /// called when the text is changed
         boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_change;
-        /// called when the user presses enter in the box
-        /// FIXME: what is a better name for this signal ?
-        boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_confirm;
 
         virtual void draw(surface::ptr surface, const rectangle& clip_rect);
         virtual void handle_event(event::ptr e);

@@ -20,6 +20,7 @@
 
 #include "libstk/button.h"
 #include "libstk/edit_box.h"
+#include "libstk/text_area.h"
 #include "libstk/image_panel.h"
 #include "libstk/label.h"
 #include "libstk/list.h"
@@ -552,6 +553,153 @@ namespace stk
         return arial_18->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
     }
 
+    void text_area::draw(surface::ptr surface, const rectangle& clip_rect)
+    {
+        rectangle interior_rect(3, 3, width()-6, height()-6);
+        rectangle outline_rect(1, 1, width()-2, height()-2);
+        rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
+        
+        graphics_context::ptr gc = graphics_context::create();
+
+        // prepare the font
+        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        gc->font(arial_14);
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
+
+        if (pressed_)
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_pressed_str, surface)));
+            gc->line_color(color_manager::get()->get_color(
+                        color_properties(outline_color_pressed_str, surface)));
+        }
+        else if (focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
+
+            if (hover_)
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_hover_str, surface)));
+            }
+            else
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_focused_str, surface)));
+            }
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
+
+            if (hover_)
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_hover_str, surface)));
+            }
+            else
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_normal_str, surface)));
+            }
+        }
+
+        // FIXME: I think we may be off by one in the rect draw/fill routines
+        // draw the label for all states
+        surface->gc(gc);
+        surface->fill_rect(interior_rect);
+
+        if (pressed_) surface->draw_rect(pressed_rect);
+        surface->draw_rect(outline_rect);
+
+        // cursor and selection calculations
+        /*int sel_min = MIN(selection_start_, selection_end_);
+        std::wstring presel_str = text_.substr(0, sel_min);
+        std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
+        int sel_x = interior_rect.x1() + arial_14->draw_len(presel_str);
+        int sel_width = arial_14->draw_len(sel_str);
+        int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;*/
+
+        // draw the selection
+        /*if (selection_start_ != selection_end_)
+        {
+            // yellow selection
+            if (focused_)
+                gc->fill_color(color_manager::get()->get_color(
+                            color_properties(fill_color_normal_str, surface)));
+            // light blue selection
+            else
+                gc->fill_color(color_manager::get()->get_color(
+                            color_properties(fill_color_focused_str, surface)));
+
+            surface->fill_rect(rectangle(sel_x, 3, sel_width, height()-6));
+        }
+        // draw the cursor if there is no selection and we are focused
+        else if (focused_) 
+        {
+            surface->draw_line(cursor_x, 3, cursor_x, height()-3);
+        }*/
+        
+        // draw the string text_
+        int ypos = 3;
+        bool cont = true;
+        std::wstring line_str;
+        std::wstring rest_of_text = text_;
+        int line_width, nline_width;
+        rectangle line_rect;
+        int numChars = 0;
+        while (cont) {
+            line_rect = rectangle(3, ypos, width()-6, arial_14->height()+3);
+            //parse out the next line
+            nline_width = rest_of_text.find('\n');
+            line_width = arial_14->chars_in_rect(line_rect, rest_of_text);
+            if (nline_width != -1 && (nline_width < line_width)) 
+            {//if there is a new line in the line
+                line_str = rest_of_text.substr(0, nline_width);
+                rest_of_text = rest_of_text.substr(nline_width+1, 
+                        rest_of_text.length()-nline_width-1);
+            }
+            else 
+            {//no new line, just print it
+                line_width = arial_14->chars_in_rect(line_rect, rest_of_text);
+                line_str = rest_of_text.substr(0, line_width);
+                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
+            }
+            
+            //do cursor or selection
+            if (selection_start_ == selection_end_ && focused_)
+            {//nothing selected print cursor and we are focused
+                if (selection_start_ > numChars && selection_start_ <= (numChars+line_str.length()))
+                {//cursor is on this line
+                    int chars_before_cursor = selection_start_ - numChars;
+                    int cursor_x = arial_14->draw_len(line_str.substr(0,chars_before_cursor));
+                    //draw cursor
+                    surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
+                            ,line_rect.x1()+cursor_x,line_rect.y2());
+
+                }
+            }
+
+            numChars+=line_str.length();
+            //draw line
+            surface->draw_text(line_rect, line_str );
+            //move to next line
+            ypos += arial_14->height()+3;
+            if (ypos+arial_14->height()+3 >= interior_rect.y2())
+                cont = false;
+        }
+        INFO("drawing");
+    }
+    int text_area::region(int x, int y)
+    {
+        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        return arial_14->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
+    }
+
+    
     void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
     {
         // FIXME: why is different than all the other widgets?

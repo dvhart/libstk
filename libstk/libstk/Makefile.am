@@ -83,6 +83,7 @@ libstk_la_SOURCES =\
 	$(sources_logging) $(sources_fbdev) \
 	$(sources_sdl) $(sources_dfb) \
 	edit_box.h edit_box.cpp  \
+	text_area.h text_area.cpp \
 	event_producer_elotouch.h event_producer_elotouch.cpp \
 	$(headers_xine) $(sources_xine) 
 
@@ -107,7 +108,7 @@ library_include_HEADERS= \
 	overlay.h        overlay_sdl.h       overlay_dfb.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
 	event_producer_elotouch.h            stk_c_wrapper.h \
-	switched_panel.h	edit_box.h \
+	switched_panel.h	edit_box.h   text_area.h\
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 

@@ -14,7 +14,7 @@ Purge all magic numbers
 Scrollbars - Marc to finish
 Scrollbox - Marc to finish
 Combo Box - Darren to write
-Edit Box (could be prettier, setting cursor/selection support on click and via API needed)
+Edit Box (could be prettier, setting selection via API needed)
 Text Area - simple, no line break strategy, just \n and spaces, editable parameter and scroll model
           - wrap visually, don't modify content
 Markup Area (simple html renderer ?)
