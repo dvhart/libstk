@@ -36,10 +36,20 @@ namespace stk
         {
             list_item_userdata<Tdata>::ptr new_list_item_userdata(
                     new list_item_userdata<Tdata>(label));
-            parent->add_item(new_list_item);
+            parent->add_item(new_list_item_userdata);
             new_list_item_userdata->parent_ = parent;
             return new_list_item_userdata;
         }
+
+        static list_item_userdata<Tdata>::ptr create(list::ptr parent, std::wstring label)
+        {
+            list_item_userdata<Tdata>::ptr new_list_item_userdata(
+                    new list_item_userdata<Tdata>(label));
+            parent->add_item(new_list_item_userdata);
+            new_list_item_userdata->parent_ = parent;
+            return new_list_item_userdata;
+        }
+
 
         virtual ~list_item_userdata() { INFO("destructor"); }
 
