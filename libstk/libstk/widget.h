@@ -59,7 +59,7 @@ namespace stk
 			bool active() { return active_; }
 			void active(bool val) { active_ = val; redraw(rect_); }
 			bool focused() { return focused_; }
-			void focused(bool val) { focused_ = val; redraw(rect_); }
+			void focused(bool val);
 			bool hover() { return hover_; } 
 			void hover(bool val) { hover_ = val; redraw(rect_); }
 			
@@ -74,7 +74,7 @@ namespace stk
 			// parent interface
 			virtual widget::ptr focus_next();
 			virtual boost::shared_ptr<widget> focus_prev();
-			
+		
 			boost::signal<bool (), combiner::logical_and<bool> > on_activate;
 			boost::signal<bool (), combiner::logical_and<bool> > on_focus;
 			boost::signal<bool (), combiner::logical_and<bool> > on_unfocus;

@@ -22,9 +22,9 @@ namespace stk
 			
 		public:
 			virtual ~parent() { };
+			// FIXME: is there a way to use widget::ptr here ???
 			virtual boost::shared_ptr<widget> focus_next() = 0;
 			virtual boost::shared_ptr<widget> focus_prev() = 0;
-
 	}; // class parent
 } // namespace stk
 

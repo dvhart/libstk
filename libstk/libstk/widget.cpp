@@ -77,15 +77,19 @@ namespace stk
 	widget::ptr widget::focus_next()
 	{ 
 		// MSTR broken!
-		focused_ = false;
 		return parent_.lock()->focus_next(); 
 	}
 
 	widget::ptr widget::focus_prev()
 	{ 
 		// MSTR broken!
-		focused_ = false;
 		return parent_.lock()->focus_prev(); 
 	}
 
+	// widget routines
+	void widget::focused(bool val) 
+	{ 
+		focused_ = val; 
+		redraw(rect_); 
+	}
 }

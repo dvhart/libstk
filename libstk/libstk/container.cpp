@@ -13,14 +13,14 @@ namespace stk
 {
 
 	container::container(boost::shared_ptr<container> parent, const rectangle& rect) : 
-		widget(parent, rect), current_child_(-1)
+		widget(parent, rect)
 	{
 		cout << "container::container(container)" << endl;
 		redraw_rect_ = parent->surface()->rect();
 	}
 	
 	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : 
-		widget(parent, rect), current_child_(-1)
+		widget(parent, rect)
 	{
 		cout << "container::container(parent)" << endl;
 		redraw_rect_ = parent->surface()->rect();
@@ -105,40 +105,50 @@ namespace stk
 		//parent_.lock()->handle_event(e);
 	}
 
+	// FIXME: account for unfocusable widgets
 	widget::ptr container::focus_next()
 	{
 		cout << "container::focus_next()" << endl;
-		if (children_.size() == 0) return parent_.lock()->focus_next();
-		if (current_child_ == -1) current_child_ = 0;
-		else
+		// walk through the children, find the focused, and return the next
+		// call parent if it is the last one
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
 		{
-			children_[current_child_]->focused(false);
-			if (++current_child_ == children_.size())
+			if ((*iter)->focused())
 			{
-				current_child_ = -1;
-				return parent_.lock()->focus_next();
+				(*iter)->focused(false);
+				if (++iter != children_.end())
+				{
+					(*iter)->focused(true);
+					return *iter;
+				}
+				break;
 			}
 		}
-		cout << "\treturning: " << current_child_ << endl;
-		children_[current_child_]->focused(true);
-		return children_[current_child_];
+		return parent_.lock()->focus_next();
 	}
 	
+	// FIXME: account for unfocusable widgets
 	widget::ptr container::focus_prev()
 	{
-		if (children_.size() == 0) return parent_.lock()->focus_prev();
-		if (current_child_ == -1) current_child_ = children_.size() - 1;
-		else
+		cout << "container::focus_prev()" << endl;
+		// walk through the children, find the focused, and return the prev
+		// call parent if it is the first one
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
 		{
-			children_[current_child_]->focused(false);
-			if (--current_child_ == -1)
+			if ((*iter)->focused())
 			{
-				return parent_.lock()->focus_prev();
+				(*iter)->focused(false);
+				if (iter != children_.begin())
+				{
+					(*--iter)->focused(true);
+					return *iter;
+				}
+				break;
 			}
 		}
-		cout << "container::focus_prev() - returning: " << current_child_ << endl;
-		children_[current_child_]->focused(true);
-		return children_[current_child_];
+		return parent_.lock()->focus_prev();
 	}
 
 }

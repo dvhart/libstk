@@ -21,7 +21,6 @@ namespace stk
 			
 		protected:
 			std::vector<widget::ptr> children_;
-			int current_child_;
 			container(container::ptr parent, const rectangle& rect);
 			container(parent::ptr parent, const rectangle& rect);
 			
