@@ -14,7 +14,7 @@ MEETING TOPICS
 - should we have a color manager, similar to the font manager - dvhart to write test impl
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
-- add widget_at interface and handle_event to scroll_decorator
+- add support for multiple screens (ie VFD on fron panel and SVIDEO to television)
 
 DOCUMENTATION
 =============
@@ -28,13 +28,12 @@ write it!!!!
 
 WIDGETS TO WRITE
 ================
-edit_box
+edit_box - Dirk
 text_area
-spinner
-list
+list - Darren
 combo
-image
 uberscript_panel (support for HTML, perhaps more strict... XHTML ?)
+OSD keyboard - Marc
 
 MEDIA WIDGETS
 =============
