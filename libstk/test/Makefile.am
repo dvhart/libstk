@@ -8,7 +8,7 @@ else
 endif
 if DFB
  tests_dfb = hello_world_dfb test_app_dfb
- dfb_cflags = -I /usr/local/include/directfb
+ dfb_cflags = -I/usr/local/include/directfb -I/usr/include/directfb
 else
  tests_dfb = 
 endif

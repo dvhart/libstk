@@ -74,49 +74,49 @@ namespace stk
         switch (dir)
         {
         case 3:
-            {
-                std::vector<point> arrow_points;
-                arrow_points.push_back(point(x, y));
-                arrow_points.push_back(point(x + 5, y + 5));
-                arrow_points.push_back(point(x, y + 10));
-                surface->fill_poly_aa(arrow_points);
-                break;
-            }
+        {
+            std::vector<point> arrow_points;
+            arrow_points.push_back(point(x, y));
+            arrow_points.push_back(point(x + 5, y + 5));
+            arrow_points.push_back(point(x, y + 10));
+            surface->fill_poly_aa(arrow_points);
+            break;
+        }
         case 6:
-            {
-                std::vector<point> arrow_points;
-                arrow_points.push_back(point(x, y));
-                arrow_points.push_back(point(x + 10, y));
-                arrow_points.push_back(point(x + 5, y + 5));
-                surface->fill_poly_aa(arrow_points);
-                break;
-            }
+        {
+            std::vector<point> arrow_points;
+            arrow_points.push_back(point(x, y));
+            arrow_points.push_back(point(x + 10, y));
+            arrow_points.push_back(point(x + 5, y + 5));
+            surface->fill_poly_aa(arrow_points);
+            break;
+        }
         case 9:
-            {
-                std::vector<point> arrow_points;
-                arrow_points.push_back(point(x + 5, y));
-                arrow_points.push_back(point(x, y + 5));
-                arrow_points.push_back(point(x + 5, y + 10));
-                surface->fill_poly_aa(arrow_points);
-                break;
-            }
+        {
+            std::vector<point> arrow_points;
+            arrow_points.push_back(point(x + 5, y));
+            arrow_points.push_back(point(x, y + 5));
+            arrow_points.push_back(point(x + 5, y + 10));
+            surface->fill_poly_aa(arrow_points);
+            break;
+        }
         case 12:
-            {
-                std::vector<point> arrow_points;
-                arrow_points.push_back(point(x, y + 5));
-                arrow_points.push_back(point(x + 10, y + 5));
-                arrow_points.push_back(point(x + 5, y));
-                surface->fill_poly_aa(arrow_points);
-                break;
-            }
+        {
+            std::vector<point> arrow_points;
+            arrow_points.push_back(point(x, y + 5));
+            arrow_points.push_back(point(x + 10, y + 5));
+            arrow_points.push_back(point(x + 5, y));
+            surface->fill_poly_aa(arrow_points);
+            break;
+        }
 
         default:
-            throw error_message_exception("user_theme::draw_arrow - invalid direction");
+        throw error_message_exception("user_theme::draw_arrow - invalid direction");
         }
     }
     // end tribal user theme
 
-    // define the various widget draw routines
+    // define the various widget theme routines (draw(), region(), etc.)
     void state::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         //cout << "state::draw()" << endl;
@@ -156,7 +156,7 @@ namespace stk
         else if(focused_)
         {
             gc->fill_color(color_manager::get()->get_color(
-                    color_properties(fill_color_focused_str, surface)));
+                        color_properties(fill_color_focused_str, surface)));
             if (hover_)
             {
                 gc->line_color(color_manager::get()->get_color(
@@ -212,7 +212,7 @@ namespace stk
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
         font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
-        
+
         gc->font(arial_18);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
@@ -410,72 +410,75 @@ namespace stk
         theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface);
         theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
     }
-    bool spinner::arrow_clicked(int x,int y)
+    int spinner::region(int x, int y)
     {
-	if(x > x2()-15)
-	    return true;
-	return false;
+        if (x > x2()-15)
+        {
+            if (y > y1()+(height()/2)) return DOWN_ARROW;
+            else return UP_ARROW;
+        }
+        return LABEL;
     }
 
-	void edit_box::draw(surface::ptr surface, const rectangle& clip_rect)
-	{
-		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+    void edit_box::draw(surface::ptr surface, const rectangle& clip_rect)
+    {
+        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 
-		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
-		rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
+        rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
+        rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
 
-		graphics_context::ptr gc = graphics_context::create();
+        graphics_context::ptr gc = graphics_context::create();
 
-		// prepare the font
-		font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-		gc->font(the_font);
+        // prepare the font
+        font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+        gc->font(the_font);
 
-		if (pressed_)
-		{
-			gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_pressed_str, surface)));
-			gc->line_color(color_manager::get()->get_color(color_properties(outline_color_pressed_str, surface)));
-			gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_pressed_str, surface)));
-		}
-		else if(focused_)
-		{
-			gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
-			
-			if (hover_)
-			{
-				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
-				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
-			}
-			else
-			{
-				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_focused_str, surface)));
-				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_focused_str, surface)));
-			}
-		}
-		else
-		{
-			gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
-			
-			if (hover_)
-			{
-				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
-				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
-			}
-			else
-			{
-				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
-				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
-			}
-		}
+        if (pressed_)
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_pressed_str, surface)));
+            gc->line_color(color_manager::get()->get_color(color_properties(outline_color_pressed_str, surface)));
+            gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_pressed_str, surface)));
+        }
+        else if(focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
 
-		// FIXME: I think we may be off by one in the rect draw/fill routines
-		// draw the label for all states
-		surface->gc(gc);
-		surface->fill_rect(interior_rect);
+            if (hover_)
+            {
+                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
+            }
+            else
+            {
+                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_focused_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_focused_str, surface)));
+            }
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
 
-		if (pressed_)
-			surface->draw_rect(rect_);
-		surface->draw_rect(outline_rect);
-		surface->draw_text(interior_rect, text_);
-	}
+            if (hover_)
+            {
+                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
+            }
+            else
+            {
+                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
+            }
+        }
+
+        // FIXME: I think we may be off by one in the rect draw/fill routines
+        // draw the label for all states
+        surface->gc(gc);
+        surface->fill_rect(interior_rect);
+
+        if (pressed_)
+            surface->draw_rect(rect_);
+        surface->draw_rect(outline_rect);
+        surface->draw_text(interior_rect, text_);
+    }
 
 }

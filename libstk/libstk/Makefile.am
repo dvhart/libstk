@@ -62,8 +62,9 @@ libstk_la_SOURCES =\
 	viewport.h viewport.cpp \
 	widget.h widget.cpp \
 	logging.h logging.cpp \
-	$(sources_sdl) $(sources_dfb) event_producer_elotouch.cpp event_producer_elotouch.h \
-	edit_box.h edit_box.cpp
+	$(sources_sdl) $(sources_dfb) \
+	edit_box.h edit_box.cpp  \
+	event_producer_elotouch.h event_producer_elotouch.cpp 
 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
@@ -72,20 +73,22 @@ library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 
 library_include_HEADERS= \
 	aa_filter.h      event_system.h      key_event.h    state.h \
-	application.h    keycode.h      stk.h	\
-	button.h         label.h        surface.h	\
+	application.h    keycode.h           stk.h	\
+	button.h         label.h             surface.h	\
 	combiners.h      exceptions.h        list.h          \
 	combo.h          font.h              list_item.h  \
 	container.h      font_manager.h      mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             component.h    widget.h 	\
-	edge.h           graphics_context.h  point.h		    image.h \
-	event.h          progress.h 	       scroll_box.h  	event_handler.h \
+	edge.h           graphics_context.h  point.h        image.h \
+	event.h          progress.h 	     scroll_box.h   event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h     viewport.h               hotkey.h \
-	stk_types.h scroll_bar.h event_producer.h $(headers_sdl) $(headers_dfb) config.h  event_producer_elotouch.h
+	posix_time.h     viewport.h          hotkey.h \
+	stk_types.h      scroll_bar.h        event_producer.h \
+	$(headers_sdl)   $(headers_dfb)      config.h       \
+	event_producer_elotouch.h
 
 # FIXME: do the autotools thing for freetype
 libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb)
 
-INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) -I/usr/local/include/directfb/
+INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) -I/usr/local/include/directfb/ -I/usr/include/directfb/
