@@ -51,7 +51,7 @@ namespace stk
         dfb->CreateSurface(dfb, &dsc, &surface);
         rect_ = *rect;
 
-        if(primary)
+        if (primary)
         {
             surface->GetPixelFormat(surface, &backend_handle->format);
             INFO("Pixel format is = " << backend_handle->format);
@@ -156,6 +156,7 @@ namespace stk
     }
     void surface_dfb::blit(stk::surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
+        INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
         surface_dfb* dst = dynamic_cast<surface_dfb*>(&dst_surface);
         if (dst != NULL)
         {
@@ -214,7 +215,7 @@ namespace stk
     }
     void surface_dfb::clip_rect(const rectangle& clip_rectangle)
     {
-        if(clip_rectangle.empty())
+        if (clip_rectangle.empty())
             surface->SetClip(surface, NULL);
         else
         {

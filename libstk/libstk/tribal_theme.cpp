@@ -300,8 +300,8 @@ namespace stk
 
     void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        // FIXME: the rect doesn't account for offset
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        // FIXME: rect doesn't account for offset (this breaks drawing lists on directfb surfaces)
+        //surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         
         // draw list is responsible for setting the graphics context!!
         // FIXME: it shouldn't be!

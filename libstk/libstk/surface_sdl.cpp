@@ -189,6 +189,7 @@ namespace stk
     }
     void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
+        INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
         // blit the local surface to the destination surface
         surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
         if (dst_surface_ptr != NULL)
