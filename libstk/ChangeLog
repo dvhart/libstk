@@ -1,3 +1,25 @@
+2003-09-16 23:35  dvhart
+
+	* libstk/component.h, libstk/drawable.h, libstk/edit_box.cpp,
+	libstk/edit_box.h, libstk/list.cpp, libstk/list.h,
+	libstk/list_item.cpp, libstk/list_item.h, libstk/rectangle.h,
+	libstk/spinner.cpp, libstk/surface_impl.h, libstk/surface_sdl.cpp,
+	libstk/tribal_theme.cpp, libstk/viewport.cpp, libstk/widget.h,
+	libstk/xine_panel.cpp, test/test_app.cpp: fixed several compiler
+	warnings, completed the rectangle wrapper in widget and list_item
+	(this may still not be the best solution)
+
+2003-09-16 08:05  dvhart
+
+	* libstk/drawable.h: drawable pointer typedefs
+
+2003-09-15 17:53  dvhart
+
+	* ChangeLog, TODO, libstk/application.cpp, libstk/container.cpp,
+	libstk/widget.h: whitespace, var naming consistency, updated
+	comments and FIXME's, used wrapped rect routines from widget rather
+	than widget->rect().bleh()
+
 2003-09-14 16:38  dvhart
 
 	* libstk/: override_return.h, surface_dfb.cpp: fixed typo in
