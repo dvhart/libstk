@@ -55,14 +55,14 @@ namespace stk
 			int tab() { return tab_; }
 			void tab(int val) { tab_ = val; }
 			bool active() { return active_; }
-			void active(bool val) { active_ = val; redraw(true, rect_); }
+			void active(bool val) { active_ = val; redraw(rect_); }
 			bool focused() { return focused_; }
-			void focused(bool val) { focused_ = val; redraw(true, rect_); }
+			void focused(bool val) { focused_ = val; redraw(rect_); }
 			bool hover() { return hover_; } 
 			void hover(bool val) 
 			{ 
 				hover_ = val; 
-				redraw(true, rect_);
+				redraw(rect_);
 				cout << "set hover to widget with rect: " << rect_ << endl;
 			}
 			
@@ -72,7 +72,7 @@ namespace stk
 			// drawable interface
 			virtual surface::ptr surface(); 
 			virtual void draw(surface::ptr surface);
-			virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
+			virtual void redraw(const rectangle& rect=rectangle(0,0,0,0));
 
 			// parent interface
 			virtual widget::ptr focus_next();

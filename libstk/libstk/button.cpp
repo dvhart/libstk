@@ -35,9 +35,6 @@ namespace stk
 	void button::draw(boost::shared_ptr<stk::surface> surface)
 	{
 		theme::instance()->draw_button(rect_, active_, focused_, hover_);
-		redraw_ = false;
-		redraw_rect_ = rectangle(); // FIXME: maybe move redraw_rect_ to container
-		                            // since leaf widgets never use it
 	}
 			
 	// event_handler interface
@@ -74,9 +71,8 @@ namespace stk
 				if (!active())
 				{
 					active(true);
-					redraw(true, rect_);
+					redraw(rect_);
 				}
-				on_click();
 				break; // mouse_down
 			}
 			case mouse_up:
@@ -85,7 +81,8 @@ namespace stk
 				if (active())
 				{
 					active(false);
-					redraw(true, rect_);
+					redraw(rect_);
+					on_click();
 				}
 				break; // mouse_up
 			}

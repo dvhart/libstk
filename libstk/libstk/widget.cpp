@@ -45,7 +45,6 @@ namespace stk
 
 	void widget::draw(surface::ptr surface)
 	{
-		redraw_ = false;
 	}
 		
 	// event_handler interface - default back to parent
@@ -68,12 +67,11 @@ namespace stk
 		return boost::make_shared(parent_)->surface(); 
 	}
 	
-	void widget::redraw(bool val, const rectangle& rect)
+	void widget::redraw(const rectangle& rect)
 	{
 		cout << "widget::redraw() - rectangle: " << rect << endl;
-		redraw_ = val;
 		redraw_rect_ += rect;
-		make_shared(parent_)->redraw(true, rect);
+		make_shared(parent_)->redraw(rect);
 	}
 	
 	// parent interface

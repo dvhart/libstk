@@ -71,13 +71,11 @@ namespace stk
 		{
 			if ((*iter)->intersects(redraw_rect_)) (*iter)->draw(surface);
 		}
-		redraw_ = false;
 		redraw_rect_ = rectangle();
 	}
 
-	void container::redraw(bool val, const rectangle& rect)
+	void container::redraw(const rectangle& rect)
 	{
-		redraw_ = val;
 		redraw_rect_ += rect;
 		// augment redraw_rect_ if it intersects any other children_
 		std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -85,7 +83,7 @@ namespace stk
 		{
 			if ((*iter)->intersects(redraw_rect_)) redraw_rect_ += (*iter)->rect();
 		}
-		make_shared(parent_)->redraw(true, redraw_rect_);
+		make_shared(parent_)->redraw(redraw_rect_);
 	}
 	
 	void container::handle_event(event::ptr e)

@@ -87,7 +87,10 @@ namespace stk
 					{
 						// NOTE: only leag widgets can be hover widgets!!!
 						cout << "changing hover_widget_" << endl;
-						if (hover_ptr) hover_ptr->hover(false);
+						if (hover_ptr) {
+							hover_ptr->hover(false);
+							hover_ptr->active(false);
+						}
 						hover_ptr = boost::make_shared(current_state_)->widget_at(me->x(), me->y());	
 						if (hover_ptr) hover_ptr->hover(true);
 						hover_widget_ = hover_ptr;
