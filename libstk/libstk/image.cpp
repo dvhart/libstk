@@ -51,14 +51,15 @@ namespace stk
 
 		std::ifstream infile(filename.c_str(), std::ios::in);
 		if (!infile) 
-			throw std::string("image::load_ppmx - could not open file: " + filename);
+			throw error_message_exception("image::load_ppmx - could not open file: " + filename);
 
 		// get the magic number
 		unsigned char magic_a, magic_b;
 		infile >> magic_a;
 		infile >> magic_b;
 		unsigned short magic = (magic_a << 8) | magic_b;
-		if (magic != 0x5036) throw std::string("image::load_ppmx() - file is not a ppmx image");
+		if (magic != 0x5036) 
+			throw error_message_exception("image::load_ppmx() - file is not a ppmx image");
 
 		infile >> width_;
 		infile >> height_;
