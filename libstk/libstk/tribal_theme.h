@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: tribal_theme.h
+ *     CVS $Id$
  * DESCRIPTION: The default theme for Libstk, the user_theme class is declared
  *              here.
  *     AUTHORS: Darren Hart 
- *  START DATE: 05/May/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 2003/May/05
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

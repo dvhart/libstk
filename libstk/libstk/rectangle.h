@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: rectangle.h
+ *     CVS $Id$
  * DESCRIPTION: A simple rectangle class with some utilities like contains().
  *     AUTHORS: Darren Hart, Marc Strämke
- *  START DATE: 10/Dec/2002  LAST UPDATE: 03/Jun/2003
+ *  START DATE: 2002/Dec/10
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: scroll_box.cpp 
+ *     CVS $Id$
  * DESCRIPTION: Scroll Box container implementation.
  *     AUTHORS: Darren Hart
- *  START DATE: 22/May/2003  LAST UPDATE: 22/May/2003
+ *  START DATE: 2003/May/22
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

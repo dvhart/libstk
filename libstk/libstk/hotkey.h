@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: hotkey.h definition and implementation
+ *     CVS $Id$
  * DESCRIPTION: Used to Bind keys to functors that can be connected widget 
  *              on_keyup signals.
  *     AUTHORS: Darren Hart
- *  START DATE: 03/Jun/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2003/Jun/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: sdl_data.h (FIXME: new name welcome!) 
+ *     CVS $Id$
  * DESCRIPTION: A singleton class used to handle SDL initialization.
  *     AUTHORS: Darren Hart 
- *  START DATE: 28/May/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/May/28
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

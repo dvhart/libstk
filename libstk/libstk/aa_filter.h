@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: aa_filter.h
+ *     CVS $Id$
  * DESCRIPTION: Linear alpha falloff for anti-aliased drawing routines
  *     AUTHORS: Darren Hart
- *  START DATE: 03/Mar/2003  LAST UPDATE: 03/Mar/2003
+ *  START DATE: 2003/Mar/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: logging.h
+ *     CVS $Id$
  * DESCRIPTION: Utilities for Logging
  *     AUTHORS: Marc Strämke, Darren Hart
- *  START DATE: 28/Jun/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2003/Jun/28
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

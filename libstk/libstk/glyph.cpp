@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: glyph.cpp
+ *     CVS $Id$
  * DESCRIPTION: Glyph class implementation.
  *     AUTHORS: Vernon Mauery, Marc Straemke, Darren Hart
- *  START DATE: 17/Mar/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 2003/Mar/17
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

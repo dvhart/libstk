@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: overlay_dfb.h
+ *     CVS $Id$
  * DESCRIPTION: A simple class to store YUV overlay_dfb data (memory, size, format)
  *     AUTHORS: Darren Hart
- *  START DATE: 23/Jul/2003  LAST UPDATE: 23/Jul/2003
+ *  START DATE: 2003/Jul/23
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

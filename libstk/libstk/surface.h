@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: surface.h
+ *     CVS $Id$
  * DESCRIPTION: An abstract base class providing the interface for all surface
  *              backends.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke 
- *  START DATE: 08/Sep/2002  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2002/Sep/08
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

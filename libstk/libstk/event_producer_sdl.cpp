@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: event_producer_sdl.cpp 
+ *     CVS $Id$
  * DESCRIPTION: SDL event producer implementation.
  *     AUTHORS: Darren Hart, Marc Strämke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2003/Feb/22
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

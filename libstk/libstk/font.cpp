@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: font.cpp
+ *     CVS $Id$
  * DESCRIPTION: Font class implementation.
  *     AUTHORS: Vernon Mauery, Darren Hart, Marc Straemke
- *  START DATE: 15/Mar/2003  LAST UPDATE: 01/Aug/2003
+ *  START DATE: 2003/Mar/15
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

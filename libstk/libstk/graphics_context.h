@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: graphics_context.h
+ *     CVS $Id$
  * DESCRIPTION: A class used by surface to store colors, line styles, etc.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Strämke
- *  START DATE: 10/Dec/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/Dec/10
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

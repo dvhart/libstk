@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: image_panel.h
+ *     CVS $Id$
  * DESCRIPTION: An image widget.
  *     AUTHORS: Darren Hart, Marc Strämke
- *  START DATE: 14/Apr/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/Apr/14
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

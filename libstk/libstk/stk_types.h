@@ -1,8 +1,8 @@
 /*************************************************************************************************
- *    FILENAME: stk_types.h
+ *     CVS $Id$
  * DESCRIPTION: Libstk typedefs used throughout Libstk.
  *     AUTHORS: Darren Hart 
- *  START DATE: 03/Jun/2003  LAST UPDATE: 20/Jul/2003
+ *  START DATE: 2003/Jun/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

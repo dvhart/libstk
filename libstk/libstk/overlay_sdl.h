@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: overlay_sdl.h
+ *     CVS $Id$
  * DESCRIPTION: A simple class to store YUV overlay_sdl data (memory, size, format)
  *              backends.
  *     AUTHORS: Darren Hart
- *  START DATE: 20/Jul/2003  LAST UPDATE: 28/Jul/2003
+ *  START DATE: 2003/Jul/20
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

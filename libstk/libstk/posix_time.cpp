@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: posix_time.cpp
+ *     CVS $Id$
  * DESCRIPTION: POSIX stk time functions implementation.
  *     AUTHORS: Darren Hart
- *  START DATE: 20/May/2003  LAST UPDATE: 20/May/2003
+ *  START DATE: 2003/May/20
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

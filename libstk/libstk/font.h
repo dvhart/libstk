@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: font.h
+ *     CVS $Id$
  * DESCRIPTION: Font class for caching glyphs.
  *     AUTHORS: Vernon Mauery, Marc Strämke, Darren Hart
- *  START DATE: 15/Mar/2003  LAST UPDATE: 27/Jul/2003
+ *  START DATE: 2003/Mar/15
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

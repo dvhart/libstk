@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: list.h
+ *     CVS $Id$
  * DESCRIPTION: A listbox widget.  It contains a vector of list_items.
  *     AUTHORS: Darren Hart, Marc Strämke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 22/May/2003
+ *  START DATE: 2003/Mar/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: font_manager.cpp
+ *     CVS $Id$
  * DESCRIPTION: Implementation of font manager classes.
  *     AUTHORS: Marc Straemke, Darren Hart
- *  START DATE: 13/May/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2003/May/13
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

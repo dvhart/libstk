@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: glyph.h
+ *     CVS $Id$
  * DESCRIPTION: A single character of a font.
  *     AUTHORS: Vernon Mauery, Darren Hart
- *  START DATE: 17/Mar/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/Mar/17
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

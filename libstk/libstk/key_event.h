@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: key_event.h
+ *     CVS $Id$
  * DESCRIPTION: Event class for keyboard and other buttons (remotes, etc.).
  *     AUTHORS: Darren Hart, Marc Strämke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/Mar/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

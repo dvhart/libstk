@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: keycode.h
+ *     CVS $Id$
  * DESCRIPTION: An enumeration of all keys and modifiers, used by key_event.
  *     AUTHORS: Darren Hart
- *  START DATE: 22/Feb/2003  LAST UPDATE: 27/Jul/2003
+ *  START DATE: 2003/Feb/22
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

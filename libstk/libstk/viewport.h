@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: viewport.h
+ *     CVS $Id$
  * DESCRIPTION: A scrolling area container.
  *     AUTHORS: Darren Hart, Marc Strämke
- *  START DATE: 29/Apr/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/Apr/29
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: spinner.cpp
+ *     CVS $Id$
  * DESCRIPTION: Spinner widget implementation.
  *     AUTHORS: Darren Hart
- *  START DATE: 26/Apr/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2003/Apr/26
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

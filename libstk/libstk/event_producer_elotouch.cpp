@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: event_producer_elotouch.cpp 
+ *     CVS $Id$
  * DESCRIPTION: EloTouch event producer implementation.
  *     AUTHORS: Marc Straemke
- *  START DATE: 28/Jun/2003  LAST UPDATE: 28/Jun/2003
+ *  START DATE: 2003/Jun/28
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

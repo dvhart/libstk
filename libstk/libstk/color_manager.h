@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: color_manager.h
+ *     CVS $Id$
  * DESCRIPTION: Classes to manage colors, caching them by surface and RGBA.
  *     AUTHORS: Darren Hart 
- *  START DATE: 05/May/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/May/05
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: image_panel.cpp
+ *     CVS $Id$
  * DESCRIPTION: image_panel class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke 
- *  START DATE: 14/Apr/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 2003/Apr/14
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: timer.h
+ *     CVS $Id$
  * DESCRIPTION: A timer class that emits its signal after a specified interval,
  *              with the option to repeat.
  *     AUTHORS: Darren Hart 
- *  START DATE: 13/May/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/May/13
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

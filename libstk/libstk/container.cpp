@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: container.cpp
+ *     CVS $Id$
  * DESCRIPTION: Container abstract base class implementation.
  *     AUTHORS: Dirk Hoerner, Marc Straemke, Darren Hart
- *  START DATE: 17/Sep/2002  LAST UPDATE: 13/Jul/2003
+ *  START DATE: 2002/Sep/17
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

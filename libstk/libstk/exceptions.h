@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: exceptions.h
+ *     CVS $Id$
  * DESCRIPTION: Libstk exception classes.
  *     AUTHORS: Dirk Hoerner, Darren Hart, Marc Strämke
- *  START DATE: 09/Sep/2002  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2002/Sep/09
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

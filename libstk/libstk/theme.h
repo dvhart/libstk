@@ -1,10 +1,10 @@
 /**************************************************************************************************
- *    FILENAME: theme.h
+ *     CVS $Id$
  * DESCRIPTION: The theme class implements the pimpl idiom to provide access to
  *              the user defined user_theme which is used for storage and 
  *              common theme routines.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 17/Mar/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 2003/Mar/17
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

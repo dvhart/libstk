@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: event_producer_elotouch.h
+ *     CVS $Id$
  * DESCRIPTION: EloTouch event producer backend.
  *     AUTHORS: Marc Strämke, Darren Hart
- *  START DATE: 28/Jun/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 2003/Jun/28
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

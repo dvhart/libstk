@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: combiners.h
+ *     CVS $Id$
  * DESCRIPTION: Signal combiner objects.  They combine the results of all the
  *              slots of a signal in a specific way and return the result.
  *     AUTHORS: Darren Hart
- *  START DATE: 10/Mar/2003  LAST UPDATE: 25/Jun/2003
+ *  START DATE: 2003/Mar/10
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

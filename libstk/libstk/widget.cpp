@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: widget.cpp
+ *     CVS $Id$
  * DESCRIPTION: Widget abstract base class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke, Dirk Hoerner
- *  START DATE: 08/Sep/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 2003/Sep/08
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as

@@ -1,9 +1,9 @@
 /**************************************************************************************************
- *    FILENAME: numeric_spinner.h
+ *     CVS $Id$
  * DESCRIPTION: A list widget that displays only one value and wraps around as
  *              the user cycles through the list_items.
  *     AUTHORS: Darren Hart
- *  START DATE: 14/Jul/2003  LAST UPDATE: 14/Jul/2003
+ *  START DATE: 2003/Jul/14
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 

@@ -1,8 +1,8 @@
 /**************************************************************************************************
- *    FILENAME: edit_box.h
+ *     CVS $Id$
  * DESCRIPTION: An edit box widget.
  *     AUTHORS: Dirk Hoerner, Darren Hart
- *  START DATE: 23/Jun/2003  LAST UPDATE: 27/Jul/2003
+ *  START DATE: 2003/Jun/23
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
