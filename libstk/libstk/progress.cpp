@@ -40,6 +40,7 @@ namespace stk
 
 	progress::~progress()
 	{
+		cout << "progress::~progress()" << endl;
 	}
 
 	void progress::range(int val)

@@ -37,6 +37,7 @@ namespace stk
 
 	widget::~widget()
 	{
+		cout << "widget::~widget()" << endl;
 	}
 	
 	// event_handler interface - default back to parent

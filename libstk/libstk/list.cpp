@@ -10,11 +10,15 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
+#include <iostream>
 #include "libstk/list.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/keycode.h"
+
+using std::cout;
+using std::endl;
 
 namespace stk
 {
@@ -37,6 +41,7 @@ namespace stk
 
 	list::~list()
 	{
+		cout << "list::~list()" << endl;
 	}
 
 	void list::handle_event(event::ptr e)

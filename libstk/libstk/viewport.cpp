@@ -2,7 +2,7 @@
  *    FILENAME: viewport.cpp
  * DESCRIPTION: Viewport container implementation.
  *     AUTHORS: Darren Hart, Marc Straemke 
- *  START DATE: 29/Apr/2003  LAST UPDATE: 22/May/2003
+ *  START DATE: 29/Apr/2003  LAST UPDATE: 28/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -10,10 +10,14 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
+#include <iostream>
+#include <boost/bind.hpp>
 #include "libstk/viewport.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
-#include <boost/bind.hpp>
+
+using std::cout;
+using std::endl;
 
 namespace stk
 {
@@ -28,6 +32,7 @@ namespace stk
 	viewport::viewport(container::ptr parent, 
 			const rectangle& rect) : container(parent, rect)
 	{
+		cout << "viewport::viewport()" << endl;
 		focusable_ = true;
 		h_scroll(scroll_model::create());
 		v_scroll(scroll_model::create());
@@ -35,6 +40,7 @@ namespace stk
 			
 	viewport::~viewport()
 	{
+		cout << "viewport::~viewport()" << endl;
 	}
 	
 	

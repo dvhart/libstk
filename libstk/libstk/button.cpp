@@ -43,6 +43,7 @@ namespace stk
 
 	button::~button()
 	{
+		cout << "button::~button()" << endl;
 	}
 
 	// event_handler interface
