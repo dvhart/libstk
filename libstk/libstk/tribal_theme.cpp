@@ -630,10 +630,14 @@ namespace stk
 
         try
         {
+            std::wstring text_to_draw(text_);
+            if(!text_visible_)  // Application requested to hide the entered characters
+                text_to_draw=std::wstring(text_.length(),L'*');
+            
             // cursor and selection calculations
             int sel_min = MIN(selection_start_, selection_end_);
-            std::wstring presel_str = text_.substr(0, sel_min);
-            std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
+            std::wstring presel_str = text_to_draw.substr(0, sel_min);
+            std::wstring sel_str = text_to_draw.substr(sel_min, abs(selection_end_-selection_start_));
             int sel_x = interior_rect.x1() + Vera_18->draw_len(presel_str);
             int sel_width = Vera_18->draw_len(sel_str);
             int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
@@ -657,9 +661,6 @@ namespace stk
             surface->draw_line(cursor_x, 3, cursor_x, height()-3);
             
             // draw the string text_
-            std::wstring text_to_draw(text_);
-            if(!text_visible_)  // Application requested to hide the entered characters
-                text_to_draw=std::wstring(text_.length(),L'*');
             surface->draw_text(interior_rect, text_to_draw);
         }
         catch(...)
@@ -671,9 +672,13 @@ namespace stk
     }
     int edit_box::region(int x, int y)
     {
+        std::wstring text_to_draw(text_);
+        if(!text_visible_)  // Application requested to hide the entered characters
+            text_to_draw=std::wstring(text_.length(),L'*');
+        
         font::ptr Vera_18 = font_manager::get()->get_font(
                 font_properties("Vera", 18, font_properties::plain, 0));
-        return Vera_18->chars_in_rect(rectangle(3, 0, x-rect_.x1(), height()), text_);
+        return Vera_18->chars_in_rect(rectangle(3, 0, x-rect_.x1(), height()), text_to_draw);
     }
 
     void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
