@@ -219,13 +219,22 @@ namespace stk
         y1 += offset_.y();
         x2 += offset_.x();
         y2 += offset_.y();
+        if(x2<x1)
+        {
+            int temp=x2;
+            x2=x1;
+            x1=temp;
+        }
+        if(y2<y1)
+        {
+            int temp=y2;
+            y2=y1;
+            y1=temp;
+        }
+        
         color clr = gc_->line_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
-        surface->DrawLine(surface, x1, y1, (x2-x1), (y2-y1));
-        if(x2!=x1)
-            pixels_filled_highlevel+=(x2-x1);
-        else
-            pixels_filled_highlevel+=(y2-y1);
+        surface->DrawLine(surface, x1, y1, x2, y2);
     }
     
     void surface_dfb::draw_rect(const rectangle& rect)
