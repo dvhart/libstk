@@ -784,7 +784,7 @@ namespace stk
                 int by = bmp->bearing_y();//*sin(fon->rotation())+bmp->bearing_x()*sin(fon->rotation());
                 int bx = bmp->bearing_x();//*cos(fon->rotation())+bmp->bearing_y()*cos(fon->rotation());
                 
-                INFO("Drawing glyph \"" << (char)text[i] <<"\" , by=" << by << " bx=" << bx);
+                //INFO("Drawing glyph \"" << (char)text[i] <<"\" , by=" << by << " bx=" << bx);
                 boost::shared_array<unsigned char> bits = bmp->bitmap();
                 // draw it
                 for (int dy = 0; dy < bmp->height(); dy++)
