@@ -54,7 +54,7 @@ namespace stk
             for (current_ = 0; current_ < (int)items_.size(); current_++)
             {
                 y += items_[current_]->height();
-                if (y > me->y()-y1()) break;
+                if (y > me->y()-y1()+v_scroll_->begin()) break;
             }
             if ((unsigned int)current_ < items_.size()) // Crashes otherwise
                 items_[current_]->selected(true);
