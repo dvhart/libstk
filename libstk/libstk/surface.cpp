@@ -843,6 +843,9 @@ namespace stk
 	void surface::draw_rect_aa(int x1, int y1, int x2, int y2)
 	{ cout << "surface::draw_rect_aa - not implemented" << endl; }
 
+	void surface::circle_points_aa(int x, int y, int dx, int dy)
+	{ cout << "surface::circle_points_aa - not implemented" << endl; }
+	
 	void surface::draw_circle_aa(int x, int y, int radius)
 	{ cout << "surface::draw_circle_aa - not implemented" << endl; }
 		
@@ -850,6 +853,9 @@ namespace stk
 	{
 		draw_circle_aa(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, rect.w()/2);
 	}
+	
+	void surface::ellipse_points_aa(int x, int y, int dx, int dy)
+	{ cout << "surface::ellipse_points_aa - not implemented" << endl; }
 	
 	void surface::draw_ellipse_aa(int x, int y, int a, int b)
 	{ cout << "surface::draw_ellipse_aa - not implemented" << endl; }
@@ -890,16 +896,16 @@ namespace stk
 	void surface::fill_rect(const rectangle &rect)
 	{ cout << "surface::fill_rect - not implemented" << endl; }
 	
-	void fill_circle(int x, int y, int radius)
+	void surface::fill_circle(int x, int y, int radius)
 	{ cout << "surface::fill_circle - not implemented" << endl; }
 	
-	void fill_circle(const rectangle &rect)
+	void surface::fill_circle(const rectangle &rect)
 	{ cout << "surface::fill_circle - not implemented" << endl; }
 	
-	void fill_ellipse(int x, int y, int a, int b)
+	void surface::fill_ellipse(int x, int y, int a, int b)
 	{ cout << "surface::fill_ellipse - not implemented" << endl; }
 	
-	void fill_ellipse(const rectangle &rect)
+	void surface::fill_ellipse(const rectangle &rect)
 	{ cout << "surface::fill_ellipse - not implemented" << endl; }
 
 	void surface::fill_poly(std::vector<point> points)
@@ -985,16 +991,16 @@ namespace stk
 	void surface::fill_rect_aa(const rectangle &rect)
 	{ cout << "surface::fill_rect_aa - not implemented" << endl; }
 	
-	void fill_circle_aa(int x, int y, int radius)
+	void surface::fill_circle_aa(int x, int y, int radius)
 	{ cout << "surface::fill_circle_aa - not implemented" << endl; }
 	
-	void fill_circle_aa(const rectangle &rect)
+	void surface::fill_circle_aa(const rectangle &rect)
 	{ cout << "surface::fill_circle_aa - not implemented" << endl; }
 	
-	void fill_ellipse_aa(int x, int y, int a, int b)
+	void surface::fill_ellipse_aa(int x, int y, int a, int b)
 	{ cout << "surface::fill_ellipse_aa - not implemented" << endl; }
 	
-	void fill_ellipse_aa(const rectangle &rect)
+	void surface::fill_ellipse_aa(const rectangle &rect)
 	{ cout << "surface::fill_ellipse_aa - not implemented" << endl; }
 
 	void surface::fill_poly_aa(std::vector<point> points)

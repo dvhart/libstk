@@ -61,11 +61,17 @@ namespace stk
 			inline void put_pixel(int x, int y, color clr);
 			inline void put_pixel_aa(int x, int y, double distance, color clr);
 			inline color pixel_at(int x, int y);
-
+			SDL_Rect rect_to_sdl_rect(rectangle &rect)
+			{
+				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.w(), rect.h() };
+				return sdl_rect;
+			}
 		public:
 			surface_sdl(SDL_Surface &new_surface);
 			surface_sdl(rectangle &rect);
 			~surface_sdl();
+
+			SDL_Surface *sdl_surface() const { return sdl_surface_; };
 
 			// methods which MUST be implemented in derived classes
 			virtual void draw_pixel(int x, int y, color clr);
