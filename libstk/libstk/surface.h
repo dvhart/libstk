@@ -71,8 +71,8 @@ namespace stk
 		private:
 			
 		protected:
-			surface() { cout << "surface::surface()" << endl; }
-			surface(const rectangle &rect) : rect_(rect) { cout << "surface::surface(rectangle)" << endl; }
+			surface():offset_(0,0) { cout << "surface::surface()" << endl; }
+			surface(const rectangle &rect) : rect_(rect),offset_(0,0) { cout << "surface::surface(rectangle)" << endl; }
 
 			/* direction() returns one of the direction constants defined above.  
 			 * Line drawing routines use it to determine which of the twelve 
@@ -119,7 +119,8 @@ namespace stk
 			
 			// member variables common to all surfaces
 			rectangle rect_;      // position on the screen, width and height
-			rectangle clip_rect_; // the clip rectangle, no pixels may be drawn outside this area 
+			rectangle clip_rect_; // the clip rectangle, no pixels may be drawn outside this area ,given in absolute coordinates (not modified by offset_)
+			point offset_;		  // offset from the coordinate system origin, where the current drawing operation should take place
 			byte alpha_;          // opacity (255 is opaque)
 			graphics_context::ptr gc_; // stores graphics settings used by draw routines
 
@@ -130,6 +131,10 @@ namespace stk
 			rectangle rect() const { return rect_; }
 			rectangle clip_rect() const { return clip_rect_; }
 			void clip_rect(const rectangle& clip_rectangle) { clip_rect_ = clip_rectangle; }
+		
+			point& offset() { return offset_;}			
+			void offset(point &newoffset) { offset_=newoffset;}			
+		
 			// FIXME: we may not need alpha now that we only have one surface..
 			// it may be nice for special cases where we need another surface
 			// need to think on it -- dvhart
@@ -164,7 +169,7 @@ namespace stk
 			/// reflected immediate, if not, it will be translated to the appropriate
 			/// format and written to the real framebuffer when unlock is called
 			/// \param rect The area of the framebuffer requested
-			/// \param flags MARC WHAT DID YOU HAVE IN MIND HERE ?
+			/// \param flags MARC WHAT DID YOU HAVE IN MIND HERE ? << marc:Read only, read write for example!
 			/// \param buf The pointer to be set to the start of the area in the framebuffer
 			/// \param stride The length in pixels between the first column in each row
 			virtual void lock(rectangle& rect, int flags, color** buf, int& stride) { }

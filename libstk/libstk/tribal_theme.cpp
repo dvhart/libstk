@@ -107,6 +107,7 @@ namespace stk
 	// define the various widget draw routines
 	void state::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
+		surface->clip_rect(rect_);
 		//cout << "state::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(color_manager::get_color(color_properties(fill_state_color_str, surface)));
@@ -118,6 +119,9 @@ namespace stk
 	void button::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "button::draw()" << endl;
+		
+		surface->clip_rect(rect_);
+		
 		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
 		rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
 		
@@ -350,15 +354,16 @@ namespace stk
 	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		cout << "scroll_decorator::draw()" << endl;
-
-		// draw the component
+		point scroll_offset;
+		scroll_offset.x(h_scroll()->begin());
+		scroll_offset.y(v_scroll()->begin());
+		surface->offset()+=scroll_offset;
+		
 		if (children_.size() > 0)
 		{
 			if (clip_rect.empty())
 			{
 				rectangle temp_rect = rect_;
-				temp_rect.width(rect_.width() - 20);
-				temp_rect.height(rect_.height() - 20);
 				children_[0]->draw(surface, temp_rect);
 			}
 			else
@@ -367,29 +372,7 @@ namespace stk
 			}
 		}
 		
-		// outline the scroll panel
-		surface->clip_rect(rect_);
-		graphics_context::ptr gc = graphics_context::create();
-		// fixme: this isn't detecting focus
-		if (focused())
-			gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
-		else
-			gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
-		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
-		surface->gc(gc);
-		surface->draw_rect(rect_);
-
-		// draw the horizontal scroll bar
-		int scrollwidth = ((width()-20)*(width()-20))/hrange_;	
-		int scrollx = (int)((width() - 20 - scrollwidth)*((float)hposition_/(float)(hrange_-width())));
-		surface->fill_rect(rectangle(x1()+scrollx, y2()-20, scrollwidth, 20));
-		
-		// draw the vertical scroll bar
-		int scrollheight = ((height()-20)*(height()-20))/vrange_;	
-		// FIXME: the math is off here, not sure why
-		int scrolly = (int)((height() - 20 - scrollheight)*((float)vposition_/(float)(vrange_-height())));
-		surface->fill_rect(rectangle(x2()-20, y1()+scrolly, 20, scrollheight));
-		
+		surface->offset()-=scroll_offset;
 	}
 	
 }

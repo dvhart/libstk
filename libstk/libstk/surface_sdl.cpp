@@ -137,8 +137,15 @@ namespace stk
 	}
 	
 	// optimized pixel routines
-	void surface_sdl::put_pixel(int x, int y, color clr)
+	void surface_sdl::put_pixel(int x_, int y_, color clr)
 	{
+		int x=x_+offset_.x();
+		int y=y_+offset_.y();
+		
+		if(!clip_rect_.contains(x,y))
+			return;
+		
+		
 		Uint32 sdl_color = (Uint32)clr;
 
 		// DELETEME check for out of bounds
@@ -193,8 +200,10 @@ namespace stk
 		}
 	}
 
-	color surface_sdl::get_pixel(int x, int y) const
+	color surface_sdl::get_pixel(int x_, int y_) const
 	{
+		int x=x_+offset_.x();
+		int y=y_+offset_.y();
 		// DELETEME check for out of bounds
 		if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
 		{

@@ -1,6 +1,7 @@
 #include "libstk/scroll_box.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
+#include <boost/bind.hpp>
 
 namespace stk
 {
@@ -14,74 +15,49 @@ namespace stk
 	}
 	
 	scroll_box::scroll_box(container::ptr parent, 
-			const rectangle& rect) : container(parent, rect), vrange_(0), 
-			hrange_(0), vposition_(0), hposition_(0)
+			const rectangle& rect) : container(parent, rect)
 	{
 		focusable_ = true;
+		h_scroll(scroll_modell::ptr(new scroll_modell));
+		v_scroll(scroll_modell::ptr(new scroll_modell));
 	}
 			
 	scroll_box::~scroll_box()
 	{
 	}
-
+	
+	
+	scroll_modell::ptr scroll_box::h_scroll()
+	{
+		return h_scroll_;
+	}
+	void scroll_box::h_scroll(scroll_modell::ptr value)
+	{
+		h_scroll_con.disconnect();
+		h_scroll_=value;
+		h_scroll_con=value->on_change.connect(boost::bind(&scroll_box::redraw,this));		
+		h_scroll_->size(rect_.width());
+	}
+			
+	scroll_modell::ptr scroll_box::v_scroll()
+	{
+		return v_scroll_;
+	}	
+	void scroll_box::v_scroll(scroll_modell::ptr value)
+	{
+		v_scroll_con.disconnect();
+		v_scroll_=value;
+		v_scroll_con=value->on_change.connect(boost::bind(&scroll_box::redraw,this));
+		v_scroll_->size(rect_.height());
+	}
+	void scroll_box::redraw()
+	{
+		container::redraw(rect_);
+	}
 	void scroll_box::handle_event(event::ptr e)
 	{
-		//cout << "scroll_box::handle_event()" << endl;	
-		switch (e->type())
-		{
-			case event::key_up:
-			{
-				// FIXME: do some error checking on children_[0]
-				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-				switch ( ke->key() )
-				{
-					case up_arrow:
-						//cout << "scroll_box::handle_event() - scroll up" << endl;
-						if (vposition_ > 0)
-						{
-							vposition_ -= 1;
-							children_[0]->position(children_[0]->x1(), children_[0]->y1()+1);
-							redraw(rect_);
-						}
-						return;
-						break;
-					case down_arrow:
-						//cout << "scroll_box::handle_event() - scroll down" << endl;
-						if (vposition_ < (vrange_ - height()))
-						{
-							vposition_ += 1;
-							children_[0]->position(children_[0]->x1(), children_[0]->y1()-1);
-							redraw(rect_);
-						}
-						return;
-						break;
-					case left_arrow:
-						//cout << "scroll_box::handle_event() - scroll left" << endl;
-						if (hposition_ > 0)
-						{
-							hposition_ -= 1;
-							children_[0]->position(children_[0]->x1()+1, children_[0]->y1());
-							redraw(rect_);
-						}
-						return;
-						break;
-					case right_arrow:
-						//cout << "scroll_box::handle_event() - scroll right" << endl;
-						if (hposition_ < (hrange_ - width()))
-						{
-							hposition_ += 1;
-							children_[0]->position(children_[0]->x1()-1, children_[0]->y1());
-							redraw(rect_);
-						}
-						return;
-						break;
-				}
-				break; // key_up
-			}
-		}
+		cout << "scroll_box::handle_event()" << endl;	
 		widget::handle_event(e); 
-		parent_.lock()->handle_event(e);
 	}
 
 }
-

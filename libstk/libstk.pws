@@ -1,15 +1,15 @@
 
 [filenumbers]
-0=33
-1=34
-2=14
-3=67
-4=36
-5=17
-6=51
-7=54
-8=9
-9=37
+0=68
+1=1125
+2=28
+3=99
+4=41
+5=14
+6=76
+7=42
+8=53
+9=15
 
 [filemarkers]
 0=
@@ -29,17 +29,25 @@ RunInTerminal=true
 [Project DBase]
 ShowLocals=true
 
-[filelist]
-0=/home/carter/libstk/src/application.cpp
-1=/home/carter/libstk/src/test_app.cpp
-2=/home/carter/libstk/doc/libstk.xml
-3=/home/carter/libstk/src/theme.cpp
-4=/home/carter/libstk/src/font.h
-5=/home/carter/libstk/src/font.cpp
-6=/home/carter/libstk/src/font_mngr.h
-7=/home/carter/libstk/src/font_mngr.cpp
-
 [File View]
 filter.file.unmatch=*.so *.o *.a *.la
 filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
+
+[filelist]
+0=/home/carter/libstk/libstk/application.cpp
+1=/home/carter/libstk/libstk/surface.cpp
+2=/home/carter/libstk/libstk/point.h
+3=/home/carter/libstk/libstk/surface.h
+4=/home/carter/libstk/libstk/test_app.cpp
+5=/home/carter/libstk/libstk/tribal_theme.cpp
+6=/home/carter/libstk/libstk/scroll_box.h
+7=/home/carter/libstk/libstk/widget.h
+8=/home/carter/libstk/libstk/scroll_box.cpp
+9=/home/carter/libstk/libstk/Makefile.am
+
+[find_text]
+0=redraw
+1=rect_
+2=image
+3=scroll

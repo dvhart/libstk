@@ -34,10 +34,10 @@ libstk_la_SOURCES =\
 	scroll_box.h scroll_box.cpp \
 	spinner.h spinner.cpp \
 	font_mngr.h font_mngr.cpp\
+	exceptions.h scroll_modell.h scroll_modell.cpp\
 	theme.h theme.cpp \
 	timed_event.h timed_event.cpp \
 	tribal_theme.h tribal_theme.cpp 
-	
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
@@ -51,7 +51,7 @@ library_include_HEADERS= \
 	drawable.h       glyph.h             component.h       widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
-	image_panel.h    theme.h             color_manager.h
+	image_panel.h spinner.h scroll_modell.h theme.h color_manager.h
 
 
 bin_PROGRAMS      = test_app
