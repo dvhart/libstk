@@ -32,7 +32,10 @@ namespace stk
         typedef boost::weak_ptr<xine_panel> weak_ptr;
 
     private:
-        xine_panel(const rectangle& rect, const std::string& config);
+        xine_panel(const rectangle& rect);
+        /// get the audio/video ports and set up the event handler
+        /// must be called after the parent has been set
+        void init(const std::string& config);
         /// static wrapper that receives a xine_panel as user_data and then calls its listener
         static void event_listener_wrapper(void *user_data, const xine_event_t* xine_event);
         /// the actual event listener, called by xine_event_listener_wrapper

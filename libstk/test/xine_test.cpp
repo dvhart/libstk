@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 #ifdef HAVE_SDL
         else if (surface_type == "sdl")
         {
-            screen = surface_sdl::create(rectangle(0, 0, 640, 480));
+            screen = surface_sdl::create(rectangle(0, 0, 640, 480), false);
             ep = event_producer_sdl::create();
         }
 #endif

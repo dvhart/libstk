@@ -19,31 +19,16 @@ namespace stk
     xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect, 
             const std::string& config)
     {
-        xine_panel::ptr new_xine_panel(new xine_panel(rect, config));
+        xine_panel::ptr new_xine_panel(new xine_panel(rect));
         new_xine_panel->parent(parent);
+        new_xine_panel->init(config);
         return new_xine_panel;
     }
   
-    xine_panel::xine_panel(const rectangle& rect, const std::string& config) : widget(rect), 
-        fullscreen_(false)
+    xine_panel::xine_panel(const rectangle& rect) : widget(rect), fullscreen_(false)
     {
         INFO("constructor");
-        focusable_ = true;
-        
-        INFO("initializing the xine engine");
-        xine_ = xine_new();
-        xine_config_load(xine_, config.c_str());
-        xine_init(xine_);
-
-        INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
-        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
-        xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
-        xine_stream_ = xine_stream_new(xine_, xine_ao_port_, xine_vo_port_);
-        xine_event_queue_ = xine_event_new_queue(xine_stream_);
-        xine_event_create_listener_thread(xine_event_queue_, &event_listener_wrapper, (void*)this);
-
-        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
-        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+        focusable_ = true;        
     }
       
     xine_panel::~xine_panel()
@@ -55,6 +40,23 @@ namespace stk
         xine_close_audio_driver(xine_, xine_ao_port_);
         xine_close_video_driver(xine_, xine_vo_port_);
         xine_exit(xine_);
+    }
+
+    void xine_panel::init(const std::string& config)
+    {
+        INFO("initializing the xine engine");
+        xine_ = xine_new();
+        xine_config_load(xine_, config.c_str());
+        xine_init(xine_);
+
+        INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
+        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
+        xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
+        xine_stream_ = xine_stream_new(xine_, xine_ao_port_, xine_vo_port_);
+        xine_event_queue_ = xine_event_new_queue(xine_stream_);
+        xine_event_create_listener_thread(xine_event_queue_, &event_listener_wrapper, (void*)this);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
     }
 
     void xine_panel::handle_event(event::ptr e)
