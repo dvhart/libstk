@@ -22,6 +22,7 @@ email                : dvhart@byu.edu
 #include "surface.h"
 #include "point.h"
 #include "edge.h"
+#include "stk.h"
 #include <string>
 #include <vector>
 #include <SDL/SDL.h>
@@ -60,7 +61,7 @@ namespace stk
 			// optimized pixel routines (private and not virtual)
 			inline void put_pixel(int x, int y, color clr);
 			inline void put_pixel_aa(int x, int y, double distance, color clr);
-			inline color pixel_at(int x, int y);
+			inline color get_pixel(int x, int y) const;
 			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
 			{
 				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.w(), rect.h() };
@@ -76,10 +77,10 @@ namespace stk
 			// methods which MUST be implemented in derived classes
 			virtual void draw_pixel(int x, int y, color clr);
 			virtual void draw_pixel_aa(int x, int y, double distance, color clr);
-			virtual color get_pixel(int x, int y);
+			virtual color read_pixel(int x, int y) const;
 			// format: "0xRRGGBBAA", 0-255, alpha 255 being opaque
-			virtual color gen_color(const std::string &str_color);
-			virtual color gen_color(byte r, byte g, byte b, byte a);
+			virtual color gen_color(const std::string &str_color) const;
+			virtual color gen_color(byte r, byte g, byte b, byte a) const;
 			virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
 			virtual void unlock();
 			virtual void blit(surface &dst_surface);

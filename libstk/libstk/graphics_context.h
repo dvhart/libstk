@@ -1,7 +1,7 @@
 #ifndef STK_GRAPHICS_CONTEXT_H
 #define STK_GRAPHICS_CONTEXT_H
 
-#include "stk_types.h"
+#include "stk.h"
 
 namespace stk
 {

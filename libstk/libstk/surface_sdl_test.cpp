@@ -70,7 +70,7 @@ int main()
 			my_surface.blit(screen);
 			screen.flip();
 			// hop off the processor for a few ms
-			if (!SDL_PollEvent(NULL)) SDL_Delay(33);
+			//if (!SDL_PollEvent(NULL)) SDL_Delay(33);
 			++xy %= 329;
 		}
 	}

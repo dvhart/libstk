@@ -1,17 +1,17 @@
 /***************************************************************************
-	surface.cpp  -  surface class implementation
-	-------------------
-begin                : Tue September 10 2002
-copyright            : (C) 2002 by Darren Hart
-email                : dvhart@byu.edu
+ *                                                                         *
+ * 	surface.h - surface base class header                                  *
+ * 	---------------------------------------------------------------------  *
+ * 	begin                : Tue September 10 2002                           *
+ * 	copyright            : (C) 2002 by Darren Hart                         *
+ * 	email                : dvhart@byu.edu                                  *
+ * 	                                                                       *
  ***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   it under the terms of the LGPL Limited General Public License.        *
  *                                                                         *
  ***************************************************************************/
 
@@ -22,15 +22,24 @@ email                : dvhart@byu.edu
 #include "point.h"
 #include "rectangle.h"
 #include "graphics_context.h"
-#include "stk_types.h"
+#include "stk.h"
 #include <string>
 #include <vector>
 
-#define MIN(A,B) (((A)<(B))?(A):(B))
+/* stk::surface provides an interface to be implemented by all backend 
+ * surface implementations.  In general, one creates a screen from one of
+ * the derived surface classes (ie surface_sdl or surface_dfb) and several
+ * other surfaces of the same type.  Each surface may be drawn on 
+ * individually.  When drawing is complete, each surface should be "blitted"
+ * to the screen (or a "lower" surface) until everything has been blitted
+ * to the screen.  The screen is then "flipped" and the updates appears on
+ * the screen.  All drawing characteristics are determined from the
+ * graphics_context member variable "gc_".
+ */
 
 namespace stk
 {
-	// direction constants
+	// direction constants (used in the draw_line routines)
 	const int DOT   = 0x00;
 	const int LR    = 0x01;
 	const int RL    = 0x02;
@@ -57,44 +66,61 @@ namespace stk
 	const int ll_quadrant = 3;
 	const int ul_quadrant = 4;
 
+	// static antialiased alpha falloff filter
 	static byte alpha_filter[256] =
 	{
 		#include "aa_filter_linear_m1.35.h"
 	};
 
 	class surface;
-
 	class surface
 	{
 		protected:
+			/* direction() returns one of the direction constants defined above.  
+			 * Line drawing routines use it to determine which of the twelve 
+			 * directions to use when drawing the line.  This is needed for both
+			 * accuracy and performance.
+			 */
 			int direction(int x1, int y1, int x2, int y2);
+
+			/* The following methods are used by the various draw_circle and
+			 * draw_ellipse routines.  They take advantage of circles' eight way
+			 * symmetry and ellipses' four way summetry.
+			 */
 			virtual void circle_points(int x, int y, int dx, int dy);
 			virtual void ellipse_points(int x, int y, int dx, int dy);
 			virtual void circle_points_aa(int x, int y, int dx, int dy);
 			virtual void ellipse_points_aa(int x, int y, int dx, int dy);
 
-			// color composition methods
+			/* These composite methods are used to determine the resulting color
+			 * of a pixel when drawing in antialiased mode.  By using the a over b
+			 * composite model combined with the alpha composition, intermediate
+			 * pixel values can be determined (we can render top down instead of
+			 * bottom up).
+			 */
 			byte composite_a_over_b(byte Ca, byte Cb, float Aa, float Ab, float Ao)
 			{
 				// the alphas are floats in the range [0,1]
-				// the colors are ints in the range [0,255]
+				// the colors are bytes in the range [0,255]
 				return (byte)((Aa*Ca + Ab*Cb*(1-Aa))/Ao);
 			}
-
 			byte composite_alpha(byte Aa, byte Ab)
 			{
-				// here the alphas are ints in the range [0,255]
+				// here the alphas are bytes in the range [0,255]
 				return ((Aa+Ab)-(Aa*Ab/255));
 			}
 
+			/* Index the static antialiased alpha filter.  Returns an alpha value
+			 * from [0-255], 255 being opaque.
+			 */
 			byte filter_aa(double distance) 
 			{ 
 				return alpha_filter[(int)(175*distance)]; 
 			}		
 			
 			// member variables common to all surfaces
-			rectangle rect_;      // defines its position on the screen, width and height
-			byte alpha_;          // defines its opacity (255 is opaque)
+			rectangle rect_;      // position on the screen, width and height
+			byte alpha_;          // opacity (255 is opaque)
 			graphics_context gc_; // stores graphics settings used by draw routines
 
 		public:
@@ -102,7 +128,7 @@ namespace stk
 			surface(const rectangle &rect) : rect_(rect) { };
 			virtual ~surface() { };
 
-			// property methods
+			// inline property methods
 			rectangle rect() const { return rect_; };
 			byte alpha() const { return alpha_; };
 			void alpha(byte a) { alpha_ = a; };
@@ -111,13 +137,16 @@ namespace stk
 			void x1(int x) { rect_.x1(x); };
 			void y1(int y) { rect_.y1(y); };
 
-			// methods which MUST be implemented in derived classes
+			/* The following methods MUST be implemented in derived classes.  They 
+			 * are not purely virtual here since we must be able to instantiate a 
+			 * surface class in certain situations.
+			 */
 			virtual void draw_pixel(int x, int y, color clr) { };
 			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { };
-			virtual color get_pixel(int x, int y) { };
-			// format: "0xRRGGBBAA", 0-255, alpha 255 being opaque
-			virtual color gen_color(const std::string &str_color) { }; // make const
-			virtual color gen_color(byte r, byte g, byte b, byte a) { }; // make const
+			virtual color read_pixel(int x, int y) const { };
+			// format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
+			virtual color gen_color(const std::string &str_color) const { };
+			virtual color gen_color(byte r, byte g, byte b, byte a) const { };
 			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) { };
 			virtual void unlock() { };
 			virtual void blit(surface &dst_surface) { };
@@ -131,13 +160,19 @@ namespace stk
 			 * requires that derived surface classes implement a private put_pixel()
 			 * method and use it in virtual drawing routines (copy these and replace
 			 * draw_pixel with your private put_pixel).  You should also implement
-			 * a private pixel_at() method and use it in a private put_pixel_aa() 
-			 * rather than using the the virtual get_pixel() (for the same reason).
+			 * a private get_pixel() method and use it in a private put_pixel_aa() 
+			 * rather than using the the virtual read_pixel() (for the same reason).
 			 * (this applies to circle/ellipse_points methods above as well)
 			 */
 
 			// non antialiased draw routines
 			virtual void draw_line(int x1, int y1, int x2, int y2);
+			/* draw_arc() routines draw an arc with the rectangle passed or defined
+			 * and uses quadrant to determine how the arc gets drawn.  quadrant is
+			 * one of (ur)|(lr)|(ll)|(ul)_quadrant as defined above and the arc is
+			 * drawn as that portion of the quarter ellipse inscribed within the
+			 * rectangle.
+			 */
 			virtual void draw_arc(const rectangle &rect, int quadrant);
 			virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant);
 			virtual void draw_rect(const rectangle &rect);
@@ -146,7 +181,12 @@ namespace stk
 			virtual void draw_circle(const rectangle &rect);
 			virtual void draw_ellipse(int x, int y, int a, int b);
 			virtual void draw_ellipse(const rectangle &rect);
+			/* draw_poly() receives a vector of points (at least 2) and connects
+			 * sequential points and finally the last to the first.
+			 */
 			virtual void draw_poly(const std::vector<point> points);
+			// CODEC: define the text interface... should we pass a rect and
+			// clip to that?
 			virtual void draw_text(int x, int y, const std::string &text);
 
 			// antialiased draw routines

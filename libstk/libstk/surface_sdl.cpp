@@ -22,6 +22,7 @@ email                : dvhart@byu.edu
 
 #include "surface_sdl.h"
 #include "surface.h"
+#include "stk.h"
 #include <math.h>
 #include <vector>
 #include <list>
@@ -69,12 +70,12 @@ namespace stk
 		put_pixel_aa(x, y, distance, clr); 
 	}
 
-	color surface_sdl::get_pixel(int x, int y)
+	color surface_sdl::read_pixel(int x, int y) const
 	{
-		return pixel_at(x, y);
+		return get_pixel(x, y);
 	}
 	
-	color surface_sdl::gen_color(const std::string &str_color)
+	color surface_sdl::gen_color(const std::string &str_color) const
 	{
 		Uint8 r, g, b, a;
 		Uint32 int_color = strtoll(str_color.c_str(), NULL, 16);
@@ -87,7 +88,7 @@ namespace stk
 		return (color)sdl_color;
 	}
 
-	color surface_sdl::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+	color surface_sdl::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
 	{
 		Uint32 sdl_color = SDL_MapRGBA(sdl_surface_->format, r, g, b, a);
 		return (color)sdl_color;
@@ -186,7 +187,7 @@ namespace stk
 		}
 	}
 
-	color surface_sdl::pixel_at(int x, int y)
+	color surface_sdl::get_pixel(int x, int y) const
 	{
 		// DELETEME check for out of bounds
 		if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)

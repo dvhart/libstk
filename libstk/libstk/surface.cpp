@@ -19,7 +19,7 @@ email                : dvhart@byu.edu
 #include "rectangle.h"
 #include "point.h"
 #include "edge.h"
-#include "stk_types.h"
+#include "stk.h"
 #include <vector>
 #include <list>
 #include <iostream>
