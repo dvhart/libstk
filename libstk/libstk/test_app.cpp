@@ -71,7 +71,6 @@ int main(int argc, char* argv[])
 		button::ptr test_button2 = button::create(test_state, L"No-Op", 
 			rectangle(240, 10, 100, 30));
 		test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
-		test_button2->on_click.connect( no_op() );
 		
 		// create a couple labels using ÜberScript
 		label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"), 

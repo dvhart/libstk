@@ -55,12 +55,14 @@ namespace stk
 		public:
 			static theme::ptr create(stk::surface::ptr surface);
 			virtual ~theme();
-			static stk::theme::ptr instance();
-			virtual void draw_state(const rectangle& rect);
+			static stk::theme::ptr instance(); // FIXME: use get instead ?
+			
+			// FIXME: the draw routines need some kind of property map passed in
+			virtual void draw_state(const rectangle& rect, bool focused);
 			virtual void draw_button(const rectangle& rect, const std::wstring& label, 
 				bool active, bool focused, bool hover);
-			virtual void draw_progress(const rectangle& rect, const std::wstring& label, float range); 
-			virtual void draw_label(const rectangle& rect, const std::wstring& text);
+			virtual void draw_progress(const rectangle& rect, const std::wstring& label, float range, bool focused); 
+			virtual void draw_label(const rectangle& rect, const std::wstring& text, bool focused);
 	};
 }
 

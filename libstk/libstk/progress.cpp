@@ -37,7 +37,7 @@ namespace stk
 		label_stream.setf(std::ios::showpoint);
 		label_stream.precision(4);
 		label_stream << label_ << " - " << percent()*100 << "%";
-		theme::instance()->draw_progress(rect_, label_stream.str(), percent());
+		theme::instance()->draw_progress(rect_, label_stream.str(), percent(), focused_);
 	}
 			
 }

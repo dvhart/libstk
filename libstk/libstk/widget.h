@@ -75,6 +75,7 @@ namespace stk
 			virtual widget::ptr focus_next();
 			virtual boost::shared_ptr<widget> focus_prev();
 		
+			//boost::signal<bool (), combiner::logical_and<bool> > on_activate;
 			boost::signal<bool (), combiner::logical_and<bool> > on_activate;
 			boost::signal<bool (), combiner::logical_and<bool> > on_focus;
 			boost::signal<bool (), combiner::logical_and<bool> > on_unfocus;

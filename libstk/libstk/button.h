@@ -28,7 +28,7 @@ namespace stk
 			virtual ~button();
 
 			// button signals
-			boost::signal<bool ()> on_click; // FIXME: on_activate in widget maybe ?
+			boost::signal<bool (), combiner::logical_and<bool> > on_click; // FIXME: on_activate in widget maybe ?
 
 			// event_handler interface
 			virtual void handle_event(event::ptr e);

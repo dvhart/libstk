@@ -44,13 +44,21 @@ namespace stk
 		return instance_;
 	}
 	
-	void theme::draw_state(const rectangle& rect)
+	void theme::draw_state(const rectangle& rect, bool focused)
 	{
 		//cout << "theme::draw_state()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(surface_->gen_color("0x004E66FF")); 
 		surface_->gc(gc);
 		surface_->fill_rect(rect);	
+
+		// debug focus by outlining the focused widget
+		if (focused)
+		{
+			gc->line_color(outline_color_focused_); 
+			surface_->gc(gc);
+			surface_->draw_rect(rect);
+		}
 	}
 	
 	void theme::draw_button(const rectangle& rect, const std::wstring& label,
@@ -102,7 +110,7 @@ namespace stk
 		surface_->draw_text(rect, label);
 	}
 
-	void theme::draw_progress(const rectangle& rect, const std::wstring& label, float percent)
+	void theme::draw_progress(const rectangle& rect, const std::wstring& label, float percent, bool focused)
 	{
 		//cout << "theme::draw_progress()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
@@ -117,9 +125,17 @@ namespace stk
 		surface_->fill_rect(progress_rect);
 		surface_->draw_rect(rect);
 		surface_->draw_text(rect, label);
+
+		// debug focus by outlining the focused widget
+		if (focused)
+		{
+			gc->line_color(outline_color_focused_); 
+			surface_->gc(gc);
+			surface_->draw_rect(rect);
+		}
 	}
 	
-	void theme::draw_label(const rectangle& rect, const std::wstring& text)
+	void theme::draw_label(const rectangle& rect, const std::wstring& text, bool focused)
 	{
 		//cout << "theme::draw_label()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
@@ -137,6 +153,14 @@ namespace stk
 		catch (const exception& e)
 		{
 			cout << "theme::draw_label: error: " << e.what() << endl;
+		}
+		
+		// debug focus by outlining the focused widget
+		if (focused)
+		{
+			gc->line_color(outline_color_focused_); 
+			surface_->gc(gc);
+			surface_->draw_rect(rect);
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace stk
 	void state::draw(surface::ptr surface)
 	{
 		//cout << "state::draw() - redraw_rect_: " << redraw_rect_ << endl;
-		theme::instance()->draw_state(redraw_rect_);
+		theme::instance()->draw_state(redraw_rect_, focused_);
 		container::draw(surface);
 	}
 	

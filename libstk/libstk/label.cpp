@@ -28,7 +28,7 @@ namespace stk
 
 	void label::draw(boost::shared_ptr<stk::surface> surface)
 	{
-		theme::instance()->draw_label(rect_, text_);
+		theme::instance()->draw_label(rect_, text_, focused_);
 	}
 			
 }
