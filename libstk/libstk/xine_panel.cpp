@@ -32,10 +32,22 @@ namespace stk
         xine_init(xp->xine_);
 
         INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
-        xp->xine_ao_port_ = xine_open_audio_driver(xp->xine_, audio_driver.c_str(), NULL);
+        if (!(xp->xine_ao_port_ = xine_open_audio_driver(xp->xine_, audio_driver.c_str(), NULL)))
+        {
+            // FIXME: throw an exception
+            ERROR("Failed to load the audio [" << audio_driver << "] driver");
+        }
         // FIXME: XINE_VISUAL_TPE_STK
-        xp->xine_vo_port_ = xine_open_video_driver(xp->xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)xp.get()); 
-        xp->xine_stream_ = xine_stream_new(xp->xine_, xp->xine_ao_port_, xp->xine_vo_port_);
+        if (!(xp->xine_vo_port_ = xine_open_video_driver(xp->xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)xp.get())))
+        {
+            // FIXME: throw an exception
+            ERROR("Failed to load the stk video output driver, did you build it?");
+        }
+        if (!(xp->xine_stream_ = xine_stream_new(xp->xine_, xp->xine_ao_port_, xp->xine_vo_port_)))
+        {
+            // FIXME: throw an exception
+            ERROR("Failed to create the stream");
+        }
 
         xp->xine_event_queue_ = xine_event_new_queue(xp->xine_stream_);
         xine_event_create_listener_thread(xp->xine_event_queue_, &event_listener_wrapper, (void*)xp.get());
@@ -389,7 +401,7 @@ namespace stk
             INFO(" "<<xine_list_post_plugins_typed(xine_, XINE_POST_TYPE_AUDIO_VISUALIZATION)[i++]);
         }
         // END HACK
-        if (xine_post_ = xine_post_init(xine_, name.c_str(), 0, &xine_ao_port_, &xine_vo_port_))
+        if ((xine_post_ = xine_post_init(xine_, name.c_str(), 0, &xine_ao_port_, &xine_vo_port_)))
         {
             xine_post_wire_audio_port(xine_get_audio_source(xine_stream_), 
                                       xine_post_->audio_input[0]);
