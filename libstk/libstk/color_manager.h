@@ -44,8 +44,6 @@ namespace stk
 	{
 		public:
 			typedef std::map<color_properties, color> Tcolor_map;
-			typedef boost::shared_ptr<color_manager> ptr;
-			typedef boost::weak_ptr<color_manager> weak_ptr;
 
 		private:
 			static Tcolor_map color_map_;

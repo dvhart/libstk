@@ -9,7 +9,7 @@
 #include "libstk/surface.h"
 #include "libstk/widget.h"
 #include "libstk/event_system.h"
-#include "libstk/timed_event.h"
+#include "libstk/timer.h"
 
 namespace stk
 {
@@ -26,7 +26,7 @@ namespace stk
 			surface::ptr surface_;
 			event_system::ptr event_system_;
 			std::list<boost::shared_ptr<state> > states_;
-			std::list<boost::shared_ptr<timed_event> > timed_events_;
+			std::list<boost::shared_ptr<timer> > timers_;
 			
 			// FIXME: what can we do to use state::weak_ptr
 			boost::weak_ptr<state> current_state_;  // FIXME: should these be a weak_ptr ?
@@ -54,8 +54,10 @@ namespace stk
 			/// Adds a new state to the Application
 			void add_state(boost::shared_ptr<state>);
 			
-			/// Adds a new timed event to the Application
-			void add_timed_event(timed_event::ptr timed_event);
+			/// Adds a new timer to the Application
+			void add_timer(timer::ptr timer);
+			///todo: writeme
+			void del_timer(timer::ptr timer) { }
 			
 			/// Returns the surface for drawing operations
 			virtual surface::ptr surface();

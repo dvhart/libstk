@@ -64,7 +64,7 @@ namespace stk
 			focused_widget_.lock()->handle_event(event::create(event::focus));
 		}
 		
-		// enter the main application loop: draw, handle_events, call timed_events
+		// enter the main application loop: draw, handle_events, call timers
 		// FIXME: we have to do something about all these .lock() calls!!!
 		event::ptr event_(new event(event::none)); // should we use create here ?
 		while (!done_)
@@ -133,22 +133,13 @@ namespace stk
 				event_ = event_system_->poll_event();
 			}
 
-			// call all ready timed_events
-			std::list<timed_event::ptr>::iterator te_iter = timed_events_.begin();
-			for (te_iter; te_iter != timed_events_.end(); te_iter++)
+			// update all timers
+			std::list<timer::ptr>::iterator t_iter = timers_.begin();
+			for (t_iter; t_iter != timers_.end(); t_iter++)
 			{
-				if ((*te_iter)->ready()) 
+				if (!(*t_iter)->update()) 
 				{
-					(*te_iter)->on_timer();
-					if ((*te_iter)->interval() >= 0)
-					{
-						(*te_iter)->update();
-					}
-					else
-					{
-						// FIXME
-						// delete this timed_event
-					}
+					// FIXME: delete this timer
 				}
 			}
 			
@@ -170,10 +161,10 @@ namespace stk
 		states_.push_back(state);
 	}
 
-	void application::add_timed_event(timed_event::ptr timed_event)
+	void application::add_timer(timer::ptr timer)
 	{
-		cout << "application::add_timed_event()" << endl;
-		timed_events_.push_back(timed_event);
+		cout << "application::add_timer()" << endl;
+		timers_.push_back(timer);
 	}
 
 	// drawable interface

@@ -20,7 +20,7 @@
 #include "libstk/state.h"
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
-#include "libstk/timed_event.h"
+#include "libstk/timer.h"
 
 
 using namespace stk;
@@ -128,14 +128,14 @@ int main(int argc, char* argv[])
 		list_item::ptr test_item_7 = list_item::create(test_spinner, L"Orange", "orange");
 		list_item::ptr test_item_8 = list_item::create(test_spinner, L"Plum", "plum");
 
-		// add a timed_event (no_op)
-		cout << "test_app - creating no_op timed_event" << endl;
+		// add a timer (no_op)
+		cout << "test_app - creating no_op timer" << endl;
 		struct timeval tv;
 		gettimeofday(&tv, NULL);
-		timed_event::ptr test_timed_event = timed_event::create(tv, 5000); // every 5 seconds
+		timer::ptr test_timer = timer::create(5000, true); // every 5 seconds
 		no_op no_op_;
-		test_timed_event->on_timer.connect(no_op_);
-		test_app->add_timed_event(test_timed_event);
+		test_timer->on_timer.connect(no_op_);
+		test_app->add_timer(test_timer);
 		
 		// run the program
 		retval = test_app->run();
