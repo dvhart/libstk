@@ -21,7 +21,7 @@
 namespace stk
 {
     /// An abstract class defining the drawable interface.
-    class drawable
+    class drawable : public rectangle
     {
     public:
         typedef boost::shared_ptr<drawable> ptr;
@@ -40,6 +40,19 @@ namespace stk
 
         /// Retrieve the surface used in the application
         virtual boost::shared_ptr<stk::surface> surface() = 0;
+
+        /// Get the rectangular region oocupied by the drawable
+        virtual rectangle rect() 
+        {
+            return rectangle(p1_, p2_);
+        }
+
+        /// Set the position and size of the drawable
+        virtual void rect(const rectangle& rect) 
+        { 
+            p1(rect.p1()); 
+            p2(rect.p2()); 
+        }
 
         /// draw the current drawable on the passed surface
         /// fixme: do we need to pass surface if every drawable has a surface() method?

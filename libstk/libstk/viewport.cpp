@@ -50,11 +50,11 @@ namespace stk
     {
         h_scroll_con.disconnect();
         h_scroll_ = value;
-        h_scroll_con = value->on_change.connect(boost::bind(&viewport::redraw,this));
-        h_scroll_->size(rect_.width());
+        h_scroll_con = value->on_change.connect(boost::bind(&viewport::redraw, this));
+        h_scroll_->size(width());
         if (!children_.empty())
             h_scroll_->size(children_[0]->width());
-        h_scroll_->vis_size(rect_.width());
+        h_scroll_->vis_size(width());
     }
 
     scroll_model::ptr viewport::v_scroll()
@@ -66,14 +66,14 @@ namespace stk
         v_scroll_con.disconnect();
         v_scroll_=value;
         v_scroll_con=value->on_change.connect(boost::bind(&viewport::redraw,this));
-        v_scroll_->size(rect_.height());
-        v_scroll_->vis_size(rect_.height());
+        v_scroll_->size(height());
+        v_scroll_->vis_size(height());
         if (!children_.empty())
             v_scroll_->size( children_[0]->height());
     }
     void viewport::redraw()
     {
-        container::redraw(rect_);
+        container::redraw(rect());
     }
     void viewport::handle_event(event::ptr e)
     {
@@ -86,9 +86,7 @@ namespace stk
         scroll_offset.x(h_scroll()->begin());
         scroll_offset.y(v_scroll()->begin());
         surface->offset(surface->offset() + scroll_offset);        
-        container::draw(surface, rect_); // draw all the children
-//        std::for_each(children_.begin(), children_.end(), 
-//                boost::bind(&container::draw_child, this, surface, rect_, _1));
+        container::draw(surface, rect()); // draw all the children
         surface->offset(surface->offset() - scroll_offset);
     }
 

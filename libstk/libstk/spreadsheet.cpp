@@ -18,24 +18,26 @@ namespace stk
     
     void spreadsheet::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         int current_y_pos=0;
         for(column_iterator column=columns_begin();column!=columns_end();column++)
         {
             int current_x_pos=0;
-            column_info::Tcells::iterator cell=column->cells.begin();
-            for(row_iterator row=rows_begin();row!=rows_end();row++)
+            column_info::Tcells::iterator cell = column->cells.begin();
+            for(row_iterator row = rows_begin(); row != rows_end(); row++)
             {
-                if(/*!column->cells.empty() && */ cell!=column->cells.end())
+                if(/*!column->cells.empty() && */ cell != column->cells.end())
                 {
-                    (*cell)->draw(surface,rectangle(current_x_pos+rect_.x1(),current_y_pos+rect_.y1(),row->width,column->height));
+                    (*cell)->draw(surface,rectangle(current_x_pos+x1(), current_y_pos+y1(), 
+                                                    row->width, column->height));
                     cell++;
                 }
-                current_x_pos+=row->width;
+                current_x_pos += row->width;
             }
-            current_y_pos+=column->height;
+            current_y_pos += column->height;
         }
     }
+
     void spreadsheet::handle_event(stk::event::ptr e)
     {
         if(!e)
@@ -48,57 +50,56 @@ namespace stk
         case event::mouse_down:
         {
             mouse_event::ptr me = boost::dynamic_pointer_cast<mouse_event>(e);
-            if(!me)
+            if (!me)
                 ERROR("Invalid event received in spreadsheet");        
-            int xpos=rect_.x1();
+            int xpos = x1();
             row_iterator row;
-            for(row=rows_begin();row!=rows_end();row++)
+            for (row = rows_begin(); row != rows_end(); row++)
             {
-                if(me->x()>xpos && me->x() < (xpos+row->width))
+                if (me->x()>xpos && me->x() < (xpos+row->width))
                     break;
-                xpos+=row->width;
+                xpos += row->width;
             }
-            int ypos=rect_.y1();
+            int ypos = y1();
             column_iterator col;
-            for(col=columns_begin();col!=columns_end();col++)
+            for (col = columns_begin(); col != columns_end(); col++)
             {
-                if(me->y()>ypos && me->y() < (ypos+col->height))
+                if (me->y()>ypos && me->y() < (ypos+col->height))
                     break;
-                ypos+=col->height;
+                ypos += col->height;
             }
-            if(focused_cell)
+            if (focused_cell)
             {
                 focused_cell->handle_event(event::create(event::un_focus));
                 focused_cell.reset();
             }
-            if(col!=columns_end() && row!=rows_end())
+            if (col!=columns_end() && row != rows_end())
             {
-                int index= row-rows_begin();
+                int index = row-rows_begin();
                 
                 column_info::Tcells::iterator cell=col->cells.begin()+index;
-                
              
-                if(cell!=col->cells.end())
+                if (cell != col->cells.end())
                 {
-                    focused_cell=*cell;
+                    focused_cell =* cell;
                     focused_cell->handle_event(event::create(event::focus));
                 }
             }
             
-            redraw(rect_);
+            redraw(rect());
             
             return;
             break;
         }
         default:
-            if(focused_cell)
+            if (focused_cell)
                 focused_cell->handle_event(e);
             return;
         }
         widget::handle_event(e);
     }
     
-    spreadsheet_cell::spreadsheet_cell(spreadsheet::ptr parent): parent_(parent) , focused_(false)
+    spreadsheet_cell::spreadsheet_cell(spreadsheet::ptr parent) : parent_(parent) , focused_(false)
     {
     }
     
@@ -127,52 +128,52 @@ namespace stk
     spreadsheet::row_iterator spreadsheet::rows_begin()
     {
         return rows_.begin();
-        redraw(rect_);
+        redraw(rect());
     }
     spreadsheet::row_iterator spreadsheet::rows_end()
     {
         return rows_.end();
-        redraw(rect_);
+        redraw(rect());
     }
     void spreadsheet::rows_erase(spreadsheet::row_iterator row)
     {
         rows_.erase(row);
-        redraw(rect_);
+        redraw(rect());
     }
     void spreadsheet::rows_push_back(row_info row)
     {
         rows_.push_back(row);
-        redraw(rect_);
+        redraw(rect());
     }
     void spreadsheet::rows_clear()
     {
         rows_.clear();
-        redraw(rect_);
+        redraw(rect());
     }
     spreadsheet::column_iterator spreadsheet::columns_begin()
     {
         return columns_.begin();
-        redraw(rect_);
+        redraw(rect());
     }
     spreadsheet::column_iterator spreadsheet::columns_end()
     {
         return columns_.end();
-        redraw(rect_);
+        redraw(rect());
     }
     void spreadsheet::columns_erase(spreadsheet::column_iterator column)
     {
         columns_.erase(column);
-        redraw(rect_);
+        redraw(rect());
     }
     void spreadsheet::columns_push_back(column_info column)
     {
         columns_.push_back(column);
-        redraw(rect_);
+        redraw(rect());
     }
     void spreadsheet::columns_clear()
     {
         columns_.clear();
-        redraw(rect_);
+        redraw(rect());
     }
     spreadsheet_cell_text::spreadsheet_cell_text(spreadsheet::ptr parent) : spreadsheet_cell(parent) 
     {
@@ -197,17 +198,17 @@ namespace stk
             {
             case key_backspace:
                 INFO("Backspace hit in ssheet_cell_text");
-                if(text_.size()>0)
+                if (text_.size() > 0)
                     text_.resize(text_.size()-1);
-                if(parent_.lock())
+                if (parent_.lock())
                     parent_.lock()->redraw(parent_.lock()->rect());
                 return;
             }
             
-            if((ke->fn_key()!= key_backspace) && (ke->character()!=0))
+            if ((ke->fn_key() != key_backspace) && (ke->character() != 0))
             {
                 text_+=ke->character();
-                if(parent_.lock())
+                if (parent_.lock())
                     parent_.lock()->redraw(parent_.lock()->rect());
                 return;
             }

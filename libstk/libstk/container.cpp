@@ -106,8 +106,8 @@ namespace stk
     {
         // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
         rectangle redraw_rect = rect;
-        if(transform)
-            redraw_rect.position(redraw_rect.position()+rect_.position());
+        if (transform)
+            redraw_rect.position(redraw_rect.position()+position());
         parent_.lock()->redraw(redraw_rect, this, true);
     }
 

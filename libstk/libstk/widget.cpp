@@ -26,9 +26,11 @@
 namespace stk
 {
 
-    widget::widget(component::ptr parent, const rectangle& rect) : parent_(parent), rect_(rect),
+    widget::widget(component::ptr parent, const rectangle& rect) : parent_(parent),
         focusable_(false), frame_(0), pressed_(false), focused_(false), hover_(false)
     {
+        // FIXME: this is an ugly kludge
+        p1_ = rect.p1(); p2_ = rect.p2();
         INFO("constructor");
     }
 
@@ -52,7 +54,7 @@ namespace stk
             if (focusable_)
             {
                 focused_ = true;
-                redraw(rect_);
+                redraw(rect());
             }
             return;
             break;
@@ -61,19 +63,19 @@ namespace stk
             {
                 focused_ = false;
                 pressed_ = false;
-                redraw(rect_);
+                redraw(rect());
             }
             return;
             break;
         case event::mouse_enter:
             hover_ = true;
-            redraw(rect_);
+            redraw(rect());
             return;
             break;
         case event::mouse_leave:
             hover_ = false;
             pressed_ = false;
-            redraw(rect_);
+            redraw(rect());
             return;
             break;
         case event::key_up:
@@ -88,15 +90,16 @@ namespace stk
     // drawable interface
     surface::ptr widget::surface()
     {
-        // MSTR broken!
         return parent_.lock()->surface();
     }
 
     void widget::redraw(const rectangle& rect, drawable* source, bool transform)
     {
+        // FIXME: what is the benefit of copying the rectangle?
         rectangle redraw_rect(rect);
         parent_.lock()->redraw(redraw_rect, this, true);
     }
+
     widget::ptr widget::widget_at(int x, int y)
     {
         if (x < width() && y < height())
@@ -104,11 +107,11 @@ namespace stk
         else 
             return widget::ptr();
     }
+
     widget::ptr widget::delegate_mouse_event(mouse_event::ptr me)
     {
 	handle_event(me);
-	widget::ptr this_ptr=shared_from_this();
-	return this_ptr;
+	return shared_from_this();
     }
     
 }

@@ -44,21 +44,21 @@ namespace stk
     {
         range_ = MAX(0, val);
         build_label();
-        redraw(rect_);
+        redraw(rect());
     }
 
     void progress::position(int val)
     {
         position_ = MAX(0, MIN(range_, val));
         build_label();
-        redraw(rect_);
+        redraw(rect());
     }
 
     void progress::percent(float val)
     {
         position_ = MAX(0, (int)(range_*MIN(1.0, val)));
         build_label();
-        redraw(rect_);
+        redraw(rect());
     }
 
     void progress::build_label()

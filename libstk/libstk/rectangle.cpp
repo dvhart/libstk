@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "libstk/rectangle.h" 
+#include "libstk/logging.h"
 
 namespace stk
 {
@@ -27,9 +28,11 @@ namespace stk
     {
         // enforce p1 as upper left coordinate
         // (this assume 0,0 is the upper left corner of the screen (like SDL))
-        if ((p1.x() > p2.x()) || (p1.y() > p2.y()))
+        if (!empty() && ((p1.x() > p2.x()) || (p1.y() > p2.y())))
+        {
             throw error_message_exception(
                 "p1.x(),p1.y() must be less than p2.x(),p2.y()");
+        }
     }
 
     // utilities

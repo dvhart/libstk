@@ -49,7 +49,7 @@ namespace stk
         void text(std::wstring& text)
         {
             text_ = text;
-            redraw(rect_);
+            redraw(rect());
         }
 
         // signals

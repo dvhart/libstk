@@ -41,8 +41,6 @@ namespace stk
         widget(component::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
         component::weak_ptr parent_;
 
-        rectangle rect_;
-
         // widget attributes
         // FIXME: add visible_
         bool focusable_;
@@ -78,36 +76,6 @@ namespace stk
 
         /********** WIDGET INTERFACE **********/
         virtual bool is_container() { return false; }
-
-        // wrap the rectangle interface
-        // getters
-        rectangle rect() const { return rect_; }
-        point p1() const { return rect_.p1(); }
-        point p2() const { return rect_.p2(); }
-        int x1() const { return rect_.x1(); }
-        int y1() const { return rect_.y1(); }
-        int x2() const { return rect_.x2(); }
-        int y2() const { return rect_.y2(); }
-        int width() const { return rect_.width(); }
-        int height() const { return rect_.height(); }
-        // setters
-        void rect(const rectangle& rect) { rect_ = rect; }
-        void x1(int val) { rect_.x1(val); }
-        void y1(int val) { rect_.y1(val); }
-        void x2(int val) { rect_.x2(val); }
-        void y2(int val) { rect_.y2(val); }
-        void width(int val) { rect_.width(val); }
-        void height(int val) { rect_.height(val); }
-        // utils
-        bool empty() const { return rect_.empty(); }
-        bool contains(int x, int y) const { return rect_.contains(x, y); }
-        bool contains(const point& p) const { return rect_.contains(p); }
-        bool intersects(const rectangle& rect) const { return rect_.intersects(rect); }
-        rectangle intersection(const rectangle& rhs) const { return rect_.intersection(rhs); }
-        point position() const { return rect_.position(); }
-        void position(int x, int y) { rect_.position(x, y); }
-        void position(const point& p) { rect_.position(p); }
-
         // widget attribute accessor methods
         // FIXME: have the setters return bool ?
         // (ie label would return false for a focus(true) call) ?
@@ -130,15 +98,11 @@ namespace stk
         boost::signal<bool (stk::keycode), combiner::logical_or<bool> > on_keyup;
         /********** END WIDGET INTERFACE **********/
 
-        /********** COMPOSITE INTERFACE **********/
+        /********** COMPONENT INTERFACE **********/
         virtual widget::ptr widget_at(int x, int y);
         virtual widget::ptr delegate_mouse_event(mouse_event::ptr me);
-
-        virtual widget::ptr get_active_child()
-        {
-            return shared_from_this();
-        }
-        /********** END COMPOSITE INTERFACE **********/
+        virtual widget::ptr get_active_child() { return shared_from_this(); }
+        /********** END COMPONENT INTERFACE **********/
 
 
         /*

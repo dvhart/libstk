@@ -56,7 +56,7 @@ namespace stk
                         else current_ = 0;
                     }
                     on_change();
-                    redraw(rect_);
+                    redraw(rect());
                     return;
                     break;
                 case key_enter:
@@ -68,7 +68,7 @@ namespace stk
                         else current_ = items_.size()-1;
                     }
                     on_change();
-                    redraw(rect_);
+                    redraw(rect());
                     return;
                     break;
                 }
@@ -96,7 +96,7 @@ namespace stk
                     }
                 }
                 on_change();
-                redraw(rect_);
+                redraw(rect());
                 return;
             }
             }
@@ -113,7 +113,7 @@ namespace stk
         if (index < items_.size())
         {
             current_ = index;
-            redraw(rect_);
+            redraw(rect());
         }
         else
             throw error_message_exception("spinner::selected() - index out of bounds");

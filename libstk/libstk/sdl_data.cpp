@@ -17,14 +17,20 @@
 
 namespace stk
 {
-    sdl_data::ptr sdl_data::instance_;
+    sdl_data::weak_ptr sdl_data::instance_;
+    //sdl_data::ptr sdl_data::instance_;
 
     sdl_data::ptr sdl_data::get()
     {
-        if (instance_)
-            return instance_;
-        instance_.reset(new sdl_data());
-        return instance_;
+        sdl_data::ptr instance = instance_.lock(); 
+        //sdl_data::ptr instance = instance_; 
+        if (instance)
+            return instance;
+        INFO("getting new sdl_data");
+        instance.reset(new sdl_data());
+        instance_ = instance;
+        return instance;
+        //return instance_;
     }
 
     sdl_data::sdl_data() : first_init_(true)
@@ -34,7 +40,7 @@ namespace stk
     sdl_data::~sdl_data()
     {
         INFO("sdl_data::~sdl_data()");
-        INFO("use_count: " << instance_.use_count());
+        INFO("use_count: " << instance_.lock().use_count());
         SDL_Quit();
     }
 

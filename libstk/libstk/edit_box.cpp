@@ -55,7 +55,7 @@ namespace stk
                 {
                     text_.erase(sel_min, sel_width);
                     selection_start_ = selection_end_ = sel_min;
-                    redraw(rect_);
+                    redraw(rect());
                     on_change(text_);
                 }
                 else if (selection_end_ > 0)
@@ -63,7 +63,7 @@ namespace stk
                     sel_min--;
                     text_.erase(sel_min, 1);
                     selection_start_ = selection_end_ = sel_min;
-                    redraw(rect_);
+                    redraw(rect());
                     on_change(text_);
                 }
                 
@@ -74,32 +74,32 @@ namespace stk
                 {
                     text_.erase(sel_min, sel_width);
                     selection_start_ = selection_end_ = sel_min;
-                    redraw(rect_);
+                    redraw(rect());
                     on_change(text_);
                 }
                 else if (sel_min < text_.size())
                 {
                     text_.erase(sel_min, 1);
-                    redraw(rect_);
+                    redraw(rect());
                     on_change(text_);
                 }
                 return;
                 break;
             case key_enter:
-                redraw(rect_);
+                redraw(rect());
                 on_confirm(text_);
                 return;
                 break;
             case key_leftarrow:
                 if (selection_end_ > 0) selection_end_--;
                 if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
-                redraw(rect_);
+                redraw(rect());
                 return;
                 break;
             case key_rightarrow:
                 if (selection_end_ < text_.size()) selection_end_++;
                 if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
-                redraw(rect_);
+                redraw(rect());
                 return;
                 break;
             }
@@ -116,7 +116,7 @@ namespace stk
                 }
                 text_.insert(selection_end_, insert_str);
                 selection_start_ = ++selection_end_;
-                redraw(rect_);
+                redraw(rect());
                 on_change(text_);
                 return;
             }
@@ -129,7 +129,7 @@ namespace stk
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
             // FIXME: reposition the curesor
-            redraw(rect_);
+            redraw(rect());
             return;
             break; // mouse_down
         }

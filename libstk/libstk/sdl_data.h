@@ -32,7 +32,8 @@ namespace stk
         /// Whether or not SDL_Init() has been called yet
         bool first_init_;
         /// Singleton instance
-        static sdl_data::ptr instance_;
+        static sdl_data::weak_ptr instance_;
+        //static sdl_data::ptr instance_;
         /// A mutex used to prevent threads for accessing surface data concurrently
         sdl_data();
 

@@ -23,11 +23,11 @@ namespace stk
     
     boost::shared_ptr<backend_dfb> backend_dfb::get()
     {
-        backend_dfb::ptr instance=instance_.lock();        
+        backend_dfb::ptr instance = instance_.lock();        
         if(instance)
             return instance;
         instance.reset(new backend_dfb());
-        instance_=instance;
+        instance_ = instance;
         return instance;
     }
     

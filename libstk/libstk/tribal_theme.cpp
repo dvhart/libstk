@@ -129,24 +129,24 @@ namespace stk
     // define the various widget theme routines (draw(), region(), etc.)
     void state::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         surface->offset(point(0,0));
         
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
                     color_properties(fill_state_color_str, surface)));
         surface->gc(gc);
-        surface->fill_rect(rect_);
+        surface->fill_rect(rect());
         container::draw(surface, clip_rect); // this will draw all the children - document this for theme howto
     }
 
     void button::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
 
-        rectangle pressed_rect = rect_; pressed_rect.position(0, 0);
-        rectangle interior_rect(3, 3, rect_.width()-6, rect_.height()-6);
-        rectangle outline_rect(1, 1, rect_.width()-2, rect_.height()-2);
+        rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
+        rectangle interior_rect(3, 3, width()-6, height()-6);
+        rectangle outline_rect(1, 1, width()-2, height()-2);
 
         graphics_context::ptr gc = graphics_context::create();
 
@@ -207,7 +207,7 @@ namespace stk
 
     void progress::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
                     color_properties(fill_color_normal_str, surface)));
@@ -219,8 +219,8 @@ namespace stk
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         surface->gc(gc);
-        rectangle progress_rect(2, 2, rect_.width()-4, rect_.height()-4);
-        rectangle outline_rect = rect_; outline_rect.position(0, 0);
+        rectangle progress_rect(2, 2, width()-4, height()-4);
+        rectangle outline_rect = rect(); outline_rect.position(0, 0);
         progress_rect.width((int)(progress_rect.width()*percent()));
         surface->fill_rect(progress_rect);
         surface->draw_rect(outline_rect);
@@ -229,7 +229,7 @@ namespace stk
 
     void label::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
                     color_properties(fill_color_normal_str, surface)));
@@ -247,13 +247,13 @@ namespace stk
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         surface->gc(gc);
-        rectangle outline_rect = rect_; outline_rect.position(0, 0);
+        rectangle outline_rect = rect(); outline_rect.position(0, 0);
         surface->draw_text(outline_rect, text_);
     }
 
     void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_focused_str, surface)));
@@ -263,7 +263,7 @@ namespace stk
 
     void list::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
 
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
@@ -301,11 +301,11 @@ namespace stk
         
         surface->offset(surface->offset() + point(0, v_scroll_->begin()));
 
-        // set the clip rect back to the list rect_ (not the last list_item)
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        // set the clip rect back to the list rect() (not the last list_item)
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
 
         // outline the list box
-        rectangle outline_rect = rect_;
+        rectangle outline_rect = rect();
         outline_rect.position(0, 0);
         surface->draw_rect(outline_rect);
     }
@@ -313,16 +313,16 @@ namespace stk
     void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         // FIXME: rect doesn't account for offset (this breaks drawing lists on directfb surfaces)
-        rectangle new_clip_rect = rect_; new_clip_rect.position(surface->offset());
+        rectangle new_clip_rect = rect(); new_clip_rect.position(surface->offset());
         //surface->clip_rect(clip_rect.empty() ? new_clip_rect : clip_rect);
         
         // draw list is responsible for setting the graphics context!!
         // FIXME: it shouldn't be!
         
         // FIXME: consider dropping the offsets IFF we change surface offset in list for every item
-        rectangle label_rect(rect_.x1()+2, rect_.y1()+4, rect_.width()-4, rect_.height()-4);
-        if (selected_) surface->fill_rect(rect_);
-        if (current_) surface->draw_rect(rect_);
+        rectangle label_rect(x1()+2, y1()+4, width()-4, height()-4);
+        if (selected_) surface->fill_rect(rect());
+        if (current_) surface->draw_rect(rect());
         surface->draw_text(label_rect, label_);
     }
     int list_item::height()
@@ -332,10 +332,10 @@ namespace stk
 
     void numeric_spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
-        rectangle interior_rect(3, 3, rect_.width()-6, rect_.height()-6);
-        rectangle outline_rect(1, 1, rect_.width()-2, rect_.height()-2);
-        rectangle pressed_rect = rect_; pressed_rect.position(0, 0);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
+        rectangle interior_rect(3, 3, width()-6, height()-6);
+        rectangle outline_rect(1, 1, width()-2, height()-2);
+        rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
         graphics_context::ptr gc = graphics_context::create();
 
         if(focused_)
@@ -407,10 +407,10 @@ namespace stk
     
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         rectangle interior_rect(3, 3, width()-6, height()-6);
         rectangle outline_rect(1, 1, width()-2, height()-2);
-        rectangle pressed_rect = rect_; pressed_rect.position(0, 0);
+        rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
         graphics_context::ptr gc = graphics_context::create();
 
         if(focused_)
@@ -480,11 +480,11 @@ namespace stk
 
     void edit_box::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
 
         rectangle interior_rect(3, 3, width()-6, height()-6);
         rectangle outline_rect(1, 1, width()-2, height()-2);
-        rectangle pressed_rect = rect_; pressed_rect.position(0, 0);
+        rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
 
         graphics_context::ptr gc = graphics_context::create();
 

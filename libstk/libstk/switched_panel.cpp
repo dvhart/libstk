@@ -24,9 +24,9 @@ namespace stk
     void switched_panel::active_child(widget::ptr child) throw(error_no_child)
     {
         INFO("Switching active child of switched panel");
-        active_widget=child;
-        component::ptr parent_ptr=parent_.lock();
-        if(parent_ptr)
+        active_widget = child;
+        component::ptr parent_ptr = parent_.lock();
+        if (parent_ptr)
             parent_ptr->redraw(rect());
     }
     
@@ -39,20 +39,20 @@ namespace stk
     
     widget::ptr switched_panel::widget_at(int x, int y)
     {
-        widget::ptr active_widget_ptr=active_widget.lock();
-        if(active_widget_ptr)
+        widget::ptr active_widget_ptr = active_widget.lock();
+        if (active_widget_ptr)
         {
-            return active_widget_ptr->widget_at(x-rect().x1(),y-rect().y1());
+            return active_widget_ptr->widget_at(x-x1(), y-y1());
         }
         return widget::ptr();
     } 
     widget::ptr switched_panel::delegate_mouse_event(mouse_event::ptr me)
     {
-        widget::ptr active_widget_ptr=active_widget.lock();
-        if(active_widget_ptr)
+        widget::ptr active_widget_ptr = active_widget.lock();
+        if (active_widget_ptr)
         {
-            mouse_event::ptr me_to_child(new mouse_event(me->x()-rect().x1(),me->y()-rect().y1(),
-                                                         me->button(),me->type()));
+            mouse_event::ptr me_to_child(new mouse_event(me->x()-x1(), me->y()-y1(),
+                        me->button(), me->type()));
             return active_widget_ptr->delegate_mouse_event(me_to_child);
         }
         return widget::ptr();
@@ -60,28 +60,28 @@ namespace stk
 
     void switched_panel::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        widget::ptr active_widget_ptr=active_widget.lock();
-        if(active_widget_ptr)
+        widget::ptr active_widget_ptr = active_widget.lock();
+        if (active_widget_ptr)
         {
             rectangle redraw_rect = clip_rect;
             // Intersection tests should be in local coordinates
-            redraw_rect.position(redraw_rect.position()-rect_.position());
-            redraw_rect=redraw_rect.intersection(rect());
+            redraw_rect.position(redraw_rect.position()-position());
+            redraw_rect = redraw_rect.intersection(rect());
             
-            surface->offset(surface->offset() + active_widget_ptr->rect().p1());
-            active_widget_ptr->draw(surface,clip_rect);
-            surface->offset(surface->offset() - active_widget_ptr->rect().p1());
+            surface->offset(surface->offset() + active_widget_ptr->p1());
+            active_widget_ptr->draw(surface, clip_rect);
+            surface->offset(surface->offset() - active_widget_ptr->p1());
         }
     }
 
     void switched_panel::redraw(const rectangle& rect, drawable* source, bool transform)
     {
-        if(source!=active_widget.lock().get() && source)
+        if (source != active_widget.lock().get() && source)
             return;
         // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
         rectangle redraw_rect = rect;
-        if(transform)
-            redraw_rect.position(redraw_rect.position()+rect_.position());
+        if (transform)
+            redraw_rect.position(redraw_rect.position()+position());
         parent_.lock()->redraw(redraw_rect, this, true);
     }
 }

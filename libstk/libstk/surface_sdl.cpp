@@ -47,11 +47,12 @@ namespace stk
 
     surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
     {
-        SDL_MUTEX_LOCK;
-
         // ensure that SDL has been initialized
+        INFO("getting sdl_data pointer");
         sdl_data_ = sdl_data::get(); // reference counting
         sdl_data_->init();
+
+        SDL_MUTEX_LOCK; // this must come after assigning sdl_data_ or SDL will init and quit
 
         // if this is the first surface, init video and set the video mode
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0)

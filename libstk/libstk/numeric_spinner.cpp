@@ -61,7 +61,7 @@ namespace stk
                             }
                             build_label();
                             on_change();
-                            redraw(rect_);
+                            redraw(rect());
                             return;
                             break;
                         case key_downarrow:
@@ -73,7 +73,7 @@ namespace stk
                             }
                             build_label();
                             on_change();
-                            redraw(rect_);
+                            redraw(rect());
                             return;
                             break;
                     }
@@ -102,7 +102,7 @@ namespace stk
                     }
                     build_label();
                     on_change();
-                    redraw(rect_);
+                    redraw(rect());
                     return;
                 }
         }

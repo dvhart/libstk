@@ -81,7 +81,7 @@ namespace stk
             double increment() const { return increment_; }
             void increment(double val);
             bool wrap() const { return wrap_; }
-            void wrap(bool val) { wrap_ = val; redraw(rect_); }
+            void wrap(bool val) { wrap_ = val; redraw(rect()); }
 
             // numeric_spinner signals
             boost::signal<bool (), combiner::logical_or<bool> > on_change;

@@ -35,7 +35,6 @@ namespace stk
     protected:
         boost::weak_ptr<list> parent_;
         bool current_, selected_;
-        rectangle rect_;
         list_item(boost::shared_ptr<list> parent, std::wstring label);
         std::wstring label_;
 
@@ -56,37 +55,7 @@ namespace stk
         /********** LIST ITEM INTERFACE **********/
         std::wstring label() const { return label_; }
         void label(const std::wstring& label) { label_ = label; }
-
-        // wrap the rectangle interface
-        // getters
-        rectangle rect() const { return rect_; }
-        point p1() const { return rect_.p1(); }
-        point p2() const { return rect_.p2(); }
-        int x1() const { return rect_.x1(); }
-        int y1() const { return rect_.y1(); }
-        int x2() const { return rect_.x2(); }
-        int y2() const { return rect_.y2(); }
-        int width() const { return rect_.width(); }
-        virtual int height(); // implemented by the theme
-        // setters
-        void rect(const rectangle& rect) { rect_ = rect; }
-        void x1(int val) { rect_.x1(val); }
-        void y1(int val) { rect_.y1(val); }
-        void x2(int val) { rect_.x2(val); }
-        void y2(int val) { rect_.y2(val); }
-        void width(int val) { rect_.width(val); }
-        //void height(int val) { rect_.height(val); }
-        // utils
-        bool empty() const { return rect_.empty(); }
-        bool contains(int x, int y) const { return rect_.contains(x, y); }
-        bool contains(const point& p) const { return rect_.contains(p); }
-        bool intersects(const rectangle& rect) const { return rect_.intersects(rect); }
-        rectangle intersection(const rectangle& rhs) const { return rect_.intersection(rhs); }
-        point position() const { return rect_.position(); }
-        void position(int x, int y) { rect_.position(x, y); }
-        void position(const point& p) { rect_.position(p); }
-        
-
+        virtual int height(); // implemented by the theme 
         bool selected() const { return selected_; }
         void selected(bool val) { selected_ = val; }
         bool current() const { return current_; }

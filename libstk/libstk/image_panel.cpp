@@ -15,8 +15,8 @@
 
 namespace stk
 {
-    image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect,
-                                         image::ptr img)
+    image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect, 
+            image::ptr img)
     {
         image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
         parent->add(new_image_panel);

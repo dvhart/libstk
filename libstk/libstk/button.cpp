@@ -60,7 +60,7 @@ namespace stk
                 if (pressed_)
                 {
                     pressed_ = false;
-                    redraw(rect_);
+                    redraw(rect());
                     on_release();
                 }
                 return;
@@ -75,7 +75,7 @@ namespace stk
             {
             case key_enter:
                 pressed_ = true;
-                redraw(rect_);
+                redraw(rect());
                 on_press();
                 return;
                 break;
@@ -93,7 +93,7 @@ namespace stk
             if (!pressed())
             {
                 pressed_ = true;
-                redraw(rect_);
+                redraw(rect());
                 on_press();
             }
             return;
@@ -105,7 +105,7 @@ namespace stk
             if (pressed())
             {
                 pressed_ = false;
-                redraw(rect_);
+                redraw(rect());
                 on_release();
             }
             return;
