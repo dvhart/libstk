@@ -9,7 +9,6 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-#include <algorithm>
 #include <boost/bind.hpp>
 #include "libstk/scroll_box.h"
 #include "libstk/event.h"
@@ -24,32 +23,45 @@ namespace stk
 
         INFO("creating viewport");
         // FIXME: get the 20s from the theme somehow
-        rectangle vp_rect = rect;
+        rectangle vp_rect = rect; vp_rect.position(point(0, 0));
         if (v_scroll) vp_rect.x2(vp_rect.x2() - 20);
         if (h_scroll) vp_rect.y2(vp_rect.y2() - 20);
         new_scroll_box->viewport_ = viewport::create(new_scroll_box, vp_rect);
-        
-        if (v_scroll)
+       
+        if (v_scroll && h_scroll)
         {
-            INFO("creating v_scroll_bar");
-            rectangle v_rect(rect.width()-20, 0, 20, rect.height());
-            new_scroll_box->v_scroll_bar_ = scroll_bar::create(new_scroll_box, v_rect, 
+                rectangle v_rect(rect.width()-20, 0, 20, rect.height()-20);
+                new_scroll_box->v_scroll_bar_ = scroll_bar::create(new_scroll_box, v_rect, 
                         new_scroll_box->viewport_->v_scroll());
-        }
- 
-        if (h_scroll)
-        {
-            INFO("creating h_scroll_bar");
-            rectangle h_rect(0, rect.height()-20, rect.width(), 20);
-            new_scroll_box->h_scroll_bar_ = scroll_bar::create(new_scroll_box, h_rect, 
+
+                rectangle h_rect(0, rect.height()-20, rect.width()-20, 20);
+                new_scroll_box->h_scroll_bar_ = scroll_bar::create(new_scroll_box, h_rect, 
                         new_scroll_box->viewport_->h_scroll());
         }
+        else
+        {
+            if (v_scroll)
+            {
+                rectangle v_rect(rect.width()-20, 0, 20, rect.height());
+                new_scroll_box->v_scroll_bar_ = scroll_bar::create(new_scroll_box, v_rect, 
+                        new_scroll_box->viewport_->v_scroll());
+            }
+            if (h_scroll)
+            {
+                rectangle h_rect(0, rect.height()-20, rect.width(), 20);
+                new_scroll_box->h_scroll_bar_ = scroll_bar::create(new_scroll_box, h_rect, 
+                        new_scroll_box->viewport_->h_scroll());
+            }
+        }
+
+        new_scroll_box->constructed_ = true;
 
         parent->add(new_scroll_box);
         return new_scroll_box;
     }
 
-    scroll_box::scroll_box(container::ptr parent, const rectangle& rect) : container(parent, rect)
+    scroll_box::scroll_box(container::ptr parent, const rectangle& rect) : 
+        container(parent, rect), constructed_(false)
     {
         INFO("constructor");
         focusable_ = true;
@@ -84,7 +96,10 @@ namespace stk
 
     void scroll_box::add(widget::ptr item)
     {
-        container::add(item);
+        if (!constructed_)
+            container::add(item);
+        else
+            viewport_->add(item);
     }
 
     void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)

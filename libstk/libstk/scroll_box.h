@@ -32,6 +32,7 @@ namespace stk
         // FIXME: consider scroll_bar show properties { never, always, if_needed }
         scroll_box(container::ptr parent, const rectangle& rect);
 
+        bool constructed_;
         scroll_bar::ptr h_scroll_bar_;
         scroll_bar::ptr v_scroll_bar_;
         viewport::ptr viewport_;
@@ -58,8 +59,6 @@ namespace stk
         /********** END COMPONENT INTERFACE **********/
 
         /********** SCROLL BOX INTERFACE **********/
-        viewport::ptr get_viewport() { return viewport_; } // FIXME: ugly hackish kludge!
-
         scroll_model::ptr h_scroll() { return viewport_->h_scroll(); }
         void h_scroll(scroll_model::ptr model); 
 

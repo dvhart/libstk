@@ -396,27 +396,40 @@ namespace stk
         rectangle outline_rect = rect(); outline_rect.position(0, 0);
         rectangle vis_rect = outline_rect; 
         INFO("  model begin: " << model_->begin() << ", vis_size" << model_->vis_size());
+
+        int min_start = 3;
+        int max_end   = MAX(width(), height())-3;
+        int max_size  = max_end - min_start;
+        int start = MAX(max_size*model_->begin()/model_->size()+2, 2);
+        int end = MIN(max_size*model_->begin()/model_->size()+2+max_size*model_->vis_size()/model_->size(), max_end);
+
+        if (start > max_end || end < min_start) return;
+
         if (width() > height())
         { // horizontal scrollbar
-            // FIXME: the scrollbar move backwards!
-            vis_rect.x1(width()*model_->begin()/model_->size());            
-            vis_rect.x2(vis_rect.x1()+width()*model_->vis_size()/model_->size());            
+            vis_rect.y1(vis_rect.y1()+2);
+            vis_rect.y2(vis_rect.y2()-2);
+            vis_rect.x1(start);
+            vis_rect.x2(end);
         }
         else
         { // vertical scrollbar
-            // FIXME: the scrollbar move backwards!
-            vis_rect.y1(height()*model_->begin()/model_->size());            
-            vis_rect.y2(vis_rect.y1() + height()*model_->vis_size()/model_->size());            
+            vis_rect.x1(vis_rect.x1()+2);
+            vis_rect.x2(vis_rect.x2()-2);
+            vis_rect.y1(start);
+            vis_rect.y2(end);
         }
 
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_focused_str, surface)));
+        gc->fill_color(color_manager::get()->get_color(
+                    color_properties(fill_color_normal_str, surface)));
         surface->gc(gc);
         INFO("  drawing outline: " << outline_rect);
         surface->draw_rect(outline_rect);
         INFO("  drawing bar: " << vis_rect);
-        surface->draw_rect(vis_rect);
+        surface->fill_rect(vis_rect);
     }
     
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
