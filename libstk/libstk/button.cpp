@@ -27,6 +27,7 @@ namespace stk
 		const rectangle& rect) : widget(parent, rect), label_(label)
 	{
 		cout << "button::button()" << endl;
+		focusable(true);
 	}
 
 	button::~button()

@@ -119,7 +119,6 @@ namespace stk
 		//parent_.lock()->handle_event(e);
 	}
 
-	// FIXME: account for unfocusable widgets
 	widget::ptr container::focus_next()
 	{
 		cout << "container::focus_next()" << endl;
@@ -131,10 +130,14 @@ namespace stk
 			if ((*iter)->focused())
 			{
 				(*iter)->focused(false);
-				if (++iter != children_.end())
+				// find the next focusable widget
+				while (++iter != children_.end() )
 				{
-					(*iter)->focused(true);
-					return *iter;
+					if ((*iter)->focusable())
+					{
+						(*iter)->focused(true);
+						return *iter;
+					}
 				}
 				break;
 			}
@@ -142,7 +145,6 @@ namespace stk
 		return parent_.lock()->focus_next();
 	}
 	
-	// FIXME: account for unfocusable widgets
 	widget::ptr container::focus_prev()
 	{
 		cout << "container::focus_prev()" << endl;
@@ -154,10 +156,14 @@ namespace stk
 			if ((*iter)->focused())
 			{
 				(*iter)->focused(false);
-				if (iter != children_.begin())
+				// find the previous focusable widget
+				while (iter != children_.begin())
 				{
-					(*--iter)->focused(true);
-					return *iter;
+					if ((*--iter)->focusable())
+					{
+						(*iter)->focused(true);
+						return *iter;
+					}
 				}
 				break;
 			}

@@ -56,16 +56,53 @@ namespace stk
 		}
 		parent_.lock()->handle_event(e); 
 	}
-
-	boost::weak_ptr<widget> state::focused_widget()
+	
+	// FIXME: delve into containers too
+	// FIXME: error checking (empty children_, no focusable children, etc.)
+	// we can return an empty pointer
+	widget::ptr state::focus_first()
 	{
-		return focused_widget_;
+		//cout << "state::focus_first()" << endl;
+		widget::ptr temp_widget;
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
+		{
+			if (!temp_widget && (*iter)->focusable())
+			{
+				temp_widget = *iter;
+				temp_widget->focused(true);
+				continue;
+			}
+			// keep looking for the focused widget if there is one
+			if ((*iter)->focused())
+			{
+				(*iter)->focused(false);
+				break; // only one can be focused at a time
+			}
+		}
+		return temp_widget;
 	}
-
-	void state::focused_widget(boost::weak_ptr<widget> value)
+	
+	// FIXME: error checking (empty children_, no focusable children, etc.)
+	// we can return an empty pointer
+	widget::ptr state::focus_last()
 	{
-		focused_widget_=value;
+		//cout << "state::focus_last()" << endl;
+		widget::ptr temp_widget;
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
+		{
+			if ((*iter)->focusable()) 
+			{
+				temp_widget = *iter;
+			}
+			if ((*iter)->focused()) (*iter)->focused(false);
+		}
+		if (temp_widget)
+			temp_widget->focused(true);
+		return temp_widget;
 	}
+	
 }
 
 

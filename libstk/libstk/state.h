@@ -19,13 +19,14 @@ namespace stk
 
 		protected:
 			state(application::ptr parent);
-			widget::weak_ptr focused_widget_; // FIXME: are we using this ?
 			
 		public:
 			virtual ~state();
 			static state::ptr create(application::ptr parent);
-			widget::weak_ptr focused_widget();
-			void focused_widget(widget::weak_ptr value);
+
+			// these two should probably be moved up to container
+			virtual widget::ptr focus_first();
+			virtual widget::ptr focus_last();
 
 			// event_handler interface
 			virtual void handle_event(event::ptr e);
