@@ -27,6 +27,7 @@ Scrollbox
 Edit Box
 Combo Box
 Text Area
+Should widgets be positioned relative to their parent container ?
 Markup Area (simple html renderer ?)
 Surface blitting / locking / creation (from app surface ?)
 rectangle& or rectangle::ptr

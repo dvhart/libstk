@@ -1,3 +1,92 @@
+2003-07-13 17:21  dvhart
+
+	* libstk/application.cpp, libstk/application.h, test/Makefile.am,
+	test/dihmen.cpp, test/test_app.cpp: Added dihmen test app,
+	application::current_state(state::ptr) now returns bool to ease use
+	as a slot, removed stk:: prefix in test_app.cpp
+
+2003-07-13 08:51  dvhart
+
+	* TODO, libstk/list_item.h, libstk/parrots.ppm, libstk/widget.cpp,
+	libstk/widget.h: some header comment formatting, removed widget tab
+	code, removed parrots image from libstk dir, updated TODO file
+
+2003-07-11 21:08  dvhart
+
+	* libstk/: application.cpp, button.cpp, button.h, container.cpp,
+	hotkey.h, spinner.cpp, spinner.h: fixed keyboard widget cycling
+	(hotkey now returns false if it doesn't handle the key, the value
+	of sig() otherwise), changed some comments
+
+2003-07-11 19:39  dvhart
+
+	* TODO, doc/uml.dia, libstk/Makefile.am, libstk/spinner.cpp,
+	libstk/spinner.h, libstk/tribal_theme.cpp, test/Makefile.am: Added
+	spinner::region(int x, int y), implemented in the theme along with
+	spinner::draw().  region() should now be used in all widgets to
+	determine what region a coordinate resides in.
+
+2003-07-08 09:21  carter
+
+	* libstk/: event_producer_elotouch.cpp, event_producer_elotouch.h:
+	added elotouch event producer
+
+2003-07-07 19:00  dhoerner
+
+	* autogen.sh, configure.in, libstk.pws, libstk/Makefile.am,
+	libstk/edit_box.cpp, libstk/edit_box.h, libstk/stk.h,
+	libstk/tribal_theme.cpp, test/test_app.cpp: added the edit_box
+	widget to the source. still lacking some features.
+
+2003-07-03 05:03  carter
+
+	* TODO: Updated my TODO's
+
+2003-06-29 02:26  carter
+
+	* libstk/: Makefile.am, application.cpp, config.h.in, stk.h:
+	Changed build system to allow backend selection.  Removed
+	uneccesary headers from stk.h Fixed some (in my eyes) Bug with the
+	initial drawing in Application.cpp
+
+2003-06-29 02:22  carter
+
+	* libstk/: backend_dfb.cpp, backend_dfb.h, surface_dfb.cpp,
+	surface_dfb.h: Added preliminary (read: hacked together) Directfb
+	Backend
+
+2003-06-29 02:21  carter
+
+	* libstk/: logging.cpp, logging.h: added Logging system
+
+2003-06-29 02:16  carter
+
+	* configure.in: [no log message]
+
+2003-06-29 02:15  carter
+
+	* test/: Makefile.am, hello_world_dfb.cpp, test_app_dfb.cpp: added
+	examples for Directfb usage
+
+2003-06-27 14:05  dvhart
+
+	* TODO, doc/irc_27062003_session.txt: TODO update and todays irc
+	log
+
+2003-06-27 08:36  dvhart
+
+	* libstk/: application.cpp, application.h: made application a
+	singleton
+
+2003-06-26 09:43  dvhart
+
+	* libstk/: color_manager.cpp, color_manager.h, tribal_theme.cpp:
+	converted color_manager to a singleton
+
+2003-06-26 00:04  dvhart
+
+	* ChangeLog: updated changelog
+
 2003-06-26 00:03  dvhart
 
 	* TODO, libstk/event_system.cpp, libstk/font_manager.cpp,
