@@ -39,8 +39,7 @@ namespace stk
         /// helper function to redraw the whole widget
         void redraw();
     public:
-        static viewport::ptr create(container::ptr parent,
-                                    const rectangle& rect);
+        static viewport::ptr create(container::ptr parent, const rectangle& rect);
         ~viewport();
 
         /********** DRAWABLE INTERFACE **********/

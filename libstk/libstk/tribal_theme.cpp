@@ -28,7 +28,6 @@
 #include "libstk/numeric_spinner.h"
 #include "libstk/progress.h"
 #include "libstk/scroll_bar.h"
-#include "libstk/scroll_box.h"
 #include "libstk/spinner.h"
 #include "libstk/spreadsheet.h"
 #include "libstk/state.h"

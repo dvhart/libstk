@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 #ifdef HAVE_SDL
         else if (surface_type == "sdl")
         {
-            test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
+            test_surface = surface_sdl::create(rectangle(0, 0, 640, 480), false);
             test_event_producer = event_producer_sdl::create();
         }
 #endif
@@ -162,19 +162,23 @@ int main(int argc, char* argv[])
         INFO("app - creating an image_panel in a scroll panel");
         label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"),
                 rectangle(10, 50, 150, 30));
-        viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
-        image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
-                rectangle(0, 0, 384, 256), image::create(test_viewport->surface(), "parrots.png"));
-        scroll_bar::ptr h_scroll_bar = scroll_bar::create(test_state, rectangle(10, 70, 350, 20), 
-                test_viewport->h_scroll());
+        scroll_box::ptr test_scroll_box = scroll_box::create(test_state, 
+                rectangle(10, 90, 350, 200), true, true);
+        
+        //viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
+        image_panel::ptr test_image_panel = image_panel::create(test_scroll_box->get_viewport(), 
+                rectangle(0, 0, 384, 256), image::create(test_scroll_box->surface(), "parrots.png"));
+        //scroll_bar::ptr h_scroll_bar = scroll_bar::create(test_state, rectangle(10, 70, 350, 20), 
+        //        test_viewport->h_scroll());
+        
         
         //scroll(test_viewport->h_scroll(),-10);
         button::ptr scroll_left = button::create(test_state,L"Scroll-", 
 			rectangle(100, 300, 90, 40));
-        scroll_left->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), -10));
+        scroll_left->on_release.connect(boost::bind(&scroll_slot, test_scroll_box->h_scroll(), -10));
         button::ptr scroll_right=button::create(test_state,L"Scroll+", 
 			rectangle(200, 300, 90, 40));
-        scroll_right->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), 10));
+        scroll_right->on_release.connect(boost::bind(&scroll_slot, test_scroll_box->h_scroll(), 10));
         //void scroll(scroll_model::ptr target,int increment)
 
         // create a list

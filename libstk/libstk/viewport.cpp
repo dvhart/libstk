@@ -21,6 +21,8 @@ namespace stk
     viewport::ptr viewport::create(container::ptr parent, const rectangle& rect)
     {
         viewport::ptr new_viewport(new viewport(parent, rect));
+        INFO("viewport constructed, adding to parent");
+        if (!parent) ERROR("viewport parent null!");
         parent->add(new_viewport);
         return new_viewport;
     }
