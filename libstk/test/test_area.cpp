@@ -1,7 +1,7 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: The typical hello_world application using Libstk. 
- *     AUTHORS: Darren Hart
+ *     AUTHORS: Chris Slade 
  *  START DATE: 2003/May/30
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
         surface::ptr screen;
         event_producer::ptr ep;
         INFO("creating sdl surface");
-        screen = surface_sdl::create(rectangle(0, 0, 640, 480));
+        screen = surface_sdl::create(rectangle(0, 0, 640, 480), false);
         INFO("creating sdl event_producer");
         ep = event_producer_sdl::create();
 
