@@ -1,6 +1,9 @@
 AC_INIT(AUTHORS)
 AM_INIT_AUTOMAKE(libstk, 0.2.0)
 
+libstk_libtool_version=0:2:0
+AC_SUBST(libstk_libtool_version)
+
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL

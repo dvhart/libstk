@@ -50,6 +50,6 @@ test_app_SOURCES  = test_app.cpp
 	
 # FIXME: do the autotools thing for freetype
 test_app_LDADD = $(SDL_LIBS) -lboost_signals -lfreetype -lz libstk.la
-libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @VERSION@
+libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@
 
 INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir)
