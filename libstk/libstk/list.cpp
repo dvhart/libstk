@@ -55,7 +55,8 @@ namespace stk
                 y += items_[current_]->height();
                 if (y > me->y()-y1()) break;
             }
-            items_[current_]->selected(true);
+            if(current_<items_.size()) // Crashes otherwise
+                items_[current_]->selected(true);
             redraw(rect());
             return;
             break;
