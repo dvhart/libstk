@@ -6,12 +6,6 @@ MEETING TOPICS
   what types of widgets make sense in embedded devices ?
 	    combo box are very mouse oriented for example, what types of widgets
 	    are IR Remote friendly ?
-- what image formats do we want to support ? xpm, png, bmp, etc...
-      how do we want to add load routines?  as functors in a map based on magic
-			number?  some way to register a loader?  or KISS and only support a couple
-			simple formats since the user can always convert, say XPM and PPM for
-			simplicity's sake?
-- should we have a color manager, similar to the font manager - dvhart to write test impl
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
 - add support for multiple screens (ie VFD on fron panel and SVIDEO to television)
@@ -25,6 +19,12 @@ ie:
     /// below these lines of the description
     class|function { }
 write it!!!!
+
+SYSTEM
+======
+image loader class
+	just png for now but we will want at least jpg as well for user app so
+	loaders should be able to be added.
 
 WIDGETS TO WRITE
 ================
