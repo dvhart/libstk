@@ -374,5 +374,10 @@ namespace stk
         theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface);
         theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
     }
-
+    bool spinner::arrow_clicked(int x,int y)
+    {
+	if(x > x2()-15)
+	    return true;
+	return false;
+    }
 }

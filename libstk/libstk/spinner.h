@@ -33,11 +33,16 @@ namespace stk
 
     protected:
         spinner(container::ptr parent, const rectangle& rect);
+	/// Used to check if a positions lies on the scroll arrows.
+	/// The event handler uses this method to check if the mouseclick should be
+	/// used to scroll up or down
+	bool arrow_clicked(int x,int y);
+	
 
     public:
         static spinner::ptr create(container::ptr parent, const rectangle& rect);
         virtual ~spinner();
-
+		
         /********** EVENT HANDLER INTERFACE **********/
         virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/
