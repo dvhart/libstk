@@ -55,7 +55,9 @@ namespace stk
     {
         if (line_wrap_)
         {
-            v_scroll_->size(MAX(total_lines()*(get_font()->height()+line_spacing()), 
+            //add one to total lines to get to the bottom of the last line
+            int temp = total_lines();
+            v_scroll_->size(MAX((temp+0)*(get_font()->height()+line_spacing()), 
                         v_scroll_->vis_size()));
             h_scroll_->size(h_scroll_->vis_size());
         }
@@ -69,14 +71,14 @@ namespace stk
             std::wstring line_str;
             //reset the width
             h_scroll_->size(h_scroll_->vis_size());
-            while(rest_of_text_.length())
+            while(rest_of_text_.length()||new_line_)
             {
                 line_str = next_line();
                 if (get_font()->draw_len(line_str) > h_scroll_->size())
                     h_scroll_->size(get_font()->draw_len(line_str));
                 line_cnt++;
             }
-            v_scroll_->size(MAX( line_cnt*(get_font()->height()+line_spacing()), 
+            v_scroll_->size(MAX( (line_cnt+0)*(get_font()->height()+line_spacing()), 
                             v_scroll_->vis_size()));
             h_scroll_->begin(scr);
         }
@@ -436,7 +438,7 @@ namespace stk
         //intialize next_line
         rest_of_text_ = text_;
         int num_chars = 0;
-        while (rest_of_text_.length()) 
+        while (rest_of_text_.length() || new_line_) 
         {
             // parse out the next line
             line_str = next_line();
@@ -463,7 +465,7 @@ namespace stk
         rest_of_text_ = text_;
         int num_chars = 0;
         int line_num = 0; 
-        while (rest_of_text_.length()) 
+        while (rest_of_text_.length() || new_line_) 
         {
             // parse out the next line
             line_str = next_line();
@@ -487,7 +489,7 @@ namespace stk
         //initialize next_linw
         std::wstring rest_of_text_ = text_;
         int line_num = 0; 
-        while (rest_of_text_.length()) 
+        while (rest_of_text_.length() || new_line_) 
         {
             // parse out the next line
             line_str = next_line();
@@ -503,8 +505,8 @@ namespace stk
     
     int text_area::total_lines()
     {
-        int line_num=0;
-        rest_of_text_=text_;
+        int line_num = 0;
+        rest_of_text_ = text_;
         while(rest_of_text_.length() || new_line_)
         {
             next_line();
@@ -522,11 +524,19 @@ namespace stk
         while(rest_of_text_.length() || new_line_)
         {
             line_str = next_line();
-            if (num_chars+(int)line_str.length()+new_line_ > selection_end_)
+            if ( selection_end_ >= num_chars &&
+                    selection_end_ <= (num_chars+(int)line_str.length()) )
             {
-                int ypos = line_num*(get_font()->height()+line_spacing());
-                int xpos = get_font()->draw_len(line_str.substr(0, selection_end_-num_chars));
-                return point(xpos,ypos);
+                int chars_before_cursor = selection_end_ - num_chars;
+                //if it is in the middle of the line, or at end of line with a new line,
+                // or it is at the end of the text
+                if ((chars_before_cursor != (int)line_str.length()) ||    
+                      new_line_ || ((num_chars+chars_before_cursor) == (int)text_.length()))
+                {
+                    int ypos = line_num*(get_font()->height()+line_spacing());
+                    int xpos = get_font()->draw_len(line_str.substr(0, selection_end_-num_chars));
+                    return point(xpos,ypos);
+                }
             }
             num_chars+=line_str.length()+new_line_;
             line_num++;
@@ -534,7 +544,7 @@ namespace stk
         //if at very end of the text
         if (selection_end_ == (int)text_.length())
         {
-            int ypos = (line_num-1)*(get_font()->height()+line_spacing());
+            int ypos = (line_num)*(get_font()->height()+line_spacing());
             int xpos = get_font()->draw_len(line_str);
             return point(xpos,ypos);
         }
