@@ -86,6 +86,9 @@ namespace stk
         int speed();
         void faster();
         void slower();
+        // FIXME: clean this up; maybe delete the toggle_fullscreen method
+        bool fullscreen() { return fullscreen_; }
+        void fullscreen(bool val) { if (val != fullscreen_) toggle_fullscreen(); }
         void toggle_fullscreen();
         bool visualization(const std::string& name);
         /// Send a xine event to the current stream (for more customizable frontends)
