@@ -96,21 +96,21 @@ int main(int argc, char* argv[])
 
         
         // create the application
-        application::ptr test_app = application::create(screen);
+        application::ptr app = application::create(screen);
 
         // create the main state and a label
-        state::ptr test_state = state::create(test_app);
+        state::ptr test_state = state::create(app);
         label::ptr test_label = label::create(test_state, std::wstring(L"Hello World"), 
                 rectangle(260, 210, 100, 30));
 
         // add a timer (quit after 15 seconds)
         INFO("hello_world - creating timer to quit after 15 seconds");
         timer::ptr quit_timer = timer::create(15000, false);
-        quit_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
-        test_app->add_timer(quit_timer);
+        quit_timer->on_timer.connect(boost::function<bool()>((boost::bind(&application::quit, app.get()), true)));
+        app->add_timer(quit_timer);
 
         // run the program
-        retval = test_app->run();
+        retval = app->run();
     }
     catch (const exception& e)
     {

@@ -64,7 +64,7 @@ namespace stk
 
         /// Runs The Application, returns when the application is shut down
         int run();
-        bool quit(); // returns bool so it can use it as a slot
+        void quit(); 
 
         /// Adds a new state to the Application
         void add_state(boost::shared_ptr<state>);
@@ -84,7 +84,7 @@ namespace stk
         virtual widget::ptr focus_next();
         virtual widget::ptr focus_prev();
 
-        bool current_state(boost::shared_ptr<stk::state> new_cur_state);
+        void current_state(boost::shared_ptr<stk::state> new_cur_state);
         boost::shared_ptr<stk::state> current_state() const;
 
         // Triggered before STK's drawing code ran  \FIXME what does the return value mean?

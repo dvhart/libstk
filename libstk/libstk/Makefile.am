@@ -60,6 +60,7 @@ libstk_la_SOURCES =\
 	overlay.h \
 	overlay_dfb.h\
 	overlay_sdl.h \
+        override_return.h \
 	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	rectangle.h rectangle.cpp \

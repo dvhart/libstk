@@ -78,5 +78,6 @@
 #ifdef HAVE_XINE
 # include <libstk/xine_panel.h>
 #endif
+#include <libstk/override_return.h>
 
 #endif

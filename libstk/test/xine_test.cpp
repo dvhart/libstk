@@ -31,55 +31,6 @@
 
 using namespace stk;
 
-
-// testing override return syntax
-template<class F, class V> class override_return_t
-{
-private:
-
-    F f_;
-    V v_;
-
-public:
-
-    typedef V result_type;
-
-    override_return_t(F const & f, V const & v): f_(f), v_(v)
-    {
-    }
-
-    result_type operator()()
-    {
-        f_();
-        return v_;
-    }
-
-    result_type operator()() const
-    {
-        f_();
-        return v_;
-    }
-};
-
-template<class F, class V> override_return_t<F, V> override_return(F const &
-f, V const & v)
-{
-    return override_return_t<F, V>(f, v);
-}
-
-template<class R, class F, class L, class V>
-override_return_t<boost::_bi::bind_t<R, F, L>, V>
-operator,(boost::_bi::bind_t<R, F, L> const & f, V const & v)
-{
-    return override_return_t<boost::_bi::bind_t<R, F, L>, V>(f, v);
-}
-
-
-// end override return syntax
-
-
-
-
 int main(int argc, char* argv[])
 {
     int retval = 0;
@@ -146,7 +97,7 @@ int main(int argc, char* argv[])
         // buttons
         button::ptr prev_button = button::create(main_state, std::wstring(L"|<"), 
                 rectangle(50, 440, 81, 30));
-        prev_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::play, xp.get(), 0, 0), true)));
+        prev_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::play, xp.get(), 0, 0), true) ));
         
         button::ptr play_button = button::create(main_state, std::wstring(L"Play"), 
                 rectangle(141, 440, 81, 30));
@@ -156,18 +107,17 @@ int main(int argc, char* argv[])
                 rectangle(232, 440, 81, 30));
         pause_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::playpause, xp.get()), true)));
         
-        button::ptr rw_button = button::create(main_state, std::wstring(L"<<"), 
+        button::ptr slower_button = button::create(main_state, std::wstring(L"Slower"), 
                 rectangle(323, 440, 81, 30));
-        rw_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::slower, xp.get()), true)));
+        slower_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::slower, xp.get()), true)));
         
-        button::ptr ff_button = button::create(main_state, std::wstring(L">>"), 
+        button::ptr faster_button = button::create(main_state, std::wstring(L"Faster"), 
                 rectangle(414, 440, 81, 30));
-        ff_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::faster, xp.get()), true)));
+        faster_button->on_release.connect(boost::function<bool()>((boost::bind(&xine_panel::faster, xp.get()), true)));
         
         button::ptr quit_button = button::create(main_state, std::wstring(L"Quit"), 
                 rectangle(505, 440, 81, 30));
-        quit_button->on_release.connect(boost::bind(&application::quit, app.get()));
-        //quit_button->on_release.connect(boost::function<bool()>((boost::bind(&application::quit, app.get()), true)));
+        quit_button->on_release.connect(boost::function<bool()>((boost::bind(&application::quit, app.get()), true)));
 
 
 

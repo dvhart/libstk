@@ -38,8 +38,7 @@ namespace stk
         std::list<boost::shared_ptr<event_producer> > event_producers_;
 
     public:
-        static event_system::ptr get
-            ();
+        static event_system::ptr get();
         ~event_system();
         void add_producer(boost::shared_ptr<event_producer> producer);
         event::ptr poll_event();

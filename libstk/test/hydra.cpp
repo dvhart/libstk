@@ -41,20 +41,24 @@ int main(int argc, char* argv[])
 
         // set up the main state
         label::ptr main_label = label::create(main_state, L"MAIN", rectangle(10, 10, 100, 30));
+        
         // several buttons
         // go to the config state
         button::ptr config_button = button::create(main_state, L"Config",
                 rectangle(120, 10, 100, 30));
-        config_button->on_release.connect( boost::bind(&application::current_state, 
-                    app.get(), config_state) );
+        config_button->on_release.connect(boost::function<bool()>(
+                    (boost::bind(&application::current_state, app.get(), config_state), true)));
+
         // quit the application
         button::ptr main_quit_button = button::create(main_state, L"Quit (ESC)",
                 rectangle(530, 440, 100, 30));
-        main_quit_button->on_release.connect(boost::bind(&application::quit, app.get()));
+        main_quit_button->on_release.connect(boost::function<bool()>(
+                    (boost::bind(&application::quit, app.get()), true)));
 
         // set up the config state
         label::ptr config_label = label::create(config_state, L"CONFIG", 
                 rectangle(10, 10, 100, 30));
+        
         // several spinners
         // Keyboard spinner
         label::ptr kb_label = label::create(config_state, L"Keyboard: ", 
@@ -67,8 +71,8 @@ int main(int argc, char* argv[])
         // done button (return to main)
         button::ptr config_done_button = button::create(config_state, L"Done",
                 rectangle(530, 440, 100, 30));
-        config_done_button->on_release.connect(boost::bind(&application::current_state, 
-                    app.get(), main_state));
+        config_done_button->on_release.connect(boost::function<bool()>(
+                    (boost::bind(&application::current_state, app.get(), main_state), true)));
 
         // run the program
         retval = app->run();
