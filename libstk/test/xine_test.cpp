@@ -95,14 +95,14 @@ int main(int argc, char* argv[])
 
         // create the main state and a button
         state::ptr main_state = state::create(app);
-        button::ptr play_button = button::create(main_state, std::wstring(L"Play MRL"), 
+        button::ptr quit_button = button::create(main_state, std::wstring(L"Quit"), 
                 rectangle(10, 10, 100, 30));
+        quit_button->on_release.connect(boost::bind(&stk::application::quit, app.get()));
+
 
         // create the xine panel
-        //xine_panel::ptr xp = xine_panel::create(main_state, rectangle(310, 120, 320, 240));
         xine_panel::ptr xp = xine_panel::create(main_state, rectangle(50, 50, 540, 380));
 
-        
         // start up xine
         static xine_t*             xine;
         static xine_stream_t*      stream;
@@ -138,8 +138,8 @@ int main(int argc, char* argv[])
 
         // add a timer (quit after 30 seconds)
         INFO("xine_test - creating timer to quit after 30 seconds");
-        timer::ptr quit_timer = timer::create(30000, true); // every 20 seconds
-        quit_timer->on_timer.connect( boost::bind(&stk::application::quit, app.get()));
+        timer::ptr quit_timer = timer::create(30000, false);
+        quit_timer->on_timer.connect(boost::bind(&stk::application::quit, app.get()));
         app->add_timer(quit_timer);
 
         INFO("running the libstk app");

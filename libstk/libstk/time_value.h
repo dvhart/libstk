@@ -17,6 +17,7 @@
 
 /// FIXME: make this configured at compile time
 #include <libstk/posix_time.h>
+#include <libstk/logging.h>
 
 namespace stk
 {
@@ -33,26 +34,21 @@ namespace stk
             seconds_ = tv.seconds();
             millis_ = tv.millis();
         }
-        time_value(int seconds, int millis)
-                : seconds_(seconds), millis_(millis)
+
+        time_value(int seconds, int millis) : seconds_(seconds), millis_(millis)
         { }
+
         ~time_value()
         { }
 
-        int millis() const
-        {
-            return millis_;
-        }
-        int seconds() const
-        {
-            return seconds_;
-        }
+        int millis() const { return millis_; }
+        int seconds() const { return seconds_; }
 
         time_value operator-(const time_value& rhs)
         {
             int carry = 0;
             int t_millis = millis_ - rhs.millis();
-            if (t_millis < 0)
+            if (t_millis < 0 && seconds_ > rhs.seconds())
             {
                 t_millis += 1000;
                 carry = 1;
@@ -66,8 +62,8 @@ namespace stk
             int t_millis = millis_ + rhs.millis();
             if (t_millis > 1000)
             {
-                carry = 1;
                 t_millis -= 1000;
+                carry = 1;
             }
             return time_value(seconds_ + rhs.seconds() + carry, t_millis);
         }

@@ -13,6 +13,7 @@
 #include <sys/time.h>
 
 #include "libstk/time_value.h"
+#include "libstk/logging.h"
 
 namespace stk
 {
@@ -20,7 +21,9 @@ namespace stk
     {
         struct timeval tv;
         gettimeofday(&tv, NULL);
-        return time_value(tv.tv_sec, tv.tv_usec/1000);
+        unsigned int secs = tv.tv_sec;
+        unsigned int millis = tv.tv_usec/1000;
+        return time_value(secs, millis);
     }
 }
 

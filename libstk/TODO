@@ -18,7 +18,7 @@ Edit Box (could be prettier, setting cursor/selection support on click and via A
 Text Area - simple, no line break strategy, just \n and spaces, editable parameter and scroll model
           - wrap visually, don't modify content
 Markup Area (simple html renderer ?)
-Surface blitting / locking / creation (from app surface ?) - YES, ADD virtual create(...) to surface classes
+Surface blitting / locking / creation (from app surface ?) - YES
 surface: finish locking and add pixel_format routine
 surface_fbdev - Vernon to finish
 SDL - look into offscreen surfaces (can they be created prior to the main screen?)

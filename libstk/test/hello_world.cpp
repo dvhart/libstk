@@ -103,9 +103,9 @@ int main(int argc, char* argv[])
         label::ptr test_label = label::create(test_state, std::wstring(L"Hello World"), 
                 rectangle(260, 210, 100, 30));
 
-        // add a timer (quit after 30 seconds)
+        // add a timer (quit after 15 seconds)
         INFO("hello_world - creating timer to quit after 15 seconds");
-        timer::ptr quit_timer = timer::create(15000, true); // every 20 seconds
+        timer::ptr quit_timer = timer::create(15000, false);
         quit_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
         test_app->add_timer(quit_timer);
 

@@ -28,7 +28,7 @@ namespace stk
         dsc.flags = DSDESC_CAPS;
         backend_handle = backend_dfb::get();
 
-        if(primary)
+        if (primary)
         {
             dsc.caps = static_cast<DFBSurfaceCapabilities>( DSCAPS_FLIPPING | DSCAPS_PRIMARY) ;
         }
@@ -39,7 +39,7 @@ namespace stk
             dsc.pixelformat = DSPF_ARGB; // \FIXME Hardcode a format with alpha for now!
         }
 
-        if(rect_specified)
+        if (rect_specified)
         {
             dsc.flags = (DFBSurfaceDescriptionFlags)( dsc.flags | DSDESC_WIDTH | DSDESC_HEIGHT);
             dsc.width = (*rect).width();
@@ -59,16 +59,19 @@ namespace stk
         
         INFO("surface create");
     }
+    
     surface_dfb::~surface_dfb()
     {
         INFO("destructor");
         surface->Release(surface);
     }
+    
     surface_dfb::ptr surface_dfb::create()
     {
         surface_dfb::ptr new_surface_dfb(new surface_dfb(boost::optional<rectangle>(), true));
         return new_surface_dfb;
     }
+    
     surface_dfb::ptr surface_dfb::create(const rectangle& rect, bool primary)
     {
         surface_dfb::ptr res(new surface_dfb(boost::optional<rectangle>(rect), primary));
@@ -86,6 +89,8 @@ namespace stk
         y += offset_.y();
         surface->SetDrawingFlags(surface, DSDRAW_BLEND);
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
+        // FIXME: sometimes this draws a line from 0,0 to x,y
+        // FIXME: how do we get direct pixel access
         surface->DrawLine(surface, x, y, x, y); // hack *ggg*
     }
     
@@ -151,13 +156,13 @@ namespace stk
         return new_overlay;
     }
     
-
     // overridden drawing routines
     void surface_dfb::blit(stk::surface& dst_surface)
     {
         // FIXME: implement me!
         WARN("surface_dfb::blit(surface) not implemented");
     }
+    
     void surface_dfb::blit(stk::surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
         INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
@@ -192,6 +197,7 @@ namespace stk
     {
         fill_rect(rect.x1(), rect.y1(), rect.x2(), rect.y2());
     }
+    
     void surface_dfb::draw_line(int x1, int y1, int x2, int y2)
     {
         x1 += offset_.x();
@@ -202,10 +208,12 @@ namespace stk
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
         surface->DrawLine(surface, x1, y1, (x2-x1), (y2-y1));
     }
+    
     void surface_dfb::draw_rect(const rectangle& rect)
     {
         draw_rect(rect.x1(), rect.y1(), rect.x2(), rect.y2());
     }
+    
     void surface_dfb::draw_rect(int x1, int y1, int x2, int y2)
     {
         x1 += offset_.x();
@@ -215,10 +223,11 @@ namespace stk
         color clr = gc_->line_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
         surface->DrawRectangle(surface, x1, y1, (x2-x1), (y2-y1));
-        
     }
+    
     void surface_dfb::clip_rect(const rectangle& clip_rectangle)
     {
+        // FIXME: this doesn't set the clip_rect_ in the surface_dfb class!
         if (clip_rectangle.empty())
             surface->SetClip(surface, NULL);
         else

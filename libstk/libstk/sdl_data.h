@@ -16,9 +16,11 @@
 #include <boost/weak_ptr.hpp>
 #include <libstk/exceptions.h>
 
+#define SDL_MUTEX_LOCK sdl_data::get()->lock_mutex();
+#define SDL_MUTEX_UNLOCK sdl_data::get()->unlock_mutex();
+
 namespace stk
 {
-
     class sdl_data
     {
     public:
@@ -30,19 +32,31 @@ namespace stk
         bool first_init_;
         /// Singleton instance
         static sdl_data::ptr instance_;
+        /// A mutex used to prevent threads for accessing surface data concurrently
+        SDL_mutex* mutex_; // really an ugly hack, but SDL isn't meant to be a production surface
         sdl_data();
 
     public:
         ~sdl_data();
         /// Get the singleton instance_
-        static sdl_data::ptr get
-            ();
+        static sdl_data::ptr get();
         /// Initialize SDL with SDL_Init if it hasn't been already
         void init();
         /// Return true if SDL_Init has been called, false otherwise
-        bool first_init() const
+        bool first_init() const { return first_init_; }
+        int lock_mutex()
         {
-            return first_init_;
+            int ret;
+            if ((ret = SDL_mutexP(mutex_)) == -1)
+                throw error_message_exception("sdl_data::lock_mutex() - SDL_mutexP() failed");
+            return ret;
+        }
+        int unlock_mutex()
+        {
+            int ret;
+            if ((ret = SDL_mutexV(mutex_)) == -1)
+                throw error_message_exception("sdl_data::unlock_mutex() - SDL_mutexV() failed");
+            return ret;
         }
     };
 }

@@ -12,6 +12,7 @@
 #include "libstk/timer.h"
 #include "libstk/exceptions.h"
 #include "libstk/time_value.h"
+#include "libstk/logging.h"
 
 /// FIXME: make this configured at compile time
 #include "libstk/posix_time.h"
@@ -35,10 +36,13 @@ namespace stk
 
     bool timer::update()
     {
-        // decrement counter_ by elapsed millis since last time ready() was called
+        // decrement counter_ by elapsed millis since last time update() was called
         time_value cur_tv = get_current_time_value();
-        counter_ -= (cur_tv - last_tv_).millis();
+        time_value diff_tv = cur_tv - last_tv_;
         last_tv_ = cur_tv;
+
+        int millis = 1000*diff_tv.seconds() + diff_tv.millis();
+        counter_ -= millis;
 
         if (counter_ <= 0)
         {

@@ -29,13 +29,15 @@ namespace stk
 
     sdl_data::sdl_data() : first_init_(true)
     {
+        mutex_ = SDL_CreateMutex();
     }
 
     sdl_data::~sdl_data()
     {
         INFO("sdl_data::~sdl_data()");
         INFO("use_count: " << instance_.use_count());
-        SDL_Quit(); // FIXME: decide if we should do this here, or set atext(SDL_Quit) in init
+        SDL_DestroyMutex(mutex_);
+        SDL_Quit();
     }
 
     void sdl_data::init()
@@ -46,7 +48,6 @@ namespace stk
             if (SDL_Init(0) < 0) // FIXME: do we want to use the SDL_EVENT_THREAD flag here ? or joysticks ?
                 throw error_message_exception(std::string("Unable to init SDL: ") +
                                               std::string(SDL_GetError()));
-            //atexit(SDL_Quit);
             first_init_ = false;
         }
     }

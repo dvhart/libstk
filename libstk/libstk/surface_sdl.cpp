@@ -92,12 +92,11 @@ namespace stk
     // FIXME: this should just be surface_impl default
     color surface_sdl::gen_color(const std::string& str_color) const
     {
-        byte r, g, b, a;
         unsigned int int_color = strtoll(str_color.c_str(), NULL, 16);
-        r = (int_color & 0xFF000000) >> 24;
-        g = (int_color & 0x00FF0000) >> 16;
-        b = (int_color & 0x0000FF00) >> 8;
-        a = (int_color & 0x000000FF) >> 0;
+        byte r = (int_color & 0xFF000000) >> 24;
+        byte g = (int_color & 0x00FF0000) >> 16;
+        byte b = (int_color & 0x0000FF00) >> 8;
+        byte a = (int_color & 0x000000FF) >> 0;
         return gen_color(r, g, b, a);
     }
     
@@ -135,7 +134,6 @@ namespace stk
             break;
         }
         stride = sdl_surface_->pitch;
-
     }
 
     void surface_sdl::unlock()
@@ -189,9 +187,11 @@ namespace stk
                                           "Can only blit an sdl_surface to another sdl_surface");
         }
     }
+
     void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
         INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
+        sdl_data::get()->lock_mutex();
         // blit the local surface to the destination surface
         surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
         if (dst_surface_ptr != NULL)
@@ -216,6 +216,8 @@ namespace stk
 
     void surface_sdl::put_pixel(int x, int y, color clr)
     {
+        SDL_MUTEX_LOCK;
+
         x += offset_.x();
         y += offset_.y();
 
@@ -276,10 +278,14 @@ namespace stk
         }
         break;
         }
+
+        SDL_MUTEX_UNLOCK;
     }
 
     color surface_sdl::get_pixel(int x, int y) const
     {
+        SDL_MUTEX_LOCK;
+
         x += offset_.x();
         y += offset_.y();
         // DELETEME check for out of bounds
@@ -336,6 +342,8 @@ namespace stk
         }
         break;
         }
+
+        SDL_MUTEX_UNLOCK;
 
         return (color)sdl_color; // should never happen
     }

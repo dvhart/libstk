@@ -213,7 +213,7 @@ int main(int argc, char* argv[])
         
         // add a timer (quit after 30 seconds)
         INFO("test_app - creating timer to quit after 30 seconds");
-        timer::ptr test_timer = timer::create(30000, true); // every 20 seconds
+        timer::ptr test_timer = timer::create(30000, false); 
         test_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
         test_app->add_timer(test_timer);
 

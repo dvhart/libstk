@@ -36,7 +36,7 @@ namespace stk
 
         overlay_sdl(int width, int height, int format, SDL_Surface* sdl_surface)
         {
-            INFO("overlay_sdl::overlay_sdl()");
+            //INFO("overlay_sdl::overlay_sdl()");
             overlay_impl_ = SDL_CreateYUVOverlay(width, height, format, sdl_surface);
             if (!overlay_impl_)
                 ERROR("SDL_CreateYUVOverlay failed");
@@ -51,7 +51,7 @@ namespace stk
 
         virtual ~overlay_sdl()
         {
-            INFO("overlay_sdl::~overlay_sdl()");
+            //INFO("overlay_sdl::~overlay_sdl()");
             SDL_FreeYUVOverlay(overlay_impl_);
         }
 
@@ -67,8 +67,10 @@ namespace stk
         virtual void unlock() { SDL_UnlockYUVOverlay(overlay_impl_); }
         virtual void display(const rectangle& rect)
         {
+            SDL_MUTEX_LOCK;
             SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
             SDL_DisplayYUVOverlay(overlay_impl_, &sdl_rect);
+            SDL_MUTEX_UNLOCK;
         }
     };
 
