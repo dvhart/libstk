@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <string>
-#include <math>
+#include <cmath>
 #include <libstk/font.h>
 #include <libstk/read_dir.h>
 #include <libstk/exceptions.h>
