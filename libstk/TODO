@@ -2,13 +2,8 @@ MEETING TOPICS
 ==============
 - discuss surfaces: creation, blitting, etc.
 - tab stops
-- discuss embedded widgets
-  what types of widgets make sense in embedded devices ?
-	    combo box are very mouse oriented for example, what types of widgets
-	    are IR Remote friendly ?
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
-- add support for multiple screens (ie VFD on fron panel and SVIDEO to television)
 
 DOCUMENTATION
 =============
@@ -23,19 +18,19 @@ write it!!!!
 
 OTHER
 ======
-image loader class
-    just png for now but we will want at least jpg as well for user app so
-    loaders should be able to be added.
+logger - Marc
+png image loader - Marc
+surface_dfb - Marc
+input_capabilities - Marc
 Better font loading error messages.
 list::create(boost::shared_ptr< list > parent, std::wstring label, std::string data)
     we are mixing std::string and std::wstring here
-convert color_manager to a singleton like font_manager and event_system
 
 WIDGETS TO WRITE
 ================
-combo
+combo - Darren
+numeric_spinner - Darren
 edit_box - Dirk
-list - Darren
 scroll_bar - Marc
 text_area
 uberscript_panel (support for HTML, perhaps more strict... XHTML ?)

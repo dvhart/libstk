@@ -1,0 +1,294 @@
+<vhmauery> whether to have a hardware surface per glyph or one big  one
+<carter> no we should have a big one
+<carter> thats what iam pretty sure about 
+* vhmauery knows nothing about hardware surfaces
+<dvhart> that's a lot of glyphs marc
+<dvhart> unicode remember
+<carter> i mean, i dont have experience with 2d stuff
+<carter> no darren
+<carter> i want to do dynamic allocation
+<vhmauery> a limited size
+<carter> of the plaace in the single hardware surface
+<carter> lets say we can only have 100 glyphs cached in hardware
+<dvhart> ok
+<carter> if we really have to draw asiatic text or something
+<dvhart> LRU or something ?
+<carter> we give the user the option
+<carter> of disabling caching
+<carter> yep
+<carter> LRU
+<carter> should be easy to implement
+<dvhart> and that just stores the alpha right?
+<carter> yep
+<dvhart> how do the colors get set ?
+<carter> constant colour source when blitting
+<dvhart> wtf
+<carter> dunno if the 2d backends support this though :(
+* carter 's experience is basicly from Opengl
+<carter> there you have 4 source
+<carter> when blitting
+<carter> 1 source texture
+<carter> 2 source colour
+<carter> 3 destination texture/framebuffer
+<carter> 4. destination color
+<dvhart> ok
+<carter> and the source color is simply set
+<carter> when rendering
+<carter> i think this should be possible on 2d hardware too
+<carter> for software emulated blitting
+<carter> we need to write some MMX/sse optimised blitter
+<dvhart> hmmmm
+<dvhart> you think x86 is a primary target?
+* carter would have fun to write assembly again *lol*
+<carter> no
+<carter> but for now we can only optimise
+<carter> for what we have
+<dvhart> ah
+<dvhart> this will prove interesting
+<carter> and on an powerpc for example
+<carter> blitting with regular code
+<carter> is much faster
+<carter> I M O 
+* carter dislikes X86 ;)
+<dvhart> simpler instruction set
+<carter> yep
+<carter> and much faster
+* carter wants to have a G5 damnit :9
+* vhmauery too
+<dvhart> btw want a dual G5?
+<carter> IBM rawks :)
+<carter> yep
+<carter> would be even better :)
+<dvhart> we saw the schematics for that chip a year a go
+<dvhart> while at IBM
+<carter> hehe
+<carter> kewl
+<carter> you dont accidently know someone at IBM who can donate something
+<carter> to an OSS coder :)
+<dvhart> *g*
+<carter> do you?
+<dvhart> we've been working on him
+<carter> *gg*
+<vhmauery> they keep pretty tight wraps on hardware - they don't like giving it away
+<dvhart> head of the pervasive lab
+<vhmauery> stingy rat bastards
+<carter> hehe
+<dvhart> LOL
+<carter> yeah, i know those big companies
+<carter> :)
+<dvhart> Daimler
+<dvhart> yeah, fairly large
+* carter had to go trough 3 hours of paperwork @ VW
+<carter> to get a plastic bag out
+<carter> *g*
+<dvhart> LOL
+<vhmauery> lol
+<dvhart> gotta love red tape
+<dvhart> ok so tasks:
+<dvhart> dvhart spinner, numeric spinner, combo
+<carter> carter: Scrollbars, logger, dfb backend, input capabilities
+<carter> did i forget something?
+* vhmauery can't remember what I was doing
+<carter> + osd keyboard
+<dvhart> (vhm has started a /dev/fb backend)
+<dvhart> maybe a better solution than dfb
+<vhmauery> oh yeah
+<dvhart> less dependencies ?
+<carter> yep
+* carter goes with DFB for now though
+<carter> much easier for me to implement :)
+<carter> need to get something running in 3 weeks from now
+<dvhart> nice to have anyway
+<dvhart> yup
+<dvhart> hold on, checking the TODO
+<dvhart> we need a decent image loader
+<carter> hmmmmm
+<carter> i could copy one of my PNG loaders
+<carter> out of my game engine
+<dvhart> great
+<carter> works quite nice
+<carter> i would adapt it to our surface locking algorithmn
+<carter> should be really fast
+<carter> btw
+<dvhart> I think images should store the colors in surface format btw
+<carter> is surface locking supported
+<carter> by the SDL surface class?
+<dvhart> ... don't remember
+<carter> ok
+<carter> will fix it otherwise :)
+<dvhart> I think the API is there, but not implemented
+<carter> should be simple
+<carter> ok
+<carter> i think thats it for now
+<dvhart> ^ note color format above
+<dvhart> not just RRGGBBAA
+<carter> yeah
+<carter> have to extend the API for that
+<dvhart> ?
+<dvhart> why 
+<carter> because atm
+<carter> you cant get information about surface's internal representation
+<carter> out of it
+<carter> and with the locking
+<carter> you need that information
+<dvhart> color_manager::get->get_color()
+<carter> no thats to slow
+<carter> for a true colour image
+<carter> I M O 
+<carter> if iam doing surface locking 
+<dvhart> right
+<carter> i want to make a memcpy call at best
+<carter> so i need some get_pixel_format call
+<dvhart> that is why we need to store what it returns for each pixel in the image
+<carter> just return some enum
+<dvhart> hmmmm
+<carter> seems appropiate to me
+<dvhart> different problems again I think
+<dvhart> if I want to blit an image
+<dvhart> I should load it once
+<carter> yep
+<dvhart> store the approapriate pixel values
+<dvhart> (as returned by get_color)
+<dvhart> and then blit it as often as I like
+<carter> i dont think we should use get_color
+<carter> in an image loader
+<carter> basicly you can optimise very much of it away
+<carter> if the conversion is done in the loader
+<dvhart> you think once on load is too much overhead?
+<carter> yep
+<carter> i think its a waste of ressources
+<carter> in that case
+<carter> because conversion by the loader can be much simpler
+<carter> libPNG for example
+<dvhart> well, you have more experience here than I so I will defer
+<carter> converts the image to the format you request
+<carter> while loading from the disk
+<carter> so i think its worthwhile to get format information
+<dvhart> ok
+<carter> and later do a simple memcopy
+<carter> hmmm
+<carter> anything else?
+<dvhart> one thing for me
+<carter> (you update the TODO file OK?)
+<dvhart> yup
+<dvhart> how do you suppose we do a video panel ?
+<carter> thats the one thing i dont know about
+<carter> havent ever done video stuff :(
+<dvhart> *g* "the one thing"
+<carter> *g*
+<dvhart> who's the man
+<carter> the biggest thing i mean ;)
+<carter> lol
+<dvhart> ok, I'll update the TODO
+<carter> imo the surface backend
+<carter> need to are about the video drawing
+<carter> but i dont face the prob atm :)
+<carter> seems like a good research topic for you! *g*
+<dvhart> *g*
+<carter> ok
+<carter> cya on 7.july then!
+<carter> where are you going bTW?
+<dvhart> cool
+<dvhart> Oregon and California
+<dvhart> meeting with IBM
+<dvhart> and family reunion
+<carter> ah ok
+<carter> good luck then!
+<carter> and haof ! :)
+<dvhart> thanks!
+<dvhart> haof.... reminds me of Suse
+<dvhart> *g*
+<carter> *gg*
+<carter> havent used suse for 4 years now
+<carter> damnit
+<dvhart> traitor
+<carter> i am a long time linux user now *g*
+<carter> 4 years ago i bought a suse package
+<carter> and then it began :)
+<dvhart> gettin old now marc
+<carter> *rofl*
+<dvhart> 17 now ?
+<carter> yep
+<carter> half a year
+<carter> then iam allowed to drive
+<carter> *lol*
+<dvhart> 17 1/2 then ?
+<carter> yep
+* vhmauery started driving at 15
+<dvhart> I was sitll playing with legos
+<carter> hehe
+<carter> did i say that i cant drive? :)
+<carter> i am just not allowed to do so *lol*
+<dvhart> "allowed"
+<dvhart> LOL
+<vhmauery> i got my license on my 15th birthday
+<carter> hmmm
+<carter> damnit
+<carter> you're lucky ;9
+<dvhart> no autoban here
+<vhmauery> idaho doesn't have very many people.  and they all drive tractors
+<vhmauery> :)
+* carter is still driving his bicycle most of the time :)
+<carter> hehe
+<carter> tractors are allowed here to
+<dvhart> what do the guys at VW say about that?
+<carter> if you need it to help your parents for example
+<vhmauery> on the autobahn
+<dvhart> do they covet your bike ?
+<carter> lol
+<carter> :)
+<carter> we always get them made
+<carter> by driving there with an Opel anyway 
+<carter> *lol*
+<dvhart> LOL
+<dvhart> nice
+<dvhart> we rented a ford scorpian when I was there
+<dvhart> what a POS
+<carter> the opel isnt nice acttually :)
+<carter> wah
+<carter> ford sucks too
+<carter> :)
+<dvhart> I was gettting passed going 125 MPH by Golfs!
+<carter> VW actually isnt that bad
+<vhmauery> what about all those good German cars?
+<carter> hehe
+<carter> you should drive a porsche
+<carter> or a good Mercedes SLK :)
+<vhmauery> my wife wants an audi
+<carter> 125 MPH are nothing :)
+<carter> Audi==Vw
+<dvhart> was enough for me in a frellin' Ford
+<carter> technically very nice cars
+<carter> (they are our customer *lol*)
+<dvhart> I thought the doors would fall off
+<vhmauery> lol
+<carter> LOL
+<carter> darren, with a porsche 911 Turbo we are talking about 300 Km/H, not 180 :)
+<carter> the only bad thing is
+<carter> that there is much to much speed limitation on the german autobahn :)
+<dvhart> a fried of mine suped up a rally car to 345 HP
+<carter> hehe :9
+<dvhart> it was slick
+<carter> ok ppl
+<carter> gonna go now
+<carter> cya!
+<vhmauery> cya later
+<dvhart> 2 years and I think I will buy an Rx-8
+<dvhart> n8 marc
+<carter> wankel roxx :)
+<carter> (in the RX-8)
+<dvhart> the revolutoin (tm)
+<carter> lol
+<carter> 50 years ago
+<dvhart> fukengruven!
+<carter> LOL
+<carter> FUKENGRÜVEN
+<carter> :)
+<vhmauery> lol
+<dvhart> *g*
+<carter> sounds sooo stupid
+<carter> *g*
+<dvhart> LOL
+<carter> n8
+<dvhart> later man
+<-- vhmauery has quit (Quit: Client exiting)
