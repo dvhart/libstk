@@ -1,6 +1,6 @@
 /**************************************************************************************************
  *     CVS $Id$
- * DESCRIPTION: Direct FB surface implementation.
+ * DESCRIPTION: Linux Kernel Framebuffer Device surface implementation.
  *     AUTHORS: Vernon Mauery, Darren Hart 
  *  START DATE: 2003/Mar/03
  *
@@ -40,15 +40,20 @@ namespace stk
         m_fbdev = open("/dev/fb0", O_RDWR);
         if( m_fbdev == -1 )
         {
-            throw error_message_exception("could not open fbdev");
+            m_fbdev = open("/dev/fb/0", O_RDWR);
+
+            if( m_fbdev == -1 )
+                throw error_message_exception("could not open fbdev");
         }
+        INFO("FBDev Opened");
 
         // Get screen information
         struct fb_var_screeninfo vscreeninfo;
         struct fb_fix_screeninfo fscreeninfo;
         ioctl(m_fbdev, FBIOGET_VSCREENINFO, &vscreeninfo);
         ioctl(m_fbdev, FBIOGET_FSCREENINFO, &fscreeninfo);
-
+        INFO("Got Screen Info");
+        
         m_width			= vscreeninfo.xres;
         m_height		= vscreeninfo.yres;
         m_linelength	= fscreeninfo.line_length;
@@ -97,6 +102,9 @@ namespace stk
 
     void surface_fbdev::put_pixel(int x, int y, color clr)
     {
+        x+=offset_.x();
+        y+=offset_.y();
+        
         if (x < 0 || (x > m_width-1) || y < 0 || (y > m_height-1))
             return;
 
@@ -230,6 +238,10 @@ namespace stk
 
     void surface_fbdev::fill_rect(int x1, int y1, int x2, int y2)
     {
+        x1 += offset_.x();
+        y1 += offset_.y();
+        x2 += offset_.x();
+        y2 += offset_.y();  
         color mcolor = (color)gc_->fill_color();
         for (int x=x1; x<x2; x++)
             for (int y=y1; y<y2; y++)
@@ -238,10 +250,7 @@ namespace stk
 
     void surface_fbdev::fill_rect(const rectangle& rect)
     {
-        color mcolor = (color)gc_->fill_color();
-        for (int x=rect.x1(); x<rect.x2(); x++)
-            for (int y=rect.y1(); y<rect.y2(); y++)
-                put_pixel(x, y, mcolor);
+        fill_rect(rect.x1(),rect.y1(),rect.x2(),rect.y2());
     }
 
 }
