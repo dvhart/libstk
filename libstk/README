@@ -1,34 +1,28 @@
-in order to build and install the lib and tests do th following
+In order to build and install the lib and tests using the sdl backend do the 
+following:
 
 $tar -xzvf libstk.tar.gz
+(note http://www.libstk.org provides instructions for accessing the source via CVS, this is the preferred method as the codebase is being updated at least daily)
+
 $cd libstk
 $./autogen.sh
-$./configure
+$./configure --enable-sdl --enable-logging --enable-tests
 $make install
 
-In order to build the test applications:
-$cd tests
-$make
-If you want to install the test app
-$make install
-To run the test app (from the tests directory)
-$./stk_test
+(get all the configure options using ./configure --help)
 
 That should do it
 if not, check that you have the libs installed in
-    /usr/local/stk/lib/libstk*
+    /usr/local/lib/libstk*
 
 and the header files in
-    /usr/local/stk/include/*.h
+    /usr/local/include/libstk-#.#.#/libstk/*.h
 
-and the themes/fonts/images in
-    /usr/local/stk/share/themes
-    /usr/local/stk/share/images
+please install Arial.ttf in the following directory
     /usr/local/stk/share/fonts
-respectively
 
-let us know how it goes:
+run the test apps in test/ or /usr/local/bin
 
-dvhart@byu.edu
-vernon@byu.edu
+let us know how it goes on the mailing list, see http://www.libstk.org
+
 

@@ -53,6 +53,8 @@ namespace stk
         Ttargets targets;
     public:
         static boost::shared_ptr<logger> get();
+        logger();
+        ~logger();
         void add_target(std::ostream* target, int min_level);
         void remove_target(std::ostream* target);
         void log(const std::string& filename, int line, const std::string& message, int severity);

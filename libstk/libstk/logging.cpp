@@ -1,15 +1,17 @@
-/*    FILENAME: logging.h
+/**************************************************************************************************
+ *    FILENAME: logging.h
  * DESCRIPTION: Utilities for Logging
  *     AUTHORS: Marc Strämke, Darren Hart
- *  START DATE: 28/JUN/2003  LAST UPDATE: 26/JUL/2003
+ *  START DATE: 28/Jun/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-#include "logging.h"
+#include <iostream>
 #include <vector>
+#include "logging.h"
 
 namespace stk
 {
@@ -20,6 +22,16 @@ namespace stk
         if(!instance_)
             instance_.reset(new logger());
         return instance_;
+    }
+    
+    logger::logger()
+    {
+        std::cout << "Info! " << __FILE__ << ":" << __LINE__ << "   constructor" << std::endl;
+    }
+
+    logger::~logger()
+    {
+        std::cout << "Info! " << __FILE__ << ":" << __LINE__ << "   destructor" << std::endl;
     }
     
     void logger::add_target(std::ostream* target, int min_level)

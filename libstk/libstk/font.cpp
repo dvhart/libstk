@@ -32,7 +32,9 @@ namespace stk
     font::font(const string& fontname, int height, int width)
             : height_(height), width_(width)
     {
+        INFO("constructor");
         int error;
+        // FIXME: consider using a freetype_backend (like dfb_backend and sdl_data)
         if (font_count_ == 0)
         {
             INFO("initializing FreeType library");
@@ -66,18 +68,20 @@ namespace stk
 
     font::~font()
     {
+        INFO("destructor");
         // free the freetype font data
         FT_Done_Face(face_);
 
         // need to do reference counting for the lib handle
         if (--font_count_ == 0)
         {
-            INFO("Done with FreeType library");
+            INFO("last font destroyed: freeing FreeType library");
             FT_Done_FreeType(lib_);
         }
 
         // free the glyphs
         // WRITEME... (when we actually cache them of course :-) )
+        INFO("destructor complete");
     }
 
     const glyph::ptr font::glyph(wchar_t c)

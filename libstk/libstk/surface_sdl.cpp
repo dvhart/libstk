@@ -37,7 +37,7 @@ namespace stk
 
     surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
     {
-        INFO("surface_sdl::surface_sdl()");
+        INFO("constructor");
 
         // ensure that SDL has been initialized
         sdl_data_ = sdl_data::get(); // reference counting
@@ -74,7 +74,7 @@ namespace stk
 
     surface_sdl::~surface_sdl()
     {
-        INFO("surface_sdl::~surface_sdl()");
+        INFO("destructor");
         // don't free the primary surface (returned by SDL_SetVideoMode), SDL_Quit does that!
         if (sdl_surface_ && !primary_)
             SDL_FreeSurface(sdl_surface_);

@@ -1,14 +1,13 @@
-/******************************************************************************
+/*************************************************************************************************
  *    FILENAME: hello_world.cpp
  * DESCRIPTION: The typical hello_world application using Libstk. 
  *     AUTHORS: Darren Hart
- *  START DATE: 30/May/2003  LAST UPDATE: 28/Jul/2003
+ *  START DATE: 30/May/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <iostream>
 #include <libstk/stk.h>
@@ -38,7 +37,7 @@ int main(int argc, char* argv[])
     try
     {
 #ifdef HAVE_LOGGING
-        logger::get()->add_target(&cout, LL_Info);
+        logger::get()->add_target(&std::cout, LL_Info);
 #endif
 
         std::string surface_type;
@@ -84,13 +83,13 @@ int main(int argc, char* argv[])
         }
 #endif
 #ifdef HAVE_FBDEV
-#ifdef HAVE_SDL // needed for the event_system
         else if (surface_type == "fbdev")
         {
             screen = surface_fbdev::create(rectangle(0, 0, 1024, 768));
+#ifdef HAVE_SDL // needed for the event_system
             ep = event_producer_sdl::create();
-        }
 #endif
+        }
 #endif
         else
             throw error_message_exception("Unknown surface type");
@@ -105,8 +104,8 @@ int main(int argc, char* argv[])
                 rectangle(260, 210, 100, 30));
 
         // add a timer (quit after 30 seconds)
-        INFO("hello_world - creating timer to quit after 30 seconds");
-        timer::ptr quit_timer = timer::create(30000, true); // every 20 seconds
+        INFO("hello_world - creating timer to quit after 15 seconds");
+        timer::ptr quit_timer = timer::create(15000, true); // every 20 seconds
         quit_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
         test_app->add_timer(quit_timer);
 
