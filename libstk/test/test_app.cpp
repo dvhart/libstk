@@ -19,7 +19,7 @@
 #include <libstk/event_producer_sdl.h>
 #include <libstk/surface_sdl.h>
 #endif
-#ifdef HAVE_DFB
+#ifdef HAVE_DIRECTFB
 #include <libstk/surface_dfb.h>
 // what would be a good default backend ?
 #endif
@@ -70,9 +70,20 @@ int main(int argc, char* argv[])
 #endif
         
         std::string surface_type;
+        std::string available_surfaces;
+#ifdef HAVE_SDL
+        available_surfaces += "sdl";
+#endif
+#ifdef HAVE_DIRECTFB
+        available_surfaces += " dfb";
+#endif
+#ifdef HAVE_FBDEV
+        available_surfaces += " fbdev";
+#endif
+
         if (argc < 2)
         {
-            throw error_message_exception("Usage: test_app sdl|dfb|fbdev");
+            throw error_message_exception("Usage: test_app "+available_surfaces);
         }
         else
         {
@@ -83,14 +94,15 @@ int main(int argc, char* argv[])
         cout << "test_app - selecting surface and event system" << endl;
         surface::ptr test_surface;
         event_producer::ptr test_event_producer;
+        if (0) { }
 #ifdef HAVE_SDL
-        if (surface_type == "sdl")
+        else if (surface_type == "sdl")
         {
             test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
             test_event_producer = event_producer_sdl::create();
         }
 #endif
-#ifdef HAVE_DFB
+#ifdef HAVE_DIRECTFB
         else if (surface_type == "dfb")
         {
             test_surface = surface_dfb::create(rectangle(0, 0, 640, 480));
@@ -103,7 +115,7 @@ int main(int argc, char* argv[])
         else if (surface_type == "fbdev")
         {
             test_surface = surface_fbdev::create(rectangle(0, 0, 640, 480));
-            //test_event_producer = event_producer_sdl::create();
+            test_event_producer = event_producer_sdl::create();
         }
 #endif
 #endif
