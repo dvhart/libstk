@@ -105,23 +105,23 @@ namespace stk
 			void surface_impl::circle_points(int x, int y, int dx, int dy)
 			{
 				color clr = gc_->line_color();
-				draw_pixel(x+dx, y+dy, clr);
-				draw_pixel(y+dx, x+dy, clr);
-				draw_pixel(y+dx, -x+dy, clr);
-				draw_pixel(x+dx, -y+dy, clr);
-				draw_pixel(-x+dx, -y+dy, clr);
-				draw_pixel(-y+dx, -x+dy, clr);
-				draw_pixel(-y+dx, x+dy, clr);
-				draw_pixel(-x+dx, y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(x+dx, y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(y+dx, x+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(y+dx, -x+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(x+dx, -y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(-x+dx, -y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(-y+dx, -x+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(-y+dx, x+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(-x+dx, y+dy, clr);
 			}
 
 			void surface_impl::ellipse_points(int x, int y, int dx, int dy)
 			{
 				color clr = gc_->line_color();
-				draw_pixel(x+dx, y+dy, clr);
-				draw_pixel(x+dx, -y+dy, clr);
-				draw_pixel(-x+dx, -y+dy, clr);
-				draw_pixel(-x+dx, y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(x+dx, y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(x+dx, -y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(-x+dx, -y+dy, clr);
+				static_cast<surface_backend*>(this)->put_pixel(-x+dx, y+dy, clr);
 			}
 			void surface_impl::circle_points_aa(int x, int y, int dx, int dy)
 			{
@@ -210,30 +210,30 @@ namespace stk
 				{
 					case DOT:
 						{
-							draw_pixel(x1, y1, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x1, y1, clr);
 						}
 					case LR:
 						{
 							for (x; x <= x2; x++)
-								draw_pixel(x, y1, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
 							break;
 						}
 					case RL:
 						{
 							for (x; x >= x2; x--)
-								draw_pixel(x, y1, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
 							break;
 						}
 					case UP:
 						{
 							for (y; y <= y2; y++)
-								draw_pixel(x1, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
 							break;
 						}
 					case DN:
 						{
 							for (y; y >= y2; y--)
-								draw_pixel(x1, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
 							break;
 						}
 					case LRU_0:
@@ -244,7 +244,7 @@ namespace stk
 							int delta_e  = 2*dy;
 							int delta_ne = 2*(dy-dx);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (x < x2)
 							{
@@ -259,7 +259,7 @@ namespace stk
 									x++;
 									y++;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 						}
@@ -271,7 +271,7 @@ namespace stk
 							int delta_e  = 2*dx;
 							int delta_ne = 2*(dx-dy);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (y < y2)
 							{
@@ -286,7 +286,7 @@ namespace stk
 									y++;
 									x++;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 						}
@@ -298,7 +298,7 @@ namespace stk
 							int delta_e  = 2*dy;
 							int delta_ne = 2*(dy-dx);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (x < x2)
 							{
@@ -313,7 +313,7 @@ namespace stk
 									x++;
 									y--;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 						}
@@ -325,7 +325,7 @@ namespace stk
 							int delta_e  = 2*dx;
 							int delta_ne = 2*(dx-dy);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (y > y2)
 							{
@@ -340,7 +340,7 @@ namespace stk
 									x++;
 									y--;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 
@@ -353,7 +353,7 @@ namespace stk
 							int delta_e  = 2*dy;
 							int delta_ne = 2*(dy-dx);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (x > x2)
 							{
@@ -368,7 +368,7 @@ namespace stk
 									x--;
 									y++;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 						}
@@ -380,7 +380,7 @@ namespace stk
 							int delta_e  = 2*dx;
 							int delta_ne = 2*(dx-dy);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (x > x2)
 							{
@@ -395,7 +395,7 @@ namespace stk
 									x--;
 									y++;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 						}
@@ -407,7 +407,7 @@ namespace stk
 							int delta_e  = 2*dy;
 							int delta_ne = 2*(dy-dx);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (x > x2)
 							{
@@ -422,7 +422,7 @@ namespace stk
 									x--;
 									y--;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 							break;
 
@@ -436,7 +436,7 @@ namespace stk
 							int delta_e  = 2*dx;
 							int delta_ne = 2*(dx-dy);
 
-							draw_pixel(x, y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 
 							while (x > x2)
 							{
@@ -451,7 +451,7 @@ namespace stk
 									x--;
 									y--;
 								}
-								draw_pixel(x, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
 							}
 
 							break;
@@ -487,19 +487,19 @@ namespace stk
 				{
 					case ur_quadrant:
 						x = x1; y = y1;
-						draw_pixel(xp+x, yp+y, clr);
+						static_cast<surface_backend*>(this)->put_pixel(xp+x, yp+y, clr);
 						break;
 					case lr_quadrant:
 						x = x1; y = y2;
-						draw_pixel(xp+x, -yp+y, clr);
+						static_cast<surface_backend*>(this)->put_pixel(xp+x, -yp+y, clr);
 						break;
 					case ll_quadrant:
 						x = x2; y = y2;
-						draw_pixel(-xp+x, -yp+y, clr);
+						static_cast<surface_backend*>(this)->put_pixel(-xp+x, -yp+y, clr);
 						break;
 					case ul_quadrant:
 						x = x2; y = y1;
-						draw_pixel(-xp+x, yp+y, clr);
+						static_cast<surface_backend*>(this)->put_pixel(-xp+x, yp+y, clr);
 						break;
 				}
 
@@ -527,16 +527,16 @@ namespace stk
 					switch (quadrant)
 					{
 						case ur_quadrant:
-							draw_pixel(xp+x, yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(xp+x, yp+y, clr);
 							break;
 						case lr_quadrant:
-							draw_pixel(xp+x, -yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(xp+x, -yp+y, clr);
 							break;
 						case ll_quadrant:
-							draw_pixel(-xp+x, -yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(-xp+x, -yp+y, clr);
 							break;
 						case ul_quadrant:
-							draw_pixel(-xp+x, yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(-xp+x, yp+y, clr);
 							break;
 					}
 				}
@@ -564,16 +564,16 @@ namespace stk
 					switch (quadrant)
 					{
 						case ur_quadrant:
-							draw_pixel(xp+x, yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(xp+x, yp+y, clr);
 							break;
 						case lr_quadrant:
-							draw_pixel(xp+x, -yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(xp+x, -yp+y, clr);
 							break;
 						case ll_quadrant:
-							draw_pixel(-xp+x, -yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(-xp+x, -yp+y, clr);
 							break;
 						case ul_quadrant:
-							draw_pixel(-xp+x, yp+y, clr);
+							static_cast<surface_backend*>(this)->put_pixel(-xp+x, yp+y, clr);
 							break;
 					}
 				}
@@ -749,7 +749,7 @@ namespace stk
 						{
 							// clip to the rect
 							unsigned char nc = bits[dy*w + dx];
-							draw_pixel_aa(x+dx+bx, y+dy+fh-by, nc, fill_color);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x+dx+bx, y+dy+fh-by, nc, fill_color);
 						}
 					}
 					x += (bmp->advance_x() >> 6);
@@ -772,25 +772,25 @@ namespace stk
 					case LR:
 						{
 							for (x; x <= x2; x++)
-								draw_pixel(x, y1, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
 							break;
 						}
 					case RL:
 						{
 							for (x; x >= x2; x--)
-								draw_pixel(x, y1, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
 							break;
 						}
 					case UP:
 						{
 							for (y; y <= y2; y++)
-								draw_pixel(x1, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
 							break;
 						}
 					case DN:
 						{
 							for (y; y >= y2; y--)
-								draw_pixel(x1, y, clr);
+								static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
 							break;
 						}
 					case LRU_0:
@@ -804,9 +804,9 @@ namespace stk
 							int two_v_dx = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 							double two_dx_inv_denom = 2.0*dx*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-							draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 							while (x < x2)
 							{
@@ -823,10 +823,10 @@ namespace stk
 									x++;
 									y++;
 								}
-								draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y+1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
 										two_dx_inv_denom - two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y-1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
 										two_dx_inv_denom + two_v_dx*inv_denom, clr);
 							}
 							break;
@@ -842,9 +842,9 @@ namespace stk
 							int two_v_dy = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 							double two_dy_inv_denom = 2.0*dy*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-							draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 							while (y < y2)
 							{
@@ -861,10 +861,10 @@ namespace stk
 									y++;
 									x++;
 								}
-								draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x+1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
 										two_dy_inv_denom - two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x-1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
 										two_dy_inv_denom + two_v_dy*inv_denom, clr);
 							}
 							break;
@@ -880,9 +880,9 @@ namespace stk
 							int two_v_dx = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 							double two_dx_inv_denom = 2.0*dx*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-							draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 							while (x < x2)
 							{
@@ -899,10 +899,10 @@ namespace stk
 									x++;
 									y--;
 								}
-								draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y-1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
 										two_dx_inv_denom - two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y+1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
 										two_dx_inv_denom + two_v_dx*inv_denom, clr);
 							}
 
@@ -919,9 +919,9 @@ namespace stk
 							int two_v_dy = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 							double two_dy_inv_denom = 2.0*dy*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-							draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 							while (y > y2)
 							{
@@ -938,10 +938,10 @@ namespace stk
 									x++;
 									y--;
 								}
-								draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x+1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
 										two_dy_inv_denom - two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x-1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
 										two_dy_inv_denom + two_v_dy*inv_denom, clr);
 							}
 							break;
@@ -957,9 +957,9 @@ namespace stk
 							int two_v_dx = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 							double two_dx_inv_denom = 2.0*dx*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-							draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 							while (x > x2)
 							{
@@ -976,10 +976,10 @@ namespace stk
 									x--;
 									y++;
 								}
-								draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y+1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
 										two_dx_inv_denom - two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y-1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
 										two_dx_inv_denom + two_v_dx*inv_denom, clr);
 							}
 							break;
@@ -995,9 +995,9 @@ namespace stk
 							int two_v_dy = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 							double two_dy_inv_denom = 2.0*dy*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-							draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 							while (x > x2)
 							{
@@ -1014,10 +1014,10 @@ namespace stk
 									x--;
 									y++;
 								}
-								draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x+1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
 										two_dy_inv_denom + two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x-1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
 										two_dy_inv_denom - two_v_dy*inv_denom, clr);
 							}
 							break;
@@ -1033,9 +1033,9 @@ namespace stk
 							int two_v_dx = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 							double two_dx_inv_denom = 2.0*dx*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-							draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 							while (x > x2)
 							{
@@ -1052,10 +1052,10 @@ namespace stk
 									x--;
 									y--;
 								}
-								draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y+1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
 										two_dx_inv_denom + two_v_dx*inv_denom, clr);
-								draw_pixel_aa(x, y-1,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
 										two_dx_inv_denom - two_v_dx*inv_denom, clr);
 							}
 							break;
@@ -1073,9 +1073,9 @@ namespace stk
 							int two_v_dy = 0;
 							double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 							double two_dy_inv_denom = 2.0*dy*inv_denom;
-							draw_pixel_aa(x, y, 0.0, clr);
-							draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-							draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+							static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 							while (x > x2)
 							{
@@ -1092,10 +1092,10 @@ namespace stk
 									x--;
 									y--;
 								}
-								draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x+1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+								static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
 										two_dy_inv_denom + two_v_dy*inv_denom, clr);
-								draw_pixel_aa(x-1, y,
+								static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
 										two_dy_inv_denom - two_v_dy*inv_denom, clr);
 							}
 							break;
@@ -1297,7 +1297,7 @@ namespace stk
 						// convert the RRGGBBAA image color format to that of the
 						color clr =  img->pixel(tx, ty);
 						color sclr = gen_color((clr>>24)&0XFF, (clr>>16)&0xFF, (clr>>8)&0xFF, clr&0xFF);
-						draw_pixel(x+tx, y+ty, sclr);
+						static_cast<surface_backend*>(this)->put_pixel(x+tx, y+ty, sclr);
 					}
 				}
 			}
