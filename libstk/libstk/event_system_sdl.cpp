@@ -2,7 +2,7 @@
  *    FILENAME: event_system_sdl.cpp 
  * DESCRIPTION: SDL event system implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 28/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -12,9 +12,11 @@
 
 #include <SDL/SDL.h>
 #include <iostream>
+#include "libstk/exceptions.h"
 #include "libstk/event_system_sdl.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
+#include "libstk/sdl_data.h"
 
 using std::cout;
 using std::endl;
@@ -30,10 +32,14 @@ namespace stk
 	event_system_sdl::event_system_sdl()
 	{
 		cout << "event_system_sdl::event_system_sdl()" << endl;
+		// make sure SDL has been initialized
+		sdl_data_ = sdl_data::get(); // reference counting
+		sdl_data_->init();
 	}
 
 	event_system_sdl::~event_system_sdl()
 	{
+		cout << "event_system_sdl::~event_system_sdl()" << endl;
 	}
 
 	boost::shared_ptr<stk::event> event_system_sdl::poll_event()

@@ -15,14 +15,15 @@
 // we need to determine how exactly this mapping works
 // ***********************************************************
 
-#include "libstk/surface_sdl.h"
-#include "libstk/surface.h"
-#include "libstk/stk.h"
 #include <math.h>
 #include <vector>
 #include <list>
 #include <iostream>
 #include <SDL/SDL.h>
+#include "libstk/surface_sdl.h"
+#include "libstk/surface.h"
+#include "libstk/stk.h"
+#include "libstk/sdl_data.h"
 
 using std::cout;
 using std::endl;
@@ -37,34 +38,45 @@ namespace stk
 		return new_surface_sdl;
 	}
 	
-	surface_sdl::surface_sdl(SDL_Surface &new_surface)
-	{
-		cout << "surface_sdl::surface_sdl()" << endl;
-		sdl_surface_ = &new_surface;
-		rect_.x1(0); rect_.y1(0);
-		rect_.width(sdl_surface_->w);
-		rect_.height(sdl_surface_->h);
-	}
-	
 	surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
 	{
 		cout << "surface_sdl::surface_sdl()" << endl;	
-		sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 32, 
-				SDL_HWSURFACE|SDL_DOUBLEBUF/*|SDL_FULLSCREEN*/);
+		
+		// ensure that SDL has been initialized
+		sdl_data_ = sdl_data::get(); // reference counting
+		sdl_data_->init();
+		
+		int bpp = 32;
+
+		// if this is the first surface, init video and set the video mode
+		if (SDL_WasInit(SDL_INIT_VIDEO) == 0)
+		{
+			SDL_InitSubSystem(SDL_INIT_VIDEO);
+			sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), bpp,
+					SDL_HWSURFACE | SDL_DOUBLEBUF /*|SDL_FULLSCREEN*/); // FIXME: use the flags
+		}
+		// this is not the first surface, so make one size rect of the same format as the first
+		else
+		{
+			// build a surface from the original and return that
+			SDL_Surface* temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA, 
+					rect.width(), rect.height(), bpp, RMASK, GMASK, BMASK, AMASK);
+			sdl_surface_ = SDL_DisplayFormatAlpha(temp_surface); // convert to display format for faster blitting
+			SDL_FreeSurface(temp_surface);
+			SDL_SetAlpha(sdl_surface_, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
+		}
 	}
 
 	surface_sdl::~surface_sdl()
 	{
 		cout << "surface_sdl::~surface_sdl()" << endl;
-		if (sdl_surface_)
-			SDL_FreeSurface(sdl_surface_);
+		if (sdl_surface_) SDL_FreeSurface(sdl_surface_);
 	}
 
 	color surface_sdl::gen_color(const std::string &str_color) const
 	{
 		Uint8 r, g, b, a;
 		Uint32 int_color = strtoll(str_color.c_str(), NULL, 16);
-		Uint32 mapped_color;
 		r = (int_color & RMASK) >> RSHIFT;
 		g = (int_color & GMASK) >> GSHIFT;
 		b = (int_color & BMASK) >> BSHIFT;

@@ -5,46 +5,48 @@ lib_LTLIBRARIES  =\
 	libstk.la
 
 libstk_la_SOURCES =\
+	application.h	application.cpp \
+	button.h button.cpp \
 	color_manager.h color_manager.cpp \
+	combo.h combo.cpp \
+	component.h \
+	container.h container.cpp \
+	drawable.h \
 	event_system.h \
 	event_system_sdl.h event_system_sdl.cpp \
 	event_system_dfb.h event_system_dfb.cpp \
 	exceptions.h \
-	glyph.h glyph.cpp \
-	font.h font.cpp \
-	rectangle.h rectangle.cpp \
-	surface.h surface_impl.h \
-	surface_sdl.h surface_sdl.cpp \
-	surface_dfb.h surface_dfb.cpp \
 	event.h \
-	mouse_event.h mouse_event.cpp \
-	key_event.h key_event.cpp \
 	event_handler.h \
-	drawable.h \
-	component.h \
-	application.h	application.cpp \
-	widget.h widget.cpp \
-	container.h container.cpp \
-	state.h state.cpp \
-	list.h list.cpp \
-	combo.h combo.cpp \
-	list_item.h list_item.cpp \
-	button.h button.cpp \
-	posix_time.h posix_time.cpp \
-	progress.h progress.cpp \
+	exceptions.h \
+	font.h font.cpp \
+	font_manager.h font_manager.cpp \
+	glyph.h glyph.cpp \
 	image_panel.h image_panel.cpp \
 	image.h image.cpp \
+	key_event.h key_event.cpp \
 	label.h label.cpp \
+	list.h list.cpp \
+	list_item.h list_item.cpp \
+	mouse_event.h mouse_event.cpp \
+	posix_time.h posix_time.cpp \
+	progress.h progress.cpp \
+	rectangle.h rectangle.cpp \
+	surface_sdl.h surface_sdl.cpp \
+	sdl_data.h sdl_data.cpp \
+	scroll_bar.h scroll_bar.cpp \
 	scroll_box.h scroll_box.cpp \
+	scroll_model.h scroll_model.cpp \
 	spinner.h spinner.cpp \
-	font_manager.h font_manager.cpp \
-	exceptions.h scroll_model.h scroll_model.cpp \
+	state.h state.cpp \
+	surface.h surface_impl.h \
+	surface_dfb.h surface_dfb.cpp \
 	theme.h theme.cpp \
 	time_value.h \
 	timer.h timer.cpp \
 	tribal_theme.h tribal_theme.cpp \
-	scroll_bar.h scroll_bar.cpp \
-	viewport.h viewport.cpp
+	viewport.h viewport.cpp \
+	widget.h widget.cpp
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
@@ -60,7 +62,7 @@ library_include_HEADERS= \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h     viewport.h
+	posix_time.h     viewport.h          sdl_data.h
 
 
 bin_PROGRAMS       = test_app surface_bm

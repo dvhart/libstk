@@ -2,7 +2,7 @@
  *    FILENAME: surface_sdl.h
  * DESCRIPTION: SDL surface backend.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke 
- *  START DATE: 10/Dec/2002  LAST UPDATE: 13/May/2003
+ *  START DATE: 10/Dec/2002  LAST UPDATE: 28/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -13,14 +13,15 @@
 #ifndef STK_SURFACE_SDL_H
 #define STK_SURFACE_SDL_H
 
+#include <string>
+#include <vector>
+#include <SDL/SDL.h>
 #include "libstk/surface.h"
 #include "libstk/surface_impl.h"
 #include "libstk/point.h"
 #include "libstk/edge.h"
 #include "libstk/stk.h"
-#include <string>
-#include <vector>
-#include <SDL/SDL.h>
+#include "libstk/sdl_data.h"
 
 // this is opposite from the docs, but it works
 #if SDL_BYTEORDER != SDL_BIG_ENDIAN
@@ -56,6 +57,7 @@ namespace stk
 			
 		private:
 			SDL_Surface *sdl_surface_;
+			sdl_data::ptr sdl_data_;
 
 			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
 			{
@@ -64,7 +66,6 @@ namespace stk
 			}
 
 		protected:
-			surface_sdl(SDL_Surface& new_surface);
 			surface_sdl(const rectangle& rect);
 			
 		public:

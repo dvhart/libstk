@@ -2,7 +2,7 @@
  *    FILENAME: event_system_sdl.h
  * DESCRIPTION: SDL event backend.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 28/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -16,6 +16,7 @@
 #include <SDL/SDL.h>
 #include "libstk/keycode.h"
 #include "libstk/event_system.h"
+#include "libstk/sdl_data.h"
 
 /* possible event calls in SDL
 	 currently we only use SDL_PollEvent, which calls SDL_PumpEvents
@@ -43,6 +44,7 @@ namespace stk
 	class event_system_sdl : public event_system
 	{
 		private:
+			sdl_data::ptr sdl_data_;
 			keycode sdl2stk_key(SDLKey sdl_key);
 
 		protected:

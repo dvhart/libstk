@@ -3,7 +3,7 @@
  * DESCRIPTION: This is a templated class that implements all the virtual 
  *              methods of the surface abstract base class inline.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 20/May/2003  LAST UPDATE: 20/May/2003
+ *  START DATE: 20/May/2003  LAST UPDATE: 28/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -188,7 +188,7 @@ namespace stk
 
 			virtual color read_pixel(int x, int y)
 			{
-				static_cast<surface_backend*>(this)->get_pixel(x, y);
+				return static_cast<surface_backend*>(this)->get_pixel(x, y);
 			}
 
 			virtual void blit(surface &dst_surface) 
@@ -214,25 +214,25 @@ namespace stk
 						}
 					case LR:
 						{
-							for (x; x <= x2; x++)
+							for (x = x1; x <= x2; x++)
 								static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
 							break;
 						}
 					case RL:
 						{
-							for (x; x >= x2; x--)
+							for (x = x1; x >= x2; x--)
 								static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
 							break;
 						}
 					case UP:
 						{
-							for (y; y <= y2; y++)
+							for (y = y1; y <= y2; y++)
 								static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
 							break;
 						}
 					case DN:
 						{
-							for (y; y >= y2; y--)
+							for (y = y1; y >= y2; y--)
 								static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
 							break;
 						}
@@ -482,7 +482,7 @@ namespace stk
 				int a_2_sq_p_b_2_sq = a_2_sq + b_2_sq;  // 2*a*a + 2*b*b
 
 				// draw the starting pixels (and determine the origin - x,y)
-				int x, y;
+				int x = 0, y = 0;
 				switch (quadrant)
 				{
 					case ur_quadrant:
@@ -587,7 +587,6 @@ namespace stk
 
 			virtual void surface_impl::draw_rect(int x1, int y1, int x2, int y2)
 			{ 
-				color clr = gc_->line_color();
 				draw_line(x1, y1, x2, y1);
 				draw_line(x2, y1, x2, y2);
 				draw_line(x1, y2, x2, y2);

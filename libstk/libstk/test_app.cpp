@@ -35,7 +35,6 @@
 #include "libstk/timer.h"
 #include "libstk/viewport.h"
 
-
 using namespace stk;
 using std::cout;
 using std::endl;
@@ -64,20 +63,14 @@ int main(int argc, char* argv[])
 
 	try
 	{
-		// initialize sdl
-		// FIXME: where should this be done ?, perhaps in an application factory?
-		if (SDL_Init(SDL_INIT_VIDEO) < 0)
-			throw error_message_exception(std::string("Unable to init SDL: ") + std::string(SDL_GetError()));
-		atexit(SDL_Quit);
-			
-		// create the surface
-		cout << "test_app - creating surface" << endl;
-		surface::ptr test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
-		
 		// create the event system
 		cout << "test_app - creating event system" << endl;
 		event_system::ptr test_event_system = event_system_sdl::create();
-	
+
+		// create the surface
+		cout << "test_app - creating surface" << endl;
+		surface::ptr test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
+			
 		// create the application
 		cout << "test_app - creating application" << endl;
 		application::ptr test_app = application::create(test_surface, test_event_system);
@@ -90,7 +83,9 @@ int main(int argc, char* argv[])
 		cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
 		button::ptr test_button = button::create(test_state, L"Quit", 
 			rectangle(120, 10, 100, 30));
-		test_button->on_release.connect( boost::bind(&stk::application::quit, test_app) );
+		// NOTE: we must use test_app.get() here or we inadvertantly create a circular shared_ptr reference
+		// and application (and therefore nothing else) won't get destroyed when we exit()!!!
+		test_button->on_release.connect( boost::bind(&stk::application::quit, test_app.get()) );
 		button::ptr test_button2 = button::create(test_state, L"No-Op", 
 			rectangle(240, 10, 100, 30));
 		
@@ -151,8 +146,6 @@ int main(int argc, char* argv[])
 
 		// add a timer (no_op)
 		cout << "test_app - creating no_op timer" << endl;
-		struct timeval tv;
-		gettimeofday(&tv, NULL);
 		timer::ptr test_timer = timer::create(5000, true); // every 5 seconds
 		no_op no_op_;
 		test_timer->on_timer.connect(no_op_);
@@ -165,6 +158,6 @@ int main(int argc, char* argv[])
 	{
 		cout << "Exception: " << e.what() << endl;
 	}
-
+	
 	return retval;
 }
