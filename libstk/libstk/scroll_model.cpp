@@ -19,7 +19,7 @@ namespace stk
         return new_scroll_model;
     }
 
-    scroll_model::scroll_model() : begin_(0),vis_size_(1),size_(1)
+    scroll_model::scroll_model() : size_(1),begin_(0),vis_size_(1)
     {}
 
     int scroll_model::size() const

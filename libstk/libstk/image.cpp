@@ -112,9 +112,9 @@ namespace stk
         offscreen_surface = onscreen_surface->create_surface(rectangle(0, 0, width, height));
         
         offscreen_surface->clip_rect(rectangle(0, 0, width, height));
-        for (int y = 0; y < height; y++)
+        for (unsigned int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (unsigned int x = 0; x < width; x++)
             {
                 char r = row_pointers[y][(x*bytes_per_pixel)+0];
                 char g = row_pointers[y][(x*bytes_per_pixel)+1];

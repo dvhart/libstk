@@ -184,6 +184,7 @@ namespace stk
 
                         on_postdraw(t_rect);
                         surface_->update( t_rect );
+//                        surface_->update(rectangle());
                     }
                     else
                     {
@@ -368,7 +369,7 @@ namespace stk
     {
         return current_state_.lock();
     }
-    void application::redraw(const rectangle& rect)
+    void application::redraw(const rectangle& rect, bool transform)
     {
         INFO("Application redraw");
         redraw_rect+=rect;

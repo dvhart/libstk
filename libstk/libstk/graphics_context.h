@@ -20,7 +20,7 @@ namespace stk
     class graphics_context
     {
     public:
-        typedef boost::shared_ptr<graphics_context> graphics_context::ptr;
+        typedef boost::shared_ptr<graphics_context> ptr;
 
         /// Enumeration of the types of line segment joints
         enum line_joint_type

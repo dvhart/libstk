@@ -42,7 +42,7 @@ namespace stk
 
         // cycle through the widgets, and return the first that doesn't return a null pointer
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
             if ((*iter)->widget_at(x, y)) return *iter;
 
         // no children are at this location, return this
@@ -53,7 +53,7 @@ namespace stk
     {
         // pass a mouse event to the appropriate widget
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
         {
             if ((*iter)->contains(me->x(), me->y()))
             {
@@ -88,7 +88,7 @@ namespace stk
         redraw_rect=redraw_rect.intersection(rect());
         INFO("container::draw redraw_rect is " << redraw_rect );
         
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
         {
             if ((*iter)->intersects(redraw_rect))
             {
@@ -99,12 +99,14 @@ namespace stk
         }
     }
 
-    void container::redraw(const rectangle& rect)
+    void container::redraw(const rectangle& rect, bool transform)
     {
+        INFO("container::redraw rect=" << rect );
         // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
         rectangle redraw_rect = rect;
-        redraw_rect.position(redraw_rect.position()+rect_.position());
-        parent_.lock()->redraw(redraw_rect);
+        if(transform)
+            redraw_rect.position(redraw_rect.position()+rect_.position());
+        parent_.lock()->redraw(redraw_rect, true);
     }
 
     /// Handle common container events
@@ -125,7 +127,7 @@ namespace stk
         // walk through the children, find the focused, and return the next
         // return an empty pointer if we reach the end.
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
         {
             if ((*iter)->focused())
             {
@@ -158,7 +160,7 @@ namespace stk
         // walk through the children, find the focused, and return the prev
         // return an empty pointer if we reach the beginning.
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
         {
             if ((*iter)->focused())
             {
@@ -188,7 +190,7 @@ namespace stk
         if (focused_) return true;
         // check our children (return true if one of our children is focused)
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++) if ((*iter)->focused()) return true;
+        for (; iter != children_.end(); iter++) if ((*iter)->focused()) return true;
         return false;
     }
 

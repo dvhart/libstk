@@ -33,7 +33,7 @@ namespace stk
         mod_shift               = mod_rightshift | mod_leftshift,
         mod_control             = mod_rightcontrol | mod_leftcontrol,
         mod_alt                 = mod_rightalt | mod_leftalt,
-        mod_meta                = mod_rightmeta | mod_leftmeta,
+        mod_meta                = mod_rightmeta | mod_leftmeta
     };
     
     enum keycode

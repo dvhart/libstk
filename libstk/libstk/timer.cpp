@@ -26,7 +26,7 @@ namespace stk
     }
 
     timer::timer(int interval, bool repeat)
-            : interval_(interval), counter_(interval), repeat_(repeat)
+            : interval_(interval), repeat_(repeat), counter_(interval)
     {
         last_tv_ = get_current_time_value();
     }

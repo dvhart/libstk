@@ -318,7 +318,7 @@ namespace stk
     void surface_sdl::update(const rectangle& u_rect)
     {
         SDL_MUTEX_LOCK;
-        
+        INFO("updating SDL surface with u_rect=" << u_rect);
         if (u_rect.empty())
         {
             //INFO("surface_sdl::update() - updating entire screen");
@@ -330,7 +330,10 @@ namespace stk
         else
         {
             //INFO("surface_sdl::update() - updating the rect: " << u_rect);
-            SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
+            // The SDL_UpdateRect call fails if the rect is outside the screen! 
+            rectangle u_rect_clipped=u_rect.intersection(rect_);
+            SDL_UpdateRect(sdl_surface_, u_rect_clipped.x1(), u_rect_clipped.y1(),
+                           u_rect_clipped.width(), u_rect_clipped.height());
         }
         SDL_MUTEX_UNLOCK;
     }
@@ -348,6 +351,7 @@ namespace stk
     // overridden drawing routines
     color surface_sdl::read_pixel(int x, int y)
     {
+        return 0;               // FIXME
     }
     void surface_sdl::clip_rect(const rectangle& clip_rectangle)
     {

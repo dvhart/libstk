@@ -139,7 +139,7 @@ namespace stk
     std::vector<list_item::ptr> list::selection()
     {
         std::vector<list_item::ptr> selection_;
-        for (int i = 0; i < items_.size(); i++) 
+        for (unsigned int i = 0; i < items_.size(); i++) 
         {
             if (items_[i]->selected())
                 selection_.push_back(items_[i]);
@@ -149,12 +149,12 @@ namespace stk
 
     void list::select_none()
     {
-        for (int i = 0; i < items_.size(); i++) items_[i]->selected(false);
+        for (unsigned int i = 0; i < items_.size(); i++) items_[i]->selected(false);
     }
     
     void list::select_all()
     {
-        for (int i = 0; i < items_.size(); i++) items_[i]->selected(true);
+        for (unsigned int i = 0; i < items_.size(); i++) items_[i]->selected(true);
     }
     
     list_item::ptr list::operator[](int index)

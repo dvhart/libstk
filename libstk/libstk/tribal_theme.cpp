@@ -237,7 +237,10 @@ namespace stk
                     color_properties(outline_color_normal_str, surface)));
         font::ptr arial;
         if(text_size())
+        {
+            INFO("Drawing label with textsize=" << *text_size());
             arial = font_manager::get()->get_font(font_properties("Arial.ttf", *text_size()));
+        }
         else
             arial = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
         gc->font(arial);
@@ -284,7 +287,7 @@ namespace stk
         // draw each item
         int y = 0;
         if (focused_ && current_ >= 0 && current_ < items_.size()) items_[current_]->current(true);
-        for (int i = 0; i < items_.size(); i++)
+        for (unsigned int i = 0; i < items_.size(); i++)
         {
             if (y+items_[i]->height() > v_scroll_->begin() && y < v_scroll_->end())
             {

@@ -68,8 +68,8 @@ namespace stk
             bool wrap() const { return wrap_; }
             void wrap(bool val) { wrap_ = val; redraw(rect_); }
 
-            virtual int selected(); /// returns the index of the current_ item
-            virtual void selected(int index); /// sets the index of the current_ item
+            virtual unsigned int selected(); /// returns the index of the current_ item
+            virtual void selected(unsigned int index); /// sets the index of the current_ item
             /********** END SPINNER INTERFACE **********/
     };
 }

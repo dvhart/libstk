@@ -111,8 +111,8 @@ namespace stk
 
     int font::draw_len(const wstring& text, int kerning_mode)
     {
-        int len = 0;
-        for (int i=0; i<text.length(); i++)
+        unsigned int len = 0;
+        for (unsigned int i=0; i<text.length(); i++)
         {
             len += glyph(text[i])->advance_x();
             if (i < text.length()-1)

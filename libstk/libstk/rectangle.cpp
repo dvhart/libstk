@@ -99,7 +99,7 @@ namespace stk
         }
         return *this;
     }
-    rectangle rectangle::intersection(const rectangle rhs) const
+    rectangle rectangle::intersection(const rectangle& rhs) const
     {
         rectangle retval;
         if(!intersects(rhs))

@@ -100,9 +100,18 @@ int main(int argc, char* argv[])
 
         // create the main state and a label
         state::ptr test_state = state::create(app);
-        label::ptr test_label = label::create(test_state, std::wstring(L"Hello World"), 
-                rectangle(260, 210, 100, 30));
 
+        switched_panel::ptr panel = switched_panel::create(test_state, rectangle(260,210,200,30));
+        
+        label::ptr test_label = label::create(panel, std::wstring(L"Hello World"), 
+                rectangle(0, 0, 100, 30));
+        button::ptr test_btn = button::create(panel, std::wstring(L"Bye World"), 
+                rectangle(20, 0, 100, 30));
+        panel->active_child(test_label);
+
+        timer::ptr switch_timer = timer::create(5000, true);
+        switch_timer->on_timer.connect(boost::function<bool()>((boost::bind(&switched_panel::active_child, panel.get(),test_btn), true)));
+        app->add_timer(switch_timer);
         // add a timer (quit after 15 seconds)
         INFO("hello_world - creating timer to quit after 15 seconds");
         timer::ptr quit_timer = timer::create(15000, false);

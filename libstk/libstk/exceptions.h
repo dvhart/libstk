@@ -62,5 +62,15 @@ namespace stk
         }
     }; // class error_message_exception
 
+    /// Thrown when a pointer to a container expected to be a child of this container
+    /// is not a child of it
+    class error_no_child : public exception
+    {
+        virtual std::string what() const
+        {
+            return std::string("The given widget is not a child of this container");
+        }        
+    };
+    
 } // namespace stk
 #endif

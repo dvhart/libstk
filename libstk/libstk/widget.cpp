@@ -27,7 +27,7 @@ namespace stk
 {
 
     widget::widget(component::ptr parent, const rectangle& rect) : parent_(parent), rect_(rect),
-        focusable_(false), pressed_(false), focused_(false), hover_(false), frame_(0)
+        focusable_(false), frame_(0), pressed_(false), focused_(false), hover_(false)
     {
         INFO("constructor");
     }
@@ -51,6 +51,7 @@ namespace stk
         case event::focus:
             if (focusable_)
             {
+                INFO("Widget focused");
                 focused_ = true;
                 redraw(rect_);
             }
@@ -92,15 +93,19 @@ namespace stk
         return parent_.lock()->surface();
     }
 
-    void widget::redraw(const rectangle& rect)
+    void widget::redraw(const rectangle& rect, bool transform)
     {
-        parent_.lock()->redraw(rect);
+        INFO("widget::redraw rect=" << rect << "  transform" << transform);
+        rectangle redraw_rect(rect);
+//        if(!transform)
+//            redraw_rect.position(rect.position() - rect_.position());
+        parent_.lock()->redraw(redraw_rect,true);
     }
     widget::ptr widget::widget_at(int x, int y)
     {
         if (x < width() && y < height())
             return shared_from_this();
-        else
+        else 
             return widget::ptr();
     }
     widget::ptr widget::delegate_mouse_event(mouse_event::ptr me)

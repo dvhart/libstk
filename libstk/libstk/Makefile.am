@@ -79,6 +79,7 @@ libstk_la_SOURCES =\
 	viewport.h viewport.cpp \
 	widget.h widget.cpp \
 	spreadsheet.cpp spreadsheet.h\
+	switched_panel.h switched_panel.cpp \
 	$(sources_logging) $(sources_fbdev) \
 	$(sources_sdl) $(sources_dfb) \
 	edit_box.h edit_box.cpp  \
@@ -94,6 +95,7 @@ library_include_HEADERS= \
 	application.h    keycode.h           stk.h	\
 	button.h         label.h             surface.h	\
 	combiners.h      exceptions.h        list.h          \
+        override_return.h \
 	combo.h          font.h              list_item.h  \
 	container.h      font_manager.h      mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             component.h    widget.h 	\
@@ -105,6 +107,7 @@ library_include_HEADERS= \
 	overlay.h        overlay_sdl.h       overlay_dfb.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
 	event_producer_elotouch.h            stk_c_wrapper.h \
+	switched_panel.h	edit_box.h \
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 

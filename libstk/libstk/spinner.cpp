@@ -104,11 +104,11 @@ namespace stk
         widget::handle_event(e);
     }
 
-    int spinner::selected()
+    unsigned int spinner::selected()
     {
         return current_;
     }
-    void spinner::selected(int index)
+    void spinner::selected(unsigned int index)
     {
         if (index >= 0 && index < items_.size())
         {
