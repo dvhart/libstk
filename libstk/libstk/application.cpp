@@ -374,7 +374,8 @@ namespace stk
 
             INFO("Current widget unfocused");
 
-            current_state_.lock()->on_leave();
+            if(current_state_.lock) // Only leave a state if we actually had an active state
+                current_state_.lock()->on_leave();
             current_state_ = new_cur_state;
             INFO("State Switched");
 
