@@ -60,20 +60,8 @@ namespace stk
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/
-			/// FIXME: these two are problematic.  We have to call focus_next on 
-			/// component_ if it is a container, but that could call this->focus_next
-			/// constituting a major problem.  Perhaps we should redefine the parent
-			/// of the component_ to be the parent of the decorator but don't tell 
-			/// the parent of the change... will this cause shared_ptr ownership problems?
-			/// ... will work on this more
-			virtual widget::ptr focus_next() 
-			{
-				return component_->focus_next(); 
-			}
-			virtual widget::ptr focus_prev() 
-			{ 
-				return component_->focus_prev(); 
-			}
+			virtual widget::ptr focus_next() { return component_->focus_next(); }
+			virtual widget::ptr focus_prev() { return component_->focus_prev(); }
 			/// Assign the first item added to component_.
 			/// Subsequent adds get passed along to component_.
 			virtual void add(widget::ptr item) 
