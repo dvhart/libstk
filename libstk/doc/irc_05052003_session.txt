@@ -1,0 +1,296 @@
+<carter> ok
+<carter> i see one other way
+<carter> :)
+<carter> but that isnt really a good one
+<carter> :)
+<dvhart> do you call surface::offset(x, y) or something ?
+<dvhart> I am confused
+<carter> (the other possibility to make the parameters to the draw call not integers but some wrapper
+<carter> no
+<carter> surface has an offsett member
+<carter> surface->offset() which returns
+<carter> an STK::point
+<carter> that is the user side of the offsetting
+<carter> so in the draw call
+<carter> of a scrolling container
+<carter> i simply modifiy the offsett of the drawing surface
+<dvhart> ok
+<carter> and then call the childs draw functions (and revert back to the original offsett at the end of the draw routine trough a guard object for exception safety etc)
+<carter> so
+<carter> at the entry of all drawing routines
+<dvhart> what about user draw routines
+<carter> surfaces adds the offsett
+<carter>  to the given coordinates
+<carter> ok
+<carter> so
+<carter> user draw routines
+<carter> call the surface with functions like draw_line
+<carter> and all the drawing they do
+<carter> will be offsetted too
+<carter> by the current surfaces::offset
+<carter> user drawing will take place
+<carter> before the container draws his next child
+<dvhart> so they will be called after offset is set and before it is reset?
+<carter> yep
+<carter> right
+<dvhart> hmmm
+<carter> they are called
+<carter> in the exact moment
+<carter> the widget has finished its theme based drawing
+<dvhart> for(...)
+<dvhart> widget->draw()
+<dvhart> widget_on_draw()
+<carter> right
+<dvhart> hmmm
+<carter> but this will be done in widget->draw
+<carter> not in the container's code
+<dvhart> I was ok
+<dvhart> sorry
+<carter> the widget  is responsible for supplying the user
+<dvhart> ok
+<carter> with user draw
+<carter> (button doesnt need it for example IMO)
+<dvhart> alright roll with it
+<carter> so you're ok with it?
+<dvhart> yup
+<dvhart> one thing though
+<carter> ok
+<carter> might take till wednesday till i finish it
+<carter> have some exam on wednesday
+<dvhart> I was planning on implementing matrix transformations
+<carter> hmmmmmmmm
+<carter> you really think thats needed?
+<dvhart> (rotation, etc)
+<dvhart> well
+<dvhart> it would be nice for translation
+<dvhart> and I could certainly see animations using it
+* carter thinks simple vector based translation is everything we need
+<dvhart> especially in our target apps
+<carter> hmmmmmm
+<dvhart> people like shiny flasshy ui's
+<carter> ;)
+<carter> yep
+<carter> i know
+<dvhart> especcially on things lke tv's
+<carter> btw we need to solve the timer problem etc
+<gregf> codec: you around?
+<dvhart> (a bit annying really)
+<gregf> carter: lo
+<carter> hi gregf
+<carter> darren, i think translation is needed
+<carter> but rotation and shearing etc (which can be done with a 2x2 matrix)
+<carter> is only annoying to the user
+<dvhart> 2x2 really ?
+<dvhart> I have used 3x3
+<carter> sure
+<carter> for 2d drawing?
+<jonez> do any of you guys use acrobat reader?
+<dvhart> always for Xd its X+1
+<carter> even 2x2 has one degree of freedom too much for trans + rotation
+<carter> it depends on what you want to do darren :)
+<codec> gregf: here
+<dvhart> for the homogenous dimension
+<carter> with a 3x3 matrix you can do really much shit :)
+<gregf> codec: http://www.linuxslackers.net/index.php?ChannelFaq
+<dvhart> yup *g*
+<carter> who the freel need homogenous coordinates in embedded systems? :)
+* carter really wonders :)
+<dvhart> hmmm
+<dvhart> need to look at the math again
+<codec> LOL
+* carter thinks we should get back to the roots(*gg*)
+<dvhart> its been a year
+<codec> rofl
+<codec> brilliant
+<carter> translate seems really sufficient
+<carter> rotation is already better done in user code
+<gregf> codec: :)
+<carter> KISS darrren, KISS
+<carter> :)
+<dvhart> who the freel need homogenous coordinates in embedded systems? :) -- carter (that's going in the bugzilla quib list)
+<dvhart> no way!
+<dvhart> talk to gregf about that
+<carter> LOL
+<dvhart> *g*
+<gregf> ;)
+<carter> yep, thats for the quip list :) 
+<dvhart> I'll think on it
+<dvhart> what timing issues?
+<dvhart> jonez: I use acroread, why ?
+<carter> the user needs some possibility
+<carter> to do background tasks
+<dvhart> ah right
+<carter> atm we dont have any multitasking
+<dvhart> yup
+<carter> or  repetetead calling stuff
+<dvhart> did you have somethin gin mind?
+<carter> imo we need both
+<carter> we need a way to get a thread a safe access to the widgets
+<carter> by some lock in the mainloop
+<dvhart> I know SDL offers timers, but haven't looked at the implementation
+<carter> and we need some ways to send timers
+<carter> to user code
+<carter> SDL is really simple there
+<carter> multithreading will need some look
+<codec> erm
+* carter volunteers to look into it :)
+<codec> http://www.localhost.nl/stuff/flash/weeee.swf
+<codec> doh
+<jonez> dvhart: I can't get it to print.
+<carter> ok darren
+<carter> will work on my drawing stuff now :)
+<carter> cya tomorrow ppl
+* gregf is gone: out
+<dvhart> lol
+<dvhart> all business
+<carter> ahh
+<carter> btw
+<carter> one more stuff
+<carter> is there any reason
+<carter> that the surface methods
+<carter> take x,y arguments
+<carter> instead of stk::point?
+<dvhart> just convenience in some cases
+<dvhart> and that is how I wrote the original
+<carter> ok
+<dvhart> a year ago
+<carter> i even thought about
+<carter> changing the surface
+<carter> in that way
+<carter> that offsetting etc
+<dvhart> hmmmm
+<carter> is done in the base class
+<carter> and the calls are forwarded
+<carter> to virtual functions
+<dvhart> I had been thinking about that too
+<carter> named something like do_draw_pixel
+<carter> and do_draw_line
+<carter> so we can do common stuff in the baseclass
+<dvhart> will be useful for primitive line drawing and wide lines with ends etc
+<carter> yep
+<carter> but lets wait till my scrolling stuff is finished :)
+<dvhart> also, I need to look at draw_pixel and put_pixel again
+<carter> will muck around quite a bit with some stuff *ggg*
+<dvhart> we shouldn't need both
+<dvhart> one more thing
+<dvhart> themes
+<dvhart> do we agree we need the class?
+<carter> yep
+<carter> btw
+<carter> we should do the same for themes
+<carter> the widgets should have a draw routine
+<carter> and call some themed_draw routine
+<carter> which is then implemented
+<carter> in the theme file
+<dvhart> yup, already done
+<carter> stuff like scrolling etc
+<carter> simply doesnt belong into the theme file
+<dvhart> (just not committed)
+<carter> hmm
+<carter> where it is done?
+<carter> ahh
+<carter> please commit
+<carter> :)
+<dvhart> *g*
+* carter is mucking around with that atm
+<dvhart> its messy atm ...
+<carter> hmm ok
+<carter> :)
+<dvhart> and I don't want your flames right now
+<dvhart> LOL
+<carter> but then you are responsible for merging :)
+<dvhart> ok
+<dvhart> so
+<carter> as i said
+<carter> wednesday :)
+<dvhart> users will just replace theme.h and theme.cpp with their own theme
+<dvhart> ?
+<dvhart> sounds a little nasty, but not too bad
+<dvhart> (for embedded anyway)
+<carter> hmmmmmmm
+<carter> no
+<carter> imo they should link with a file like
+<carter> tribes_theme.cpp
+<carter> and the header should be mainly the same
+<dvhart> they can't really
+<dvhart> the point
+<carter> might be wortwhile to use the pimpl idiom here
+<carter> so they can have private data
+<dvhart> is that the theme contains user data
+<carter> while not changing the class declaration
+<dvhart> pimpl ???
+<carter> you know about pimpl?
+<dvhart> ^
+<carter> pimpl=Pointer to IMPLementation
+<carter> because a pointer can be an incomplete type
+<carter> you can forward declare some class
+<carter> named theme_data
+<carter> and only point to it in the class definition
+<carter> so only the user code knows about the structure of his own data
+<carter> this technique is commonly used to reduce header dependencies
+<dvhart> nice
+<dvhart> so theme.h
+<dvhart> is a simple singleton
+<carter> you can do that with a smart pointer too
+<dvhart> it has a theme_data
+<dvhart> member
+<dvhart> defined where ?
+<dvhart> tribal_theme.cpp also?
+<carter> codec
+<carter> damni that SWF is crazy
+<carter> yep
+<carter> in tribal theme.cpp
+<dvhart> hmmm
+<dvhart> how do init the theme then?
+<dvhart> oh
+<dvhart> right
+<dvhart> at link time
+<carter> yep
+<carter> ok darren
+<carter> gonna go now
+<dvhart> it will find the right theme_data object
+<carter> cya tomorrow?
+<dvhart> ok
+<dvhart> yup
+<dvhart> saving this log
+<dvhart> good luck on your exam
+<dvhart> (not that carter needs it)
+<dvhart> adding quibs
+<carter> thx :)
+<carter> lol
+<dvhart> carter: thought you HATED sfw ?
+<dvhart> swf even
+<carter> lol
+<carter> installed the flash player for some other shit 
+<carter> some days ago
+<carter> :)
+<carter> its still shit
+<carter> but that shit codec posted
+<carter> was funny shit :9
+<dvhart> then check out this
+<dvhart> getting link...
+<dvhart> http://www.homestarrunner.com/sbemail45.html
+<dvhart> AND
+<dvhart> http://www.homestarrunner.com/sbemail37.html
+<carter> rofl
+<carter> ROFL
+<dvhart> *G*
+<dvhart> and then...
+<carter> ROFL²
+<dvhart> http://www.homestarrunner.com/sbemail58.html
+<carter> ROFL
+<dvhart> the whole list of them is at:
+<dvhart> http://www.homestarrunner.com/sbemail.html
+<carter> the first one was best
+<dvhart> yup
+<dvhart> but you gotta love TTRRROOOOOGGGDOOOOR
+<dvhart> but techno and dullar rock
+<dvhart> anyway, ok, back to work
+<dvhart> I'll get the stk::pimple going (that was a joke)
+<dvhart> I'll commit something today
+<dvhart> so you have it marc
+<carter> Burninator
+<dvhart> yeah!
+<carter> Troogdor :)
+<carter> trogdor strikes again
+<dvhart> quips added
