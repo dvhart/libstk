@@ -6,14 +6,14 @@ lib_LTLIBRARIES  =\
 
 
 if DFB
- headers_dfb=backend_dfb.h surface_dfb.h
- sources_dfb=backend_dfb.cpp backend_dfb.h surface_dfb.cpp surface_dfb.h 
- libs_dfb=-ldirectfb
+ headers_dfb = backend_dfb.h surface_dfb.h
+ sources_dfb = backend_dfb.cpp backend_dfb.h surface_dfb.cpp surface_dfb.h 
+ libs_dfb = -ldirectfb
 endif
 
 if SDL
- headers_sdl= event_producer_sdl.h sdl_data.h    surface_sdl.h
- sources_sdl= 	event_producer_sdl.h event_producer_sdl.cpp \
+ headers_sdl =  event_producer_sdl.h sdl_data.h    surface_sdl.h
+ sources_sdl = 	event_producer_sdl.h event_producer_sdl.cpp \
 		surface_sdl.h surface_sdl.cpp \
 		sdl_data.h sdl_data.cpp 
 endif
@@ -64,7 +64,7 @@ libstk_la_SOURCES =\
 	logging.h logging.cpp \
 	$(sources_sdl) $(sources_dfb) \
 	edit_box.h edit_box.cpp  \
-	event_producer_elotouch.h event_producer_elotouch.cpp 
+	event_producer_elotouch.h event_producer_elotouch.cpp  spreadsheet.cpp spreadsheet.h
 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
@@ -86,7 +86,7 @@ library_include_HEADERS= \
 	posix_time.h     viewport.h          hotkey.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
 	$(headers_sdl)   $(headers_dfb)      config.h       \
-	event_producer_elotouch.h
+	event_producer_elotouch.h logging.h spreadsheet.h
 
 # FIXME: do the autotools thing for freetype
 libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb)
