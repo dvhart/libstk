@@ -56,6 +56,8 @@ namespace stk
         
         m_width			= vscreeninfo.xres;
         m_height		= vscreeninfo.yres;
+        rect_.x2(m_width);
+        rect_.y2(m_height);
         m_linelength	= fscreeninfo.line_length;
         m_screensize	= m_linelength * m_height; //fscreeninfo.smem_len;
         m_bytesperpixel	= vscreeninfo.bits_per_pixel/8;
@@ -104,10 +106,10 @@ namespace stk
     {
         x+=offset_.x();
         y+=offset_.y();
-        
-        if (x < 0 || (x > m_width-1) || y < 0 || (y > m_height-1))
-            return;
 
+        if (!clip_rect_.contains(x,y) || !rect_.contains(x,y))
+            return;
+        
         unsigned char red = (clr >> 24) & 0xff;
         unsigned char green = (clr >> 16) & 0xff;
         unsigned char blue = (clr >> 8) & 0xff;
@@ -238,19 +240,23 @@ namespace stk
 
     void surface_fbdev::fill_rect(int x1, int y1, int x2, int y2)
     {
-        x1 += offset_.x();
-        y1 += offset_.y();
-        x2 += offset_.x();
-        y2 += offset_.y();  
-        color mcolor = (color)gc_->fill_color();
-        for (int x=x1; x<x2; x++)
-            for (int y=y1; y<y2; y++)
-                put_pixel(x, y, mcolor);
+        fill_rect(rectangle(point(x1,y1),point(x2,y2)));
     }
 
-    void surface_fbdev::fill_rect(const rectangle& rect)
+    void surface_fbdev::fill_rect(const rectangle& rect_in)
     {
-        fill_rect(rect.x1(),rect.y1(),rect.x2(),rect.y2());
+        rectangle clip_rect(clip_rect_);
+        clip_rect.position(clip_rect.position()+offset_);
+        rectangle rect=rect_in.intersection(clip_rect_);
+        if(rect.empty())
+            return;
+        INFO("filling rectangle " << rect << " Offset is x=" << offset_.x() <<
+             " y=" << offset_.y() );
+        
+        color mcolor = (color)gc_->fill_color();
+        for (int x=rect.x1(); x<rect.x2(); x++)
+            for (int y=rect.y1(); y<rect.y2(); y++)
+                put_pixel(x, y, mcolor);
     }
 
 }

@@ -621,7 +621,6 @@ namespace stk
         virtual void draw_rect(const rectangle &rect)
         {
             // don't bother locking since draw_rect does it, and we only call it
-            INFO("draw_rect");
             draw_rect(rect.x1(), rect.y1(), rect.x2(), rect.y2());
         }
 
