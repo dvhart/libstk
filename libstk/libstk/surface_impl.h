@@ -1383,7 +1383,7 @@ namespace stk
             rectangle source_rect = img->offscreen_surface->rect();
             rectangle dest_rect = source_rect;  
             // FIXME: IMNSHO, blitting should be offset in the backend's surface class!
-            //dest_rect.position(offset()+point(x, y));
+            dest_rect.position(point(x, y));
 
             img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect, dest_rect);
         }
