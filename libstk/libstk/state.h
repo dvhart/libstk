@@ -24,13 +24,16 @@ namespace stk
 		public:
 			virtual ~state();
 			static state::ptr create(application::ptr parent);
-			virtual void draw(surface::ptr surface);
 			widget::weak_ptr focused_widget();
 			void focused_widget(widget::weak_ptr value);
 
 			// event_handler interface
 			virtual void handle_event(event::ptr e);
 
+			// drawable interface
+			//virtual surface::ptr surface(); 
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			//virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
 	};
 
 	

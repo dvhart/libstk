@@ -27,13 +27,13 @@ namespace stk
 		return instance_;
 	}
 	
-	void theme::draw_state()
+	void theme::draw_state(const rectangle& rect)
 	{
 		//cout << "theme::draw_state()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(surface_->gen_color("0xFFFFFFFF")); 
 		surface_->gc(gc);
-		surface_->fill_rect(surface_->rect());		
+		surface_->fill_rect(rect);	
 	}
 	
 	void theme::draw_button(rectangle& rect, bool active, bool focused, bool hover)

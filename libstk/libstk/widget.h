@@ -64,12 +64,12 @@ namespace stk
 			virtual void handle_event(event::ptr e);
 
 			// drawable interface
-			virtual boost::shared_ptr<stk::surface> surface(); 
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual surface::ptr surface(); 
+			virtual void draw(surface::ptr surface);
 			virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
 
 			// parent interface
-			virtual boost::shared_ptr<widget> focus_next();
+			virtual widget::ptr focus_next();
 			virtual boost::shared_ptr<widget> focus_prev();
 			
 			boost::signal<bool (), combiner::logical_and<bool> > on_activate;

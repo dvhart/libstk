@@ -21,8 +21,8 @@ namespace stk
 			
 		protected:
 			std::vector<widget::ptr> children_;
-			container(container::ptr parent);
-			container(parent::ptr parent);
+			container(container::ptr parent, const rectangle& rect);
+			container(parent::ptr parent, const rectangle& rect);
 			
 		public:
 			~container();
@@ -40,7 +40,7 @@ namespace stk
 			virtual void handle_event(event::ptr e);
 
 			// drawable interface
-			virtual boost::shared_ptr<stk::surface> surface(); 
+			//virtual surface::ptr surface(); 
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
 			virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
 

@@ -12,12 +12,12 @@ using std::endl;
 namespace stk
 {
 
-	container::container(boost::shared_ptr<container> parent) : widget(parent)
+	container::container(boost::shared_ptr<container> parent, const rectangle& rect) : widget(parent, rect)
 	{
 		cout << "container::container(container)" << endl;
 	}
 	
-	container::container(boost::shared_ptr<parent> parent) : widget(parent)
+	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : widget(parent, rect)
 	{
 		cout << "container::container(parent)" << endl;
 	}
@@ -50,19 +50,19 @@ namespace stk
 		}
 	}
 	
-	void container::add(boost::shared_ptr<widget> item)
+	void container::add(widget::ptr item)
 	{
 		children_.push_back(item);
 	}
 
-	void container::remove(boost::shared_ptr<widget> item)
+	void container::remove(widget::ptr item)
 	{
 		std::vector<boost::shared_ptr<stk::widget> >::iterator iter;
 		iter=std::find(children_.begin(), children_.end(), item);
 		children_.erase(iter);
 	}
 
-	void container::draw(boost::shared_ptr<stk::surface> surface)
+	void container::draw(surface::ptr surface)
 	{
 		std::vector<widget::ptr>::iterator iter = children_.begin();
 		for (iter; iter != children_.end(); iter++)

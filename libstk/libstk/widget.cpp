@@ -70,6 +70,7 @@ namespace stk
 	
 	void widget::redraw(bool val, const rectangle& rect)
 	{
+		cout << "widget::redraw() - rectangle " << rect.x1() << "," << rect.y1() << " " << rect.x2() << "," << rect.y2() << endl;
 		redraw_ = val;
 		redraw_rect_ += rect;
 		make_shared(parent_)->redraw(true, rect);

@@ -21,9 +21,10 @@ namespace stk
 	}
 
 	state::state(boost::shared_ptr<application> parent) : 
-		container(boost::shared_static_cast<stk::parent>(parent))
+		container(boost::shared_static_cast<stk::parent>(parent), parent->surface()->rect())
 	{
 		cout << "state::state()" << endl;
+		redraw_rect_ = parent->surface()->rect();
 	}
 
 	state::~state()
@@ -33,7 +34,7 @@ namespace stk
 	void state::draw(surface::ptr surface)
 	{
 		//cout << "state::draw()" << endl;
-		if (redraw()) theme::instance()->draw_state();
+		theme::instance()->draw_state(redraw_rect_);
 		container::draw(surface);
 	}
 	
