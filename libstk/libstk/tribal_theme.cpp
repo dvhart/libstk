@@ -281,7 +281,7 @@ namespace stk
 		
 		// adjust the list items using the vertical scroll_model
 		surface->offset(surface->offset() - point(0,v_scroll_->begin()));
-		cout << "\tSurface offset: " << surface->offset().x() << "," << surface->offset().y() << endl;
+		//cout << "\tSurface offset: " << surface->offset().x() << "," << surface->offset().y() << endl;
 		
 		// draw the highlighted selection
 		rectangle cur_rect;

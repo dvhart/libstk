@@ -244,7 +244,7 @@ namespace stk
 						break;
 					}
 					default:
-						cout << "application::handle_event() - unhandled key event" << endl;
+						// unhandled key
 						break;
 				}
 				break;

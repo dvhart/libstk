@@ -116,7 +116,44 @@ namespace stk
 			case SDLK_DOWN:
 				key = down_arrow;
 				break;
+			case SDLK_F1:
+				key = f1;
+				break;
+			case SDLK_F2:
+				key = f2;
+				break;
+			case SDLK_F3:
+				key = f3;
+				break;
+			case SDLK_F4:
+				key = f4;
+				break;
+			case SDLK_F5:
+				key = f5;
+				break;
+			case SDLK_F6:
+				key = f6;
+				break;
+			case SDLK_F7:
+				key = f7;
+				break;
+			case SDLK_F8:
+				key = f8;
+				break;
+			case SDLK_F9:
+				key = f9;
+				break;
+			case SDLK_F10:
+				key = f10;
+				break;
+			case SDLK_F11:
+				key = f11;
+				break;
+			case SDLK_F12:
+				key = f12;
+				break;
 			default:
+				cout << "event_system_sdl::sdl2stk_kay - unknown key" << std::hex << sdl_key << endl;
 				key = key_unknown;
 				break;
 		}

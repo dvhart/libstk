@@ -51,6 +51,7 @@ namespace stk
 
 		container::handle_event(e); 
 
+		// FIXME: only pass it up if we haven't handled it
 		// if we don't handle it, pass up to the parent
 		// mstr: broken in Boost_1_30_0 and in general! FIXME
 		// FIXME: only run if not handled ???

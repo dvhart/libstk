@@ -109,8 +109,11 @@ namespace stk
 		// handle standard container events
 		// ... FIXME: writeme
 
+		widget::handle_event(e);
+		
+		// FIXME: only pass it up if we haven't handled it
 		// if we don't handle it, give it to the parent
-		//parent_.lock()->handle_event(e);
+		parent_.lock()->handle_event(e);
 	}
 
 	widget::ptr container::focus_next()

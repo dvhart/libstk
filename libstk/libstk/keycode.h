@@ -54,14 +54,12 @@ namespace stk
 		key_240, key_241, key_242, key_243, key_244, key_245, key_246, key_247,
 		key_248, key_249, key_250, key_251, key_252, key_253, key_254, key_255,
 		
-		// standard 104 keys
-		left_arrow,
-		right_arrow,
-		up_arrow,
-		down_arrow,
+		// standard 104 keys starting at 256
+		left_arrow, right_arrow, up_arrow, down_arrow,
+		f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12,
 		
 		// special keys (ie remote controls, etc) 
-		next,
+		next,              
 		prev,
 		play,
 		pause,
@@ -70,7 +68,7 @@ namespace stk
 		stop,
 
 		// an unkown key
-		key_unknown
+		key_unknown  
 	};
 } // namespace stk
 

@@ -16,6 +16,8 @@
 #include <boost/signal.hpp>
 #include <boost/bind.hpp>
 
+#include <boost/function.hpp> // testing hotkey
+
 #include "libstk/application.h"
 #include "libstk/button.h"
 #include "libstk/event_system.h"
@@ -39,15 +41,32 @@ using namespace stk;
 using std::cout;
 using std::endl;
 
-// FIXME: delete this when we solve the bug
-// a no-op slot, since it segfaults if on_click is empty in button
 struct no_op
 {
-	bool operator()() const
-	{
-		cout << "no_op slot" << endl;
-		return true;
-	}
+	bool operator()() { cout << "no_op::operator()" << endl; return true; }
+};
+
+
+struct hotkey_action
+{
+	bool operator()()	{ cout << "hotkey::operator()" << endl; return true; }
+	void testa() { cout << "no_op::testa()" << endl; } 
+	bool testb() { cout << "no_op::testb()" << endl; return true; }
+	boost::signal<void ()> siga;
+	boost::signal<bool ()> sigb;
+};
+
+template <typename T>
+struct hotkey
+{
+		boost::function<T ()> slot_;
+		hotkey(boost::function<T ()> slot) : slot_(slot) { }
+		bool operator()(stk::keycode key) 
+		{
+			cout << "hotkey::operator() - " << std::hex << key << endl;
+			slot_();
+			return true;
+		}
 };
 
 bool scroll_slot(stk::scroll_model::ptr target,int increment)
@@ -97,6 +116,27 @@ int main(int argc, char* argv[])
 			std::wstring(L"stk::tribal_theme"), 
 			rectangle(490, 10, 150, 30));
 		
+		// create some buttons with hotkeys F1-F4
+		cout << "test_app - creating buttons, binding F1-F4" << endl;
+		button::ptr test_button3 = button::create(test_state, L"F1", rectangle(10, 400, 100, 30));
+		button::ptr test_button4 = button::create(test_state, L"F2", rectangle(120, 400, 100, 30));
+		button::ptr test_button5 = button::create(test_state, L"F3", rectangle(230, 400, 100, 30));
+		button::ptr test_button6 = button::create(test_state, L"F4", rectangle(340, 400, 100, 30));	
+
+		/*
+		// WORKING ON GETTING HOTKEYS TO BUILD
+		no_op t_no_op;
+		hotkey_action t_hotkey_action;
+		t_hotkey_action.siga.connect(t_no_op);
+		boost::shared_ptr<hotkey_action> p_hotkey_action(&t_hotkey_action);
+		//hotkey<bool> hotkey_( boost::bind(&stk::button::on_release, test_button3.get()) ); // BROKEN
+		hotkey<bool> hotkey_( boost::bind(&hotkey_action::testb, p_hotkey_action.get()) ); // WORKS
+		//hotkey<bool> hotkey_( boost::bind(&no_op::sigb, p_no_op.get()) ); // BROKEN
+		//boost::function<bool ()> tf = boost::bind(&no_op::sigb, p_no_op.get()); // BROKEN
+		test_state->on_keyup.connect(hotkey_);
+		// END HOTKEYS
+		*/
+		
 		// create a progress bar
 		cout << "test_app - creating a progress bar" << endl;
 		progress::ptr test_progress = progress::create(test_state, 
@@ -114,13 +154,12 @@ int main(int argc, char* argv[])
 				rectangle(10, 90, 400, 300), image::create("parrots.ppm"));
 		
 		//scroll(test_viewport->h_scroll(),-10);
-		
 		button::ptr scroll_left=button::create(test_state,L"Scroll-", rectangle(100, 300, 90, 40));		
 		scroll_left->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), -10));
 		button::ptr scroll_right=button::create(test_state,L"Scroll+", rectangle(200, 300, 90, 40));		
 		scroll_right->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), 10));
-		
 		//void scroll(stk::scroll_model::ptr target,int increment)
+		
 		// create a list
 		cout << "test_app - creating a list with items" << endl;
 		list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));

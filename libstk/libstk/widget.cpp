@@ -20,6 +20,8 @@
 #include "libstk/application.h"
 #include "libstk/component.h"
 #include "libstk/container.h"
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
 #include "libstk/widget.h"
 
 using std::cout;
@@ -72,6 +74,11 @@ namespace stk
 				hover_ = false;
 				pressed_ = false;
 				redraw(rect_);
+				break;
+			case event::key_up:
+				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+				bool ret = on_keyup(ke->key());
+				cout << "widget::handle_event() - on_keyup returned: " << ((ret) ? "true" : "false") << endl;
 				break;
 		}
 
