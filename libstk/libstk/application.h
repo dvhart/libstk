@@ -28,7 +28,7 @@ namespace stk
 			std::list<boost::shared_ptr<state> > states_;
 			
 			// FIXME: what can we do to use state::weak_ptr
-			boost::weak_ptr<state> current_state_;  // FIXME: should this be a weak_ptr ?
+			boost::weak_ptr<state> current_state_;  // FIXME: should these be a weak_ptr ?
 			widget::weak_ptr focused_widget_;
 			widget::weak_ptr hover_widget_; 
 			
