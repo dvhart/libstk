@@ -33,7 +33,7 @@ namespace stk
 
     protected:
         std::vector<widget::ptr> children_;
-        container(component::ptr parent, const rectangle& rect);
+        container(const rectangle& rect);
         
         /// This routine draws the child given in its second parameter
         /// The surface offset and clip_rect is set for the child and then the child

@@ -22,13 +22,12 @@ namespace stk
 {
     list::ptr list::create(container::ptr parent, const rectangle& rect)
     {
-        list::ptr new_list(new list(parent, rect));
-        parent->add(new_list);
+        list::ptr new_list(new list(rect));
+        new_list->parent(parent);
         return new_list;
     }
 
-    list::list(container::ptr parent, const rectangle& rect) : widget(parent, rect), scrollable(),
-        current_(0)
+    list::list(const rectangle& rect) : widget(rect), scrollable(), current_(0)
     {
         INFO("constructor");
         focusable(true);

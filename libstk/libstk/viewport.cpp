@@ -20,20 +20,17 @@ namespace stk
 {
     viewport::ptr viewport::create(container::ptr parent, const rectangle& rect)
     {
-        viewport::ptr new_viewport(new viewport(parent, rect));
-        INFO("viewport constructed, adding to parent");
-        if (!parent) ERROR("viewport parent null!");
-        parent->add(new_viewport);
+        viewport::ptr new_viewport(new viewport(rect));
+        new_viewport->parent(parent);
+        new_viewport->h_scroll(scroll_model::create());
+        new_viewport->v_scroll(scroll_model::create());
         return new_viewport;
     }
 
-    viewport::viewport(container::ptr parent, const rectangle& rect) : 
-        container(parent, rect), scrollable()
+    viewport::viewport(const rectangle& rect) : container(rect), scrollable()
     {
         INFO("constructor");
         focusable_ = true;
-        h_scroll(scroll_model::create());
-        v_scroll(scroll_model::create());
     }
 
     viewport::~viewport()
@@ -41,22 +38,22 @@ namespace stk
         INFO("destructor");
     }
 
-    void viewport::h_scroll(scroll_model::ptr value)
+    void viewport::h_scroll(scroll_model::ptr model)
     {
         h_scroll_con.disconnect();
-        h_scroll_ = value;
-        h_scroll_con = value->on_change.connect(boost::bind(&viewport::redraw, this));
+        h_scroll_ = model;
+        h_scroll_con = model->on_change.connect(boost::bind(&viewport::redraw, this));
         h_scroll_->size(width());
         if (!children_.empty())
             h_scroll_->size(children_[0]->width());
         h_scroll_->vis_size(width());
     }
 
-    void viewport::v_scroll(scroll_model::ptr value)
+    void viewport::v_scroll(scroll_model::ptr model)
     {
         v_scroll_con.disconnect();
-        v_scroll_ = value;
-        v_scroll_con = value->on_change.connect(boost::bind(&viewport::redraw, this));
+        v_scroll_ = model;
+        v_scroll_con = model->on_change.connect(boost::bind(&viewport::redraw, this));
         v_scroll_->size(height());
         v_scroll_->vis_size(height());
         if (!children_.empty())

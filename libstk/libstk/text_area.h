@@ -31,8 +31,6 @@ namespace stk
         typedef std::pair<int,int> selection_pair;
 
     private:
-        
-
         //functions inplemented in text_area.cpp
         /// return the character index under the x, y coordinate
         int region(int x, int y);
@@ -67,7 +65,7 @@ namespace stk
         std::wstring rest_of_text_;
 
     protected:
-        text_area(container::ptr parent, const std::wstring& text, const rectangle& rect);
+        text_area(const std::wstring& text, const rectangle& rect);
 
     public:
         static text_area::ptr create(container::ptr parent, const std::wstring& text,

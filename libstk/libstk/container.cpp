@@ -22,8 +22,7 @@
 
 namespace stk
 {
-    container::container(component::ptr parent, const rectangle& rect) :
-            widget(parent, rect)
+    container::container(const rectangle& rect) : widget(rect)
     {
         INFO("constructor");
         focusable_ = false;
@@ -116,7 +115,8 @@ namespace stk
         rectangle redraw_rect = rect;
         if (transform)
             redraw_rect.position(redraw_rect.position()+position());
-        parent_.lock()->redraw(redraw_rect, this, true);
+        if (parent_.lock())
+            parent_.lock()->redraw(redraw_rect, this, true);
     }
 
     /// Handle common container events

@@ -26,15 +26,16 @@ namespace stk
         typedef boost::weak_ptr<image> weak_ptr;
     private:
     protected:
-        image(stk::surface::ptr onscreen_surface,const std::string& filename="");
-        image(stk::surface::ptr onscreen_surface,const rectangle& rect);
+        image(stk::surface::ptr onscreen_surface, const std::string& filename = "");
+        image(stk::surface::ptr onscreen_surface, const rectangle& rect);
         void init_pixels();
         int width_;
         int height_;
         surface::ptr onscreen_surface; /// Used for offscreen surface construction
     public:
-        static image::ptr create(stk::surface::ptr onscreen_surface,const std::string& filename="");
-        static image::ptr create(stk::surface::ptr onscreen_surface,const rectangle& _rect);
+        static image::ptr create(stk::surface::ptr onscreen_surface, 
+                const std::string& filename = "");
+        static image::ptr create(stk::surface::ptr onscreen_surface, const rectangle& _rect);
         virtual ~image();
 
         surface::ptr offscreen_surface;

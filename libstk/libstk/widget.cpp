@@ -26,7 +26,7 @@
 namespace stk
 {
 
-    widget::widget(component::ptr parent, const rectangle& rect) : parent_(parent),
+    widget::widget(const rectangle& rect) : 
         focusable_(false), frame_(0), pressed_(false), focused_(false), hover_(false)
     {
         // FIXME: this is an ugly kludge
@@ -98,6 +98,13 @@ namespace stk
         // FIXME: what is the benefit of copying the rectangle?
         rectangle redraw_rect(rect);
         parent_.lock()->redraw(redraw_rect, this, true);
+    }
+
+    void widget::parent(container::ptr parent) 
+    { 
+        if (parent_.lock()) parent_.lock()->remove(shared_from_this());
+        parent_ = parent;
+        if (parent_.lock()) parent_.lock()->add(shared_from_this());
     }
 
     widget::ptr widget::widget_at(int x, int y)

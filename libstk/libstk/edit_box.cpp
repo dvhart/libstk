@@ -23,17 +23,16 @@ namespace stk
     edit_box::ptr edit_box::create(container::ptr parent, const std::wstring& text, 
             const rectangle& rect)
     {
-        edit_box::ptr new_edit_box(new edit_box(parent, text, rect));
-        parent->add(new_edit_box);
+        edit_box::ptr new_edit_box(new edit_box(text, rect));
+        new_edit_box->parent(parent);
         return new_edit_box;
     }
 
-    edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect) 
-        : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0), 
-          pressed_(false)
+    edit_box::edit_box(const std::wstring& text, const rectangle& rect) : widget(rect), 
+        text_(text), selection_start_(0), selection_end_(0), pressed_(false)
     {
         INFO("constructor");
-        focusable(true);
+        focusable_ = true;
     }
 
     edit_box::~edit_box()

@@ -28,6 +28,8 @@ namespace stk
         typedef boost::weak_ptr<state> weak_ptr;
 
     private:
+        /// redeclare this method as private as a state's parent cannot be changed
+        virtual void parent(boost::shared_ptr<container> parent) { }
 
     protected:
         image::ptr bg_image_;
@@ -38,17 +40,28 @@ namespace stk
         static state::ptr create(application::ptr parent);
         static state::ptr create(application::ptr parent, std::string bg_image_path);
 
-        // these two should probably be moved up to container
-        virtual widget::ptr focus_first();
-        virtual widget::ptr focus_last();
-
-        // event_handler interface
+        /********** EVENT HANDLER INTERFACE **********/
         virtual void handle_event(event::ptr e);
+        /********** END EVENT HANDLER INTERFACE **********/
 
-        // drawable interface
+        /********** DRAWABLE INTERFACE **********/
         //virtual surface::ptr surface();
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
         //virtual void redraw(bool val, const rectangle& rect);
+        /********** END DRAWABLE INTERFACE **********/
+
+        /********** COMPONENT INTERFACE **********/
+        // virtual void parent(boost::shared_ptr<container> parent); // see private above
+        /********** END COMPONENT INTERFACE **********/
+
+        /********** CONTAINER INTERFACE **********/
+        /********** END CONTAINER INTERFACE **********/
+
+        /********** STATE INTERFACE **********/
+        // these two should probably be moved up to container
+        virtual widget::ptr focus_first();
+        virtual widget::ptr focus_last();
+        /********** END STATE INTERFACE **********/
     };
 }
 

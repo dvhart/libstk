@@ -19,13 +19,13 @@ namespace stk
     xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect, 
             const std::string& config)
     {
-        xine_panel::ptr new_xine_panel(new xine_panel(parent, rect, config));
-        parent->add(new_xine_panel);
+        xine_panel::ptr new_xine_panel(new xine_panel(rect, config));
+        new_xine_panel->parent(parent);
         return new_xine_panel;
     }
   
-    xine_panel::xine_panel(container::ptr parent, const rectangle& rect, 
-            const std::string& config) : widget(parent, rect), fullscreen_(false)
+    xine_panel::xine_panel(const rectangle& rect, const std::string& config) : widget(rect), 
+        fullscreen_(false)
     {
         INFO("constructor");
         focusable_ = true;

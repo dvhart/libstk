@@ -36,8 +36,8 @@ namespace stk
             int region(int x, int y);
 
         protected:
-            numeric_spinner(container::ptr parent, const rectangle& rect, 
-                    double min, double max, double increment, int precision, bool wrap);
+            numeric_spinner(const rectangle& rect, double min, double max, 
+                    double increment, int precision, bool wrap);
             /// the minimum value
             double min_;
             /// the maximum value
@@ -52,7 +52,6 @@ namespace stk
             int precision_; 
             /// wrap around from first to last and last to first values
             bool wrap_;
-
 
         public:
             static numeric_spinner::ptr create(container::ptr parent, const rectangle& rect, 

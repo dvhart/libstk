@@ -22,20 +22,18 @@
 namespace stk
 {
 
-    button::ptr button::create(container::ptr parent, const std::wstring label,
-                               const rectangle& rect)
+    button::ptr button::create(container::ptr parent, const std::wstring label, 
+            const rectangle& rect)
     {
-        button::ptr new_button(new button(parent, label, rect));
-        parent->add
-        (new_button);
+        button::ptr new_button(new button(label, rect));
+        new_button->parent(parent);
         return new_button;
     }
 
-    button::button(boost::shared_ptr<container> parent, const std::wstring label,
-                   const rectangle& rect) : widget(parent, rect), label_(label)
+    button::button(const std::wstring label, const rectangle& rect) : widget(rect), label_(label)
     {
         INFO("constructor");
-        focusable(true);
+        focusable_ = true;
     }
 
     button::~button()

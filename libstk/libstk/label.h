@@ -34,7 +34,7 @@ namespace stk
         boost::optional<int> text_size_;
 
     protected:
-        label(container::ptr parent, std::wstring text, const rectangle& rect);
+        label(std::wstring text, const rectangle& rect);
 
     public:
         static label::ptr create(container::ptr parent, std::wstring text,

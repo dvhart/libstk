@@ -36,7 +36,7 @@ namespace stk
 
     protected:
         int current_;
-        list(container::ptr parent, const rectangle& rect);
+        list(const rectangle& rect);
         std::vector<list_item::ptr> items_;
 
         // scrolling members

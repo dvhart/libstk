@@ -19,13 +19,13 @@ namespace stk
     scroll_box::ptr scroll_box::create(container::ptr parent, const rectangle& rect, 
             bool v_policy, bool h_policy)
     {
-        scroll_box::ptr new_scroll_box(new scroll_box(parent, rect));
+        scroll_box::ptr new_scroll_box(new scroll_box(rect));
+        new_scroll_box->parent(parent);
         new_scroll_box->scroll_policies(v_policy, h_policy);
-        parent->add(new_scroll_box);
         return new_scroll_box;
     }
 
-    scroll_box::scroll_box(container::ptr parent, const rectangle& rect) : container(parent, rect),
+    scroll_box::scroll_box(const rectangle& rect) : container(rect),
             check_scrollable_(false), v_policy_(false), h_policy_(false)
     {
         INFO("constructor");
@@ -39,14 +39,14 @@ namespace stk
     }
 
     void scroll_box::h_scroll(scroll_model::ptr model)
-    {
-        viewport_->h_scroll(model);
+    { 
+        if (child_) boost::shared_dynamic_cast<scrollable>(child_)->h_scroll(model);
         if (h_scroll_bar_) h_scroll_bar_->model(model);
     }
 
     void scroll_box::v_scroll(scroll_model::ptr model)
     {
-        viewport_->v_scroll(model);
+        if (child_) boost::shared_dynamic_cast<scrollable>(child_)->v_scroll(model);
         if (v_scroll_bar_) v_scroll_bar_->model(model);
     }
 
@@ -62,7 +62,6 @@ namespace stk
             scrollable::ptr scroll_item;
             if (scroll_item = boost::shared_dynamic_cast<scrollable>(item))
             { // item is scrollable, add it directly
-                INFO("item is scrollable");
                 if (viewport_)
                 {
                     remove(viewport_);
@@ -74,18 +73,21 @@ namespace stk
             }
             else
             { // item isn't scrollable, put it in a viewport first
-                INFO("item is not scrollable");
                 if (item->parent()) item->parent()->remove(item);
                 if (!viewport_)
                 {
                     check_scrollable_ = false;
                     // FIXME: ugly cast, but I don't see a clean way...
                     scroll_box::ptr this_ptr = boost::shared_static_cast<scroll_box>(shared_from_this());
+                    INFO("creating viewport");
                     viewport_ = viewport::create(this_ptr, child_rect_);
-                    child_ = viewport_;
+                    INFO("assigning child as viewport");
                     check_scrollable_ = true;
                 }
-                viewport_->add(item);
+                INFO("setting child_ to viewport_");
+                child_ = viewport_;
+                INFO("setting item parent to viewport_");
+                item->parent(viewport_);
             }
 
             // update the scroll bars to use the new models
@@ -93,7 +95,7 @@ namespace stk
             if (h_scroll_bar_) h_scroll_bar_->model(h_scroll());
         }
         else
-        { // no checking for scrollable, so we adding scrollbars
+        { // not checking for scrollable, so we adding scrollbars (not child_)
             container::add(item); 
         }
     }
@@ -101,7 +103,6 @@ namespace stk
     scroll_model::ptr scroll_box::h_scroll()
     {
         if (child_)
-            // FXIME: ugly cast, but should always be true
             return boost::shared_dynamic_cast<scrollable>(child_)->h_scroll();
         else
             return scroll_model::ptr();
@@ -124,7 +125,6 @@ namespace stk
         child_rect_ = rect(); child_rect_.position(point(0, 0));
         if (v_policy_) child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
         if (h_policy_) child_rect_.y2(child_rect_.y2() - scroll_bar::default_size);
-        // FIXME: tell the child we changed their rect
         if (child_) child_->rect(child_rect_);
 
         scroll_box::ptr this_ptr = boost::shared_static_cast<scroll_box>(shared_from_this());
@@ -132,7 +132,7 @@ namespace stk
         // destroy existing scroll bars
         if (h_scroll_bar_)
         {
-            remove(h_scroll_bar_);
+            remove(h_scroll_bar_); // FIXME: should we call h_scroll_bar_->parent(container::ptr()) ?
             h_scroll_bar_.reset();
         }
         if (v_scroll_bar_)
@@ -169,7 +169,6 @@ namespace stk
             }
         }
         check_scrollable_ = true;
-
         redraw(rect());
     }
 

@@ -30,7 +30,7 @@ namespace stk
     private:
 
     protected:
-        scroll_box(container::ptr parent, const rectangle& rect);
+        scroll_box(const rectangle& rect);
 
         // FIXME: this is not thread safe
         bool check_scrollable_;

@@ -31,8 +31,7 @@ namespace stk
     private:
 
     protected:
-        progress(container::ptr parent, const std::wstring& format_label, const rectangle& rect,
-                 int range);
+        progress(const std::wstring& format_label, const rectangle& rect, int range);
 
         /// rebuild the label to be displayed based on the current position and range
         void build_label();

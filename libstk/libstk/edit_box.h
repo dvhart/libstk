@@ -37,7 +37,7 @@ namespace stk
         bool pressed_; //used to tell if selecting
 
     protected:
-        edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect);
+        edit_box(const std::wstring& text, const rectangle& rect);
 
     public:
         //static edit_box::ptr create(container::ptr parent, const rectangle& rect);

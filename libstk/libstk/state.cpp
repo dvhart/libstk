@@ -34,10 +34,10 @@ namespace stk
         return new_state;
     }
 
-    state::state(boost::shared_ptr<application> parent) :
-            container(boost::shared_static_cast<component>(parent), parent->surface()->rect())
+    state::state(boost::shared_ptr<application> parent) : container(parent->surface()->rect())
     {
         INFO("state::state()");
+        parent_ = boost::shared_static_cast<component>(parent);
         focusable_ = false;
     }
 

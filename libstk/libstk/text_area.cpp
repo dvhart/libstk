@@ -23,14 +23,13 @@ namespace stk
     text_area::ptr text_area::create(container::ptr parent, const std::wstring& text, 
             const rectangle& rect)
     {
-        text_area::ptr new_text_area(new text_area(parent, text, rect));
-        parent->add(new_text_area);
+        text_area::ptr new_text_area(new text_area(text, rect));
+        new_text_area->parent(parent);
         return new_text_area;
     }
 
-    text_area::text_area(container::ptr parent, const std::wstring& text, const rectangle& rect) 
-        : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0), 
-          pressed_(false)
+    text_area::text_area(const std::wstring& text, const rectangle& rect) : widget(rect), 
+        text_(text), selection_start_(0), selection_end_(0), pressed_(false)
     {
         INFO("constructor");
         focusable(true);

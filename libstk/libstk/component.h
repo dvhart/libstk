@@ -21,6 +21,7 @@
 namespace stk
 {
     class widget;
+    class container;
 
     /// A class declaring the component interface.
     /// I think this class is superfluous and its interface should be moved
@@ -49,6 +50,8 @@ namespace stk
         {
             return component::ptr();
         }
+        /// Set the parent and call the parent add routine 
+        virtual void parent(boost::shared_ptr<container> parent) { }
         /// Retrieve the next focusable widget.
         /// Implemented by container, here we just return an empty pointer.
         virtual boost::shared_ptr<widget> focus_next()

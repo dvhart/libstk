@@ -33,7 +33,7 @@ namespace stk
     private:
 
     protected:
-        viewport(container::ptr parent, const rectangle& rect);
+        viewport(const rectangle& rect);
 
         boost::signals::connection h_scroll_con;
         boost::signals::connection v_scroll_con;
@@ -60,10 +60,10 @@ namespace stk
 
         /********** VIEWPORT INTERFACE **********/
         //virtual scroll_model::ptr h_scroll() { return scrollable::h_scroll(); }
-        virtual void h_scroll(scroll_model::ptr value);
+        virtual void h_scroll(scroll_model::ptr model);
 
         //virtual scroll_model::ptr v_scroll() { return scrollable::v_scroll(); }
-        virtual void v_scroll(scroll_model::ptr value);
+        virtual void v_scroll(scroll_model::ptr model);
         /********** END VIEWPORT INTERFACE **********/
     };
 }

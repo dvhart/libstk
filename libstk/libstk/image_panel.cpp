@@ -18,13 +18,12 @@ namespace stk
     image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect, 
             image::ptr img)
     {
-        image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
-        parent->add(new_image_panel);
+        image_panel::ptr new_image_panel(new image_panel(rect, img));
+        new_image_panel->parent(parent);
         return new_image_panel;
     }
 
-    image_panel::image_panel(widget::ptr parent, const rectangle& rect, image::ptr img)
-            : widget(parent, rect), image_(img)
+    image_panel::image_panel(const rectangle& rect, image::ptr img) : widget(rect), image_(img)
     {
         INFO("constructor");
     }

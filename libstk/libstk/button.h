@@ -30,7 +30,7 @@ namespace stk
     private:
 
     protected:
-        button(container::ptr parent, std::wstring label, const rectangle& rect);
+        button(std::wstring label, const rectangle& rect);
         /// Specifies to Label of the Button (FIXME better text?)
         std::wstring label_;
 

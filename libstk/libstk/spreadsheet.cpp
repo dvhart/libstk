@@ -3,26 +3,24 @@
 
 namespace stk
 {
-
-    spreadsheet::spreadsheet(container::ptr parent, const stk::rectangle& rect): widget(parent,rect)
-    {
-    }
-    
-
     spreadsheet::ptr spreadsheet::create(container::ptr parent, const rectangle& rect)
     {
-        spreadsheet::ptr new_spreadsheet(new spreadsheet(parent, rect));
-        parent->add(new_spreadsheet);
+        spreadsheet::ptr new_spreadsheet(new spreadsheet(rect));
+        new_spreadsheet->parent(parent);
         return new_spreadsheet;
     }
-    
+ 
+    spreadsheet::spreadsheet(const stk::rectangle& rect): widget(rect)
+    {
+    }
+
     void spreadsheet::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
-        int current_y_pos=0;
+        int current_y_pos = 0;
         for(column_iterator column=columns_begin();column!=columns_end();column++)
         {
-            int current_x_pos=0;
+            int current_x_pos = 0;
             column_info::Tcells::iterator cell = column->cells.begin();
             for(row_iterator row = rows_begin(); row != rows_end(); row++)
             {

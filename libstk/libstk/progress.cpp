@@ -20,15 +20,13 @@ namespace stk
     progress::ptr progress::create(container::ptr parent, const std::wstring& format_label,
                                    const rectangle& rect, int range)
     {
-        progress::ptr new_progress(new progress(parent, format_label, rect, range));
-        parent->add
-        (new_progress);
+        progress::ptr new_progress(new progress(format_label, rect, range));
+        new_progress->parent(parent);
         return new_progress;
     }
 
-    progress::progress(boost::shared_ptr<container> parent, const std::wstring& format_label,
-                       const rectangle& rect, int range) : widget(parent, rect), format_label_(format_label),
-            range_(range)
+    progress::progress(const std::wstring& format_label, const rectangle& rect, int range) : 
+        widget(rect), format_label_(format_label), range_(range)
     {
         INFO("constructor");
         focusable_ = false;

@@ -39,7 +39,7 @@ namespace stk
     private:
 
     protected:
-        widget(component::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
+        widget(const rectangle& rect=rectangle(0,0,0,0));
         component::weak_ptr parent_;
 
         // widget attributes
@@ -85,6 +85,7 @@ namespace stk
         /********** COMPONENT INTERFACE **********/
         /// Return the parent pointer.
         virtual component::ptr parent() { return parent_.lock(); }
+        virtual void parent(boost::shared_ptr<container> parent);
         /********** END COMPONENT INTERFACE **********/
 
         /********** WIDGET INTERFACE **********/

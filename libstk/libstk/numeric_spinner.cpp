@@ -21,16 +21,15 @@ namespace stk
     numeric_spinner::ptr numeric_spinner::create(container::ptr parent, const rectangle& rect,
             double min, double max, double increment, int precision, bool wrap)
     {
-        numeric_spinner::ptr new_numeric_spinner(new numeric_spinner(parent, rect, 
-                    min, max, increment, precision, wrap));
-        parent->add(new_numeric_spinner);
+        numeric_spinner::ptr new_numeric_spinner(new numeric_spinner(rect, min, max, 
+                    increment, precision, wrap));
+        new_numeric_spinner->parent(parent);
         return new_numeric_spinner;
     }
 
-    numeric_spinner::numeric_spinner(container::ptr parent, const rectangle& rect,
-            double min, double max, double increment, int precision, bool wrap) : 
-        widget(parent, rect), min_(min), max_(max), increment_(increment), value_(min), 
-    precision_(precision), wrap_(wrap)
+    numeric_spinner::numeric_spinner(const rectangle& rect, double min, double max, 
+            double increment, int precision, bool wrap) : widget(rect), min_(min), max_(max), 
+            increment_(increment), value_(min), precision_(precision), wrap_(wrap)
     {
         INFO("constructor");
         focusable(true);

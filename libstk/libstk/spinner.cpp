@@ -20,13 +20,12 @@ namespace stk
 {
     spinner::ptr spinner::create(container::ptr parent, const rectangle& rect, bool wrap)
     {
-        spinner::ptr new_spinner(new spinner(parent, rect, wrap));
-        parent->add(new_spinner);
+        spinner::ptr new_spinner(new spinner(rect, wrap));
+        new_spinner->parent(parent);
         return new_spinner;
     }
 
-    spinner::spinner(container::ptr parent, const rectangle& rect, bool wrap) : 
-        list(parent, rect), wrap_(wrap)
+    spinner::spinner(const rectangle& rect, bool wrap) : list(rect), wrap_(wrap)
     {
         INFO("constructor");
         focusable(true);

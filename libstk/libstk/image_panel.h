@@ -31,8 +31,7 @@ namespace stk
     private:
 
     protected:
-        image_panel(widget::ptr parent, const rectangle& rect,
-                    image::ptr img);
+        image_panel(const rectangle& rect, image::ptr img);
         image::ptr image_;
         int width_;
         int height_;

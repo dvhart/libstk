@@ -14,8 +14,14 @@
 
 namespace stk
 {
-    switched_panel::switched_panel(container::ptr parent, rectangle rect)
-        : container(parent, rect)
+    switched_panel::ptr switched_panel::create(stk::container::ptr parent, rectangle rect)
+    {
+        switched_panel::ptr new_switched_panel(new switched_panel(rect));
+        new_switched_panel->parent(parent);
+        return new_switched_panel;
+    }
+
+    switched_panel::switched_panel(rectangle rect) : container(rect)
     {
         INFO("constructor");
         focusable(true);
@@ -29,14 +35,7 @@ namespace stk
         if (parent_ptr)
             parent_ptr->redraw(rect());
     }
-    
-    switched_panel::ptr switched_panel::create(stk::container::ptr parent, rectangle rect)
-    {
-        switched_panel::ptr ptr(new switched_panel(parent, rect));
-        parent->add(ptr);
-        return ptr;
-    }
-    
+        
     widget::ptr switched_panel::widget_at(int x, int y)
     {
         widget::ptr active_widget_ptr = active_widget.lock();

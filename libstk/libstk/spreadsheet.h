@@ -32,10 +32,12 @@ namespace stk
     public:
         typedef boost::shared_ptr<spreadsheet_cell> ptr;
         typedef boost::weak_ptr<spreadsheet_cell> weak_ptr;
+
     protected:
         boost::weak_ptr<spreadsheet> parent_;
         spreadsheet_cell(boost::shared_ptr<spreadsheet> parent);
         bool focused_;
+
     public:
         virtual ~spreadsheet_cell() {};
         
@@ -62,12 +64,13 @@ namespace stk
             typedef std::vector<spreadsheet_cell::ptr> Tcells;
             Tcells cells;
         };
+
     private:
         typedef std::vector<row_info> Trows;
         typedef std::vector<column_info> Tcolumns;
         Trows rows_;            // Stores the row descriptions
         Tcolumns columns_;      // Stores the column descriptions
-        spreadsheet(container::ptr parent, const rectangle& rect);
+        spreadsheet(const rectangle& rect);
 
         scroll_model::ptr v_scroll_;
         boost::signals::connection v_scroll_con;
@@ -75,6 +78,7 @@ namespace stk
         boost::signals::connection h_scroll_con;
         
         stk::spreadsheet_cell::ptr focused_cell;
+
     public:
 
         // Row stl style interface

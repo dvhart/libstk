@@ -18,15 +18,14 @@ namespace stk
     scroll_bar::ptr scroll_bar::create(container::ptr parent, const rectangle& rect, 
             scroll_model::ptr model)
     {
-        scroll_bar::ptr new_scroll_bar(new scroll_bar(parent, rect, model));
+        scroll_bar::ptr new_scroll_bar(new scroll_bar(rect, model));
+        new_scroll_bar->parent(parent);
         new_scroll_bar->scroll_con_ = new_scroll_bar->model_->on_change.connect(
                 boost::bind(&scroll_bar::redraw, new_scroll_bar.get()));
-        parent->add(new_scroll_bar);
         return new_scroll_bar;
     }
 
-    scroll_bar::scroll_bar(container::ptr parent, const rectangle& rect, scroll_model::ptr model) 
-        : widget(parent, rect)
+    scroll_bar::scroll_bar(const rectangle& rect, scroll_model::ptr model) : widget(rect)
     {
         INFO("constructor");
         model_ = (model ? model : scroll_model::create()); 

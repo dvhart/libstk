@@ -37,7 +37,7 @@ namespace stk
         bool wrap_;
 
     protected:
-        spinner(container::ptr parent, const rectangle& rect, bool wrap);
+        spinner(const rectangle& rect, bool wrap);
 
     public:
         static spinner::ptr create(container::ptr parent, const rectangle& rect, bool wrap);

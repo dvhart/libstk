@@ -23,6 +23,7 @@ namespace stk
     public:
         typedef boost::shared_ptr<scroll_model> ptr;
         typedef boost::weak_ptr<scroll_model> weak_ptr;
+        
     private:
         scroll_model();
         /// The Size of the Scrollable area
@@ -31,6 +32,7 @@ namespace stk
         int begin_;
         /// the size of the visible region
         int vis_size_;
+
     public:
         static scroll_model::ptr create();
         int size() const;

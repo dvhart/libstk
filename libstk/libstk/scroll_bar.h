@@ -30,7 +30,7 @@ namespace stk
         static int default_size;
 
     protected:
-        scroll_bar(container::ptr parent, const rectangle& rect, scroll_model::ptr model);
+        scroll_bar(const rectangle& rect, scroll_model::ptr model);
 
         scroll_model::ptr model_;
         boost::signals::connection scroll_con_;
