@@ -27,6 +27,7 @@ IR support (IRDA / generic serial / lirc) ?
 Document all existing classes / APIs
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion
+Add STL style iterator interface to container
 
 COMPLETED TASKS
 ===============

@@ -27,6 +27,7 @@
 #include "libstk/event.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
+#include "libstk/list.h"
 #include "libstk/state.h"
 #include "libstk/theme.h"
 #include "libstk/logging.h"
@@ -153,7 +154,13 @@ namespace stk
                         }
                         else
                         {
-                            focused_widget->handle_event(event_);
+                            // FIXME: ugly hack, temporary until we decide if list_items should be
+                            //        widgets and lists should be containers --dvhart
+                            list::ptr focused_list;
+                            if ((focused_list = boost::shared_dynamic_cast<list>(focused_widget)) && (focused_list->size() > 0))
+                                (*focused_list)[focused_list->current()]->handle_event(event_);
+                            else
+                                focused_widget->handle_event(event_);
                         }
                     }
                 }

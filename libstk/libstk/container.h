@@ -93,6 +93,7 @@ namespace stk
         virtual widget::ptr widget_at(int x, int y);
         /// Pass mouse events down to widgets.
         virtual widget::ptr delegate_mouse_event(mouse_event::ptr me);
+        // FIXME: add stl style iterator interface
         /********** END CONTAINER INTERFACE **********/
     };
 
