@@ -11,11 +11,14 @@ namespace stk
 {
 	class button : public widget
 	{
+		public:
+			typedef boost::shared_ptr<button> ptr;
+			typedef boost::weak_ptr<button> weak_ptr;
 		private:
 		protected:
 			button() { }; // empty constructor, needed for creating derived classes ?
 		public:
-			button(boost::shared_ptr<container> parent, std::string label, 
+			button(container::ptr parent, std::string label, 
 					int x, int y, int width, int height);
 			~button();
 
@@ -23,10 +26,8 @@ namespace stk
 			boost::signal<bool ()> on_click;
 
 			// event_handler interface
-			virtual void handle_event(boost::shared_ptr<stk::event> e);
+			virtual void handle_event(event::ptr e);
 	};
-
-	typedef boost::shared_ptr<stk::button> Button;
 	
 } // namespace stk
 

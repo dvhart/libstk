@@ -63,14 +63,12 @@ namespace stk
 			
 			// do we want to make these available?
 			// or should they be strictly internal to application ? 
-			/// \todo might be better to make them property's with only public getters
-			boost::weak_ptr<state> current_state();
-			boost::weak_ptr<widget> current_widget();
-			boost::weak_ptr<state> hover_widget();
+			state::weak_ptr current_state();
+			widget::weak_ptr current_widget();
+			widget:.weak_ptr hover_widget();
 			
 	}; // class application
 	
-	typedef boost::shared_ptr<application> Application;
 
 } // namespace stk
 
