@@ -102,7 +102,9 @@ namespace stk
             if ( !t_rect.empty() )
             {
                 //cout << "applicaiton::run() - redrawing state" << endl;
+                on_predraw(t_rect);
                 current_state_.lock()->draw(surface_);
+                on_postdraw(t_rect);
                 surface_->update( t_rect );
             }
             else

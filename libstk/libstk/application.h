@@ -88,8 +88,11 @@ namespace stk
         bool current_state(boost::shared_ptr<stk::state> new_cur_state);
         boost::shared_ptr<stk::state> current_state() const;
 
-    }
-    ; // class application
+        // Triggered before STK's drawing code ran  \FIXME what does the return value mean?
+        boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_predraw;
+        // Triggered after STK's drawing code ran    \FIXME what does the return value mean?
+        boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_postdraw;  
+    }; // class application
 } // namespace stk
 
 #endif
