@@ -1,7 +1,7 @@
 /***************************************************************************
-                          stk_widget.h  -  description
+                         surface.h  -  surface class header
                              -------------------
-    begin                : Sat Apr 27 2002
+    begin                : Tue September 10 2002
     copyright            : (C) 2002 by Darren Hart
     email                : dvhart@byu.edu
 ***************************************************************************/
@@ -15,39 +15,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <SDL/SDL.h>
 #include  "surface.h"
 
 using namespace stk;
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-#define RMASK  0xff000000
-#define GMASK  0x00ff0000
-#define BMASK  0x0000ff00
-#define AMASK  0x000000ff
-#define RSHIFT 24
-#define GSHIFT 16
-#define BSHIFT 8
-#define ASHIFT 0
-#else
-#define RMASK 0x000000ff
-#define GMASK 0x0000ff00
-#define BMASK 0x00ff0000
-#define AMASK 0xff000000
-#define RSHIFT 0
-#define GSHIFT 8
-#define BSHIFT 16
-#define ASHIFT 24
-#endif
 	
-surface::surface(SDL_Rect &rect) { 
+surface::surface(SDL_Surface &new_surface) {
+  _surface = &new_surface;
+}
+
+surface::surface(SDL_Rect &rect) {
   SDL_Surface *temp_surface;
-  temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA, rect->w, rect->h,
+  temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA, rect.w, rect.h,
 				      32, RMASK, GMASK, BMASK, AMASK);
   _surface = SDL_DisplayFormatAlpha(temp_surface);
   SDL_FreeSurface(temp_surface);
-  SDL_SetAlpha(bg_surface, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
+  //SDL_SetAlpha(_surface, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
 }
 
 surface::~surface() { 
@@ -100,56 +83,363 @@ void surface::draw_pixel(int x, int y, Uint32 color) {
   }
 }
 
-int draw_line() {
+// FIXME: merge this, make it static, make the defines consts?
+// I dunno, it's late and it works... but its ugly right here
+// --dvhart
+int direction(int x1, int y1, int x2, int y2)
+{
+#define LR    0x01       // left to right
+#define RL    0x02       // right to left
+#define UP    0x04       // up
+#define DN    0x08       // down
+#define S0    0x10       // gentle slope
+#define S1    0x20       // steep slope
+  
+#define LRU_0 LR+UP+S0   // left to right, up, gentle slope
+#define LRU_1 LR+UP+S1   // etc...
+#define LRD_0 LR+DN+S0
+#define LRD_1 LR+DN+S1
+#define RLU_0 RL+UP+S0
+#define RLU_1 RL+UP+S1
+#define RLD_0 RL+DN+S0
+#define RLD_1 RL+DN+S1
+  
+  int dir = 0;
+  
+  // determine slope (steep S1, gentle S0)
+  int dy = ((y2 > y1) ? (y2 - y1) : (y1 - y2));
+  int dx = ((x2 > x1) ? (x2 - x1) : (x1 - x2));
+  if (dy != 0 && dx != 0)
+    if (dy > dx) dir += S1;
+    else if (dy < dx) dir += S0;
+  
+  // determine verticle direction
+  if (y1 < y2) dir += UP;
+  else if (y1 > y2) dir += DN;
+  
+  // determine horizontal direction
+  if (x1 < x2) dir += LR;
+  else if(x1 > x2) dir += RL;
+  
+  return dir;
 }
 
-int draw_rect() {
+void surface ::draw_line(int x1, int y1, int x2, int y2, Uint32 color, /*style,width*/) 
+{
+  // determine the line direction	
+  int dir = direction(x1, y1, x2, y2);
+  int x = x1;
+  int y = y1;
+
+  switch(dir) {
+  case LR:
+    {
+      for (x; x < x2; x++) draw_pixel(x, y1, color);
+      break;
+    }
+  case RL:
+    {
+      for (x; x > x2; x--) draw_pixel(x, y1, color);
+      break;
+    }
+  case UP:
+    {
+      for (y; y < y2; y++) draw_pixel(x1, y, color);
+      break;
+    }
+  case DN:
+    {
+      for (y; y > y2; y--) draw_pixel(x1, y, color);
+      break;
+    }
+  case LRU_0:
+    {
+      int dx       = x2-x1;
+      int dy       = y2-y1;
+      int d        = 2*dy-dx;
+      int delta_e  = 2*dy;
+      int delta_ne = 2*(dy-dx);
+
+      draw_pixel(x, y, color);
+
+      while (x < x2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      x++;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x++;
+	      y++;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+    }
+  case LRU_1:
+    {
+      int dx       = x2-x1;
+      int dy       = y2-y1;
+      int d        = 2*dx-dy;
+      int delta_e  = 2*dx;
+      int delta_ne = 2*(dx-dy);
+
+      draw_pixel(x, y, color);
+
+      while (y < y2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      y++;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      y++;
+	      x++;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+    }
+  case LRD_0:
+    {
+      int dx       = x2-x1;
+      int dy       = y1-y2;
+      int d        = 2*dy-dx;
+      int delta_e  = 2*dy;
+      int delta_ne = 2*(dy-dx);
+
+      draw_pixel(x, y, color);
+
+      while (x < x2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      x++;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x++;
+	      y--;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+    }
+  case LRD_1:
+    {
+      int dx       = x2-x1;
+      int dy       = y1-y2;
+      int d        = 2*dx-dy;
+      int delta_e  = 2*dx;
+      int delta_ne = 2*(dx-dy);
+
+      draw_pixel(x, y, color);
+
+      while (y > y2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      y--;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x++;
+	      y--;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+
+    }
+  case RLU_0:
+    {
+      int dx       = x1-x2;
+      int dy       = y2-y1;
+      int d        = 2*dy-dx;
+      int delta_e  = 2*dy;
+      int delta_ne = 2*(dy-dx);
+
+      draw_pixel(x, y, color);
+
+      while (x > x2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      x--;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x--;
+	      y++;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+    }
+  case RLU_1:
+    {
+      int dx       = x1-x2;
+      int dy       = y2-y1;
+      int d        = 2*dx-dy;
+      int delta_e  = 2*dx;
+      int delta_ne = 2*(dx-dy);
+
+      draw_pixel(x, y, color);
+
+      while (x > x2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      y++;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x--;
+	      y++;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+    }
+  case RLD_0:
+    {
+      int dx       = x1-x2;
+      int dy       = y1-y2;
+      int d        = 2*dy-dx;
+      int delta_e  = 2*dy;
+      int delta_ne = 2*(dy-dx);
+
+      draw_pixel(x, y, color);
+
+      while (x > x2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      x--;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x--;
+	      y--;
+	    }
+	  draw_pixel(x, y, color);
+	}
+      break;
+
+      break;
+    }
+  case RLD_1:
+    {
+      int dx       = x1-x2;
+      int dy       = y1-y2;
+      int d        = 2*dx-dy;
+      int delta_e  = 2*dx;
+      int delta_ne = 2*(dx-dy);
+
+      draw_pixel(x, y, color);
+
+      while (x > x2)
+	{
+	  if (d <= 0)
+	    {
+	      d += delta_e;
+	      y--;
+	    } 
+	  else 
+	    {
+	      d += delta_ne;
+	      x--;
+	      y--;
+	    }
+	  draw_pixel(x, y, color);
+	}
+
+      break;
+    }
+  }
+
 }
 
-int draw_arc() {
+void surface ::draw_rect() {
 }
 
-int draw_ellipse() {
+void surface ::draw_arc() {
 }
 
-int draw_poly() {
+void surface ::draw_ellipse() {
+}
+
+void surface ::draw_poly() {
 }
 
 // antialiased draw routines
-int draw_line_aa() {
+void surface ::draw_line_aa() {
 }
 
-int draw_rect_aa() {
+void surface ::draw_rect_aa() {
 }
 
-int draw_arc_aa() {
+void surface ::draw_arc_aa() {
 }
 
-int draw_ellipse_aa() {
+void surface ::draw_ellipse_aa() {
 }
 
-int draw_poly_aa() {
+void surface ::draw_poly_aa() {
 }
 
 // non antialiased fill routines
-int fill_rect() {
+void surface ::fill_rect() {
 }
 
-int fill_ellipse() {
+void surface ::fill_ellipse() {
 }
 
 // antialiased fill routines
-int fill_rect_aa() {
+void surface ::fill_rect_aa() {
 }
 
-int fill_ellipse_aa() {
+void surface ::fill_ellipse_aa() {
 }
 
-void blit(surface &screen, SDL_Rect *rect = NULL) {
+
+// utility methods
+Uint32 surface::gen_color(const std::string &str_color) {
+  Uint8 r, g, b, a;
+  Uint32 int_color = strtoll(str_color.c_str(), NULL, 16);
+  Uint32 mapped_color;
+  r = (int_color & RMASK) >> RSHIFT;
+  g = (int_color & GMASK) >> GSHIFT;
+  b = (int_color & BMASK) >> BSHIFT;
+  a = (int_color & AMASK) >> ASHIFT;
+  return gen_color(r, g, b, a);
+}
+
+Uint32 surface::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+  return SDL_MapRGBA(_surface->format, r, g, b, a);
+}
+
+void surface::blit(surface &screen, SDL_Rect *rect = NULL) {
   // blit the local surface to the parent surface (screen)
   if (_surface && 
       SDL_BlitSurface(_surface, NULL, screen.get_surface(), rect) < 0) {
-    cerr << "widget: Failed to blit bg_surface to screen" << endl;
+    cerr << "widget: Failed to blit _surface to screen" << endl;
   }
 }
 
