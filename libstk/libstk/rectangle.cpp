@@ -10,7 +10,7 @@
  *************************************************************************************************/
 
 #include <iostream>
-#include "libstk/rectangle.h"
+#include "libstk/rectangle.h" 
 
 namespace stk
 {
@@ -99,7 +99,7 @@ namespace stk
         }
         return *this;
     }
-    rectangle rectangle::intersection(rectangle &rhs) const
+    rectangle rectangle::intersection(const rectangle rhs) const
     {
         rectangle retval;
         if(!intersects(rhs))
@@ -125,3 +125,5 @@ std::ostream& operator<<(std::ostream& os, const stk::rectangle& rect)
     << " w:" << rect.width() << ", h:" << rect.height();
     return os;
 }
+
+

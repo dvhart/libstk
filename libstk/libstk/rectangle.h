@@ -70,7 +70,7 @@ namespace stk
         /// Sets the upper left corner of the rectangle
         void position(const point& p);
         /// Returns the area of intersection between both rectangles (the area they share)
-        rectangle intersection(rectangle &rhs) const;
+        rectangle intersection(const rectangle rhs) const;
 
         // operators
         const rectangle operator+(const rectangle& rect) const;
