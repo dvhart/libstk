@@ -58,6 +58,11 @@ namespace stk
 		put_pixel_aa(x, y, distance, clr); 
 	}
 
+	void surface_sdl::draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) 
+	{ 
+		put_pixel_aa(x, y, alpha_a, clr); 
+	}
+
 	color surface_sdl::read_pixel(int x, int y) const
 	{
 		return get_pixel(x, y);
@@ -126,8 +131,8 @@ namespace stk
 		// DELETEME check for out of bounds
 		if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
 		{
-			//throw std::string("surface::draw_pixel() - pixel coords out of bounds");
-			cout << "surface::draw_pixel() - pixel coords out of bounds" << endl;
+			//throw std::string("surface_sdl::put_pixel() - pixel coords out of bounds");
+			cout << "surface_sdl::put_pixel() - pixel coords out of bounds" << endl;
 			return;
 		}
 
@@ -180,8 +185,8 @@ namespace stk
 		// DELETEME check for out of bounds
 		if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
 		{
-			//throw std::string("surface::draw_pixel() - pixel coords out of bounds");
-			cout << "surface::get_pixel() - pixel coords out of bounds" << endl;
+			//throw std::string("surface_sdl::get_pixel() - pixel coords out of bounds");
+			cout << "surface_sdl::get_pixel() - pixel coords out of bounds" << endl;
 			return 0;
 		}
 
@@ -257,7 +262,34 @@ namespace stk
 		green_o = composite_a_over_b(green_a, green_b, alpha_a_f, alpha_b_f, alpha_o_f);
 		blue_o  = composite_a_over_b(blue_a, blue_b, alpha_a_f, alpha_b_f, alpha_o_f);
 
-		draw_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
+		put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
+	}
+	
+	void surface_sdl::put_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
+	{
+		// FIXME: confirm the format of clr
+		// will it always be in SDL color format?
+		// or will it always be in some 32 bit stk RGBA format ??
+		Uint32 color_a = (Uint32)clr;
+		
+		Uint8 red_a, green_a, blue_a;
+		SDL_GetRGB(color_a, sdl_surface_->format, &red_a, &green_a, &blue_a);
+
+		Uint8 red_b, green_b, blue_b, alpha_b;
+		Uint32 color_b = get_pixel(x, y);
+		SDL_GetRGBA(color_b, sdl_surface_->format, &red_b, &green_b, &blue_b, &alpha_b);
+
+		Uint8 red_o, green_o, blue_o, alpha_o;
+		alpha_o = composite_alpha(alpha_a, alpha_b);
+		float alpha_a_f = alpha_a / 255.0;
+		float alpha_b_f = alpha_b / 255.0;
+		float alpha_o_f = alpha_o / 255.0;
+
+		red_o   = composite_a_over_b(red_a, red_b, alpha_a_f, alpha_b_f, alpha_o_f);
+		green_o = composite_a_over_b(green_a, green_b, alpha_a_f, alpha_b_f, alpha_o_f);
+		blue_o  = composite_a_over_b(blue_a, blue_b, alpha_a_f, alpha_b_f, alpha_o_f);
+
+		put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
 	}
 	
 	// optimized drawing routines

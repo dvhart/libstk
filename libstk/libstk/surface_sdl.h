@@ -51,6 +51,7 @@ namespace stk
 			// optimized pixel routines (private and not virtual)
 			inline void put_pixel(int x, int y, color clr);
 			inline void put_pixel_aa(int x, int y, double distance, color clr);
+			inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
 			inline color get_pixel(int x, int y) const;
 			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
 			{
@@ -71,6 +72,7 @@ namespace stk
 			// methods which MUST be implemented in derived classes
 			virtual void draw_pixel(int x, int y, color clr);
 			virtual void draw_pixel_aa(int x, int y, double distance, color clr);
+			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
 			virtual color read_pixel(int x, int y) const;
 			// format: "0xRRGGBBAA", 0-255, alpha 255 being opaque
 			virtual color gen_color(const std::string &str_color) const;

@@ -600,8 +600,35 @@ namespace stk
 
 	void surface::draw_text(int x, int y, const std::string &text)
 	{
-		// CODEC ...
-		cout << "surface::draw_text - not implemented" << endl;
+		cout << "surface::draw_text - begin" << endl;
+
+		// ignore the bounds and stuff for now
+		// FIXME: add bounding boxes later
+		// get the font from the gc
+		font::ptr fon = gc_.font();
+		color fill_color = gc_.font_fill_color();
+		// loop through the text and draw each character
+		for (int i=0; i<text.length(); i++)
+		{
+			// get the glyph
+			glyph::ptr bmp = fon->glyph(text[i]);
+			int w = bmp->width();
+			boost::shared_array<unsigned char> bits = bmp->bitmap();
+			// draw it
+			for (int dy=0; dy<bmp->height(); dy++)
+			{
+				for (int dx=0; dx<w; dx++)
+				{
+					unsigned char nc = bits[dy*w + dx];
+					draw_pixel_aa(x+dx, y+dy, nc, fill_color);
+				}
+			}
+			// FIXME: kerning goes here
+			x += (bmp->advance_x() >> 6);
+		}
+		
+		
+		cout << "surface::draw_text - end" << endl;
 	}
 
 	// antialiased draw routines
@@ -651,7 +678,7 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
 					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
@@ -689,7 +716,7 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
 					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
@@ -727,7 +754,7 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
 					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
@@ -766,7 +793,7 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
 					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
@@ -804,7 +831,7 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
 					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
@@ -842,7 +869,7 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
 					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
@@ -880,7 +907,7 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
 					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
@@ -920,7 +947,7 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y, 0.0, clr);
 					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
 					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 

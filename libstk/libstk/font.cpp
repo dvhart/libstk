@@ -1,16 +1,28 @@
+#include <iostream>
+#include <string>
 #include "font.h"
 
 using std::string;
+using std::cout;
+using std::endl;
 
 namespace stk
 {
-	font::font(string fontname, int height, int width)
+	FT_Library font::lib_ = NULL;
+
+	font::ptr font::create(const string& fontname, int height, int width)
+	{
+		font::ptr new_font(new font(fontname, height, width));
+		return new_font;
+	}
+	
+	font::font(const string& fontname, int height, int width)
 		: height_(height), width_(width)
 	{
 		int error;
 		if (!lib_)
 		{
-			error = FT_Init_FreeType( &library );
+			error = FT_Init_FreeType( &lib_ );
 			if ( error ) throw string("font::font: could not initialize Freetype library");
 		}
 		error = FT_New_Face( lib_, (string("/usr/share/libstk/fonts/")+
@@ -21,6 +33,7 @@ namespace stk
 		}
 		else if (error)
 		{
+			cout << "stk::font::font: error: " << error << endl;
 			throw string("font::font: unknown error loading font");
 		}
 
@@ -29,10 +42,6 @@ namespace stk
 				width_,		// char_width in pixels
 				height_);	// char_height in pixels
 		if (error) throw string("font::font: could not set font size");
-
-		bmaps_.resize(NUM_GLYPHS);
-		for (int i=0; i<NUM_GLYPHS; i++)
-			bmaps_[i] = NULL;
 	}
 
 	font::~font()
@@ -40,38 +49,29 @@ namespace stk
 		// free the freetype font data
 		FT_Done_Face(face_);
 		// need to do reference counting for the lib handle
-		//FT_Done_FreeType();
+		FT_Done_FreeType(lib_);
 
 		// free the glyphs
-		for (int i=0; i<NUM_GLYPHS; i++)
-			if (bmaps_[i]) 
-			{
-				delete bmaps_[i]->buffer;
-				delete bmaps_[i];
-			}
-		bmaps_.clear();
 	}
 
-	const FT_bitmap &char_bitmap(char c)
+	const glyph::ptr font::glyph(char c)
 	{
-		if (bmaps_[c]) return bmaps_[c];
+		unsigned int wc = c;
+		if (glyph_cache_[wc]) 
+			return glyph_cache_[wc];
 		// create a new one - not found
-		error = FT_Load_Char( face, text[n], FT_LOAD_RENDER );
-		FT_Bitmap *tb = new FT_Bitmap;
-		memcpy(tb, face->glyph->bitmap, sizeof(FT_Bitmap));
-		tb->buffer = new unsigned char[tb->rows*tb->width];
-		memcpy(tb->buffer, face->glyph->bitmap->buffer, 
-			   tb->rows*tb->width);
-		bmaps_[c] = tb;
-		return bmaps_[c];
+		int error = FT_Load_Char(face_, c, FT_LOAD_RENDER);
+		glyph::ptr g = glyph::create(face_->glyph);
+		glyph_cache_[wc] = g;
+		return glyph_cache_[wc];
 	}
 
-	int draw_len(string text)
+	int font::draw_len(string text)
 	{
 		int len = 0;
 		for (int i=0; i<text.length(); i++)
 		{
-			len += char_bitmap[text[i]].x();
+			len += glyph(text[i])->width();
 		}
 		return len;
 	}

@@ -159,6 +159,7 @@ namespace stk
 			 */
 			virtual void draw_pixel(int x, int y, color clr) { }
 			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { }
+			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) { }
 			virtual color read_pixel(int x, int y) const { }
 			// format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
 			virtual color gen_color(const std::string &str_color) const { }
@@ -201,7 +202,7 @@ namespace stk
 			 * sequential points and finally the last to the first.
 			 */
 			virtual void draw_poly(const std::vector<point> points);
-			// CODEC: define the text interface... should we pass a rect and
+			// define the text interface... should we pass a rect and
 			// clip to that?
 			virtual void draw_text(int x, int y, const std::string &text);
 

@@ -7,6 +7,7 @@
 #include "application.h"
 #include "state.h"
 #include "button.h"
+#include "label.h"
 #include "event_system.h"
 #include "event_system_sdl.h"
 #include "surface.h"
@@ -47,11 +48,11 @@ int main(int argc, char* argv[])
 	cout << "test_app - creating state" << endl;
 	state::ptr test_state = state::create(test_app);
 	
-	//Label test_label(new label(test_state, "Test Label", 10, 10, 100, 30));
-	
 	// create a button and bind it to application::quit()
 	cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
 	button::ptr test_button = button::create(test_state, "Test Button", rectangle(120, 10, 100, 30));
+	label::ptr test_label = label::create(test_state, "wazzup!!", rectangle(10, 10, 100, 30));
+	
 	test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
 
 	// check use count prior to run

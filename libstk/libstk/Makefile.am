@@ -5,6 +5,8 @@ libstk_la_SOURCES =\
 	event_system.h \
 	event_system_sdl.h event_system_sdl.cpp \
 	event_system_dfb.h event_system_dfb.cpp \
+	glyph.h glyph.cpp \
+	font.h font.cpp \
 	surface.h surface.cpp \
 	surface_sdl.h surface_sdl.cpp \
 	surface_dfb.h surface_dfb.cpp \
@@ -32,6 +34,8 @@ test_app_SOURCES  = \
 	event_system.h \
 	event_system_sdl.h event_system_sdl.cpp \
 	event_system_dfb.h event_system_dfb.cpp \
+	glyph.h glyph.cpp \
+	font.h font.cpp \
 	surface.h surface.cpp \
 	surface_sdl.h surface_sdl.cpp \
 	surface_dfb.h surface_dfb.cpp \
@@ -55,7 +59,8 @@ test_app_SOURCES  = \
 	exceptions.h \
 	test_app.cpp
 	
-test_app_LDADD = $(SDL_LIBS) -lboost_signals
+# FIXME: do the autotools thing for freetype
+test_app_LDADD = $(SDL_LIBS) -lboost_signals -lfreetype -lz
 libstk_la_LDFLAGS =	$(SDL_LIBS)
 
-INCLUDES = $(SDL_CFLAGS) -I$(top_srcdir)
+INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir)

@@ -3,25 +3,13 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <map>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "fbitmap.h"
+#include "glyph.h"
 
 /*
-  // we will cache these
-   
-  typedef struct  FT_Bitmap_
-  {
-    int             rows;
-    int             width;
-    int             pitch;
-    unsigned char*  buffer;
-    short           num_grays;
-    char            pixel_mode;
-    char            palette_mode;
-    void*           palette;
-
-  } FT_Bitmap;
+   we will be caching stk::glyph's 
 */
 
 namespace stk
@@ -29,23 +17,25 @@ namespace stk
 	class font
 	{
 		public:
-			const static int NUM_GLYPHS=256;
+			typedef boost::shared_ptr<stk::font> ptr;
+
 		private:
 
 		protected:
+			font(const std::string& fontname, int height, int width);
+
 			static FT_Library lib_;
 			FT_Face face_;
 			int height_, width_;
-			std::vector<FT_Bitmap *> bmaps_;
+			std::map<unsigned int, stk::glyph::ptr> glyph_cache_;
 
 		public:
-			font(std::string fontname, int height, int width=0);
+			static font::ptr create(const std::string& fontname, int height, int width=0);
 			virtual ~font();
-			const stk::bitmap &char_bitmap(char c); // FIXME:: UCS4 not char
-			int draw_len(std::string text) const;
+			const stk::glyph::ptr glyph(char c); // FIXME:: UCS4 not char
+			int draw_len(std::string text);
 	}; //class font
 
-	typedef boost::shared_ptr<stk::font> Font;
 
 } // namespace stk
 

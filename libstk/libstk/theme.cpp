@@ -68,9 +68,25 @@ namespace stk
 			surface_->draw_rect(rect);
 		}
 	}
-	
-	void theme::draw_label()
+
+	void theme::draw_label(rectangle& rect, std::string text)
 	{
 		cout << "theme::draw_label()" << endl;
+		graphics_context gc;
+		gc.fill_color(surface_->gen_color("0xFF00FFFF")); 
+		gc.line_color(surface_->gen_color("0x0000FFFF")); 
+		try
+		{
+			stk::font::ptr bob = font::create("Arial.ttf", 25);
+			gc.font(bob);
+			gc.font_fill_color(surface_->gen_color(127, 0, 80, 0xff));
+			surface_->gc(gc);
+			surface_->draw_rect(rect);
+			surface_->draw_text(rect.x1(), rect.y1(), text);
+		}
+		catch (std::string e)
+		{
+			cout << "theme::draw_label: error: " << e << endl;
+		}
 	}
 }
