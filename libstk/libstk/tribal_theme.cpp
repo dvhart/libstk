@@ -397,11 +397,11 @@ namespace stk
         rectangle outline_rect = rect(); outline_rect.position(0, 0);
         rectangle vis_rect = outline_rect; 
 
-        int min_start = 3;
-        int max_end   = MAX(width(), height())-3;
+        int min_start = 2;
+        int max_end   = MAX(width(), height())-2;
         int max_size  = max_end - min_start;
-        int start = MAX(max_size*model_->begin()/model_->size()+2, 2);
-        int end = MIN(max_size*model_->begin()/model_->size()+2+max_size*model_->vis_size()/model_->size(), max_end);
+        int start = max_size*model_->begin()/model_->size()+min_start;
+        int end = start+max_size*model_->vis_size()/model_->size();
 
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
@@ -416,24 +416,21 @@ namespace stk
         surface->gc(gc);
         surface->draw_rect(outline_rect);
 
-        if (start <= max_end && end >= min_start && end >= start)
-        {
-            if (width() > height())
-            { // horizontal scrollbar
-                vis_rect.y1(vis_rect.y1()+2);
-                vis_rect.y2(vis_rect.y2()-2);
-                vis_rect.x1(start);
-                vis_rect.x2(end);
-            }
-            else
-            { // vertical scrollbar
-                vis_rect.x1(vis_rect.x1()+2);
-                vis_rect.x2(vis_rect.x2()-2);
-                vis_rect.y1(start);
-                vis_rect.y2(end);
-            }
-            surface->fill_rect(vis_rect);
+        if (width() > height())
+        { // horizontal scrollbar
+            vis_rect.y1(vis_rect.y1()+2);
+            vis_rect.y2(vis_rect.y2()-2);
+            vis_rect.x1(start);
+            vis_rect.x2(end);
         }
+        else
+        { // vertical scrollbar
+            vis_rect.x1(vis_rect.x1()+2);
+            vis_rect.x2(vis_rect.x2()-2);
+            vis_rect.y1(start);
+            vis_rect.y2(end);
+        }
+        surface->fill_rect(vis_rect);
     }
     int scroll_bar::default_size = 20;
 

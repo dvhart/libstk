@@ -70,12 +70,14 @@ namespace stk
 
         // get the percent string
         num_stream.setf(std::ios::showpoint);
-        num_stream.precision(4);
+        num_stream.setf(std::ios::fixed);
+        num_stream.precision(2);
         num_stream << percent()*100 << "%";
         std::wstring percent_str = num_stream.str();
 
         // get the decimal string
         num_stream.str(L"");
+        num_stream.unsetf(std::ios::fixed);
         num_stream.precision(4);
         num_stream << percent();
         std::wstring decimal_str = num_stream.str();

@@ -110,10 +110,9 @@ namespace stk
 
     void numeric_spinner::build_label()
     {
-        // FIXME: format value_str_ to value_ with precision_ digits after the decimal
         std::wstringstream num_stream;
-
-        /*if (precision_ > 0)*/ num_stream.setf(std::ios::showpoint);
+        num_stream.setf(std::ios::fixed);
+        if (precision_ > 0) num_stream.setf(std::ios::showpoint);
         num_stream.precision(precision_);
         num_stream << value_;
         label_ = num_stream.str();
