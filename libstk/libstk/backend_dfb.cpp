@@ -1,4 +1,3 @@
-
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: Used to hold a singleton which manages the IDirectfb Instance shared by all
@@ -6,10 +5,11 @@
  *     AUTHORS: Marc Strämke
  *  START DATE: 2003/JUN/28
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
+
 #include <boost/smart_ptr.hpp>
 #include "libstk/backend_dfb.h"
 #include "libstk/logging.h"

@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: POSIX stk time functions implementation.
  *     AUTHORS: Darren Hart
  *  START DATE: 2003/May/20
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <ctime>
 #include <sys/time.h>

@@ -1,10 +1,10 @@
 /**************************************************************************************************
- *    FILENAME: hydra.cpp
+ *     CVS $Id$
  * DESCRIPTION: A simple concept app of the Hydra multi-client distributed home media network 
  *     AUTHORS: Darren Hart
- *  START DATE: 13/Jul/2003  LAST UPDATE: 14/Jul/2003
+ *  START DATE: 2003/Jul/13
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/

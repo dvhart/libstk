@@ -1,14 +1,13 @@
-/******************************************************************************
- *    FILENAME: surface_bm.cpp
+/**************************************************************************************************
+ *     CVS $Id$
  * DESCRIPTION: A surface benchmark, evaluating the cost of virtual calls. 
- *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 17/May/2003  LAST UPDATE: 17/May/2003
+ *     AUTHORS: Darren Hart, Vernon Mauery, Marc Strämke
+ *  START DATE: 2003/May/17
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <ctime>
 #include <sys/time.h>

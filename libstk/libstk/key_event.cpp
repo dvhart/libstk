@@ -1,10 +1,10 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: key_event class implementation.
- *     AUTHORS: Darren Hart, Marc Straemke 
+ *     AUTHORS: Darren Hart, Marc Strämke 
  *  START DATE: 2003/Mar/03
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
