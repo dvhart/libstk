@@ -24,6 +24,5 @@ CXXFLAGS="$CXXFLAGS"
 AC_OUTPUT([
 Makefile
 src/Makefile
-src/utility/Makefile
 libstk.pc
 ])
