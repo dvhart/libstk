@@ -55,37 +55,6 @@ if test "x$exec_prefix" = xNONE; then
    exec_prefix="${prefix}"
 fi 
 
-dnl data dir defines
-STK_LIBDIR="${prefix}/lib"
-eval STK_LIBPATH="$STK_LIBDIR"
-AC_DEFINE_UNQUOTED(STK_LIBDIR, "$STK_LIBPATH")
-AC_SUBST(STK_LIBPATH)
-
-STK_INCLUDEDIR="${prefix}/include"
-eval STK_INCLUDEPATH="$STK_INCLUDEDIR"
-AC_DEFINE_UNQUOTED(STK_INCLUDEDIR, "$STK_INCLUDEPATH")
-AC_SUBST(STK_INCLUDEPATH)
-
-STK_DATADIR="${datadir}"
-eval STK_DATAPATH="$STK_DATADIR"
-AC_DEFINE_UNQUOTED(STK_DATADIR, "$STK_DATAPATH")
-AC_SUBST(STK_DATAPATH)
-
-STK_FONTDIR="$STK_DATADIR/fonts"
-eval STK_FONTPATH="$STK_FONTDIR"
-AC_DEFINE_UNQUOTED(STK_FONTDIR, "$STK_FONTPATH")
-AC_SUBST(STK_FONTPATH)
-
-STK_THEMEDIR="$STK_DATADIR/themes"
-eval STK_THEMEPATH="$STK_THEMEDIR"
-AC_DEFINE_UNQUOTED(STK_THEMEDIR, "$STK_THEMEPATH")
-AC_SUBST(STK_THEMEPATH)
-
-STK_IMAGEDIR="$STK_DATADIR/images"
-eval STK_IMAGEPATH="$STK_IMAGEDIR"
-AC_DEFINE_UNQUOTED(STK_IMAGEDIR, "$STK_IMAGEPATH")
-AC_SUBST(STK_IMAGEPATH)
-
 SDL_CONFIG=`which sdl-config`
 SDL_CFLAGS=`$SDL_CONFIG $sdlconf_args --cflags`
 SDL_LIBS=`$SDL_CONFIG $sdlconf_args --libs`
@@ -98,11 +67,5 @@ AC_OUTPUT([
 Makefile 
 doc/Makefile 
 src/Makefile 
-data/Makefile
-data/images/Makefile
-data/themes/Makefile
-data/fonts/Makefile
-data/fonts/font1/Makefile
-data/fonts/font2/Makefile
 tests/Makefile 
 ])
