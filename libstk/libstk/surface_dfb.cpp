@@ -90,10 +90,10 @@ namespace stk
         x += offset_.x();
         y += offset_.y();
 
-        if(gc->alpha_blend())
+        if(gc_->alpha_blend())
             surface->SetDrawingFlags(surface, DSDRAW_BLEND);
         else
-            surface->SetDrawingFlags(surface, 0);
+            surface->SetDrawingFlags(surface, DSDRAW_NOFX);
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         // FIXME: sometimes this draws a line from 0,0 to x,y
         // FIXME: how do we get direct pixel access
@@ -120,8 +120,13 @@ namespace stk
     {
         x += offset_.x();
         y += offset_.y();
-        WARN("surface_dfb::get_pixel(x, y)");
-        return 0;
+        int color=0;
+        unsigned char *image_data;
+        int pitch;
+        surface->Lock(surface, DSLF_READ, (void**)&image_data, &pitch);
+        color=(int)image_data[pitch*y+x*4] << 24 | (int)image_data[pitch*y+x*4+1] << 16 | (int)image_data[pitch*y+x*4+2] << 8 | (int)image_data[pitch*y+x*4+3] ;
+        surface->Unlock(surface);
+        return color;
     }
     
     color surface_dfb::gen_color(const std::string &str_color) const
@@ -197,10 +202,10 @@ namespace stk
             source_rect.w = src_rect.width();
             source_rect.h = src_rect.height();
             
-            if(gc->alpha_blend())
+            if(gc_->alpha_blend())
                 dst->surface->SetBlittingFlags(dst->surface, DSBLIT_BLEND_ALPHACHANNEL);
             else
-                dst->surface->SetBlittingFlags(dst->surface, 0);
+                dst->surface->SetBlittingFlags(dst->surface, DSBLIT_NOFX);
             
             dst->surface->Blit(dst->surface, surface, &source_rect, dst_rect.x1(), dst_rect.y1());
             pixels_filled_highlevel+=(source_rect.w*source_rect.h);
