@@ -88,10 +88,12 @@ int main(int argc, char* argv[])
 	
 		// create an image in a scroll panel
 		cout << "test_app - creating an image_panel in a scroll panel" << endl;
-		label::ptr test_label3 = label::create(test_state, std::wstring(L"Clipped Image"), 
+		label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"), 
 			rectangle(10, 50, 150, 30));
 		scroll_decorator::ptr test_scroll = scroll_decorator::create(test_state, 
 				rectangle(10, 90, 350, 200));
+		// fixme: having to define the rectangle like this is lame, perhaps
+		// rect should be relative to the parent container?
 		image_panel::ptr test_image_panel = image_panel::create(test_scroll, 
 				rectangle(10, 90, 400, 300), image::create("parrots.ppm"));
 

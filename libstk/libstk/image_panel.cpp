@@ -15,7 +15,7 @@ namespace stk
 		: widget(parent, rect), image_(img)
 	{
 		cout << "image_panel::image_panel()" << endl;
-		focusable_ = false;
+		focusable_ = true; // FIXME: this should be false, it is set for testing the scroll decorator
 	}
 	
 	image_panel::~image_panel()

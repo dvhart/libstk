@@ -79,21 +79,21 @@ namespace stk
 			virtual bool is_container() { return component_->is_container(); }
 			/// FIXME: these should all be virtual too!!!
 			/// Return a bool indicating if component_ is focusable
-			bool focusable() { return component_->focusable(); }
+			virtual bool focusable() { return component_->focusable(); }
 			/// Set the focusable property of component_
-			void focusable(bool val) { component_->focusable(val); }
+			virtual void focusable(bool val) { component_->focusable(val); }
 			/// Return the tab index of component_
 			/// \todo this is currently not implemented
-			int tab() { return component_->tab(); }
+			virtual int tab() { return component_->tab(); }
 			/// Set the tab index of component_ 
 			/// \todo this is currently not implemented
-			void tab(int val) { component_->tab(val); }
+			virtual void tab(int val) { component_->tab(val); }
 			/// Return the pressed property of component_
-			bool pressed() { return component_->pressed(); }
+			virtual bool pressed() { return component_->pressed(); }
 			/// Return the focused property of component_
-			bool focused() { return component_->focused(); }
+			virtual bool focused() { return component_->focused(); }
 			/// Return the hover property of component_
-			bool hover() { return component_->hover(); } 
+			virtual bool hover() { return component_->hover(); } 
 
 			// FIXME: hmmm... how to map these to the component signals... ???
 			// is it even necessary ?

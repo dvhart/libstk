@@ -67,33 +67,37 @@ namespace stk
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
+			virtual bool is_container() { return false; }
+			/// FIXME: what would be a better way to handle all these rect wrappers?
+			/// should widget possibly ingerit from rectangle ?
 			rectangle rect() { return rect_; }
 			bool contains(int x, int y) { return rect_.contains(x, y); }
 			bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
 			int width() { return rect_.width(); }
 			int height() { return rect_.height(); }
 			void position(int x, int y) { rect_.position(x, y); }
-			virtual bool is_container() { return false; }
+			int x1() { return rect_.x1(); }
+			int y1() { return rect_.y1(); }
 
 			// widget attribute accessor methods
 			// FIXME: have the setters return bool ? 
 			// (ie label would return false for a focus(true) call) ?
 			/// Return a bool indicating if the widget is focusable
-			bool focusable() { return focusable_; }
+			virtual bool focusable() { return focusable_; }
 			/// Set the focusable property of the widget
-			void focusable(bool val) { focusable_ = val; }
+			virtual void focusable(bool val) { focusable_ = val; }
 			/// Return the tab index of the widget
 			/// \todo this is currently not implemented
-			int tab() { return tab_; }
+			virtual int tab() { return tab_; }
 			/// Set the tab index of the widget
 			/// \todo this is currently not implemented
-			void tab(int val) { tab_ = val; }
+			virtual void tab(int val) { tab_ = val; }
 			/// Return the pressed property of the widget
-			bool pressed() { return pressed_; }
+			virtual bool pressed() { return pressed_; }
 			/// Return the focused property of the widget
-			bool focused() { return focused_; }
+			virtual bool focused() { return focused_; }
 			/// Return the hover property of the widget
-			bool hover() { return hover_; } 
+			virtual bool hover() { return hover_; } 
 
 			boost::signal<bool (), combiner::logical_and<bool> > on_focus;
 			boost::signal<bool (), combiner::logical_and<bool> > on_unfocus;

@@ -167,8 +167,9 @@ namespace stk
 		gc->line_color(surface->gen_color(outline_color_focused_str)); 
 		surface->gc(gc);
 		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
-		surface->draw_rect(rect_);
-		surface->draw_image(rect_.x1()+10, rect_.y1()+10, image_);
+		//surface->draw_rect(rect_);
+		//surface->draw_image(rect_.x1()+10, rect_.y1()+10, image_);
+		surface->draw_image(rect_.x1(), rect_.y1(), image_);
 	}
 	
 	void list::draw(surface::ptr surface, const rectangle& clip_rect)

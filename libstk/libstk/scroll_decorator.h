@@ -35,6 +35,10 @@ namespace stk
 			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			/********** END DRAWABLE INTERFACE **********/
 				
+			/********** EVENT HANDLER INTERFACE **********/
+			virtual void handle_event(event::ptr e);
+			/********** END EVENT HANDLER INTERFACE **********/
+			
 			/********** PARENT INTERFACE **********/
 			/// Assign the first item added to component_, setting v and h ranges.
 			/// Subsequent adds get passed along to component_.

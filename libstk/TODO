@@ -14,6 +14,7 @@ MEETING TOPICS
 - should we have a color manager, similar to the font manager - dvhart to write test impl
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
+- add widget_at interface and handle_event to scroll_decorator
 
 DOCUMENTATION
 =============
