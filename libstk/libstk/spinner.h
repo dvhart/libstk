@@ -26,7 +26,7 @@ namespace stk
 			virtual ~spinner();
 
 			/********** EVENT HANDLER INTERFACE **********/
-			//virtual void handle_event(event::ptr e);
+			virtual void handle_event(event::ptr e);
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/

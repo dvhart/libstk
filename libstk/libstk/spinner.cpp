@@ -23,5 +23,46 @@ namespace stk
 	spinner::~spinner()
 	{
 	}
+	
+	void spinner::handle_event(event::ptr e)
+	{
+		//cout << "spinner::handle_event()" << endl;
+		if (items_.size() > 0) // do nothing if there are no items
+		{
+			switch (e->type())
+			{
+				case event::key_up:
+				{
+					key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+					switch ( ke->key() )
+					{
+						case up_arrow:
+							--selected_%=items_.size();
+							redraw(rect_);
+							return;
+							break;
+						case down_arrow:
+							++selected_%=items_.size();
+							redraw(rect_);
+							return;
+							break;
+					}
+					break;
+				}
+				case event::mouse_up:
+				{
+					mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+					if (me->y() < (y1()+y2())/2)
+							--selected_%=items_.size();
+					else
+							++selected_%=items_.size();
+					redraw(rect_);
+					return;
+					break;
+				}
+			}
+		}
+		widget::handle_event(e); 
+	}
 
 }

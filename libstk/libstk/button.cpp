@@ -105,9 +105,7 @@ namespace stk
 				break; // mouse_up
 			}
 		}
-		// fixme: do we want to be calling widget::handle_event ?
 		widget::handle_event(e); 
-		parent_.lock()->handle_event(e);
 	}
 
 }

@@ -55,11 +55,7 @@ namespace stk
 				}
 			}
 		}
-		// fixme: do we want to call widget's handle_event ?
-		// fixme: maybe handle_event should return a bool to aid in determining if the event
-		// has been handled
 		widget::handle_event(e); 
-		parent_.lock()->handle_event(e);
 	}
 		
 	void list::add_item(list_item::ptr item)

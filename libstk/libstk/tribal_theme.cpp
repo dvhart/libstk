@@ -2,6 +2,7 @@
 #include "libstk/exceptions.h"
 #include "libstk/font_mngr.h"
 
+#include "libstk/point.h"
 #include "libstk/button.h"
 #include "libstk/image_panel.h"
 #include "libstk/label.h"
@@ -291,6 +292,20 @@ namespace stk
 		// draw the selected item
 		items_[selected_]->rect(interior_rect);
 		items_[selected_]->draw(surface);
+
+		// draw the up arrows
+		std::vector<point> arrow_points;
+		arrow_points.push_back(point(x2() - 15, y1() + 10));
+		arrow_points.push_back(point(x2() - 5, y1() + 10));
+		arrow_points.push_back(point(x2() - 10, y1() + 5));
+		surface->fill_poly_aa(arrow_points);
+		// draw the down arrow
+		arrow_points.clear();
+		arrow_points.push_back(point(x2() - 15, y2() - 10));
+		arrow_points.push_back(point(x2() - 5, y2() - 10));
+		arrow_points.push_back(point(x2() - 10, y2() - 5));
+		surface->fill_poly_aa(arrow_points);
+
 	}
 	
 	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
