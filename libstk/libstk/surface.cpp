@@ -325,13 +325,132 @@ namespace stk
 	{ cout << "surface::draw_arc - not implemented" << endl; }
 	
 	void surface::draw_arc(int x1, int y1, int x2, int y2, int quadrant)
-	{ cout << "surface::draw_arc - not implementd" << endl; }
-	
+	{ 
+		color clr = gc_.line_color();
+		int a = x2 - x1;
+		int b = y2 - y1;
+		
+		int xp = 0;
+		int yp = b;
+
+		// some pre-calculated decisions variables
+		int a_sq = a*a;
+		int b_sq = b*b;
+		int a_2_sq = a_sq + a_sq;               // 2*a*a
+		int b_2_sq = b_sq + b_sq;               // 2*b*b
+		int a_2_sq_p_b_2_sq = a_2_sq + b_2_sq;  // 2*a*a + 2*b*b
+
+		// draw the starting pixels (and determine the origin - x,y)
+		int x, y;
+		switch (quadrant)
+		{
+			case ur_quadrant:
+				x = x1; y = y1;
+				draw_pixel(xp+x, yp+y, clr);
+				break;
+			case lr_quadrant:
+				x = x1; y = y2;
+				draw_pixel(xp+x, -yp+y, clr);
+				break;
+			case ll_quadrant:
+				x = x2; y = y2;
+				draw_pixel(-xp+x, -yp+y, clr);
+				break;
+			case ul_quadrant:
+				x = x2; y = y1;
+				draw_pixel(-xp+x, yp+y, clr);
+				break;
+		}
+
+		// region 1
+		double d1 = b_sq - a_sq*b + 0.25*a_sq;
+		int delta_e = b_2_sq + b_sq; // 3*b_sq
+		int delta_se = delta_e + a_sq*(-2*b+2); // 3*b_sq + a_sq*(-2*b+2)
+		while (a_sq*(yp-0.5) > b_sq*(xp+1))
+		{
+			if (d1 < 0) // E
+			{
+				d1 += delta_e;
+				delta_e += b_2_sq;
+				delta_se += b_2_sq;
+			}
+			else       // SE
+			{
+				d1 += delta_se;
+				delta_e += b_2_sq;
+				delta_se += a_2_sq_p_b_2_sq;
+				yp--;
+			}
+			xp++;
+
+			switch (quadrant)
+			{
+				case ur_quadrant:
+					draw_pixel(xp+x, yp+y, clr);
+					break;
+				case lr_quadrant:
+					draw_pixel(xp+x, -yp+y, clr);
+					break;
+				case ll_quadrant:
+					draw_pixel(-xp+x, -yp+y, clr);
+					break;
+				case ul_quadrant:
+					draw_pixel(-xp+x, yp+y, clr);
+					break;
+			}
+		}
+
+		//region 2
+		double d2 = b_sq*(xp+0.5)*(xp+0.5)+a_sq*(yp-1)*(yp-1)-a_sq*b_sq;
+		int delta_s = a_sq*(-2*yp+3);
+		while (yp > 0)
+		{
+			if (d2 < 0)  // SE
+			{
+				d2 += delta_se;
+				delta_s += a_2_sq;
+				delta_se += a_2_sq_p_b_2_sq;
+				xp++;
+			}
+			else         // S
+			{
+				d2 += delta_s;
+				delta_s += a_2_sq;
+				delta_se += a_2_sq;
+			}
+			yp--;
+
+			switch (quadrant)
+			{
+				case ur_quadrant:
+					draw_pixel(xp+x, yp+y, clr);
+					break;
+				case lr_quadrant:
+					draw_pixel(xp+x, -yp+y, clr);
+					break;
+				case ll_quadrant:
+					draw_pixel(-xp+x, -yp+y, clr);
+					break;
+				case ul_quadrant:
+					draw_pixel(-xp+x, yp+y, clr);
+					break;
+			}
+		}
+	}
+
 	void surface::draw_rect(const rectangle &rect)
-	{ cout << "surface::draw_rect - not implemented" << endl; }
+	{ 
+		draw_rect(rect.x1(), rect.y1(), rect.x2(), rect.y2());
+	}
 		
 	void surface::draw_rect(int x1, int y1, int x2, int y2)
-	{ cout << "surface::draw_rect - not implemented" << endl; }
+	{ 
+		color clr = gc_.line_color();
+		draw_line(x1, y1, x2, y1);
+		draw_line(x2, y1, x2, y2);
+		draw_line(x1, y2, x2, y2);
+		draw_line(x1, y1, x1, y2);
+	}
 			
 	void surface::circle_points(int x, int y, int dx, int dy)
 	{

@@ -43,6 +43,13 @@ int main()
 		gc.line_color(my_surface.gen_color("0xFF0000FF")); 
 		my_surface.gc(gc);
 		my_surface.draw_line_aa(0, 0, 149, 149);
+		// draw some arcs in a box
+		my_surface.draw_arc(75, 75, 140, 140, ur_quadrant);
+		my_surface.draw_arc(75, 75, 140, 140, lr_quadrant);
+		my_surface.draw_arc(75, 75, 140, 140, ll_quadrant);
+		my_surface.draw_arc(75, 75, 140, 140, ul_quadrant);
+		// outline the box
+		my_surface.draw_rect(0, 0, 149, 149); // fixme: should we draw INTERNAL to a passed rect ?
 
 		bool done = false;
 		SDL_Event event;
