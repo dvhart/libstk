@@ -20,12 +20,18 @@ namespace stk
 			
 		protected:
 			button(container::ptr parent, std::wstring label, const rectangle& rect);
+			/// Specifies to Label of the Button (FIXME better text?)
 			std::wstring label_;
 			
 		public:
 			static button::ptr create(container::ptr parent, const std::wstring label, 
 					const rectangle& _rect);
 			virtual ~button();
+
+			/// set the property label (#label_)
+			void label(std::wstring newlabel);
+			/// get the property label (#label_)
+			std::wstring label();
 
 			// button signals
 			boost::signal<bool (), combiner::logical_and<bool> > on_click; // FIXME: on_activate in widget maybe ?
