@@ -51,7 +51,7 @@ namespace stk
         {
             return text_;
         }
-        void text(std::wstring& text)
+        void text(const std::wstring& text)
         {
             text_ = text;
             // Usually keeping the selection when putting a new text in is not a good idea
