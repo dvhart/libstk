@@ -85,7 +85,7 @@ namespace stk
         /// x,y.  It will call widget_at on a child that is a container.
         virtual widget::ptr widget_at(int x, int y);
         /// Pass mouse events down to widgets.
-        virtual void delegate_mouse_event(mouse_event::ptr me);
+        virtual widget::ptr delegate_mouse_event(mouse_event::ptr me);
         
         virtual rectangle redraw_rect()
         {

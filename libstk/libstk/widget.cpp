@@ -96,7 +96,6 @@ namespace stk
     {
         parent_.lock()->redraw(rect);
     }
-
     widget::ptr widget::widget_at(int x, int y)
     {
         if (x < width() && y < height())
@@ -104,5 +103,13 @@ namespace stk
         else
             return widget::ptr();
     }
-
+    widget::ptr widget::delegate_mouse_event(mouse_event::ptr me)
+    {
+	handle_event(me);
+	widget::ptr this_ptr=shared_from_this();
+	WARN("use count of this ptr in widget::delegate_mouse_event is " << this_ptr.use_count() );
+	
+	return this_ptr;
+    }
+    
 }

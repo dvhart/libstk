@@ -50,7 +50,7 @@ namespace stk
         return shared_from_this();
     }
 
-    void container::delegate_mouse_event(mouse_event::ptr me)
+    widget::ptr container::delegate_mouse_event(mouse_event::ptr me)
     {
         // pass a mouse event to the appropriate widget
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -58,9 +58,12 @@ namespace stk
         {
             if ((*iter)->contains(me->x(), me->y()))
             {
-                (*iter)->handle_event(me);
+		mouse_event::ptr me_to_child(new mouse_event(me->x()-rect().x1(),me->y()-rect().y1(),
+							     me->button(),me->type()));
+		return (*iter)->delegate_mouse_event(me_to_child);
             }
         }
+	return widget::ptr();
     }
 
     void container::add

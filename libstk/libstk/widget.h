@@ -115,8 +115,8 @@ namespace stk
 
         /********** COMPOSITE INTERFACE **********/
         virtual widget::ptr widget_at(int x, int y);
-        virtual void delegate_mouse_event(mouse_event::ptr me)
-        { }
+        virtual widget::ptr delegate_mouse_event(mouse_event::ptr me);
+
         virtual widget::ptr get_active_child()
         {
             return shared_from_this();
