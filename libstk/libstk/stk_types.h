@@ -5,8 +5,8 @@ namespace stk
 {
 	// FIXME
 	// wrap with some #ifdefs to assure color is an unsigned 32 bit integer
-	typedef color unsigned int;
-	typedef byte  unsigned char;	
+	typedef unsigned int color;
+	typedef unsigned char byte;
 }
 
 #endif

@@ -31,31 +31,31 @@ email                : dvhart@byu.edu
 namespace stk
 {
 	// direction constants
-	const int DOT 0x00;
-	const int LR  0x01;
-	const int RL    0x02;
-	const int UP    0x04;
-	const int DN    0x08;
-	const int S0    0x10;
-	const int S1    0x20;
-	const int LRU_0 LR+UP+S0;
-	const int LRU_1 LR+UP+S1;
-	const int LRD_0 LR+DN+S0;
-	const int LRD_1 LR+DN+S1;
-	const int RLU_0 RL+UP+S0;
-	const int RLU_1 RL+UP+S1;
-	const int RLD_0 RL+DN+S0;
-	const int RLD_1 RL+DN+S1;
+	const int DOT   = 0x00;
+	const int LR    = 0x01;
+	const int RL    = 0x02;
+	const int UP    = 0x04;
+	const int DN    = 0x08;
+	const int S0    = 0x10;
+	const int S1    = 0x20;
+	const int LRU_0 = LR+UP+S0;
+	const int LRU_1 = LR+UP+S1;
+	const int LRD_0 = LR+DN+S0;
+	const int LRD_1 = LR+DN+S1;
+	const int RLU_0 = RL+UP+S0;
+	const int RLU_1 = RL+UP+S1;
+	const int RLD_0 = RL+DN+S0;
+	const int RLD_1 = RL+DN+S1;
 	
 	// opacity constants
-	const int opaque      255;
-	const int transparent 0;
+	const int opaque      = 255;
+	const int transparent = 0;
 	
 	// quadrant constants
-	const int ur_quadrant 1; // may not need these... maybe an enum...
-	const int lr_quadrant 2;
-	const int lr_quadrant 3;
-	const int ul_quadrant 4;
+	const int ur_quadrant = 1; // may not need these... maybe an enum...
+	const int lr_quadrant = 2;
+	const int ll_quadrant = 3;
+	const int ul_quadrant = 4;
 
 	static byte alpha_filter[256] =
 	{
@@ -106,7 +106,7 @@ namespace stk
 			byte alpha() const { return alpha_; };
 			void alpha(byte a) { alpha_ = a; };
 			graphics_context gc() const { return gc_; };
-			void gc(graphics_conext &new_gc) { gc_ = new_gc; }; 		
+			void gc(graphics_context &new_gc) { gc_ = new_gc; }; 		
 
 			// methods which MUST be implemented in derived classes
 			virtual void draw_pixel(int x, int y) = 0;
@@ -144,7 +144,7 @@ namespace stk
 			virtual void draw_ellipse(int x, int y, int a, int b);
 			virtual void draw_ellipse(const rectangle &rect);
 			virtual void draw_poly(const std::vector<point> points);
-			virtual void draw_text(int x, int y, const std::string text);
+			virtual void draw_text(int x, int y, const std::string &text);
 
 			// antialiased draw routines
 			virtual void draw_line_aa(int x1, int y1, int x2, int y2);

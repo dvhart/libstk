@@ -18,6 +18,7 @@ email                : dvhart@byu.edu
 #include "surface.h"
 #include "rectangle.h"
 #include "point.h"
+#include "edge.h"
 #include "stk_types.h"
 #include <vector>
 #include <list>
@@ -373,7 +374,7 @@ namespace stk
 
 	void surface::draw_circle(const rectangle &rect)
 	{
-		draw_circle(rect.x() + rect.w()/2, rect.y() + rect.h()/2, rect.w()/2);
+		draw_circle(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, rect.w()/2);
 	}
 		
 	void surface::ellipse_points(int x, int y, int dx, int dy)
@@ -448,7 +449,7 @@ namespace stk
 	void surface::draw_ellipse(const rectangle &rect)
 	{
 		cout << "surface::draw_ellipse - did I get a and b right?" << endl;
-		draw_ellipse(rect.x() + rect.w()/2, rect.y() + rect.h()/2, 
+		draw_ellipse(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, 
 				rect.w()/2, rect.h()/2);
 	}
 
@@ -836,21 +837,21 @@ namespace stk
 	void surface::draw_rect_aa(int x1, int y1, int x2, int y2)
 	{ cout << "surface::draw_rect_aa - not implemented" << endl; }
 
-	void surface::draw_circle(int x, int y, int radius)
+	void surface::draw_circle_aa(int x, int y, int radius)
 	{ cout << "surface::draw_circle_aa - not implemented" << endl; }
 		
 	void surface::draw_circle_aa(const rectangle &rect)
 	{
-		draw_circle_aa(rect.x() + rect.w()/2, rect.y() + rect.h()/2, rect.w()/2);
+		draw_circle_aa(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, rect.w()/2);
 	}
 	
 	void surface::draw_ellipse_aa(int x, int y, int a, int b)
-	{ cout << "surface::draw_ellipse_aa - not implemented" << end; }
+	{ cout << "surface::draw_ellipse_aa - not implemented" << endl; }
 
 	void surface::draw_ellipse_aa(const rectangle &rect)
 	{
 		cout << "surface::draw_ellipse_aa - did I get a and b right?" << endl;
-		draw_ellipse(rect.x() + rect.w()/2, rect.y() + rect.h()/2, 
+		draw_ellipse(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, 
 				rect.w()/2, rect.h()/2);
 	}
 		
@@ -878,28 +879,28 @@ namespace stk
 
 	// non antialiased fill routines
 	void surface::fill_rect(int x1, int y1, int x2, int y2)
-	{ cout << "surface::fill_rect - not implemented" << end; }
+	{ cout << "surface::fill_rect - not implemented" << endl; }
 	
 	void surface::fill_rect(const rectangle &rect)
-	{ cout << "surface::fill_rect - not implemented" << end; }
+	{ cout << "surface::fill_rect - not implemented" << endl; }
 	
 	void fill_circle(int x, int y, int radius)
-	{ cout << "surface::fill_circle - not implemented" << end; }
+	{ cout << "surface::fill_circle - not implemented" << endl; }
 	
 	void fill_circle(const rectangle &rect)
-	{ cout << "surface::fill_circle - not implemented" << end; }
+	{ cout << "surface::fill_circle - not implemented" << endl; }
 	
 	void fill_ellipse(int x, int y, int a, int b)
-	{ cout << "surface::fill_ellipse - not implemented" << end; }
+	{ cout << "surface::fill_ellipse - not implemented" << endl; }
 	
 	void fill_ellipse(const rectangle &rect)
-	{ cout << "surface::fill_ellipse - not implemented" << end; }
+	{ cout << "surface::fill_ellipse - not implemented" << endl; }
 
-	void surface::fill_poly(std::vector<point> points, Uint32 color)
+	void surface::fill_poly(std::vector<point> points)
 	{
 		typedef std::list<edge> edge_list;
 		// FIXME: this will segfault for poly's outside the surface vertically
-		std::vector<edge_list> edges(surface_->h);
+		std::vector<edge_list> edges(rect_.h());
 		std::list<edge> active_edges;
 
 		// populate the global edge table
@@ -973,24 +974,24 @@ namespace stk
 
 	// antialiased fill routines
 	void surface::fill_rect_aa(int x1, int y1, int x2, int y2)
-	{ cout << "surface::fill_rect_aa - not implemented" << end; }
+	{ cout << "surface::fill_rect_aa - not implemented" << endl; }
 	
 	void surface::fill_rect_aa(const rectangle &rect)
-	{ cout << "surface::fill_rect_aa - not implemented" << end; }
+	{ cout << "surface::fill_rect_aa - not implemented" << endl; }
 	
 	void fill_circle_aa(int x, int y, int radius)
-	{ cout << "surface::fill_circle_aa - not implemented" << end; }
+	{ cout << "surface::fill_circle_aa - not implemented" << endl; }
 	
 	void fill_circle_aa(const rectangle &rect)
-	{ cout << "surface::fill_circle_aa - not implemented" << end; }
+	{ cout << "surface::fill_circle_aa - not implemented" << endl; }
 	
 	void fill_ellipse_aa(int x, int y, int a, int b)
-	{ cout << "surface::fill_ellipse_aa - not implemented" << end; }
+	{ cout << "surface::fill_ellipse_aa - not implemented" << endl; }
 	
 	void fill_ellipse_aa(const rectangle &rect)
-	{ cout << "surface::fill_ellipse_aa - not implemented" << end; }
+	{ cout << "surface::fill_ellipse_aa - not implemented" << endl; }
 
-	void surface::fill_poly_aa(std::vector<point> points, Uint32 color)
+	void surface::fill_poly_aa(std::vector<point> points)
 	{
 		fill_poly(points);
 		draw_poly_aa(points);
