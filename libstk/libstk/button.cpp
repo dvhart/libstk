@@ -44,9 +44,11 @@ namespace stk
 	{
 		//cout << "button::handle_event()" << endl;
 		
+		widget::handle_event(e);
+		
 		switch (e->type())
 		{
-			case key_up:
+			case event::key_up:
 			{
 				// FIXME: where should default actions be taken care of ?
 				// next and prev are currently in App, so activate (enter) should
@@ -58,8 +60,9 @@ namespace stk
 						if (active_)
 						{
 							cout << "button::handle_event() - emitting signal on_click()" << endl;
-							active(false);
-							on_click();
+							active_ = false;
+							redraw(rect_);
+							on_release();
 						}
 						break;
 					default:
@@ -69,43 +72,48 @@ namespace stk
 				}
 				break; // key_up
 			}
-			case key_down:
+			case event::key_down:
 			{
 				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
 				switch ( ke->key() )
 				{
 					case key_enter:
 						cout << "button::handle_event() - emitting signal on_click()" << endl;
-						active(true);
+						active_ = true;
+						redraw(rect_);
+						on_press();
 						break;
 					default:
 						//mstr: broken in boost_1_30_0 FIXME
 						boost::make_shared(parent_)->handle_event(e);
 				}
-				break; // key_up
+				break; // key_down
 			}
 			// FIXME: this stuff should be moved to application or state I think
-			case mouse_motion:
+			case event::mouse_motion:
 			{
 				//boost::make_shared(parent_)->handle_event(e);
 				break; // mouse_motion
 			}
-			case mouse_down:
+			case event::mouse_down:
 			{
 				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
 				if (!active())
 				{
-					active(true);
+					active_ = true;
+					redraw(rect_);
+					on_press();
 				}
 				break; // mouse_down
 			}
-			case mouse_up:
+			case event::mouse_up:
 			{
 				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
 				if (active())
 				{
-					active(false);
-					on_click();
+					active_ = false;
+					redraw(rect_);
+					on_release();
 				}
 				break; // mouse_up
 			}

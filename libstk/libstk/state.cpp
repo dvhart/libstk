@@ -24,6 +24,7 @@ namespace stk
 		container(boost::shared_static_cast<stk::parent>(parent), parent->surface()->rect())
 	{
 		cout << "state::state()" << endl;
+		focusable_ = false;
 	}
 
 	state::~state()
@@ -70,13 +71,13 @@ namespace stk
 			if (!temp_widget && (*iter)->focusable())
 			{
 				temp_widget = *iter;
-				temp_widget->focused(true);
+				//temp_widget->focused(true);
 				continue;
 			}
 			// keep looking for the focused widget if there is one
 			if ((*iter)->focused())
 			{
-				(*iter)->focused(false);
+				//(*iter)->focused(false);
 				break; // only one can be focused at a time
 			}
 		}
@@ -96,10 +97,10 @@ namespace stk
 			{
 				temp_widget = *iter;
 			}
-			if ((*iter)->focused()) (*iter)->focused(false);
+			//if ((*iter)->focused()) (*iter)->focused(false);
 		}
-		if (temp_widget)
-			temp_widget->focused(true);
+		//if (temp_widget)
+			//temp_widget->focused(true);
 		return temp_widget;
 	}
 	

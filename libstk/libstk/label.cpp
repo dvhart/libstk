@@ -20,6 +20,7 @@ namespace stk
 					const rectangle& rect) : widget(parent, rect), text_(text)
 	{
 		cout << "label::label()" << endl;
+		focusable_ = false;
 	}
 
 	label::~label()

@@ -16,6 +16,7 @@ namespace stk
 		: widget(parent, rect), image_(img)
 	{
 		cout << "image_panel::image_panel()" << endl;
+		focusable_ = false;
 	}
 	
 	image_panel::~image_panel()

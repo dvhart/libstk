@@ -34,7 +34,7 @@ namespace stk
 
 	widget::widget(parent::ptr parent, const rectangle& rect)
 		: parent_(parent), rect_(rect), focusable_(false), 
-	    active_(false), focused_(false), hover_(false), tab_(0)
+	    active_(false), focused_(true), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(parent)" << endl;
 	}
@@ -51,12 +51,40 @@ namespace stk
 	void widget::handle_event(event::ptr e)
 	{
 		cout << "widget::handle_event()" << endl;
-		if (!parent_.lock())
+
+		// default handlers for focus/un_focus mouse_enter/leave events
+		// a derived widget should call widget::handle_event() for these basic events
+		switch (e->type())
 		{
-			// throw something
-			cout << "widget::handle_event() - null parent_ pointer" << endl;
+			case event::focus:
+				if (focusable_) 
+				{
+					focused_ = true;
+					redraw(rect_);
+				}
+				break;
+			case event::un_focus:
+				if (focusable_)
+				{
+					focused_ = false;
+					active_ = false;
+					redraw(rect_);
+				}
+				break;
+			case event::mouse_enter:
+				hover_ = true;
+				redraw(rect_);
+				break;
+			case event::mouse_leave:
+				hover_ = false;
+				active_ = false;
+				redraw(rect_);
+				break;
 		}
-		parent_.lock()->handle_event(e);
+
+		// do not call parent->handle_event() here, the derived widget is responsible
+		// for that if they so desire (ie they don't handle an event)
+
 	}
 
 	// drawable interface

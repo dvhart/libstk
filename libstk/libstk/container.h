@@ -39,14 +39,15 @@ namespace stk
 			/********** END DRAWABLE INTERFACE **********/
 
 			/********** PARENT INTERFACE **********/
-			/// unfocus the current_widget, find the next, focus it and return it
-			/// if we have no children, or reach the end, call ask parent_ for the 
-			/// next widget.
+			/// Return the next focusable widget.
+			/// Find the focused widget, and return the next focusable one if we have 
+			/// no children, or reach the end, ask parent_ for the next widget.
 			virtual widget::ptr focus_next();
 			
-			/// unfocus the current_widget, find the prev, focus it and return it
-			/// if we have no children, or reach the beginning, call ask parent_ for the
-			/// prev widget.
+			/// Return the prev focusable widget.
+			/// Find the focused widget, and return the previous focusable one if we 
+			/// have no children, or reach the beginning, ask parent_ for the next 
+			/// widget.
 			virtual widget::ptr focus_prev();
 			virtual void add_child(widget::ptr w)
 			{ children_.push_back(w); }

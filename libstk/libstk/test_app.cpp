@@ -69,10 +69,9 @@ int main(int argc, char* argv[])
 		cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
 		button::ptr test_button = button::create(test_state, L"Quit", 
 			rectangle(120, 10, 100, 30));
-		cout << "Quit button Rect: " << rectangle(140, 10, 100, 30) << endl;
+		test_button->on_release.connect( boost::bind(&stk::application::quit, test_app) );
 		button::ptr test_button2 = button::create(test_state, L"No-Op", 
 			rectangle(240, 10, 100, 30));
-		test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
 		
 		// create a couple labels using ÜberScript
 		cout << "test_app - creating labels" << endl;

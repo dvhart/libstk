@@ -16,6 +16,7 @@ namespace stk
 		widget(parent, rect)
 	{
 		cout << "container::container(container)" << endl;
+		focusable_ = false;
 		redraw_rect_ = parent->surface()->rect();
 	}
 	
@@ -23,6 +24,7 @@ namespace stk
 		widget(parent, rect)
 	{
 		cout << "container::container(parent)" << endl;
+		focusable_ = false;
 		redraw_rect_ = parent->surface()->rect();
 	}
 
@@ -115,13 +117,11 @@ namespace stk
 		{
 			if ((*iter)->focused())
 			{
-				(*iter)->focused(false);
 				// find the next focusable widget
 				while (++iter != children_.end() )
 				{
 					if ((*iter)->focusable())
 					{
-						(*iter)->focused(true);
 						return *iter;
 					}
 				}
@@ -141,13 +141,11 @@ namespace stk
 		{
 			if ((*iter)->focused())
 			{
-				(*iter)->focused(false);
 				// find the previous focusable widget
 				while (iter != children_.begin())
 				{
 					if ((*--iter)->focusable())
 					{
-						(*iter)->focused(true);
 						return *iter;
 					}
 				}

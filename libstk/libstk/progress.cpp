@@ -23,6 +23,7 @@ namespace stk
 		range_(range)
 	{
 		cout << "progress::progress()" << endl;
+		focusable_ = false;
 		build_label();
 	}
 

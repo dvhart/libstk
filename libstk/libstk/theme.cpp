@@ -71,12 +71,14 @@ namespace stk
 		surface_->fill_rect(rect);	
 
 		// debug focus by outlining the focused widget
+		/*
 		if (focused)
 		{
 			gc->line_color(outline_color_focused_); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
+		*/
 	}
 	
 	void theme::draw_button(const rectangle& rect, const std::wstring& label,
@@ -155,12 +157,14 @@ namespace stk
 		surface_->draw_text(rect, label);
 
 		// debug focus by outlining the focused widget
+		/*
 		if (focused)
 		{
 			gc->line_color(outline_color_focused_); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
+		*/
 	}
 	
 	void theme::draw_label(const rectangle& rect, const std::wstring& text, bool focused)
@@ -175,7 +179,6 @@ namespace stk
 			gc->font(bob);
 			gc->font_fill_color(font_color_normal_);
 			surface_->gc(gc);
-			//surface_->draw_rect(rect);
 			surface_->draw_text(rect, text);
 		}
 		catch (const exception& e)
@@ -184,12 +187,14 @@ namespace stk
 		}
 		
 		// debug focus by outlining the focused widget
+		/*
 		if (focused)
 		{
 			gc->line_color(outline_color_focused_); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
+		*/
 	}
 
 	void theme::draw_image_panel(const rectangle& rect, image::ptr img)

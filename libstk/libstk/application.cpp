@@ -58,11 +58,11 @@ namespace stk
 			current_state_ = *states_.begin();
 			// FIXME: ask current_state_ for its first focusable widget
 			focused_widget_ = (*states_.begin())->get_active_child();
-			focused_widget_.lock()->focused(true);
+			focused_widget_.lock()->handle_event(event::create(event::focus));
 		}
 		
 		// FIXME: we have to do something about all these .lock() calls!!!
-		event::ptr event_(new event(no_event)); // should we use create here ?
+		event::ptr event_(new event(event::none)); // should we use create here ?
 		while (!done_)
 		{
 			rectangle t_rect = current_state_.lock()->redraw_rect();
@@ -74,14 +74,14 @@ namespace stk
 			
 			// handle all available events before redrawing
 			event_ = event_system_->poll_event();
-			while (event_->type() != no_event)
+			while (event_->type() != event::none)
 			{
 				//cout << "application::run() - event received of type: " << event_->type() << endl;
 
 				// if it's a mouse event, let current_state_ determine who to send it too
-				if (event_->type() == mouse_motion ||
-						event_->type() == mouse_down ||
-						event_->type() == mouse_up)
+				if (event_->type() == event::mouse_motion ||
+						event_->type() == event::mouse_down ||
+						event_->type() == event::mouse_up)
 				{
 					mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
 					
@@ -90,28 +90,23 @@ namespace stk
 					if (!hover_ptr || !hover_ptr->contains(me->x(), me->y()))
 					{
 						// NOTE: only leaf widgets can be hover widgets!!!
-						//cout << "changing hover_widget_" << endl;
 						if (hover_ptr) 
-						{
-							hover_ptr->hover(false);
-							hover_ptr->active(false);
-						}
+							hover_ptr->handle_event(event::create(event::mouse_leave));
 						hover_ptr = current_state_.lock()->widget_at(me->x(), me->y());
-						if (hover_ptr) hover_ptr->hover(true);
+						if (hover_ptr) 
+							hover_ptr->handle_event(event::create(event::mouse_enter));
 						hover_widget_ = hover_ptr;
 					}
 
 					// FIXME: do some error checking on the widget pointers
 					// update focused widget as necessary
-					if (event_->type() == mouse_down && 
+					if (event_->type() == event::mouse_down && 
 							hover_widget_.lock() && // not a null hover widget
 							hover_widget_.lock() != focused_widget_.lock())
 					{
-						// FIXME: the container with the previous focused_widget is now out of sync
-						// with the system!!!!!
-						focused_widget_.lock()->focused(false);
+						focused_widget_.lock()->handle_event(event::create(event::un_focus));
 						focused_widget_ = hover_widget_;
-						focused_widget_.lock()->focused(true);
+						focused_widget_.lock()->handle_event(event::create(event::focus));
 					}
 					
 					current_state_.lock()->delegate_mouse_event(me);
@@ -158,9 +153,9 @@ namespace stk
 		//cout << "application::handle_event()" << endl;
 		switch(e->type())
 		{
-			case key_down:
+			case event::key_down:
 				break;
-			case key_up:
+			case event::key_up:
 			{
 				// FIXME :Carter: shouldnt this be a polymorphic cast?
 				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
@@ -173,31 +168,37 @@ namespace stk
 					case key_tab:
 					case right_arrow:
 					case down_arrow:
+					{
 						cout << "application::handle_event() - next pressed" << endl;
-						cout << "\tfocused_widget_: " << focused_widget_.lock().get() << endl;
+						widget::weak_ptr prev_focused_widget = focused_widget_;
 						focused_widget_ = focused_widget_.lock()->focus_next();
-						focused_widget_.lock()->focused(true);
+						prev_focused_widget.lock()->handle_event(event::create(event::un_focus)); // this could be done in container focus_next(), but it seems more approppriate to make the calles here, as application is responsible for which widget is focused, not container.  opinions?
+						focused_widget_.lock()->handle_event(event::create(event::focus));
 						break;
+					}
 					case key_enter:
 						cout << "application::handle_event() - enter pressed" << endl;
 						break;
 					case left_arrow:
 					case up_arrow:
+					{
 						cout << "application::handle_event() - prev pressed" << endl;
-						cout << "\tfocused_widget_: " << focused_widget_.lock().get() << endl;
+						widget::weak_ptr prev_focused_widget = focused_widget_;
 						focused_widget_ = focused_widget_.lock()->focus_prev();
-						focused_widget_.lock()->focused(true);
+						prev_focused_widget.lock()->handle_event(event::create(event::un_focus));
+						focused_widget_.lock()->handle_event(event::create(event::focus));
 						break;
+					}
 				}
 				break;
 			}
-			case mouse_down:
+			case event::mouse_down:
 				break;
-			case mouse_up:
+			case event::mouse_up:
 				break;
-			case mouse_motion:
+			case event::mouse_motion:
 				break;
-			case event_quit:
+			case event::quit:
 				quit();
 				break;
 			//default:

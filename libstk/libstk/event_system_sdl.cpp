@@ -29,7 +29,7 @@ namespace stk
 		//cout << "event_system_sdl::poll_event()" << endl;
 		// enter the event loop
 		SDL_Event new_event;
-		event::ptr event_(new event(no_event));
+		event::ptr event_(new event(event::none));
 		if (SDL_PollEvent(&new_event))
 		{
 			//cout << "event_system_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
@@ -37,35 +37,35 @@ namespace stk
 			{
 				case SDL_KEYDOWN:
 					//cout << "SDL_KEYDOWN" << endl;
-					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_down));
+					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), event::key_down));
 					break;
 				case SDL_KEYUP:
 					//cout << "SDL_KEYUP" << endl;
-					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_up));
+					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), event::key_up));
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					//cout << "SDL_MOUSEBUTTONDOWN" << endl;
 					return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y, 
-							               new_event.button.button, mouse_down));
+							               new_event.button.button, event::mouse_down));
 					break;
 				case SDL_MOUSEBUTTONUP:
 					//cout << "SDL_MOUSEBUTTONUP" << endl;
 					return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y, 
-							               new_event.button.button, mouse_up));
+							               new_event.button.button, event::mouse_up));
 					break;
 				case SDL_MOUSEMOTION:
 					//cout << "SDL_MOUSEMOTION" << endl;
 					return mouse_event::ptr(new mouse_event(new_event.motion.x, new_event.motion.y, 
-							               -1, mouse_motion));
+							               -1, event::mouse_motion));
 					break;
 				case SDL_QUIT:
 					//cout << "SDL_QUIT" << endl;
-					return event::ptr(new event(event_quit));
+					return event::ptr(new event(event::quit));
 					break;
 				default:
 					// throw something
 					cout << "event_system_sdl::poll_event() - unknown event type" << endl;
-					return event::ptr(new event(unknown_event));
+					return event::ptr(new event(event::unknown));
 			}
 		}
 		return event_;
