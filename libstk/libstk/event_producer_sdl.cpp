@@ -99,6 +99,8 @@ namespace stk
             switch (keysym.sym)
             {
             // FIXME: fill this in
+
+            // common utility keys 
             case SDLK_BACKSPACE:
                 fn_code = key_backspace;
                 break;
@@ -118,6 +120,7 @@ namespace stk
                 fn_code = key_delete;
                 break;
 
+            // arrow keys
             case SDLK_LEFT:
                 fn_code = key_leftarrow;
                 break;
@@ -129,6 +132,38 @@ namespace stk
                 break;
             case SDLK_DOWN:
                 fn_code = key_downarrow;
+                break;
+
+            // modifier keys
+            case SDLK_RSHIFT:
+                fn_code = key_rightshift;
+                break;
+            case SDLK_LSHIFT:
+                fn_code = key_leftshift;
+                break;
+            case SDLK_RCTRL:
+                fn_code = key_rightcontrol;
+                break;
+            case SDLK_LCTRL:
+                fn_code = key_leftcontrol;
+                break;
+            case SDLK_RALT:
+                fn_code = key_rightalt;
+                break;
+            case SDLK_LALT:
+                fn_code = key_leftalt;
+                break;
+            case SDLK_RMETA:
+                fn_code = key_rightmeta;
+                break;
+            case SDLK_LMETA:
+                fn_code = key_leftmeta;
+                break;
+            case SDLK_RSUPER:
+                fn_code = key_rightsuper;
+                break;
+            case SDLK_LSUPER:
+                fn_code = key_leftsuper;
                 break;
             }
         }
