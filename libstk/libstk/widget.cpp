@@ -109,7 +109,7 @@ namespace stk
 
     widget::ptr widget::widget_at(int x, int y)
     {
-        if (x < width() && y < height())
+        if (contains(x, y))
             return shared_from_this();
         else 
             return widget::ptr();

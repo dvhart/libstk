@@ -35,11 +35,12 @@ namespace stk
 
     widget::ptr container::widget_at(int x, int y)
     {
+        // if we don't contain this point, return a null pointer
+        if (!contains(x, y)) return widget::ptr();
+
+        // convert to local coordinates
         x -= x1();
         y -= y1();
-
-        // if we don't contain this point, return a null pointer
-        if (x >= width() || y >= height()) return widget::ptr();
 
         // cycle through the widgets, and return the first that doesn't return a null pointer
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -56,7 +57,7 @@ namespace stk
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (; iter != children_.end(); iter++)
         {
-            if ((*iter)->contains(me->x(), me->y()))
+            if ((*iter)->contains(me->x()-x1(), me->y()-y1()))
             {
                 mouse_event::ptr me_to_child(new mouse_event(me->x()-x1(), me->y()-y1(), 
                             me->button(), me->type()));
