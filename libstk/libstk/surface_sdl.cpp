@@ -46,7 +46,7 @@ namespace stk
 		rect_.height(sdl_surface_->h);
 	}
 	
-	surface_sdl::surface_sdl(const rectangle &rect) : surface(rect)
+	surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
 	{
 		cout << "surface_sdl::surface_sdl()" << endl;	
 		sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 32, 
@@ -60,27 +60,6 @@ namespace stk
 			SDL_FreeSurface(sdl_surface_);
 	}
 
-	// methods which MUST be implemented in derived classes	
-	void surface_sdl::draw_pixel(int x, int y, color clr) 
-	{ 
-		put_pixel(x, y, clr); 
-	}
-
-	void surface_sdl::draw_pixel_aa(int x, int y, double distance, color clr) 
-	{ 
-		put_pixel_aa(x, y, distance, clr); 
-	}
-
-	void surface_sdl::draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) 
-	{ 
-		put_pixel_aa(x, y, alpha_a, clr); 
-	}
-
-	color surface_sdl::read_pixel(int x, int y) const
-	{
-		return get_pixel(x, y);
-	}
-	
 	color surface_sdl::gen_color(const std::string &str_color) const
 	{
 		Uint8 r, g, b, a;
@@ -108,6 +87,24 @@ namespace stk
 	{
 	}
 	
+	void surface_sdl::update(const rectangle& u_rect)
+	{
+		if (u_rect.empty())
+		{
+			//cout << "surface_sdl::update() - updating entire screen" << endl;
+			SDL_Flip(sdl_surface_); // FIXME: this is hw accelerated if supported, 
+			                        // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
+															// would it be faster to call SDL_Flip regardless of u_rect
+															// if we have accelerated hw ?
+		}
+		else
+		{
+			//cout << "surface_sdl::update() - updating the rect: " << u_rect << endl;
+			SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
+		}
+	}
+	
+	// optimized pixel routines
 	void surface_sdl::blit(surface &dst_surface)
 	{
 		// blit the local surface to the destination surface
@@ -131,24 +128,6 @@ namespace stk
 		}
 	}
 
-	void surface_sdl::update(const rectangle& u_rect)
-	{
-		if (u_rect.empty())
-		{
-			//cout << "surface_sdl::update() - updating entire screen" << endl;
-			SDL_Flip(sdl_surface_); // FIXME: this is hw accelerated if supported, 
-			                        // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
-															// would it be faster to call SDL_Flip regardless of u_rect
-															// if we have accelerated hw ?
-		}
-		else
-		{
-			//cout << "surface_sdl::update() - updating the rect: " << u_rect << endl;
-			SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
-		}
-	}
-	
-	// optimized pixel routines
 	void surface_sdl::put_pixel(int x_, int y_, color clr)
 	{
 		int x = x_ + offset_.x();
@@ -324,14 +303,7 @@ namespace stk
 		put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
 	}
 	
-	// optimized drawing routines
-	// WRITEME...
-
-	// optimied aa drawing routines
-	// WRITEME...
-
-	// optimized fill routines
-	// WRITEME...
+	// overridden drawing routines
 	void surface_sdl::fill_rect(int x1, int y1, int x2, int y2)
 	{
 		Uint32 sdl_color = (Uint32)gc_->fill_color();
@@ -347,7 +319,5 @@ namespace stk
 		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
 	}
 
-	// optimized aa fill routines
-	// WRITEME...
 
 } // end namespace stk

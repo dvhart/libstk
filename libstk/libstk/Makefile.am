@@ -10,7 +10,7 @@ libstk_la_SOURCES =\
 	glyph.h glyph.cpp \
 	font.h font.cpp \
 	rectangle.h rectangle.cpp \
-	surface.h surface.cpp \
+	surface.h surface_impl.h \
 	surface_sdl.h surface_sdl.cpp \
 	surface_dfb.h surface_dfb.cpp \
 	event.h \
@@ -53,7 +53,7 @@ library_include_HEADERS= \
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
 	image_panel.h spinner.h scroll_model.h theme.h color_manager.h \
-	timer.h
+	timer.h surface_impl.h
 
 
 bin_PROGRAMS       = test_app surface_bm

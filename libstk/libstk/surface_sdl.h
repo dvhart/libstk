@@ -14,6 +14,7 @@
 #define STK_SURFACE_SDL_H
 
 #include "libstk/surface.h"
+#include "libstk/surface_impl.h"
 #include "libstk/point.h"
 #include "libstk/edge.h"
 #include "libstk/stk.h"
@@ -47,7 +48,7 @@
 namespace stk
 {
 
-	class surface_sdl : public stk::surface
+	class surface_sdl : public stk::surface_impl<surface_sdl>
 	{
 		public:
 			typedef boost::shared_ptr<surface_sdl> ptr;
@@ -56,13 +57,6 @@ namespace stk
 		private:
 			SDL_Surface *sdl_surface_;
 
-			// optimized pixel routines (private and not virtual)
-		public: // for benchmarking purposes
-			inline void put_pixel(int x, int y, color clr);
-		private:
-			inline void put_pixel_aa(int x, int y, double distance, color clr);
-			inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
-			inline color get_pixel(int x, int y) const;
 			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
 			{
 				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
@@ -80,31 +74,20 @@ namespace stk
 			SDL_Surface *sdl_surface() const { return sdl_surface_; };
 
 			// methods which MUST be implemented in derived classes
-			virtual void draw_pixel(int x, int y, color clr);
-			virtual void draw_pixel_aa(int x, int y, double distance, color clr);
-			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
-			virtual color read_pixel(int x, int y) const;
-			// format: "0xRRGGBBAA", 0-255, alpha 255 being opaque
+			inline void put_pixel(int x, int y, color clr);
+			inline void put_pixel_aa(int x, int y, double distance, color clr);
+			inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
+			inline color get_pixel(int x, int y) const;
 			virtual color gen_color(const std::string &str_color) const;
 			virtual color gen_color(byte r, byte g, byte b, byte a) const;
 			virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
 			virtual void unlock();
-			virtual void blit(surface &dst_surface);
 			virtual void update(const rectangle& u_rect=rectangle());
 			
-			// optimized drawing routines
-			// WRITEME...
-
-			// optimied aa drawing routines
-			// WRITEME...
-
-			// optimized fill routines
-			// WRITEME...
+			// overridden drawing routines
+			virtual void blit(surface &dst_surface);
 			virtual void fill_rect(int x1, int y1, int x2, int y2);
 			virtual void fill_rect(const rectangle& rect);
-
-			// optimized aa fill routines
-			// WRITEME...
 	};
 } //end namespace stk
 

@@ -119,9 +119,10 @@ int main(int argc, char* argv[])
 		
 		//scroll(test_scroll->h_scroll(),-10);
 		
-		button::ptr scroll_left=button::create(test_state,L"Scroll-",rectangle(100,300,90,40));		
-		scroll_left->on_release.connect(boost::bind(&scroll_slot,test_scroll->h_scroll(),-10));
-		button::ptr scroll_right=button::create(test_state,L"Scroll+",rectangle(200,300,90,40));		scroll_right->on_release.connect(boost::bind(&scroll_slot,test_scroll->h_scroll(),10));
+		button::ptr scroll_left=button::create(test_state,L"Scroll-", rectangle(100, 300, 90, 40));		
+		scroll_left->on_release.connect(boost::bind(&scroll_slot, test_scroll->h_scroll(), -10));
+		button::ptr scroll_right=button::create(test_state,L"Scroll+", rectangle(200, 300, 90, 40));		
+		scroll_right->on_release.connect(boost::bind(&scroll_slot, test_scroll->h_scroll(), 10));
 		
 		//void scroll(stk::scroll_model::ptr target,int increment)
 		// create a list

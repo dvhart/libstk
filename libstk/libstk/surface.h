@@ -42,39 +42,6 @@ namespace stk
 {
 	class image;
 
-	// direction constants (used in the draw_line routines)
-	const int DOT   = 0x00;
-	const int LR    = 0x01;      // left to right horizontal
-	const int RL    = 0x02;      // right to left horizontal
-	const int UP    = 0x04;      // bottom to top verticle
-	const int DN    = 0x08;      // top to bottom verticle
-	const int S0    = 0x10;      // shallow slope (< 1.0)
-	const int S1    = 0x20;      // steep slot    (>= 1.0)
-	const int LRU_0 = LR+UP+S0;
-	const int LRU_1 = LR+UP+S1;
-	const int LRD_0 = LR+DN+S0;
-	const int LRD_1 = LR+DN+S1;
-	const int RLU_0 = RL+UP+S0;
-	const int RLU_1 = RL+UP+S1;
-	const int RLD_0 = RL+DN+S0;
-	const int RLD_1 = RL+DN+S1;
-	
-	// opacity constants
-	const int opaque      = 255;
-	const int transparent = 0;
-	
-	// quadrant constants
-	const int ur_quadrant = 1; // may not need these... maybe an enum...
-	const int lr_quadrant = 2;
-	const int ll_quadrant = 3;
-	const int ul_quadrant = 4;
-
-	// static antialiased alpha falloff filter
-	static byte alpha_filter[256] =
-	{
-		#include "aa_filter.h"
-	};
-
 	class surface
 	{
 		public:
@@ -84,58 +51,19 @@ namespace stk
 		private:
 			
 		protected:
-			surface():offset_(0,0) { cout << "surface::surface()" << endl; }
+			surface() : offset_(0,0) { cout << "surface::surface()" << endl; }
 			surface(const rectangle &rect) : rect_(rect),offset_(0,0) { cout << "surface::surface(rectangle)" << endl; }
-
-			/* direction() returns one of the direction constants defined above.  
-			 * Line drawing routines use it to determine which of the twelve 
-			 * directions to use when drawing the line.  This is needed for both
-			 * accuracy and performance.
-			 */
-			int direction(int x1, int y1, int x2, int y2);
-
-			/* The following methods are used by the various draw_circle and
-			 * draw_ellipse routines.  They take advantage of circles' eight way
-			 * symmetry and ellipses' four way summetry.
-			 */
-			virtual void circle_points(int x, int y, int dx, int dy);
-			virtual void ellipse_points(int x, int y, int dx, int dy);
-			virtual void circle_points_aa(int x, int y, int dx, int dy);
-			virtual void ellipse_points_aa(int x, int y, int dx, int dy);
-
-			/* These composite methods are used to determine the resulting color
-			 * of a pixel when drawing in antialiased mode.  By using the a over b
-			 * composite model combined with the alpha composition, intermediate
-			 * pixel values can be determined (we can render top down instead of
-			 * bottom up).
-			 */
-			byte composite_a_over_b(byte Ca, byte Cb, float Aa, float Ab, float Ao)
-			{
-				// the alphas are floats in the range [0,1]
-				// the colors are bytes in the range [0,255]
-				return (byte)((Aa*Ca + Ab*Cb*(1-Aa))/Ao);
-			}
 			
-			byte composite_alpha(byte Aa, byte Ab)
-			{
-				// here the alphas are bytes in the range [0,255]
-				return ((Aa+Ab)-(Aa*Ab/255));
-			}
-
-			/* Index the static antialiased alpha filter.  Returns an alpha value
-			 * from [0-255], 255 being opaque.
-			 */
-			byte filter_aa(double distance) 
-			{ 
-				return alpha_filter[(int)(175*distance)]; 
-			}		
-			
-			// member variables common to all surfaces
-			rectangle rect_;      // position on the screen, width and height
-			rectangle clip_rect_; // the clip rectangle, no pixels may be drawn outside this area ,given in absolute coordinates (not modified by offset_)
-			point offset_;		  // offset from the coordinate system origin, where the current drawing operation should take place
-			byte alpha_;          // opacity (255 is opaque)
-			graphics_context::ptr gc_; // stores graphics settings used by draw routines
+			/// Position on the screen, width and height
+			rectangle rect_;      
+			/// No pixels may be drawn outside this area ,given in screen coordinates
+			rectangle clip_rect_; 
+			// Offset from the coordinate system origin, where the current drawing operation should take place
+			point offset_;		  
+			// Opacity (255 is opaque)
+			byte alpha_;          
+			/// Stores graphics settings used by draw routines
+			graphics_context::ptr gc_; 
 
 		public:
 			virtual ~surface() { cout << "surface::~surface()" << endl; }
@@ -144,13 +72,8 @@ namespace stk
 			rectangle rect() const { return rect_; }
 			rectangle clip_rect() const { return clip_rect_; }
 			void clip_rect(const rectangle& clip_rectangle) { clip_rect_ = clip_rectangle; }
-		
-			point& offset() { return offset_;}			
-			void offset(point &newoffset) { offset_=newoffset;}			
-		
-			// FIXME: we may not need alpha now that we only have one surface..
-			// it may be nice for special cases where we need another surface
-			// need to think on it -- dvhart
+			point offset() const { return offset_;}			
+			void offset(const point& newoffset) { offset_ = newoffset; }
 			byte alpha() const { return alpha_; }
 			void alpha(byte a) { alpha_ = a; }
 			graphics_context::ptr gc() const { return gc_; }
@@ -158,25 +81,15 @@ namespace stk
 			void x1(int x) { rect_.x1(x); }
 			void y1(int y) { rect_.y1(y); }
 
-			/* The following methods MUST be implemented in derived classes.  They 
-			 * are not purely virtual here since we must be able to instantiate a 
-			 * surface class in certain situations.
-			 */
-			
-			//**********************************************************************
-			// FIXME: we don't need these to be implemented!!  Make as many surface
-			// methods as possible purely virtual.  Then see if we can axe the whole
-			// put_pixel AND draw_pixel redundancy!!!! --dvhart
-			//**********************************************************************
-			 
-			virtual void draw_pixel(int x, int y, color clr) = 0;//{ }
-			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { }
-			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) { }
-			virtual color read_pixel(int x, int y) const { }
+			// The following methods MUST be implemented in all backend surface classes.
+			// In addition to:
+			//   void put_pixel(int x, int y); 
+			//   void put_pixel_aa(int x, int y, double distance, color clr);  
+			//   void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr) 
+			//   color get_pixel(int x, int y);
 			// format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
-			virtual color gen_color(const std::string& str_color) const { }
-			virtual color gen_color(byte r, byte g, byte b, byte a) const { }
-			
+			virtual color gen_color(const std::string& str_color) const = 0;
+			virtual color gen_color(byte r, byte g, byte b, byte a) const = 0;
 			/// Set buf to point to a framebuffer in RRGGBBAA format.  
 			/// If this is the native pixel format, then writing to this buffer is
 			/// reflected immediate, if not, it will be translated to the appropriate
@@ -185,87 +98,79 @@ namespace stk
 			/// \param flags MARC WHAT DID YOU HAVE IN MIND HERE ? << marc:Read only, read write for example!
 			/// \param buf The pointer to be set to the start of the area in the framebuffer
 			/// \param stride The length in pixels between the first column in each row
-			virtual void lock(rectangle& rect, int flags, color** buf, int& stride) { }
-			
+			virtual void lock(rectangle& rect, int flags, color** buf, int& stride) = 0;
 			/// Signal that the user is the done with the framebuffer area aquired with lock.
 			/// If the native pixel format is not RRGGBBAA, then this will convert
 			/// temporary framebuffer data to the native pixel format and write it 
 			/// to the real framebuffer.
-			virtual void unlock() { }
-			virtual void blit(surface &dst_surface) { }
-			virtual void update(const rectangle& u_rect=rectangle()) { }
+			virtual void unlock() = 0;
+			virtual void update(const rectangle& u_rect = rectangle()) = 0;
 
-			/* A NOTE ON EFFICIENCY AND PERFORMANCE
-			 * ----------------------------------
-			 * The following draw routines have default implementations
-			 * in this base class, HOWEVER, they use the virtual draw_pixel method
-			 * which adds overhead for EVERY pixel drawn.  Efficient drawing
-			 * requires that derived surface classes implement a private put_pixel()
-			 * method and use it in virtual drawing routines (copy these and replace
-			 * draw_pixel with your private put_pixel).  You should also implement
-			 * a private get_pixel() method and use it in a private put_pixel_aa() 
-			 * rather than using the the virtual read_pixel() (for the same reason).
-			 * (this applies to circle/ellipse_points methods above as well)
-			 */
+			// The following methods are defined in surface_impl 
+			virtual void draw_pixel(int x, int y, color clr) = 0;
+			virtual void draw_pixel_aa(int x, int y, double distance, color clr) = 0;
+			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) = 0;
+			virtual color read_pixel(int x, int y) = 0;
+			virtual void blit(surface &dst_surface) = 0;
 
 			// non antialiased draw routines
-			virtual void draw_line(int x1, int y1, int x2, int y2);
+			virtual void draw_line(int x1, int y1, int x2, int y2) = 0;
 			/* draw_arc() routines draw an arc with the rectangle passed or defined
 			 * and uses quadrant to determine how the arc gets drawn.  quadrant is
-			 * one of (ur)|(lr)|(ll)|(ul)_quadrant as defined above and the arc is
-			 * drawn as that portion of the quarter ellipse inscribed within the
-			 * rectangle.
+			 * one of (ur)|(lr)|(ll)|(ul)_quadrant as defined in surface_impl.h and 
+			 * the arc is drawn as that portion of the quarter ellipse inscribed 
+			 * within the rectangle.
 			 */
-			virtual void draw_arc(const rectangle& rect, int quadrant);
-			virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant);
-			virtual void draw_rect(const rectangle& rect);
-			virtual void draw_rect(int x1, int y1, int x2, int y2);
-			virtual void draw_circle(int x, int y, int radius);
-			virtual void draw_circle(const rectangle& rect);
-			virtual void draw_ellipse(int x, int y, int a, int b);
-			virtual void draw_ellipse(const rectangle& rect);
+			virtual void draw_arc(const rectangle& rect, int quadrant) = 0;
+			virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant) = 0;
+			virtual void draw_rect(const rectangle& rect) = 0;
+			virtual void draw_rect(int x1, int y1, int x2, int y2) = 0;
+			virtual void draw_circle(int x, int y, int radius) = 0;
+			virtual void draw_circle(const rectangle& rect) = 0;
+			virtual void draw_ellipse(int x, int y, int a, int b) = 0;
+			virtual void draw_ellipse(const rectangle& rect) = 0;
 			/* draw_poly() receives a vector of points (at least 2) and connects
 			 * sequential points and finally the last to the first.
 			 */
-			virtual void draw_poly(const std::vector<point> points);
+			virtual void draw_poly(const std::vector<point> points) = 0;
 			// define the text interface... should we pass a rect and
 			// clip to that?  --vhmauery
 			// no, the clip rect should be set by the theme before drawing 
 			//   we still have to add surface::slip(const rectangle& clip_rect) to surface...
-			virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode=0);
+			virtual void draw_text(const rectangle& rect, const std::wstring& text, int kerning_mode = 0) = 0;
 
 			// antialiased draw routines
-			virtual void draw_line_aa(int x1, int y1, int x2, int y2);
-			virtual void draw_arc_aa(const rectangle& rect, int quadrant);
-			virtual void draw_arc_aa(int x1, int y1, int x2, int y2, int quadrant);
-			virtual void draw_rect_aa(const rectangle& rect);
-			virtual void draw_rect_aa(int x1, int y1, int x2, int y2);
-			virtual void draw_circle_aa(int x, int y, int radius);
-			virtual void draw_circle_aa(const rectangle& rect);
-			virtual void draw_ellipse_aa(int x, int y, int a, int b);
-			virtual void draw_ellipse_aa(const rectangle& rect);
-			virtual void draw_poly_aa(const std::vector<point> points);
+			virtual void draw_line_aa(int x1, int y1, int x2, int y2) = 0;
+			virtual void draw_arc_aa(const rectangle& rect, int quadrant) = 0;
+			virtual void draw_arc_aa(int x1, int y1, int x2, int y2, int quadrant) = 0;
+			virtual void draw_rect_aa(const rectangle& rect) = 0;
+			virtual void draw_rect_aa(int x1, int y1, int x2, int y2) = 0;
+			virtual void draw_circle_aa(int x, int y, int radius) = 0;
+			virtual void draw_circle_aa(const rectangle& rect) = 0;
+			virtual void draw_ellipse_aa(int x, int y, int a, int b) = 0;
+			virtual void draw_ellipse_aa(const rectangle& rect) = 0;
+			virtual void draw_poly_aa(const std::vector<point> points) = 0;
 
 			// non antialiased fill routines
-			virtual void fill_rect(int x1, int y1, int x2, int y2);
-			virtual void fill_rect(const rectangle& rect);
-			virtual void fill_circle(int x, int y, int radius);
-			virtual void fill_circle(const rectangle& rect);
-			virtual void fill_ellipse(int x, int y, int a, int b);
-			virtual void fill_ellipse(const rectangle& rect);
-			virtual void fill_poly(const std::vector<point> points);
+			virtual void fill_rect(int x1, int y1, int x2, int y2) = 0;
+			virtual void fill_rect(const rectangle& rect) = 0;
+			virtual void fill_circle(int x, int y, int radius) = 0;
+			virtual void fill_circle(const rectangle& rect) = 0;
+			virtual void fill_ellipse(int x, int y, int a, int b) = 0;
+			virtual void fill_ellipse(const rectangle& rect) = 0;
+			virtual void fill_poly(const std::vector<point> points) = 0;
 
 			// antialiased fill routines
-			virtual void fill_rect_aa(const rectangle& rect);
-			virtual void fill_rect_aa(int x1, int y1, int x2, int y2);
-			virtual void fill_circle_aa(int x, int y, int radius);
-			virtual void fill_circle_aa(const rectangle& rect);
-			virtual void fill_ellipse_aa(int x, int y, int a, int b);
-			virtual void fill_ellipse_aa(const rectangle& rect);
-			virtual void fill_poly_aa(const std::vector<point> points);
+			virtual void fill_rect_aa(const rectangle& rect) = 0;
+			virtual void fill_rect_aa(int x1, int y1, int x2, int y2) = 0;
+			virtual void fill_circle_aa(int x, int y, int radius) = 0;
+			virtual void fill_circle_aa(const rectangle& rect) = 0;
+			virtual void fill_ellipse_aa(int x, int y, int a, int b) = 0;
+			virtual void fill_ellipse_aa(const rectangle& rect) = 0;
+			virtual void fill_poly_aa(const std::vector<point> points) = 0;
 
 			// image routines
-			virtual void draw_image(int x, int y, boost::shared_ptr<image> img);
+			virtual void draw_image(int x, int y, boost::shared_ptr<image> img) = 0;
 	};
 
 } //end namespace stk
