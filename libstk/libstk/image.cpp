@@ -480,7 +480,7 @@ namespace stk
         {
             INFO("SCALLING DOWN");
             int sc_x = (int)((1.0/x_factor) + .5);
-            int sc_y = (int)((1.0/x_factor) + .5);
+            int sc_y = (int)((1.0/y_factor) + .5);
             for (int y=0; y < new_height; y++)
                 for (int x=0; x < new_width; x++)
                 {
