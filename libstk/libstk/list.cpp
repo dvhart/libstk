@@ -16,6 +16,8 @@
 #include "libstk/mouse_event.h"
 #include "libstk/keycode.h"
 
+#include <boost/bind.hpp>
+
 namespace stk
 {
     list::ptr list::create(container::ptr parent, const rectangle& rect,
@@ -170,5 +172,17 @@ namespace stk
     int list::size()
     {
         return items_.size();
+    }
+    scroll_model::ptr list::v_scroll()
+    {
+        return v_scroll_;
+    }
+    void list::v_scroll(scroll_model::ptr value)
+    {
+        v_scroll_con.disconnect();
+        v_scroll_=value;
+//        v_scroll_con=value->on_change.connect(boost::bind(&widget::redraw,(widget*)this,rect(),NULL,false));
+        v_scroll_->size(height());
+        v_scroll_->vis_size(height());
     }
 }

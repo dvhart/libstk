@@ -73,6 +73,8 @@ namespace stk
         virtual list_item::ptr operator[](int index); /// returns the list_item at the specified location
         virtual void clear();   /// Erases the entire content of the list
         virtual int size();     /// Returns the number of elements in the list
+        scroll_model::ptr v_scroll();
+        void v_scroll(scroll_model::ptr value);
         // list signals FIXME: what should the signature of the slots be ?
         boost::signal<bool (), combiner::logical_or<bool> > on_update_selection;
         boost::signal<bool (), combiner::logical_or<bool> > on_update_current;
