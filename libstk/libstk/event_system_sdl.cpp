@@ -24,7 +24,7 @@ namespace stk
 		//cout << "event_system_sdl::poll_event()" << endl;
 		// enter the event loop
 		SDL_Event new_event;
-		Event event_(new event(no_event));
+		event::ptr event_(new event(no_event));
 		if (SDL_PollEvent(&new_event))
 		{
 			cout << "event_system_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
@@ -32,36 +32,36 @@ namespace stk
 			{
 				case SDL_KEYDOWN:
 					cout << "SDL_KEYDOWN" << endl;
-					return KeyEvent(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_down));
+					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_down));
 					break;
 				case SDL_KEYUP:
 					cout << "SDL_KEYUP" << endl;
-					return KeyEvent(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_up));
+					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_up));
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					cout << "SDL_MOUSEBUTTONDOWN" << endl;
-					return MouseEvent(new mouse_event(new_event.button.x, new_event.button.y, 
+					return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y, 
 							               new_event.button.button, mouse_down));
 					break;
 				case SDL_MOUSEBUTTONUP:
 					cout << "SDL_MOUSEBUTTONUP" << endl;
-					return MouseEvent(new mouse_event(new_event.button.x, new_event.button.y, 
+					return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y, 
 							               new_event.button.button, mouse_up));
 					break;
 				case SDL_MOUSEMOTION:
 					cout << "SDL_MOUSEMOTION" << endl;
-					return MouseEvent(new mouse_event(new_event.motion.x, new_event.motion.y, 
+					return mouse_event::ptr(new mouse_event(new_event.motion.x, new_event.motion.y, 
 							               -1, mouse_motion));
 					break;
 				case SDL_QUIT:
 					cout << "SDL_QUIT" << endl;
 					// FIXME: perhaps we don't need a QuitEvent, we can just use Event(new event(quit)); ??
-					return QuitEvent(new quit_event());
+					return quit_event::ptr(new quit_event());
 					break;
 				default:
 					// throw something
 					cout << "event_system_sdl::poll_event() - unknown event type" << endl;
-					return Event(new event(unknown_event));
+					return event::ptr(new event(unknown_event));
 			}
 		}
 		return event_;

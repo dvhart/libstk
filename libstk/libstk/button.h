@@ -6,6 +6,7 @@
 #include <boost/signal.hpp>
 
 #include "widget.h"
+#include "container.h"
 
 namespace stk
 {

@@ -2,6 +2,7 @@
 #define STK_KEY_EVENT_H
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include "event.h"
 #include "keycode.h"
 
@@ -9,6 +10,9 @@ namespace stk
 {
 	class key_event : public event
 	{
+		public:
+			typedef boost::shared_ptr<key_event> ptr;
+			typedef boost::shared_ptr<key_event> weak_ptr;
 		private:
 
 		protected:
@@ -21,7 +25,6 @@ namespace stk
 			
 	}; //class key_event
 
-	typedef boost::shared_ptr<stk::key_event> KeyEvent;
 	
 } // namespace stk
 

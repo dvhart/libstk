@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include "point.h"
 #include "rectangle.h"
 #include "graphics_context.h"
@@ -75,6 +76,9 @@ namespace stk
 
 	class surface
 	{
+		public:
+			typedef boost::shared_ptr<surface> ptr;
+			typedef boost::weak_ptr<surface> weak_ptr;
 		protected:
 			/* direction() returns one of the direction constants defined above.  
 			 * Line drawing routines use it to determine which of the twelve 
@@ -224,8 +228,6 @@ namespace stk
 			virtual void fill_poly_aa(const std::vector<point> points);
 	};
 
-	typedef boost::shared_ptr<stk::surface> Surface;
-	
 } //end namespace stk
 
 #endif

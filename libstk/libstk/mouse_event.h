@@ -8,6 +8,9 @@ namespace stk
 {
 	class mouse_event : public event
 	{
+		public:
+			typedef boost::shared_ptr<mouse_event> ptr;
+			typedef boost::weak_ptr<mouse_event> weak_ptr;
 		private:
 
 		protected:
@@ -22,7 +25,6 @@ namespace stk
 			
 	}; //class mouse_event
 
-	typedef boost::shared_ptr<stk::mouse_event> MouseEvent;
 	
 } // namespace stk
 

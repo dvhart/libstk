@@ -33,7 +33,7 @@ namespace stk
 		{
 			case key_up:
 			{
-				KeyEvent ke = boost::shared_static_cast<key_event>(e);
+				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
 				switch ( ke->key() )
 				{
 					case key_enter:

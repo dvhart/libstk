@@ -2,6 +2,7 @@
 #define STK_EVENT_H
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 
 namespace stk
 {
@@ -19,6 +20,9 @@ namespace stk
 	
 	class event
 	{
+		public:
+			typedef boost::shared_ptr<event> ptr;
+			typedef boost::weak_ptr<event> weak_ptr;
 		private:
 
 		protected:
@@ -30,8 +34,6 @@ namespace stk
 			event_type type() { return type_; };
 			
 	}; //class event
-
-	typedef boost::shared_ptr<stk::event> Event;
 	
 } // namespace stk
 

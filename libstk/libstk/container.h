@@ -4,24 +4,28 @@
 #include <map>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include "widget.h"
 
 namespace stk
 {
 	class container : public stk::widget
 	{
+		public:
+			typedef boost::shared_ptr<container> ptr;
+			typedef boost::weak_ptr<container> weak_ptr;
 		private:
-			std::vector<boost::shared_ptr<stk::widget> > children_;
+			std::vector<widget::ptr > children_;
 			
 		protected:
 			container() { }; // FIXME: empty constructor, needed for state since state assigns its own parent ??
 			
 		public:
-			container(boost::shared_ptr<stk::container> parent);
+			container(container::ptr parent);
 			~container();
 			virtual bool is_container() { return true; }
 			// FIXME :carter: implement all this
-			virtual boost::weak_ptr<stk::widget> get_active_child()  // called when the tree parser for widget cycling switches focus to a container
+			virtual widget::weak_ptr get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 
 			
 			// event_handler interface
@@ -33,18 +37,19 @@ namespace stk
 
 			// parent interface
 			// FIXME
-			virtual boost::shared_ptr<widget> focus_next()
+			virtual widget::ptr focus_next()
 			{ return *children_.begin(); }
 			
-			virtual boost::shared_ptr<widget> focus_prev()
+			virtual widget::ptr focus_prev()
 			{ return *children_.begin(); }
 			
-			virtual void add_child(boost::shared_ptr<widget> w)
+			virtual void add_child(widget::ptr w)
 			{ children_.push_back(w); }
 			
-			// container specific methods
-			void add(boost::shared_ptr<stk::widget> item);
-			void remove(boost::shared_ptr<stk::widget> item);
+			/// container specific methods
+			/// \todo arent these redundant
+			void add(widget::ptr item);
+			void remove(widget::ptr item);
 	};
 
 } // namespace stk

@@ -2,12 +2,16 @@
 #define STK_EVENT_SYSTEM_H
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include "event.h"
 
 namespace stk
 {
 	class event_system
 	{
+		public:
+			typedef boost::shared_ptr<event_system> ptr;
+			typedef boost::weak_ptr<event_system> weak_ptr;
 		private:
 		
 		protected:
@@ -15,10 +19,8 @@ namespace stk
 		public:
 			event_system() { };
 			virtual ~event_system() { };
-			virtual boost::shared_ptr<stk::event> poll_event() = 0;
+			virtual event::ptr poll_event() = 0;
 	};
-
-	typedef boost::shared_ptr<stk::event_system> EventSystem;
 
 }
 

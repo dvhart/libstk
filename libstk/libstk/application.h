@@ -25,7 +25,7 @@ namespace stk
 			boost::shared_ptr<stk::event_system> event_system_;
 			std::list<boost::shared_ptr<stk::state> > states_;
 			
-			state::weak_ptr current_state_; 
+			boost::weak_ptr<state> current_state_; 
 			widget::weak_ptr current_widget_;
 			widget::weak_ptr hover_widget_; 
 			
@@ -46,7 +46,7 @@ namespace stk
 			bool quit(); // bool is so we can use it as a slot
 			
 			/// Adds a new state to the Application
-			void add_state(state::ptr);
+			void add_state(boost::shared_ptr<state>);
 			
 			/// Returns the Target surface for drawing operations
 			surface::ptr surface();
@@ -63,9 +63,9 @@ namespace stk
 			
 			// do we want to make these available?
 			// or should they be strictly internal to application ? 
-			state::weak_ptr current_state();
+			boost::weak_ptr<state> current_state();
 			widget::weak_ptr current_widget();
-			widget:.weak_ptr hover_widget();
+			widget::weak_ptr hover_widget();
 			
 	}; // class application
 	

@@ -23,7 +23,7 @@ using std::endl;
 namespace stk
 {
 
-	application::application(Surface surface, EventSystem event_system) :
+	application::application(surface::ptr surface, event_system::ptr event_system) :
 		surface_(surface), event_system_(event_system), done_(false)
 	{
 		cout << "application::application()" << endl;
@@ -52,14 +52,14 @@ namespace stk
 			hover_widget_ = *states_.begin();
 		}
 		
-		Event event_(new event(no_event));
+		event::ptr event_(new event(no_event));
 		while (!done_)
 		{
 			event_ = event_system_->poll_event();
 			if (event_->type() != no_event)
 			{
 				//cout << "application::run() - event received of type: " << event_.type() << endl;
-				widget::shared_ptr ptr=make_shared(current_widget_);
+				widget::ptr ptr=make_shared(current_widget_);
 				if (!ptr)
 					cout << "application::run() - no current widget" << endl;
 				else
@@ -76,19 +76,19 @@ namespace stk
 		return true;
 	}
 	
-	void application::add_state(boost::shared_ptr<state> state)
+	void application::add_state(state::ptr state)
 	{
 		states_.push_back(state);
 	}
 
 	// drawable interface
-	boost::shared_ptr<surface> application::surface()
+	surface::ptr application::surface()
 	{
 		return surface_;
 	}
 
 	// event_handler interface
-	void application::handle_event(boost::shared_ptr<stk::event> e)
+	void application::handle_event(event::ptr e)
 	{
 		cout << "application::handle_event()" << endl;
 		switch(e->type())
@@ -96,7 +96,7 @@ namespace stk
 			case key_down:
 			{		
 				// FIXME :Carter: shouldnt this be a polymorphic cast?
-				KeyEvent ke = boost::shared_static_cast<key_event>(e);
+				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
 				switch ( ke->key() )
 				{
 					case key_esc:
@@ -123,22 +123,22 @@ namespace stk
 	
 	// parent interface
 	// FIXME
-	boost::shared_ptr<widget> application::focus_next()
+	widget::ptr application::focus_next()
 	{ 
 		return boost::shared_ptr<widget>((widget *)((*states_.begin()).get()));
 	}
 	// FIXME
-	boost::shared_ptr<widget> application::focus_prev()
+	widget::ptr application::focus_prev()
 	{ 
 		return boost::shared_ptr<widget>((widget *)((*states_.begin()).get()));
 	}
 
 	// FIXME :Carter: Throw something? add_child is meaningless for an application
-	void application::add_child(boost::shared_ptr<widget> widget)
+	void application::add_child(widget::ptr widget)
 	{
 	}
 	
-	boost::weak_ptr<state> application::current_state()
+	state::weak_ptr application::current_state()
 	{
 		return current_state_;
 	}

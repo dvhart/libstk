@@ -26,20 +26,20 @@ int main(int argc, char* argv[])
 		
 	// create the app
 	cout << "test_app - creating surface" << endl;
-	Surface test_surface(new surface_sdl(rectangle(0, 0, 640, 480)));
+	surface::ptr test_surface(new surface_sdl(rectangle(0, 0, 640, 480)));
 	cout << "test_app - creating event system" << endl;
-	EventSystem test_event_system(new event_system_sdl());
+	event_system::ptr test_event_system(new event_system_sdl());
 	cout << "test_app - creating application" << endl;
-	Application test_app(new application(test_surface, test_event_system));
+	application::ptr test_app(new application(test_surface, test_event_system));
 
 	// create the main state
 	cout << "test_app - creating state" << endl;
-	State test_state(new state(test_app));
+	state::ptr test_state(new state(test_app));
 	test_app->add_state(test_state);
 	//Label test_label(new label(test_state, "Test Label", 10, 10, 100, 30));
 	
 	cout << "test_app - creating button" << endl;
-	Button test_button(new button(test_state, "Test Button", 120, 10, 100, 30));
+	button::ptr test_button(new button(test_state, "Test Button", 120, 10, 100, 30));
 	
 	test_state->add_child(test_button);
 	// bind button click to quit

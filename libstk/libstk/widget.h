@@ -17,7 +17,7 @@ namespace stk
 	class widget : public parent
 	{
 		public:
-			typedef boost::shared_ptr<widget> shared_ptr; 
+			typedef boost::shared_ptr<widget> ptr; 
 			typedef boost::weak_ptr<widget> weak_ptr;
 		private:
 

@@ -7,6 +7,7 @@ namespace stk
 {
 	class drawable
 	{
+		// FIXME have typedefs here?
 		private:
 			
 		protected:
