@@ -1,3 +1,101 @@
+2003-11-05 15:49  cslade
+
+	* configure.in, libstk/image.cpp, libstk/image.h, libstk/surface.h,
+	  libstk/surface_bitmap.cpp, libstk/surface_bitmap.h,
+	  libstk/surface_dfb.cpp, libstk/surface_dfb.h,
+	  libstk/surface_fbdev.cpp, libstk/surface_fbdev.h,
+	  libstk/surface_sdl.cpp, libstk/surface_sdl.h: I added writing
+	  jpeg and png support to the image class.  It reads the image from
+	  the surface and writes the file.  I had to add a rgba_color
+	  method to all of the surfaces to be able to read the data in a
+	  uniform way.
+
+2003-11-04 09:16  cslade
+
+	* configure.in: I added a library check for libjpeg62
+
+2003-11-03 07:05  dvhart
+
+	* libstk/application.cpp: minor update to hack in application that
+	  allows events to be passed to list_items (we need to discuss if
+	  list_items should be widgets and lists containers)
+
+2003-11-02 19:36  dvhart
+
+	* libstk/: application.cpp, application.h, list.cpp, list.h,
+	  scroll_model.cpp: updated list to emit on_update_selection and
+	  on_update_current when it should; application can now remove
+	  timers when they expire and uses vectors for states and timers
+	  instead of lists, also defined carter style container typedefs,
+	  ie Tstates and Ttimers
+
+2003-11-02 05:21  carter
+
+	* libstk/surface_bitmap.cpp: Fixed various bugs in surface_bitmap
+
+2003-11-02 04:55  carter
+
+	* libstk/: event_producer_elotouch.cpp, event_producer_elotouch.h:
+	  made the untouch position snap to the touch position if the
+	  difference is between a (atm hardcoded) threshold, this makes the
+	  touchscreen much more comfortable to use (the touch position
+	  moves while touching, which makes it difficult to untouch at the
+	  right position).
+
+2003-11-02 04:53  carter
+
+	* libstk/: edit_box.cpp, edit_box.h: fixed edit_box bug where when
+	  the selection is shorter than the text currently displayed the
+	  redraw routine hangs
+
+2003-10-31 14:27  cslade
+
+	* TODO, configure.in, libstk/Makefile.am, libstk/image.cpp,
+	  libstk/image.h, test/Makefile.am, test/parrots.jpg,
+	  test/parrotsg.jpg, test/test_app.cpp: I added jpeg support to the
+	  image class.	We can now load jpegs You will have to get
+	  libjpeg62-dev, and rerun autogen for the support to get complied
+	  in.  Right now I just check for the header file, I still need to
+	  check for the lib file and update libjpeb_cflags to include the
+	  right directory, but everything should work.
+
+2003-10-31 12:59  dvhart
+
+	* libstk/list.cpp: fixed a bug in list that crashed the system when
+	  current_ is left larger than items_.size() after a remove or
+	  clear
+
+2003-10-30 23:43  dvhart
+
+	* libstk/list.cpp: list now resizes the scroll_model on clear
+
+2003-10-30 11:34  dvhart
+
+	* libstk/: container.cpp, drawable.h, list_item.cpp, list_item.h:
+	  updated list_item to contain the redraw reoutine
+
+2003-10-30 10:26  dvhart
+
+	* TODO, libstk/application.cpp, libstk/component.h,
+	  libstk/container.h, libstk/list.h: ugly hack in application.cpp
+	  to allow it to pass the current event to the current list_item in
+	  a list.  this type of thing suggests again that perhaps list_item
+	  should derive from widget.  comments welcome.
+
+2003-10-29 16:20  dvhart
+
+	* ChangeLog, libstk/combiners.h, libstk/scrollable.cpp,
+	  libstk/text_area.cpp: fixed text_area resizing bug by fixing the
+	  logical_or combiner.	It only executed some of the slots, it
+	  makes more since to execute all slots and then compare the
+	  results (this is different from the conditional of an if or a
+	  while), also updated logical_and for the same behavior.
+
+2003-10-29 14:58  cslade
+
+	* libstk/surface_impl.h: I commented out a debug line that prints
+	  out a lot of stuff.
+
 2003-10-29 10:12  cslade
 
 	* libstk/: edit_box.cpp, edit_box.h, text_area.cpp, text_area.h: I

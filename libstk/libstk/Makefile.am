@@ -121,7 +121,7 @@ library_include_HEADERS= \
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)  \
 	$(headers_printing) font_properties.h scrollable.h \
-	spreadsheet.h 
+	spreadsheet.h tribal_theme.h
 
 libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -ljpeg $(XINE_LIBS) -version-info @libstk_libtool_version@ 
 
