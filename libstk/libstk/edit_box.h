@@ -26,6 +26,7 @@ namespace stk
     public:
         typedef boost::shared_ptr<edit_box> ptr;
         typedef boost::weak_ptr<edit_box> weak_ptr;
+        typedef std::pair<int, int> selection_pair;
 
     private:
         /// return the character index under the x, y coordinate
@@ -65,6 +66,29 @@ namespace stk
 
         virtual void draw(surface::ptr surface, const rectangle& clip_rect);
         virtual void handle_event(event::ptr e);
+
+        //SELECTION API
+        /*
+         * sets the selection
+         * start: the character position in the text of the start of the selection
+         * end: the character position in the text of the end of text.
+         * Set these two to the same value to have no selection.
+         * 
+         */
+         void selection(int start, int end);
+
+         /*
+          * returns the start and end position of the selected text.
+          * if they are equal then nothing is selected.
+          * start is the first value in the pair.
+          */
+         edit_box::selection_pair selection();
+
+         /*
+          * returns the selected text, or "" if nothing is selected. 
+          */
+         std::wstring selected_text();
+
     };
 }
 

@@ -55,9 +55,8 @@ namespace stk
     {
         if (line_wrap_)
         {
-            //add one to total lines to get to the bottom of the last line
             int temp = total_lines();
-            v_scroll_->size(MAX((temp+0)*(get_font()->height()+line_spacing()), 
+            v_scroll_->size(MAX(temp*(get_font()->height()+line_spacing()), 
                         v_scroll_->vis_size()));
             h_scroll_->size(h_scroll_->vis_size());
         }
@@ -579,7 +578,6 @@ namespace stk
             h_scroll_->begin(cur_pos.x()-h_scroll_->vis_size());
         }
     }
-    
     //public interface classes
     void text_area::selection(int start, int end)
     {
@@ -587,24 +585,28 @@ namespace stk
         selection_end_ = end;
         redraw(widget::rect());
     }
-    
     text_area::selection_pair text_area::selection()
     {
         return selection_pair(selection_start_, selection_end_);
     }
-    
     std::wstring text_area::selected_text()
     {
         int start = MIN(selection_start_, selection_end_);
         int end = MAX(selection_start_, selection_end_);
         return text_.substr(start,end-start);
     }
-
     void text_area::v_scroll(scroll_model::ptr model)
     {
         v_scroll_con_.disconnect();
         v_scroll_ = model;
         v_scroll_ -> size(height());
-        v_scroll_ ->vis_size(height());
+        resize();
+    }
+    void text_area::h_scroll(scroll_model::ptr model)
+    {
+        h_scroll_con_.disconnect();
+        h_scroll_ = model;
+        h_scroll_ -> size(height());
+        resize();
     }
 }

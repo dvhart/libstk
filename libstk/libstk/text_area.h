@@ -74,6 +74,7 @@ namespace stk
         text_area(const std::wstring& text, const rectangle& rect, bool line_wrap);
         void resize();
         boost::signals::connection v_scroll_con_;
+        boost::signals::connection h_scroll_con_;
         
     public:
         static text_area::ptr create(container::ptr parent, const std::wstring& text,
@@ -136,7 +137,8 @@ namespace stk
         /**** END EVENT HANDLER INTERFACE ****/
 
         /*** SCROLLABLE INTERFACE ****/
-        virtual void v_scroll(scroll_model::ptr value);
+        virtual void v_scroll(scroll_model::ptr model);
+        virtual void h_scroll(scroll_model::ptr model);
         /**** END SCROLLABLE INTERFACE ****/
     };
 }

@@ -163,4 +163,25 @@ namespace stk
         // if we haven't handled it, try the defaults and possibly pass it up
         widget::handle_event(e);
     }
+    //public interface classes
+    void edit_box::selection(int start, int end)
+    {
+        selection_start_ = start;
+        selection_end_ = end;
+        redraw(widget::rect());
+    }
+    
+    edit_box::selection_pair edit_box::selection()
+    {
+        return selection_pair(selection_start_, selection_end_);
+    }
+    
+    std::wstring edit_box::selected_text()
+    {
+        int start = MIN(selection_start_, selection_end_);
+        int end = MAX(selection_start_, selection_end_);
+        return text_.substr(start,end-start);
+    }
+
+
 }
