@@ -53,7 +53,7 @@ namespace stk
             v_scroll_->vis_size(height());
             h_scroll_->vis_size(width());
         }
-        int current_;
+        unsigned int current_;
         bool multiselect_;
         std::vector<Titem> items_; // FIXME: use the children vector? (if not we have less casting to do)
 
@@ -90,7 +90,7 @@ namespace stk
                 int y = 0;
                 // FIXME: if CNTRL is pressed && multiselect_, don't deselect everything else
                 select_none();
-                for (current_ = 0; current_ < (int)items_.size(); current_++)
+                for (current_ = 0; current_ < items_.size(); current_++)
                 {
                     y += items_[current_]->height();
                     if (y > me->y()-rect_.y1()+v_scroll_->begin()) break;
@@ -112,7 +112,7 @@ namespace stk
                 switch ( ke->fn_key() )
                 {
                 case key_downarrow:
-                    if (current_ < (int)items_.size()-1)
+                    if ((int)current_ < (int)items_.size()-1)
                     {
                         current_++;
                         if (items_[current_]->rect().y2() >= v_scroll_->end())
@@ -259,7 +259,7 @@ namespace stk
         {
             items_.push_back(item);
             // FIXME: we might as well return items_.size()-1 (since we always add it to the end)
-            int index = std::find(items_.begin(), items_.end(), item) - items_.begin();
+            unsigned int index = std::find(items_.begin(), items_.end(), item) - items_.begin();
             if (index == current_) on_update_current();
             // assign the new item a rectangle (this depends on us adding item to the end)
             item->rect(rectangle(0, v_scroll_->size(), width(), item->height()));
@@ -271,7 +271,7 @@ namespace stk
         }
 
         // removes the item at the specified index 
-        virtual void remove_item(int index)
+        virtual void remove_item(unsigned int index)
         {
             Titem item = items_.at(index);
 
@@ -279,13 +279,13 @@ namespace stk
             
             // Regenerate Item positions
             v_scroll_->size(0);
-            for (int i = 0; i < items_.size(); i++)
+            for (unsigned int i = 0; i < items_.size(); i++)
             {
                 Titem item = items_.at(i);
                 item->rect(rectangle(0, v_scroll_->size(), width(), item->height()));
                 v_scroll_->size(v_scroll_->size()+items_[i]->height());
             }
-            current_ = MAX(0, MIN(current_, items_.size()-1));
+            current_ = MAX(0, MIN((int)current_, (int)items_.size()-1));
             redraw(rect());
         }
 
@@ -332,7 +332,7 @@ namespace stk
         }
 
         /// Returns the number of elements in the list
-        virtual int size()
+        virtual unsigned int size()
         {
             return items_.size();
         }
@@ -345,17 +345,17 @@ namespace stk
         }
 
         /// Returs the current index
-        virtual int current()
+        virtual unsigned int current()
         {
             return current_;
         }
 
         /// Sets the current item, or the first on bad index
-        virtual void current(int index)
+        virtual void current(unsigned int index)
         {
             if (!multiselect_) select_none();
             if (current_item()) current_item()->current(false);
-            if (index >= 0 && index < items_.size())
+            if (index < items_.size())
                 current_ = index;
             else 
                 current_ = 0;
