@@ -1,21 +1,21 @@
 MEETING TOPICS
 ==============
 - discuss surfaces: creation, blitting, etc.
-- tab stops
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
 
 "application::current_state(state::ptr) now returns bool to ease use
         as a slot, removed stk:: prefix in test_app.cpp" (change by darren):(marc) This is plain wrong api wise in my opinion, we need binders on the return type instead! Imo boost can do this cant it? Otherwise i'll code some, changing the API to return a dummy value for a common use is simply wrong in a world of generic programming ;)
+--ok so the proposed solution is to axe pointless bool returns and create a bind_return syntax
 
 
 TASKS (Some duplicated items here and below)
 ============================================
 Spinner
-    RFC (dvhart): should spinner really derive from list ?
+    RFC (dvhart): should spinner really derive from list ? YES (AUTOCOMPLETE, NO EDIT)
 Numeric Spinner
-    RFC (dvhart): should we derive from spinner, or create new ?
-List Item Height
+    RFC (dvhart): should we derive from spinner, or create new ? CREATE NEW (NO AUTO, NO EDIT)
+List Item Height - ADD virtual int height()
     RFC (dvhart): height is not part of list_item, it is determined by the 
     draw routine based on the size of the font.  In a subclass list_item
     (like list_item_image) its corresponding draw routine will determine
@@ -25,17 +25,18 @@ Purge all magic numbers
 Convert all output to new logger
 remove tab stop code (maybe add in libstk 2.0, not really critical)
     DONE: dvhart
-Scrollbars
-Scrollbox
-Edit Box
-Combo Box
-Text Area
-Should widgets be positioned relative to their parent container ?
+Scrollbars - Marc to finish
+Scrollbox - Marc to finish
+Edit Box - Dirk to finish
+Combo Box - Darren to write
+Text Area - simple, no line break strategy, jsut \n and spaces, editable parameter and scroll model
+          - wrap visually, don't modify content
+Should widgets be positioned relative to their parent container ? YES
 Markup Area (simple html renderer ?)
-Surface blitting / locking / creation (from app surface ?)
-rectangle& or rectangle::ptr
+Surface blitting / locking / creation (from app surface ?) - YES, add virtual create to surface classes
+rectangle& or rectangle::ptr - REFERENCES
 input capabilities
-list item data type (what should it be, if anything)
+list item data type (what should it be, if anything) - none, provide a templated class to derive from if the user wants it.
     RFC (dvhart): what if we made list_item templated ?
     we would have to make list,combo,spinner etc. templated as well
     what about using a list_model ala:
@@ -44,12 +45,14 @@ list item data type (what should it be, if anything)
 widget regions (define in theme, check in handle_event() on pointer
     click, ie UP_ARROW, DOWN_ARROW, TEXT_BOX)
     DONE: dvhart
-Image (png loader, own surface, blit)
-Video Panel
+Image (png loader, own surface, blit) - Marc todo after images have surface members
+Video Panel - more discussion needed
+SDL - look into offscreen surfaces (can they be created prior to the main screen?)
+surface: finish locking and add pixel_format routine
 surface_fbdev
 event_producer_linux
 IR support (IRDA / generic serial ?)
-Software Pointer (common to all graphic backends)
+Software Pointer (common to all graphic backends) - YES, make part of surface backends
 Finalize font interface / implementation
 Document all existing classes / APIs
 Polish the build environment 

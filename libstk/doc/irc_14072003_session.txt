@@ -1,0 +1,286 @@
+<vhmauery> unplug it, put it in the dishwasher, let it dry out and try again
+<dvhart> this could take a while...
+<carter> lol
+<carter> re+
+<carter> re
+<dvhart> re *g*
+<carter> ok
+<dvhart> pls explain
+<carter> lemme explain the surface stuff
+<carter> atm
+<carter> you have one offscreen buffer
+<carter> whcih is special because its basicly a back buffer
+<carter> a mirror of the screen
+<carter> you draw to it
+<carter> and then blit a region to htesc reen
+<carter> that is fine
+<carter> but for example for an image
+<carter> you should have a third surface/buffer
+<carter> which contains only the image
+<carter> and has a different size then the screen
+<carter> which resides on video memory though
+<dvhart> yup
+<carter> and has the same pixel format
+<dvhart> I understand
+<carter> as the screne
+<carter> that's what i call an  offscreen surface
+<dvhart> yes, we need to create more SDL surfaces and use them in image, etc
+<carter> when the image then has to be drawn
+<dvhart> agreed
+<carter> yep
+<carter> exactly
+<carter> so we need a parameter
+<dvhart> we were thinking the same thing
+<carter> that specifies that we want an offscreen surface
+<carter> ok then
+<dvhart> don't know if we need a parameter: the first SDL surface IS the screen, the rest are offscreen
+<carter> hmmmmmmmm
+<carter> dont think thats right
+<carter> you could load images
+<dvhart> that is my experience anyway
+<carter> before you open the screen surface
+<carter> this assumption seems dangerous to me
+<dvhart> I don't think you can in SDL
+<carter> sure you can
+<dvhart> ok, will look into it
+<carter> i have sort of done this in directfb
+<carter> but the whole directfb surface is one big hack
+<carter> please dont look at the code :)
+<dvhart> *g*
+<dvhart> and drawline is borked too
+<carter> this would severly damage by reputation *g*
+<carter> is it?
+<dvhart> at least on my laptop it is
+<carter> hmmm
+<dvhart> the arrows on the spinner draw from 0,0
+<carter> will look into this
+<carter> ah right
+<carter> seen that effect too
+<carter> have to check, isnt visible in my current app
+<dvhart> ok
+<dvhart> surface sdl stuff noted in the TODO
+<dvhart> rectangle& or rectangle::ptr
+<dvhart> I say use the reference
+<carter> yep sure
+<dvhart> but everywhere else we use ::ptr
+<dvhart> so ...
+<carter> for a reason :)
+<carter> a widget is usually created on the stack
+<carter> a
+<carter> heap i mean
+<carter> a  rectangle not
+<dvhart> so no-one cares that we use both ::ptr and references
+<dvhart> ?
+<carter> no!
+<carter> both are appropiate in different situations
+<dvhart> ak, I agree, just making sure
+<carter> we could create  a typedef ::ref :)
+<carter> *ggg*
+<dvhart> lol
+<dvhart> marc: input capabilities
+<carter> yeah, havent had time yet
+<dvhart> what the general idea again?
+<carter> to have a global container
+<carter> which describes the capabilities of the input device
+<carter> has_keyboard | has_poineter | has_buttons | has_fine_resolution
+<carter> like that
+<dvhart> sorry, I am drawing ablank, why did we want that 
+<dvhart> ?
+<carter> because with an touchscreen for example
+<carter> you cant touch the buttons of a spinner
+<carter> so i want spinner to just cycle forward all the time its clicked
+<carter> s/all the time/everytime
+<dvhart> perhaps the theme should change for specific target applicatoins/devices
+<dvhart> it is embedded after all
+<dvhart> you might decide you want an up button on the left and a down button on the right
+<carter> imo this cant always be done by the theme
+<carter> because it changed behaviour
+<carter> yep
+<carter> sure, that can be done too
+<carter> the spinner was just an example
+<dvhart> and the next topic supports the idea
+<carter> (havent got another one at hand atm though)
+<dvhart> lets discuss regions
+<dvhart> similar topic
+<carter> ok
+<dvhart> I added region(x,y) to widgets
+<carter> had that one last week
+<carter> yep
+<dvhart> so the handle_event just checks
+<carter> to all widgets?
+<dvhart> it is virtual
+<carter> that doesnt seem like a good idea to me
+<dvhart> so it does nothing most of the time, but makes the API consistent
+<carter> hmmm
+<dvhart> spinner needs it, combo will need it
+<carter> i see nov virtual region!?
+<carter> yeah
+<carter> but, the enum values it returns
+<carter> are widget specific
+<dvhart> yes
+<carter> and: the theme's drawing routine
+<carter> is a member of the specific class
+<carter> it doesnt need to be virtual
+<carter> imo we should just use the same name always
+<dvhart> what ?
+<carter> but it shouldnt be virtual or something
+<carter> or did i get you wrong
+<carter> hmmm
+<carter> wait
+<carter> when you said it is virtual
+<carter> i thought you added it to stk::widget or something
+<dvhart> I meant to *g*
+<carter> that is wrong 
+<carter> imo
+<carter> because there is no way to genericly define the possible return values
+<carter> region simply has a different meaning for all derived widgets
+<carter> and No meaning for some
+<dvhart> true
+<carter> and more important
+<carter> it should rather be private or protected
+<carter> in the derived widgets
+<carter> because it is just a helper function to the theme's drawing routine
+<carter> which itself is a member oft he derived widget
+<dvhart> and the handle_event routine
+<carter> what makes sense in my eyes
+<dvhart> and it is implemented in the theme file
+<carter> is to create a virtual region function in spinner for example
+<carter> so a derived widget could change the regions
+<carter> but this also violates the whole theme idea
+<carter> (btw, how long do you want to discuss? the drugs from today are getting my sleepy atm :)= ) 
+<dvhart> ok: every widget that needs it declares a non-virtual region() method
+<carter> yep
+<dvhart> and it is defined in the theme file along with the widget's draw routine
+<carter> yep
+<dvhart> not too much left: 20 min
+<dvhart> ok ?
+<carter> hmmmmmm 
+<carter> hmmm
+<carter> ok :)
+<dvhart> Image (png loader, own surface, blit)
+<dvhart> need png loader bad
+<dvhart> you said you have one from stunts ?
+<carter> i had one in dsp
+<carter> dunno if codec transferred it to stunts
+<carter> its rather simple 
+<carter> with libpng
+<dvhart> we need offscreen surfaces in image first though I suppose ?
+<carter> question: Should be support multiple image loaders
+<carter> selected trough extension or soemthing?
+<dvhart> no
+<carter> ok
+<dvhart> just PNG
+<carter> yep
+<carter> we need offscreen first
+<dvhart> that is what GIMP is for *g*
+<carter> image magick : Convert that is ! :)
+<vhmauery> convert
+<dvhart> ok ok
+<carter> *g*
+<dvhart> do we agree PNG is the right choice ?
+<carter> yep
+<vhmauery> sure
+<dvhart> ok, after we have member surfaces in image, marc would you add libpng ?
+<carter> yep
+<carter> need one more extension to surface though
+<dvhart> VideoPanel
+<carter> locking needs to implemented
+<dvhart> yup
+<carter> and we need a function
+<carter> which returns the pixle format
+<dvhart> ok
+<carter> so i can have a fast direct access to surface
+<carter> hmm
+<carter> VideoPanel, i have no idea *G*
+<carter> DIrectfb has extra interfaces for videos
+<dvhart> SDL has a YUV surface
+<carter> seems like we need a different surface type
+* carter absolutely neglected videos up to now
+<dvhart> interesting, we need a video_surface
+<dvhart> that can get it from SDL and directfb
+<dvhart> sounds evil
+<carter> we would need a video surface
+<carter> and a video provider
+<carter> and then we have the problem
+<carter> to embedd this into the GUI/other surface
+<dvhart> yup
+<dvhart> might be a real headache
+<carter> imo this nails down to a hardware problem, you need overlays for this
+<carter> most kernel FB drivers cant handle that atm
+<dvhart> what about X 
+<dvhart> ?
+<carter> should be no prob
+<carter> you need Xvideo or so forth is
+<carter> SDL does it i think
+<dvhart> yup
+<dvhart> lets discuss that more another day
+<carter> yep
+<dvhart> surface_fbdev
+<dvhart> vhmauery: how is it coming ?
+<carter> seems simple doesnt it?
+<carter> mmap the fbdev device and draw via software?1
+<vhmauery> it's not coming at the moment...
+<carter> (offscreen surfaces might be hard to do accelerated)
+<dvhart> well its not top priority
+<carter> yep
+<dvhart> but would be good to have for 1.0
+<carter> yep
+<carter> backends arent really part oft he core library though
+<carter> we could add it in a point release
+<dvhart> I will continue to work on the linux event system
+<dvhart> (producer)
+<carter> that would be nice
+<dvhart> marc: that is a good point, I had considered separate libs
+<carter> yep, me too
+<dvhart> fonts we need to discuss later too
+<carter> yep
+<dvhart> software pointer... ?
+<dvhart> I say yes
+<carter> yep
+<dvhart> the use must turn it on, off by default
+<carter> should be somehow handled by the backend transparent
+<carter> i think
+<dvhart> by the backend ?
+<carter> yeah
+<carter> i thought our redraw loop is too slow for it
+<dvhart> hmmm
+<carter> dunno about it though
+<dvhart> noting in TODO for further research
+<carter> yep
+<dvhart> still need to clean up the build process
+<dvhart> but I think that covers it
+<carter> has some rough edges
+<carter> but mainly the build works imo
+<carter> btw
+<carter> you nede to be very careful
+<dvhart> about ?
+<carter> to add the headers to the headers list
+<carter> in the Makefile.am
+<carter> codec forgot to do that with editbox
+<carter> breaks the make install stuff
+<dvhart> ah
+<dvhart> any other topics ?
+<carter> dunno if this can be done more elegant
+<carter> no
+<dvhart> ok, want to get some sleep ?
+<carter> yep :)
+<carter> n8
+<carter> *g*
+<dvhart> you okay with the deadlines by the way ?
+<carter> hmmm
+<carter> wait
+<carter> have to recheck them :)
+<dvhart> I'll send you my thoughts on the home media network design too (Hydra I think we'll call it)
+<carter> hehe, seems interesting
+<carter> havent really got time though in the near future
+<dvhart> I won't be doing anything until Novermber/December - maybe even January
+<carter> deadlines seem ok
+<dvhart> just musings atm
+<carter> ok
+<carter> N8
+<dvhart> later marc
+<dvhart> and thanks all for the comments
+<vhmauery> cya
+<carter> nop
+<carter> cya
+<dvhart> saving log
