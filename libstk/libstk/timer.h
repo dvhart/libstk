@@ -46,7 +46,10 @@ namespace stk
     protected:
 
     public:
+        // repeating relative timer (seconds from now)
         static timer::ptr create(int interval, bool repeat);
+        // non repeating absolute timer (seconds since epoch)
+        static timer::ptr create(unsigned int abs_time);
         ~timer();
         bool update();
         int interval() const

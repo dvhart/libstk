@@ -171,6 +171,13 @@ namespace stk
             }
 
             // update all timers, and remove those that have expired
+            // FIXME: add protection for multi threading here
+            if (new_timers_.size() > 0)
+            {
+                INFO("adding new timers");
+                timers_.insert(timers_.end(), new_timers_.begin(), new_timers_.end());
+                new_timers_.clear();
+            }
             Ttimers::iterator new_end = std::remove_if(timers_.begin(), timers_.end(), 
                     timer_update_predicate);
             timers_.erase(new_end, timers_.end());
@@ -233,7 +240,7 @@ namespace stk
         states_.erase(std::remove(states_.begin(), states_.end(), state), states_.end());
         //std::remove(states_.begin(), states_.end(), state);
     }
-    void application::add_timer(timer::ptr timer) { timers_.push_back(timer); }
+    void application::add_timer(timer::ptr timer) { new_timers_.push_back(timer); }
     void application::remove_timer(timer::ptr timer)
     {
         timers_.erase(std::remove(timers_.begin(), timers_.end(), timer), timers_.end());

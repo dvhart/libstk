@@ -21,7 +21,17 @@ namespace stk
 {
     timer::ptr timer::create(int interval, bool repeat)
     {
+        if (interval < 0) interval = 0;
         timer::ptr new_timer(new timer(interval, repeat));
+        return new_timer;
+    }
+
+    timer::ptr timer::create(unsigned int abs_time)
+    {
+        // find the interval from now to then
+        int diff = (abs_time - time(NULL)) * 1000;
+        if (diff < 0) diff = 0;
+        timer::ptr new_timer(new timer((int)diff, false));
         return new_timer;
     }
 

@@ -35,12 +35,13 @@ namespace stk
         typedef std::vector<timer::ptr> Ttimers;
         typedef std::vector<boost::shared_ptr<state> > Tstates;
 
-    private:
+    protected:
         static application::weak_ptr instance_;
         surface::ptr surface_;
         event_system::ptr event_system_;
         Tstates states_;
         Ttimers timers_;
+        Ttimers new_timers_;
 
         boost::weak_ptr<state> current_state_;  // FIXME: should these be a weak_ptr ?
         widget::weak_ptr focused_widget_;
@@ -62,20 +63,20 @@ namespace stk
         /// Return the singleton instance of application.
         /// Throws error_message_exception if called prior to a call to create.
         static application::ptr get();
-        ~application();
+        virtual ~application();
 
         /// Runs The Application, returns when the application is shut down
-        int run();
-        void quit(); 
+        virtual int run();
+        virtual void quit(); 
 
         /// Adds a new state to the Application
-        void add_state(boost::shared_ptr<state>);
-        void remove_state(boost::shared_ptr<state>);
+        virtual void add_state(boost::shared_ptr<state>);
+        virtual void remove_state(boost::shared_ptr<state>);
 
         /// Adds a new timer to the Application
-        void add_timer(timer::ptr timer);
+        virtual void add_timer(timer::ptr timer);
         /// Removed the timer
-        void remove_timer(timer::ptr timer);
+        virtual void remove_timer(timer::ptr timer);
 
         /// Returns the surface for drawing operations
         virtual surface::ptr surface();
@@ -86,8 +87,8 @@ namespace stk
         virtual widget::ptr focus_next();
         virtual widget::ptr focus_prev();
 
-        void current_state(boost::shared_ptr<stk::state> new_cur_state);
-        boost::shared_ptr<stk::state> current_state() const;
+        virtual void current_state(boost::shared_ptr<stk::state> new_cur_state);
+        virtual boost::shared_ptr<stk::state> current_state() const;
 
         virtual void redraw(const rectangle& rect, drawable* source=NULL, bool transform=false);
 

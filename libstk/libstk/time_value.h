@@ -44,7 +44,7 @@ namespace stk
         int millis() const { return millis_; }
         int seconds() const { return seconds_; }
 
-        time_value operator-(const time_value& rhs)
+        time_value operator-(const time_value& rhs) const
         {
             int carry = 0;
             int t_millis = millis_ - rhs.millis();
@@ -56,7 +56,7 @@ namespace stk
             return time_value(seconds_ - rhs.seconds() - carry, t_millis);
         }
 
-        time_value operator+(const time_value& rhs)
+        time_value operator+(const time_value& rhs) const
         {
             int carry = 0;
             int t_millis = millis_ + rhs.millis();
