@@ -100,6 +100,7 @@ libstk_la_SOURCES =\
 	edit_box.h edit_box.cpp \
 	text_area.h text_area.cpp \
 	event_producer_elotouch.h event_producer_elotouch.cpp \
+	ownerdraw_widget.cpp  ownerdraw_widget.h \
 	$(headers_xine) $(sources_xine)  \
 	$(headers_printing) $(sources_printing) 
 
@@ -126,7 +127,7 @@ library_include_HEADERS= \
 	numeric_spinner.h config.h              $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev)    $(headers_logging)  $(headers_xine)     $(headers_printing) \
 	$(headers_input)    font_properties.h   scrollable.h        spreadsheet.h \
-	tribal_theme.h
+	tribal_theme.h ownerdraw_widget.h
 
 libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) $(LIBJPEG_LIBS) $(XINE_LIBS) -version-info @libstk_libtool_version@ 
 
