@@ -26,7 +26,7 @@ namespace stk
 			rectangle redraw_rect_; 
 			
 		public:
-			~container();
+			virtual ~container();
 			
 			/********** EVENT HANDLER INTERFACE **********/
 			virtual void handle_event(event::ptr e);

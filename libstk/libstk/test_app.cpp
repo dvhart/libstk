@@ -7,6 +7,7 @@
 #include "application.h"
 #include "state.h"
 #include "button.h"
+#include "image.h"
 #include "progress.h"
 #include "label.h"
 #include "event_system.h"
@@ -81,9 +82,12 @@ int main(int argc, char* argv[])
 		
 		// create a progress bar
 		progress::ptr test_progress = progress::create(test_state, 
-			std::wstring(L"Loading"), rectangle(10, 440, 320, 30), 100);
+			std::wstring(L"Loading - %p %r %d"), rectangle(10, 440, 320, 30), 100);
 		test_progress->percent(0.64);
 	
+		// create an image
+		image::ptr test_image = image::create(test_state, rectangle(120, 50, 220, 220));
+		
 		// check use count prior to run
 		cout << "SHARED POINTER USE COUNT PRIOR TO RUN" << endl;
 		cout << "test_surface.use_count() = " << test_surface.use_count() << endl;

@@ -191,4 +191,14 @@ namespace stk
 			surface_->draw_rect(rect);
 		}
 	}
+
+	void theme::draw_image(const rectangle& rect, image::ptr img)
+	{
+		graphics_context::ptr gc = graphics_context::create();
+		gc->line_color(outline_color_focused_); 
+		surface_->gc(gc);
+		surface_->draw_rect(rect);
+		//surface->draw_image(rect_, temp_image);
+	}
+	
 }

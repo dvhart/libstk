@@ -23,8 +23,9 @@ email                : dvhart@byu.edu
 #include "rectangle.h"
 #include "point.h"
 #include "edge.h"
-#include "stk.h"
 #include "exceptions.h"
+#include "image.h"
+#include "stk.h"
 
 using std::cout;
 using std::endl;
@@ -1160,5 +1161,18 @@ namespace stk
 	{
 		fill_poly(points);
 		draw_poly_aa(points);
+	}
+
+	// image routines
+	// like most unaccelerated routines, this implementation is really slow
+	void surface::draw_image(const rectangle& rect, image::ptr img)
+	{
+		for (int x = 0; x < MIN(rect.width(),img->width()); x++)
+		{
+			for (int y = 0; y < MIN(rect.height(),img->height()); y++)
+			{
+				draw_pixel(x+rect.width(), y+rect.height(), img->pixel(x, y));
+			}
+		}
 	}
 }

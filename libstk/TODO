@@ -8,6 +8,14 @@ MEETING TOPICS
   what types of widgets make sense in embedded devices ?
 	    combo box are very mouse oriented for example, what types of widgets
 	    are IR Remote friendly ?
+- what image formats do we want to support ? xpm, png, bmp, etc...
+- should we have a color manager, similar to the font manager ?
+- it is getting to be a hassle to define different parameters for each theme
+      draw routine, perhaps we can just pass the widget itself ?  Marc mentioned
+			a parameter class... but it may just grow to be nearly as big as the widget
+			itself... so why bother...
+- should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
+      a method receive a "const rectangle&" and a "image::ptr"
 
 DOCUMENTATION
 decide on a format

@@ -45,6 +45,8 @@ using std::endl;
 
 namespace stk
 {
+	class image;
+
 	// direction constants (used in the draw_line routines)
 	const int DOT   = 0x00;
 	const int LR    = 0x01;      // left to right horizontal
@@ -162,7 +164,7 @@ namespace stk
 			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) { }
 			virtual color read_pixel(int x, int y) const { }
 			// format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
-			virtual color gen_color(const std::string &str_color) const { }
+			virtual color gen_color(const std::string& str_color) const { }
 			virtual color gen_color(byte r, byte g, byte b, byte a) const { }
 			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) { }
 			virtual void unlock() { }
@@ -190,14 +192,14 @@ namespace stk
 			 * drawn as that portion of the quarter ellipse inscribed within the
 			 * rectangle.
 			 */
-			virtual void draw_arc(const rectangle &rect, int quadrant);
+			virtual void draw_arc(const rectangle& rect, int quadrant);
 			virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant);
-			virtual void draw_rect(const rectangle &rect);
+			virtual void draw_rect(const rectangle& rect);
 			virtual void draw_rect(int x1, int y1, int x2, int y2);
 			virtual void draw_circle(int x, int y, int radius);
-			virtual void draw_circle(const rectangle &rect);
+			virtual void draw_circle(const rectangle& rect);
 			virtual void draw_ellipse(int x, int y, int a, int b);
-			virtual void draw_ellipse(const rectangle &rect);
+			virtual void draw_ellipse(const rectangle& rect);
 			/* draw_poly() receives a vector of points (at least 2) and connects
 			 * sequential points and finally the last to the first.
 			 */
@@ -210,33 +212,36 @@ namespace stk
 
 			// antialiased draw routines
 			virtual void draw_line_aa(int x1, int y1, int x2, int y2);
-			virtual void draw_arc_aa(const rectangle &rect, int quadrant);
+			virtual void draw_arc_aa(const rectangle& rect, int quadrant);
 			virtual void draw_arc_aa(int x1, int y1, int x2, int y2, int quadrant);
-			virtual void draw_rect_aa(const rectangle &rect);
+			virtual void draw_rect_aa(const rectangle& rect);
 			virtual void draw_rect_aa(int x1, int y1, int x2, int y2);
 			virtual void draw_circle_aa(int x, int y, int radius);
-			virtual void draw_circle_aa(const rectangle &rect);
+			virtual void draw_circle_aa(const rectangle& rect);
 			virtual void draw_ellipse_aa(int x, int y, int a, int b);
-			virtual void draw_ellipse_aa(const rectangle &rect);
+			virtual void draw_ellipse_aa(const rectangle& rect);
 			virtual void draw_poly_aa(const std::vector<point> points);
 
 			// non antialiased fill routines
 			virtual void fill_rect(int x1, int y1, int x2, int y2);
-			virtual void fill_rect(const rectangle &rect);
+			virtual void fill_rect(const rectangle& rect);
 			virtual void fill_circle(int x, int y, int radius);
-			virtual void fill_circle(const rectangle &rect);
+			virtual void fill_circle(const rectangle& rect);
 			virtual void fill_ellipse(int x, int y, int a, int b);
-			virtual void fill_ellipse(const rectangle &rect);
+			virtual void fill_ellipse(const rectangle& rect);
 			virtual void fill_poly(const std::vector<point> points);
 
 			// antialiased fill routines
-			virtual void fill_rect_aa(const rectangle &rect);
+			virtual void fill_rect_aa(const rectangle& rect);
 			virtual void fill_rect_aa(int x1, int y1, int x2, int y2);
 			virtual void fill_circle_aa(int x, int y, int radius);
-			virtual void fill_circle_aa(const rectangle &rect);
+			virtual void fill_circle_aa(const rectangle& rect);
 			virtual void fill_ellipse_aa(int x, int y, int a, int b);
-			virtual void fill_ellipse_aa(const rectangle &rect);
+			virtual void fill_ellipse_aa(const rectangle& rect);
 			virtual void fill_poly_aa(const std::vector<point> points);
+
+			// image routines
+			virtual void draw_image(const rectangle& rect, boost::shared_ptr<image> img);
 	};
 
 } //end namespace stk

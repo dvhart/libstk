@@ -20,35 +20,48 @@ namespace stk
 		private:
 			
 		protected:
-			progress(container::ptr parent, std::wstring label, const rectangle& rect, 
+			progress(container::ptr parent, const std::wstring& format_label, const rectangle& rect, 
 					int range);
+			
+			/// rebuild the label to be displayed based on the current position and range
+			void build_label();
+			
+			/// format_label defines the string displayed in the progress box
+			/// \param %p percentage to two decimal places, i.e. 67.23%
+			/// \param %r position in range, as an integer, i.e. 24
+			/// \param %d percentage as a decimal to 4 digits, i.e. 0.6723%
+			std::wstring format_label_;
 			std::wstring label_;
 			int range_;
 			int position_;
 			
 		public:
-			static progress::ptr create(container::ptr parent, const std::wstring label, 
+			static progress::ptr create(container::ptr parent, const std::wstring& format_label, 
 				const rectangle& _rect, int range);
 			virtual ~progress();
 
-			// accessor methods
-			int range() { return range_; }
-			void range(int val) { range_ = val; redraw(rect_); } // FIXME: update position too
-			int position() { return position_; }
-			void position(int val) { position_ = MIN(range_, val); redraw(rect_); } // FIXME: make more robust, neg, exceptions, etc
-			float percent() { return (float)position_/(float)range_; }
-			void percent(float val) { position_ = (int)(range_*val); redraw(rect_); }
 
-			// event_handler interface
-			// using defaults (widget.h)
+			/********** EVENT HANDLER INTERFACE **********/
+			/********** END EVENT HANDLER INTERFACE **********/
 
-			// drawable interface
+			/********** DRAWABLE INTERFACE **********/
 			virtual void draw(surface::ptr surface);
-			// using defaults (widget.h)
-
-			// parent interface
-			// using defaults (widget.h)
-
+			/********** END DRAWABLE INTERFACE **********/
+			
+			/********** PARENT INTERFACE **********/
+			/********** END PARENT INTERFACE **********/
+			
+			/********** WIDGET INTERFACE **********/
+			/********** END WIDGET INTERFACE **********/
+			
+			/********** PROGRESS INTERFACE **********/
+			int range() { return range_; }
+			void range(int val);
+			int position() { return position_; }
+			void position(int val);
+			float percent() { return (float)position_/(float)range_; }
+			void percent(float val);
+			/********** END PROGRESS INTERFACE **********/
 
 	};
 }
