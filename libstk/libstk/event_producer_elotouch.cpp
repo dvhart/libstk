@@ -120,6 +120,7 @@ namespace stk
     }
 
     event_producer_elotouch::event_producer_elotouch(std::string devname)
+        : just_untouched(false)
     {
         fd = open(devname.c_str(),O_RDWR | O_NOCTTY  | O_NDELAY);
         if(fd <0)
