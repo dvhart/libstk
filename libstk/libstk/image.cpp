@@ -145,6 +145,11 @@ namespace stk
         png_bytep* row_pointers = png_get_rows(png_ptr, info_ptr);
 
         offscreen_surface = onscreen_surface->create_surface(rectangle(0, 0, width, height));
+
+        graphics_context::ptr gc=graphics_context::create();
+        offscreen_surface->gc(gc);
+        gc->alpha_blend(false); // We want the image data with its alpha channel to be in
+                                // the offscreen surface verbatim, not blended 
         
         offscreen_surface->clip_rect(rectangle(0, 0, width, height));
         for (unsigned int y = 0; y < height; y++)
