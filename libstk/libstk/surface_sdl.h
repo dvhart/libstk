@@ -49,11 +49,17 @@ namespace stk
 
 	class surface_sdl : public stk::surface
 	{
+		public:
+			typedef boost::shared_ptr<surface_sdl> ptr;
+			typedef boost::weak_ptr<surface_sdl> weak_ptr;
+			
 		private:
 			SDL_Surface *sdl_surface_;
 
 			// optimized pixel routines (private and not virtual)
+		public: // for benchmarking purposes
 			inline void put_pixel(int x, int y, color clr);
+		private:
 			inline void put_pixel_aa(int x, int y, double distance, color clr);
 			inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
 			inline color get_pixel(int x, int y) const;
