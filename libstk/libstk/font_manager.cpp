@@ -10,7 +10,7 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
-#include "libstk/font_mngr.h"
+#include "libstk/font_manager.h"
 
 #include <iostream>
 namespace stk
