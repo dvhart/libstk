@@ -66,6 +66,7 @@ libstk_la_SOURCES =\
 	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	rectangle.h rectangle.cpp \
+	scrollable.h scrollable.cpp \
 	scroll_bar.h scroll_bar.cpp \
 	scroll_box.h scroll_box.cpp \
 	scroll_model.h scroll_model.cpp \
