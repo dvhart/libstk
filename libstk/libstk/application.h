@@ -34,7 +34,7 @@ namespace stk
         typedef boost::weak_ptr<application> weak_ptr;
 
     private:
-        static application::ptr instance_;
+        static application::weak_ptr instance_;
         surface::ptr surface_;
         event_system::ptr event_system_;
         std::list<boost::shared_ptr<state> > states_;

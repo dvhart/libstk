@@ -33,21 +33,23 @@
 
 namespace stk
 {
-    application::ptr application::instance_;
+    application::weak_ptr application::instance_;
 
     application::ptr application::create(surface::ptr surface)
     {
-        if (instance_) throw error_message_exception("application::create() - "
+        if (instance_.lock()) throw error_message_exception("application::create() - "
                 "application already instantiated (create can only be called once)");
-        instance_.reset(new application(surface));
-        return instance_;
+        application::ptr instance(new application(surface));
+        instance_=instance;
+        return instance;
     }
 
     application::ptr application::get()
     {
-        if (!instance_) throw error_message_exception("application::get() - "
+        application::ptr instance=instance_.lock();
+        if (!instance) throw error_message_exception("application::get() - "
                 "application not instantiated (create has not been called)");
-        return instance_;
+        return instance;
     }
 
     application::application(surface::ptr surface) :
@@ -77,7 +79,8 @@ namespace stk
         else
         {
             // set the current state and find the first focusable widget
-            current_state_ = *states_.begin();
+            if(!current_state_.lock()) // Only if the user hasnt set a state yet!
+                current_state_ = *states_.begin();
             focused_widget_ = (*states_.begin())->focus_next();
             if (focused_widget_.lock())
                 focused_widget_.lock()->handle_event(event::create(event::focus));
