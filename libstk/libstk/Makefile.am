@@ -4,7 +4,8 @@ lib_LTLIBRARIES  =\
 libstk_la_SOURCES =\
 	app.h     app.cpp    \
 	surface.h            \
-	widget.h  widget.cpp
+	widget.h  widget.cpp \
+	events.cpp events.h 
 
 libstk_la_LDFLAGS =\
 	$(SDL_LIBS)

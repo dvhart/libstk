@@ -22,19 +22,33 @@
 
 namespace stk
 {
-	class exception	{};
+class exception
+    {}
+;
 
-	class error_exception : public exception
-	{
-	private:
-		std::string _error;
+class error_message_exception : public exception
+{
+private:
+    std::string message_;
 
-		exception() {}
-	public:
-		exception(const std::string &error) { _error = error; }
-		~exception() {}
-		
-		std::string get_error() { return _error; }
-	};
+    error_message_exception()
+    {}
+public:
+    error_message_exception(const std::string &message)
+    {
+        message_ = message;
+    }
+    ~error_message_exception()
+    {}
+
+    std::string message()
+    {
+        return message_;
+    }
+    void message(std::string message)
+    {
+        message_=message;
+    }
+};
 } // namespace stk
 #endif

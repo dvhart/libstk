@@ -1,6 +1,18 @@
 
+[filenumbers]
+0=60
+1=7
+2=379
+3=34
+
+[filemarkers]
+0=
+1=
+2=
+3=
+
 [executer]
-RunInTerminal=true
+RunInTerminal=false
 
 [Project DBase]
 ShowLocals=true

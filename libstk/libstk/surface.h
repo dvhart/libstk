@@ -43,49 +43,55 @@
 #define ASHIFT 24
 #endif
 
-namespace stk {
-	class surface;
-	
-	class surface {
-	private:
-		SDL_Surface *_surface;
-		
-	public:
-		surface(SDL_Surface &new_surface);
-		surface(SDL_Rect &rect); 
-		~surface();
-		
-		// non antialiased draw routines
-		void draw_pixel(int x, int y, Uint32 color);
-		void draw_line(int x1, int y1, int x2, int y2, Uint32 color, /*style,width*/);
-		void draw_rect();
-		void draw_arc();
-		void draw_ellipse();
-		void draw_poly();
-		
-		// antialiased draw routines
-		void draw_pixel_aa();
-		void draw_line_aa();
-		void draw_rect_aa();
-		void draw_arc_aa();
-		void draw_ellipse_aa();
-		void draw_poly_aa();
-		
-		// non antialiased fill routines
-		void fill_rect();
-		void fill_ellipse();
-		
-		// antialiased fill routines
-		void fill_rect_aa();
-		void fill_ellipse_aa();
-		
-		// util methods
-		Uint32 gen_color(const std::string &str_color);
-		Uint32 gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-		void lock();
-		void unlock();
-		void blit(surface &p_surface, SDL_Rect *rect = NULL);
-		SDL_Surface *get_surface() { return _surface; }
-	};
+namespace stk
+{
+class surface;
+
+class surface
+{
+private:
+    SDL_Surface *_surface;
+
+public:
+    surface(SDL_Surface &new_surface);
+    surface(SDL_Rect &rect);
+    ~surface();
+
+    // non antialiased draw routines
+    void draw_pixel(int x, int y, Uint32 color);
+    void draw_line(int x1, int y1, int x2, int y2, Uint32 color /*,style,width*/);
+    void draw_rect();
+    void draw_arc();
+    void draw_ellipse();
+    void draw_poly();
+
+    // antialiased draw routines
+    void draw_pixel_aa();
+    void draw_line_aa();
+    void draw_rect_aa();
+    void draw_arc_aa();
+    void draw_ellipse_aa();
+    void draw_poly_aa();
+
+    // non antialiased fill routines
+    void fill_rect();
+    void fill_ellipse();
+
+    // antialiased fill routines
+    void fill_rect_aa();
+    void fill_ellipse_aa();
+
+    // util methods
+    Uint32 gen_color(const std::string &str_color);
+    Uint32 gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+    void lock()
+        ;
+    void unlock();
+    void blit(surface &p_surface, SDL_Rect *rect = NULL);
+    SDL_Surface *get_surface()
+    {
+        return _surface;
+    }
+};
 } // namespace stk
 #endif
