@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 
         // create a couple labels using ÜberScript
         INFO("app - creating labels");
-        label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"),
+        label::ptr test_label = label::create(test_state, std::wstring(L"UberScript"),
                 rectangle(10, 10, 100, 30));
         label::ptr test_label2 = label::create(test_state, std::wstring(L"stk::tribal_theme"),
                 rectangle(490, 10, 150, 30));

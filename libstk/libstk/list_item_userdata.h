@@ -31,19 +31,19 @@ namespace stk
         Tdata userdata_;
 
     public:
-        static list_item_userdata<Tdata>::ptr create(
+        static typename list_item_userdata<Tdata>::ptr create(
                 typename list_template<list_item_userdata<Tdata> >::ptr parent, std::wstring label)
         {
-            list_item_userdata<Tdata>::ptr new_list_item_userdata(
+            typename list_item_userdata<Tdata>::ptr new_list_item_userdata(
                     new list_item_userdata<Tdata>(label));
             parent->add_item(new_list_item_userdata);
             new_list_item_userdata->parent_ = parent;
             return new_list_item_userdata;
         }
 
-        static list_item_userdata<Tdata>::ptr create(list::ptr parent, std::wstring label)
+        static typename list_item_userdata<Tdata>::ptr create(list::ptr parent, std::wstring label)
         {
-            list_item_userdata<Tdata>::ptr new_list_item_userdata(
+            typename list_item_userdata<Tdata>::ptr new_list_item_userdata(
                     new list_item_userdata<Tdata>(label));
             parent->add_item(new_list_item_userdata);
             new_list_item_userdata->parent_ = parent;
