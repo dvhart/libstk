@@ -1,0 +1,1254 @@
+--- Topic for #linux-coding is Talk about all things coding related. And *maybe* other stuff. -- linux-coding.net is up! -- wanna see some cool coding target? http://www.kuka-roboter.de/pics/roboter/gr_kr45.gif | Libstk Meeting Preparation: please update, read/append TODO, and commit
+--- Topic for #linux-coding set by dvhart!~dvhart@128.187.0.58 at Mon Apr 14 12:01:06
+* vhmauery too
+<codec> hi
+<dvhart> hey codec
+<dvhart> codec, got the latest source?
+<carter_> hi pppl
+<carter_> hi darren
+<carter_> bit too late
+<dvhart> ?
+<codec> nope
+<codec> darn
+<carter_> ok
+<carter_> wait
+<codec> i am stuck in creating a apropriate linux-coding logo
+<carter_> will read todo
+<codec> :s
+<dvhart> *g*
+<codec> anyway, updating source
+<carter_> (have to eat something in a few minutes though, either we proceed fast or we have a break in between :) )
+<dvhart> the todo has a lot of topics, please read and add, consider what is most important
+<dvhart> we can take a break
+<dvhart> vhm and I are here for 4 hours
+<carter_> ok
+<carter_> then lets wait 30 minutes
+<carter_> and then start
+<dvhart> codec? ok with you?
+* carter_ is back at 8:45 PM
+<codec> 4 hours
+<codec> wow
+<dvhart> we are at work
+<dvhart> playing with a logic analyzer
+<codec> i cant get a cool looking logo :s
+<dvhart> maybe I can helpo
+<dvhart> occasionally I do somewthing worth while
+<codec> hehe
+<dvhart> what ya got?
+<codec> i wanna include that tux
+<codec> nothing
+<codec> i am not even sure about the layout
+<codec> some menuboxes might be cool
+<dvhart> want to convey: professional, high tech (in the real sense, not the business sense)
+<dvhart> ?
+<dvhart> information
+<codec> professional
+<codec> yup
+<dvhart> ok
+<dvhart> then clean lines
+<codec> professional and clear
+<codec> but stylish
+<codec> somehow
+<codec> cos we are a funny group
+<dvhart> EASY to navigate
+<codec> yes
+<codec> and bright
+<dvhart> that is a major problem with content sites
+<dvhart> did you want a real tux are a stylized tux
+<dvhart> you might try some real emperor penguin images
+<dvhart> like icewalkers
+* vhmauery thinks you need some dancing GIFs
+<dvhart> should be able to access the various areas in at least 2 or 3 ways
+<dvhart> and some long flash intro
+<dvhart> and some techno music
+<vhmauery> *g*
+<codec> true
+<dvhart> *g*
+<dvhart> and its JIF
+<codec> maybe we can get a flash *programmer*
+<dvhart> LOL
+<dvhart> programmer ROFL
+<codec> :)
+<dvhart> I went to a flash demo here at school just to see wha tit was all about
+<dvhart> it was hilarious
+<dvhart> it was just like StrongBad's webpage cartoon
+<codec> i would like to use that stylish tux
+<codec> in our logo
+<dvhart> the cartoon one?
+<codec> has a nice look
+<dvhart> 3d I mean
+<codec> yup
+<dvhart> it doesn't really convey professional
+<codec> or do you dislike it?
+<codec> true
+<dvhart> I like it yes, but not too professional
+<dvhart> the real emperor penguin is regal and stylish
+<dvhart> like turbolinux logo
+<codec> yea
+<codec> real emperor?
+<dvhart> the actual emperor penguin
+<codec> show me those logos
+<codec> i like the gentoo page alot
+<dvhart> (ie image)
+<codec> its stylish but professional
+<dvhart> hmm... finding a url
+<codec> www.gentoo.org
+<codec> gregf.ath.cx also has a very nice style
+<codec> i love those menu boxes
+<dvhart> LOL @ redbull
+<codec> yup
+<codec> nice storx
+<codec> story
+<dvhart> gregf: very nice site
+* jonez nods.
+<jonez> I agree.
+<dvhart> http://images.google.com/imgres?imgurl=www.zoosociety.org/img/sponsoranimals/Penguin.jpg&imgrefurl=http://www.zoosociety.org/SponsorAnimal/AnimalList.php%3Fitem%3Dself&h=225&w=177&prev=/images%3Fq%3Dpenguin%2Bimages%26start%3D100%26svnum%3D10%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26sa%3DN
+<dvhart> ekkk, sorry
+<dvhart> ohh, we could something sinister style with the .. adelle? penguin
+<dvhart> http://images.google.com/imgres?imgurl=www.geobop.com/Birds/1BImages/Dutch%2520Birds%25202/Chinstrap%2520Penguin.jpg&imgrefurl=http://www.geobop.com/Birds/Sphenisciformes/&h=200&w=280&prev=/images%3Fq%3Dpenguin%2Bimages%26start%3D160%26svnum%3D10%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26sa%3DN
+<codec> sinister style?
+<dvhart> you rknow, dark, almost evil
+<dvhart> black and red
+<codec> or maybe we should do a tux in matrix style?
+<dvhart> LOL
+<codec> lether, sunglasses
+<codec> :)
+<codec> just a guess
+<codec> err, hint
+<dvhart> this would styleize well: http://images.google.com/imgres?imgurl=www.downingm.freeserve.co.uk/pictures/penguin.jpg&imgrefurl=http://www.downingm.freeserve.co.uk/funanimal.htm&h=180&w=239&prev=/images%3Fq%3Dpenguin%2Bimages%26start%3D240%26svnum%3D10%26hl%3Den%26lr%3D%26ie%3DUTF-8%26oe%3DUTF-8%26sa%3DN
+<codec> dont know
+<codec> i want a f00nky logo and a professional page
+<codec> i love this combination
+<codec> lmule.sf.net logo is great, too
+<dvhart> ok, so the gentoo style works for you.  Maybe that round penguin that some kde icon themes use?
+<codec> hm, not sure what you mean
+<codec> i try to avoid using kde whereever i can :D
+<codec> so i am not that much into kde themes
+<-- vhmauery has quit (Read error: Connection reset by peer)
+<dvhart> *g*
+<dvhart> see if I can find it
+* codec definativly wants those menu boxes now
+<dvhart> http://www.everaldo.com/crystal/index.html
+<dvhart> uh, without the ball
+<dvhart> http://www.everaldo.com/crystal/icons_kdm.html
+<dvhart> might provide an interesting set of icons for the site
+<codec> yeah thats i nice tux, too
+<dvhart> note that gentoos "logo" is the purple g though
+<codec> are those images public license?
+<dvhart> dunno, they are for KDE... so I would think so, will have to investigate
+<codec> we may try to create our own vector graphic tux
+<codec> someone skilled in vector graphics?
+<codec> :)
+<codec> everaldo has done some really nice artwork
+<dvhart> I have done a svg penguin... trying to find it
+<dvhart> I did vector logos for cal poly for a year
+<codec> cool
+<dvhart> but everaldo is *much* better
+<codec> i never were that good in vector graphics
+<dvhart> I have a friend that is an artist, I can talk with him, he did the bird at:  http://www.guatemalacitysouth.com
+<carter_> hi ppppl
+<dvhart> ok are we ready?
+<dvhart> everyone read the TODO
+<dvhart> ?
+<carter_> some points unclear
+<carter_> but i read  it
+--- carter_ is now known as carter
+<carter> ah
+<carter> shit
+<carter> hav eto add a point to the to do list
+<codec> compiling libstk atm
+<carter> Touch screen support
+<dvhart> ok so here are the topics I think we want to discuss:
+<dvhart> 1) license
+<dvhart> 2) font manager (final decision)
+<dvhart> 3) focus/active API
+<dvhart> 4) slot usage
+<dvhart> 5) accelerators
+<dvhart> 6) clipping (at what level)
+<dvhart> 7) touchscreen
+<dvhart> others?
+* carter not
+--> vhmauery (~vhmauery@128.187.0.58) has joined #linux-coding
+<vhmauery> hello all
+<carter> hi vhm
+<dvhart> ok let's start then
+* carter thinks thats all @ darren
+<dvhart> 1) livence
+<carter> license
+<carter> ok
+<dvhart> check the license.txt in doc
+<dvhart> does everyone agree on the "intent" of the license?
+<carter> ok
+<carter> yep
+<carter> intent is ok imo
+<carter> our exception
+<codec> slot usage?
+<carter> should only bypass the static linking
+<codec> what do you mean=
+<carter> is derived work issue with the LGPL
+<carter> in that case
+<carter> modifications to the library source
+<dvhart> (will get to slots later...)
+<carter> would still have to be published/provided
+<carter> but if you modify nothing
+<carter> in the library
+<carter> you dont have to publish anything
+<carter> neither your application
+<carter> nor your library source(which is already public)
+<dvhart> is adding a widget considered modifying the library?
+<carter> imo no
+<carter> not if you add the widget
+<dvhart> agreed then
+<carter> without modifying the existing library source
+<carter> only if you modify any file of the library source
+<carter> in any possible way
+<dvhart> and they can write their own theme to account for it if they like
+<carter> (pre processor hacks e.g.)
+<carter> then it is a derived work of the library
+<carter> and you have to publish this source
+<carter> you've modified
+<dvhart> ok, how is that different from the LGPL ?
+<carter> in that
+<carter> static linking
+<carter> is not considered
+<carter> creating a derived work
+<carter> if you staticly link
+<carter> to a lgpl library
+<carter> you have to publish
+<carter> our application
+<carter> under the LGPL or GPL license
+<codec> oh
+<codec> thats bad
+<carter> (thats the common interpretation)
+<dvhart> so dynamic link is ok for a closed source app under the lgpl
+<carter> yep
+<carter> but in the embedded market
+<carter> we should allow static linking
+<dvhart> yup yup
+<carter> or even compiling the library source
+<codec> yup
+<carter> with your application
+<carter> without going trough libtool or something like it
+<carter> for dead code optimisation etc (size does matter)
+<dvhart> ok, how do we account for the FIXME in the license.txt
+<carter> FIXME: WE DO NOT WANT A COMPANY TO HIJACK OUR CODE, ADD A FEW WIDGETS AND SELL IT COMMERCIALLY.
+<carter> this is allowed
+<carter> with the license
+<carter> but they have to provide the source
+<carter> because then the library is clearly the thing say sell
+<carter> and it is clearly a derived work!
+<dvhart> yup
+<carter> would be rather easy to prove
+<carter> in court
+<dvhart> and since they can get it from us for free...
+<carter> if needed (ever9
+<codec> hehe, that remembers me of winex
+<carter> forking is not bad
+<carter>  I M O
+<carter> winex is open source too
+<carter> but that damn license
+<carter> they used for wine
+<codec> yup
+<carter> allows them to combine it with closed source
+<carter> and sell the derived work
+<codec> yes
+<codec> thats what i ment
+<carter> but their license wasnt ever LGPL with a static link exception
+<dvhart> ok agreed on the license?
+<vhmauery> yes
+<carter> hmm
+<carter> wait
+<carter> exact wording
+<carter> might be important
+<dvhart> I can work on it and send a mail
+<carter> imo the wxwindows wording is nice
+<dvhart> I don't think we should fuss over that right now (group writing all at once is a pain in the a$$)
+<carter> their license is nearly exactly
+<carter> what we've just discussed :)
+<codec> dvhart: yup
+<dvhart> yup, will model after that
+<carter> ok
+<carter> then write it
+<carter> and we'll read it later and decide if its ok :9
+<dvhart> sounds good
+<carter> ok
+<carter> 2) Font manager
+<carter> imo
+<carter> we've decided
+<dvhart> what did you decide
+<codec> where is taht todo.txt?
+<codec> :s
+<dvhart> TODO
+<carter> that we'll implement what we've discussed last time darren
+<carter> font manager will hold
+<dvhart> top level
+<carter> references
+<codec> rofl
+<carter> to all objects
+* codec slaps himself
+<carter> so the user does not need too
+<codec> sorry
+<carter> and will drop if the fonts ever exceed some limit
+<carter> which is compiletime configurable
+<carter> imo that is decided
+<vhmauery> sounds good
+<carter> will implement it this evening (if we dont talk too long)
+<dvhart> ok, so thrashing is *possible* but bloody well inlikely
+<carter> yep
+<dvhart> unlikely
+<carter> exactly
+<carter> and in the event of trashing
+<carter> it is not guaranteed how it is handled
+<carter> (atm i want to drop random fonts, not LRU (avoid overhead if possible))
+<dvhart> right, so increment the define and recompile
+<carter> yep
+<carter> right
+<vhmauery> if you have that problem, use fewer fonts or recompile to have a bigger limit
+<carter> exactlys
+<codec> yup
+<carter> thats totally ok
+<carter> for an embedded system
+<carter> IMO
+<carter> and the default value
+<dvhart> carter: you happy with that?
+<carter> of this should be rather high
+* carter is
+<carter> you'll only ever hit this limit
+<carter> if you switch fonts at runtime
+<dvhart> make it so
+<dvhart> *g*
+<carter> which is absolutely unlikely to happen
+<carter> in HMI or other embedded systems
+<carter> aye sir! :)+
+<dvhart> yup
+<codec> hehe
+<vhmauery> LOL
+<carter> ok
+<dvhart> this is great *g*
+<carter> 3) Focus/ACtive Api
+<dvhart> so read my mail ?
+<dvhart> 2 options ?
+<carter> wait
+<carter> not yet
+<carter> havnet read mails
+<carter> brb in 3
+<dvhart> k
+<codec> hours most likely
+<carter> reading
+* dvhart chuckles
+<carter> btw 
+<carter> mailing list
+<carter> how about an Gmane interface? *lol*
+<codec> gmane?
+<dvhart> wtf ?
+<carter> gnu mail to news and back or something
+<carter> is the name :)
+<carter> very nice mailing list archive
+<carter> with NNTP access
+<carter> *gg*
+<codec> pff
+<carter> open to any open source project
+<codec> we are oldschool
+<carter> yep
+<carter> Usenet! :)
+<dvhart> lol
+<carter> older school then anything else :)
+<carter> gmane.org :)
+<dvhart> I am happy with mailman thanks *g*
+<carter> ok
+<codec> exactly
+<carter> back to topic
+<carter> dvhart: thats not what gmane is about
+<codec> thanks for clearifying that to carter
+<dvhart> oh
+<carter> you still use your mailman
+<carter> it only works as subscriber
+<carter> to your mailman
+<carter> and archives everything
+<dvhart> OH
+<carter> and when i post a message to it (via nntp)
+<dvhart> that might be kewl
+<carter> it mails it you
+<carter> its a 2 way mail news gateway
+<carter> absolutely kewl
+* carter uses it for boost mailing lists etc
+<carter> ok
+<carter> back to topic
+<carter> IMO
+<carter> both solutions arent nice
+* carter would just
+<carter> ah
+<carter> wait
+* codec wonders wether carter has autocaps on imo
+<carter> does the widget know about the app instance it belongs too
+<carter> ?
+<dvhart> NO
+* carter has to get his brain back to libstk
+<dvhart> only state b/c app is its parent
+<codec> damn i really need to work into libstk :/
+<dvhart> *g*
+<carter> wait
+<carter> have to get a bit more feeling
+<carter> for your drawing stuff
+<carter> havent dived deep into stk
+<carter> for 2 weeks now :)
+<dvhart> understood
+<dvhart> widget::draw()
+<carter> (4 projects at a time is shit :) )
+<codec> wow 2 weeks WOW
+<dvhart> calls theme::widget_draw(params)
+<dvhart> params currently need to be re-worked
+<carter> codec: stk is in heavy development(TM)
+<codec> yeah
+<carter> imo params could be a boost tuple
+<dvhart> but they (params) define how to draw it
+<carter> so we dont have a long parameter list :))))
+<carter> *lol*
+<dvhart> carter: that doesn't work too well in some situations
+<dvhart> images for example
+<dvhart> anyway, OT
+<carter> hmmmmmmmmmm
+<carter> does theme know
+<carter> which is the right application instance?
+<dvhart> no
+<dvhart> "right" ?
+<carter> ok
+<carter> lets get back to the basics :)
+<carter> imo
+<carter> active and hover
+<carter> arent properties of a widget
+<carter> so we may not but them in a widget
+<carter> understood? 
+<carter> ;)
+<dvhart> understood, but not agreed... continue
+<vhmauery> what are they properties of then
+<carter> Ã³f the application
+<carter> aeh
+<carter> no
+<carter> of the state
+<carter> or wait
+<dvhart> LOL
+<carter> who has the active widget pointer
+<dvhart> app
+<carter> state right?
+<codec> doh
+<dvhart> app does atm
+<carter> ok
+<carter> so
+<carter> the only information about the active widget
+<carter> has to be in the app
+<carter> otherwise we create duplicate/redundant information about it
+<dvhart> true
+<carter> with active beeing a property of each widget
+<carter> you could very easily
+<carter> have 3 active widgets
+<carter> (drawing style)
+<dvhart> it makes drawing simpler IMO
+<dvhart> but you are right
+<carter> but only one REAL active widget (app data)
+<codec> but if we do it like that then we have to do way 2. (as described in the email)
+<carter> it does
+<carter> but we dont want to have the simplest hack
+<carter> but the right solution
+<carter> right
+<carter> if we do it like that
+<carter> we have to use way2
+<carter> that's for sure
+<carter> but its not a solution
+* dvhart doesn't like "way 2"
+<carter> just basic OOP
+<codec> me neither
+<carter> i mean
+<carter> friends arent nice
+<dvhart> agreed
+<carter> but it simply does not belong
+<dvhart> LOL
+<carter> into the public API
+<carter> lol
+<carter> speaking in the C++ sense ok!? :)
+<dvhart> yeah
+<vhmauery> and sometimes literally...
+<carter> yeah
+<carter> sometimes :)
+<carter> ok
+<dvhart> friends might offer a good alternative though
+<dvhart> it certainly encapsulates it
+<carter> yeah
+<dvhart> forces app to act responsibly
+<carter> but it still duplicated the information
+<dvhart> and simplifies the API alot
+<carter> which is what bothers me
+* carter thinks redundant data is the most evil thing in programming
+<dvhart> the alternative is to have app call all the draw routines!
+<carter> sometime it WILL get out of sync
+<dvhart> YUK
+<carter> yeah
+<carter> i know the problem
+<carter> :(
+<carter> hmmmm
+<carter> and if we do not only pass the surface
+<carter> but the app instance TOO
+<carter> down the trree
+<carter> when calling draw?!
+<carter> as a second argument?
+<dvhart> that would *work*
+<dvhart> kinda ugly
+<codec> err
+<codec> isnt that a bad style?
+<carter> thats the question
+<dvhart> I don't even like passing surface really
+* carter thinks that is good style
+<dvhart> (well.. surface is ok)
+<carter> it is really call specific data
+<dvhart> but app?
+<carter> you could even draw one app to multiple surfaces
+<carter> hmmmw
+<carter> why not?!
+<carter> if its needed for drawing
+<carter> pass it to draw
+<carter> sounds pretty obvious and ok to me
+<carter> but i'd like to hear what you think is bad about it
+<dvhart> trying to put my finger on it.... it rubs me the wrong way
+<carter> (stack usage of a app reference should be neglectible)
+<carter> LOL
+<dvhart> negligible you mean?
+* carter got a new quote for his signature
+<carter> yep
+<carter> ok
+<carter> :)
+<dvhart> *G*
+* carter 's english is broken
+* dvhart pondering
+<carter> vhm? dirK?
+<codec> hm
+<dvhart> other widget sets have the focus property for example... all of them I think
+<carter> yeah
+<dvhart> (I know that doesn't make it right)
+<carter> but its a hack
+<carter> in VCL for example
+<codec> dunno, i just dont like passing data of a "parent" into "recursive" functions (tree)
+<carter> if you set the focus property
+<carter> it just calls it parents
+<carter> :
+<carter> to refocus
+<codec> someone (me points to carter) has told me it isnt good to do that
+<codec> stack usage
+<carter> codec: how do you want to avoid passing it to the recursive function if its a data which is only permanent as long as the call is active
+<vhmauery> I am not sure that having duplicate data is a sin.  There are ways to force the API so they can't get out of sync.
+<carter> vhmauery: sure there are
+<carter> but it opens the possibility of bugs
+<carter> and
+<carter> imo
+<codec> carter: thats the question
+<carter> even if you think passing data to recursive functions is bad
+<carter> its lesser bad (lol) then having duplicate data
+<carter> codec: it surely is
+<dvhart> hmmm
+<codec> not as bad as
+<codec> us mean
+<carter> think about it
+<carter> if you make the widget
+<codec> u*
+<carter> tightly coupled
+<carter> to one application instance
+<carter> via the properties which might ONLY be set by one application object
+<carter> which is responsible
+<carter> then
+<carter> when you think it that why
+<carter> WHY THE FREEL DONT WE HAVE A POINTER TO THE APPLICATION? :)
+<carter> it simply is the same issue
+<carter> IMO
+<carter> freel:=frelll
+<codec> rofl
+<carter> (farscape for those who dont know)
+<codec> frelllllll
+<carter> oh
+<carter> damnit
+<carter> one day of pascal
+<carter> and iam writing := :)=
+<dvhart> LOL
+* codec pets carter
+<carter> no really
+<dvhart> hmmm
+<carter> if we have an active and a hover property
+<carter> in the widget
+<codec> hm.
+<dvhart> I would be ok if we still had a way to have ONE draw routine for widgets
+<carter> its basicly the same as having an app up pointer
+<dvhart> I want to draw with properties
+<carter> we have
+<carter> dont we?
+<dvhart> not have to add a draw routine for evey sate a widget may have
+<carter> no dvhart
+<dvhart> now we do, but we need the widget prooperties
+<carter> you got me wrong
+<carter> imo
+<carter> no
+<carter> we are only talking
+<carter> about 2 specific properties
+<carter> hover and active
+<carter> and we can solve them
+<carter> by putting a app pointer
+<carter> into ALL draw functions
+<carter> that is still one draw function
+<dvhart> and focus
+<carter> which just checks if &(*myapppointer->active_widget()) == this
+<carter> active== focus isnt it?
+<dvhart> no
+<carter> hmmmm
+<dvhart> look at the demo app
+<carter> damnit
+<carter> explain it
+<carter> (short)
+<dvhart> clicked is active
+<dvhart> focus is what gets clicked on enter
+<carter>   automake-1.7 --foreign  src/Makefile
+<carter> src/Makefile.am:40: bad characters in variable name `'
+<carter> src/Makefile.am:72: test_app_SOURCES multiply defined in condition TRUE ...
+<carter> src/Makefile.am:39: ... `test_app_SOURCES' previously defined here.
+<dvhart> active is like down
+<carter> ahhhhhhhhhhhhhh
+<carter> wait
+<carter> focus is what gets clicked on enter
+<dvhart> yes
+<carter> thats mostly called default
+<carter> in most widget sets
+<carter> IMO
+<dvhart> no
+<carter> focus is where the current events go to
+<carter> hover is what is currently under the mouse
+<dvhart> ok yeah
+<dvhart> yup
+<carter> the thing with a special handling for enter
+<dvhart> (we treat enter like a mouse click)
+<dvhart> enter was a bad example
+<carter> hmmmmmmmmmmmmmmmmmmm
+<dvhart> its the same issue though, nothing really changes
+<codec> hehe
+* carter doesnt understand you
+<dvhart> LOL
+<codec> maybe we really should pass the app pointer
+<dvhart> we have 3 properties that modify drawing style
+<carter> ok
+<carter> right
+<codec> it seems there doesnt exists any other way
+<carter> but you are thinking of the default i mentioned right?
+<carter> wait codec
+<carter> :)
+<codec> or a better
+<dvhart> what ?
+<carter> damnit
+<carter> the makefiles dont work
+<dvhart> what page are you on?
+<codec> they are fine for me
+<dvhart> hmmm... what automake do you have ?
+<codec> tho i have my own autogen
+<carter> 1.7+
+<carter> ROFL
+<carter> bin_PROGRAMS      = test_app
+<carter> <<<<<<< Makefile.am
+<carter> test_app_SOURCES  = test_app.cpp
+<carter> =======
+<carter> test_app_SOURCES  = \
+<carter> CVS merged something*lol*
+<dvhart> that would do it
+<carter> had some changes in my makefile
+<carter> so what you mean
+<carter> is
+<carter> we have focus (currently active while tab stopping etc)
+<carter> hover (which is under the mouse)
+<carter> right ?!?
+<dvhart> yes
+<codec> brb in 5
+<dvhart> active is like the "pressed state"
+<carter> ahhhhhhhhhhhhhhhhhhhhhhhh
+<carter> now i know what you mean
+<carter> hmmm
+<dvhart> the light comes on
+<carter> active is property
+<dvhart> sorry for the confusion
+<carter> of the widget
+<carter> !!!!
+<carter> that you can draw with the widget
+<carter> active is implemented in widget
+<carter> or better
+<carter> in widget descendents
+<carter> by receving events
+<carter> like mouse down
+<carter> mouse up
+<carter> that can be done
+<dvhart> yes
+<carter> as a private/protected data member
+<dvhart> same with hover right ?
+* carter is only talkinbg
+<carter> no
+<carter> hmmmmmmmmmmmmmmmmmmmmmmmm
+<carter> the thing is
+<carter> hover is managed by app too
+<carter> so it should be only managed by app
+<carter> imo
+<dvhart> hmmm
+<dvhart> interesting problem
+<carter> (btw imo the names are wrong)
+<dvhart> I agree with the redundant data bit
+<carter> (active should be pressed for a button for example , active doesnt express the idea correctly)
+<dvhart> ok
+<carter> ah wait darren
+<dvhart> and maybe not all widgets need active
+<carter> we can have the redundant data
+<carter> gimme 3 minutes
+<dvhart> ok
+<carter> to make it short
+<carter> there can be a private data member
+<carter> hover
+<carter> but it shouldnt be set by the application
+<carter> we simply create two events
+<carter> which we need anyway
+<carter> mouse enter
+<carter> mouse exit
+<carter> and then just take the redundant data
+<carter> makes it imo much clearer
+<carter> then application modifying properties
+<dvhart> yuo
+<dvhart> yup
+<carter> of the widget
+<dvhart> I like that a lot
+<carter> so every widget can decide for itself
+<carter> if it wants to modify its drawing style
+<dvhart> and stay synchronized
+<carter> when the mouse enters
+<carter> yep
+<carter> thats the way other widget sets do it
+<carter> btw
+<dvhart> what about focus
+* carter just remembered
+<carter> focus
+<carter> you mean
+<carter> which is the aehm current widget
+<carter> (in stk names) 
+<dvhart> yes
+<dvhart> I thought I changed taht to focused_widget_
+<carter> there are 2 possibilites
+<carter> either
+<carter> take it from app
+<carter> ok
+<carter> focussed is better
+<carter> the name
+<carter> we have 2posibilites
+<carter> either
+<carter> pass app
+<carter> or make 2 events :))
+<carter> on_focus
+<carter> on_unfocus
+<carter> *ggg*
+<dvhart> yeah....
+* carter likes that idea
+<dvhart> hmmm
+<carter> simply because
+<carter> we would need these events
+<carter> anyway
+<vhmauery> that is how a lot of other widget sets work...
+<carter> for the user
+<carter> and
+<dvhart> so we simply must handle them in handle_event()
+<carter> there we have to guarantee matched focus/unfocus anyway
+<carter> yep
+<dvhart> yuo
+<dvhart> dangit!!!
+<dvhart> thats a P
+<dvhart> not an O
+<dvhart> a P
+<dvhart> ok so these are events, not signals, you are talking about
+<carter> yep
+<carter> events
+<carter> send by application
+<carter> :9
+<dvhart> yup
+<carter> (there should be matching signals TOO
+<carter> for the user)
+<dvhart> yes agreed
+<dvhart> hot dawg, that ricks
+<dvhart> rocks even
+<carter> yep :)))))
+<carter> <dvhart> 4) slot usage
+<dvhart> so app selected the next focused widget as it does now
+<carter> :)
+<carter> yxep
+<carter> and sends unfocus to the old one
+<dvhart> ok, 4
+<carter> and focus to the new one
+<carter> 4
+<carter> slot usage
+<carter> that should be
+<carter> signal usage
+<carter> IMO
+<carter> signals are only for the user
+<carter> (normallY)
+<dvhart> we shouldn't use slots for library stuff correct
+<carter> there might be cases (adjustments?) where library could use slots
+<carter> and where this would be ok
+<carter> by design
+<dvhart> hmm... but the user can clear all slots froma signal
+<dvhart> sounds scary to me
+<carter> in case of adjustments for example
+<carter> thats what he might want to
+<carter> to disconnect the adjustment
+<carter> we shouldnt use it most of the time
+<carter> but there are a few cases
+<carter> where it might be very good
+<dvhart> ok
+<dvhart> and which do we want widget to define?
+<dvhart> not all widgets are focusable
+<carter> yep
+<carter> so widget should define
+<dvhart> but we are defining more of the API at a higher level anyway
+<carter> the focusable signals
+<dvhart> ie parent/container stuff
+<carter> and a label for example should just
+<carter> redeclare it as private
+<carter> or protected
+<carter> -> hide it
+<dvhart> hmmm
+<carter>  I M O
+<dvhart> didn't know you could do that
+<carter> if its not applicable
+* vhmauery didn't know you could do that
+<dvhart> ok so widget signals
+<carter> if it has the same signature
+<dvhart> onfocus
+<carter> you can kick it from the public API
+<dvhart> on_unfocus
+<dvhart> on_enter
+<dvhart> on_leave
+<carter> yep
+<carter> on_predraw
+<dvhart> on_press ?
+<carter> on_postdraw?
+<carter> no
+<dvhart> or is that for buttons only
+<carter> press etc is for buttons
+<dvhart> ok
+<carter> on_event 
+<carter> to allow custom event processing
+<carter> there should be pre_event (before widget handled it)
+<carter> and post_event( before it is passed up the hierarchie)
+<carter> Maybe
+<codec> re
+<carter> would allow much user customisation
+<carter> :)
+<carter> re codec
+<dvhart> re codec
+<codec> sry
+<dvhart> codec: summary, we create events on_focus/on_mouseenter etc to have the widgets amnage their redundant data safely
+<dvhart> carter: sounds good
+<dvhart> we need a good list of widget signals
+<carter> yep
+<codec> hm
+<carter> API doc of widget
+<carter> btw
+<carter> imo
+<carter> we should document properties
+<carter> by documenting the private datamembers
+<carter> they set(get
+<codec> so widget stores whether its focused/hovered?
+<carter> and then just write a link from the getter/setters
+<dvhart> yes @ codec
+<carter> to the data member
+<carter> codec: yes but only private for drawing purpose
+<codec> sure
+<carter> in the api doc
+<dvhart> carter: agreed, you want to write an example of that in widget and commit right quick
+<carter> yep
+<carter> will do after the meeting
+<dvhart> ok
+<dvhart> 5 ?
+<carter> <dvhart> 5) accelerators
+<carter> hmmm
+<carter> what do you mean with accelerators
+<dvhart> ok so we *need* hot keys
+<carter> exactly
+<vhmauery> hot-keys
+<dvhart> so play on the remote pushes the play button
+<carter> there are many hot key types
+<carter> yep
+<dvhart> regardless of what button is focused
+<carter> hmmmmm
+<carter> imo
+<carter> this should be done
+<carter> by the user
+<dvhart> state and app level I think
+<carter> by catching key press events
+<carter> on the app or state level
+<carter>  I M O
+<carter> that shouldnt be part of the widget's responsability
+<dvhart> hmmm
+<codec> yup
+<codec> catch event
+<dvhart> I had a neat register_key in libstk 1
+<dvhart> I liked it
+<codec> yup
+<codec> that was cool
+<codec> i have to admit
+<carter> imo we dont need it
+<codec> ;)
+<carter> because we have those cool signals now :)
+<carter> we might simply make a helper template
+<dvhart> seems like it will be a *very* common thing in embedded systems
+<carter> which fits into a on_keypress slot
+<dvhart> that's a thought
+<carter> and calls another function
+<carter> if a specific key is pressed
+<carter> (template argument)
+<carter> which has zero runtime overhead
+<carter> and can be called like your register_key
+<dvhart> we want to do things like bind my_play_button.on_press() to a stk_key
+<carter> yep
+<carter> that can be very easyly done
+<carter> with a template
+<carter> like
+<carter> application.keypress.connect(keypress_filter('A',my_play_button.on_press));
+<carter> (pseudo code)
+<carter> :)
+<dvhart> YES
+<dvhart> like that
+<carter> we have to use the signal system we have
+<carter> to put it simply :)
+<dvhart> how does the key_type get checked ?
+<dvhart> oh
+<carter> key_type?
+<dvhart> stk_key
+<dvhart> how do we know it was 'A'
+<codec> cant help you there
+<carter> look at the argument to keypress_filter?
+<carter> the keypress filter sits between the signal
+<carter> and the invocation to tmy_play_button.on_press
+<carter> the key_press event in application
+<carter> contains the pressed key
+<carter> keypress_filter compares it to his first argument
+<carter> and if its equal
+<carter> calls the second one
+<codec> m
+<carter> (the syntax will be a bit different in real c++)
+<dvhart> so the keypress signal receives a stk_key as an arg
+<dvhart> and passes it to each slot
+<carter> yep
+<dvhart> in turn as its called
+<dvhart> sounds EXCELLENT
+<carter> yep
+<carter> sure
+<dvhart> so app and state have hotkeys
+<codec> hm cool
+<carter> not really
+<carter> for app and state
+<carter> these hotkeys
+<carter> are just the user
+<carter> connecting a slot to on_keypress
+<carter> :)
+<dvhart> true
+<dvhart> do we define keypress at the container level then
+<dvhart> or at widget
+<codec> container i think
+<carter> we might do define it
+<carter> widget level
+<codec> :/
+<carter> but if the signal is not handled
+<dvhart> *g*
+<carter> at widget level
+<carter> it should be passed up the hierarchie
+<carter> as usual
+<dvhart> parent->key_press()
+<carter> and sometime
+<carter> dvhart
+<carter> not parent->key_press()
+<codec> ah, i misunderstand what u ment
+<codec> understood
+<carter>                 parent_.lock()->handle_event(e);
+<carter> :)
+<carter> we dont need to change anything
+<carter> key_press is simply a type of event
+<carter> widget handle_event
+<carter> should just check
+<carter> if any of the connected signals
+<dvhart> yeah
+<carter> handled the event (OR Combiner on the return value comes to mind)
+<carter> and if Noone handled it 
+<carter> pass it up
+<dvhart> handle_event (signals don't get passed up the hierarchy)
+<carter> this implies
+<carter> that shortcuts
+<carter> can be ovveriidden
+<carter> on the widget level though
+<carter> but imo that IS ok
+<dvhart> yup
+<dvhart> it is OK
+<codec> lol
+<carter> dvhart: iam talking about the handle event
+<dvhart> yup
+<carter> the signals arent passed up
+<dvhart> I was correcting myself sorry
+<carter> ok :)
+<carter> right
+<carter> so that issue is settled IMO
+<dvhart> yup
+<dvhart> awesome!
+<vhmauery> nice
+<dvhart> what a team
+<dvhart> next ?
+<carter> 6. Clipping (at what level) 
+<carter> Imo
+<carter> clipping should be done by the surface
+<dvhart> yeah
+<carter> combined with offsetting
+<dvhart> I think at draw_routine level though
+<dvhart> not at draw_pixerl
+<carter> hmmm
+<carter> yep
+<dvhart> I don't want to have to clip every pixel
+<carter> at draw_routine level
+<carter> not at raw pixel level
+<carter> yep
+<dvhart> ok, ala draw_image
+<carter> right
+<carter> right
+<carter> thats what i wanted to do
+<dvhart> I implemented clipping there already (only there)
+<carter> seen it
+<carter> have to implement offset too
+<codec> yup me too
+<vhmauery> imo, drawing text should be able to choose about pixel/letter/possibly word clipping
+<codec> what do you mean by offset=
+<codec> ?
+<carter> vhmauery: that is not the purpose of clipping
+<carter> imo
+<dvhart> carter wants scrolling
+<carter> that falls in the category
+<carter> text layout M)
+<dvhart> sure it is
+* carter needs scrolling :) ( s/want/need )
+<carter> hmmm
+<dvhart> I suppose its a symantic issue really
+<carter> this issue should be a no brainer ;)
+<dvhart> lol
+<carter> yep
+<dvhart> vhm will need pixel_clipping to draw partial characters
+<dvhart> or he could just draw part of a glyph
+<carter> imo
+<dvhart> I don't want pixel_clipping
+<carter> drawing characters etc
+<carter> should ever call draw pixel
+<carter> imo we need some blitting functions
+<carter> (surface to surface blitting)
+<carter> because MOST hardware does do that in hardware :)
+<carter> !
+<carter> and blitting should be clipped
+<dvhart> as we only have one surface this is a little problematic
+<vhmauery> we need to look into that more.
+<carter> imo
+<carter> images etc
+<carter> should be surfaces too
+<carter> (possibly ,not always
+<dvhart> I considered that
+<carter> and font glyphs
+<carter> we shouldnt really ever deal with copying
+<carter> on the pixel level
+<carter> that is really a performance bottleneck
+<carter> a big one (or small, what you prefer *ggg* )
+<dvhart> *g*
+<vhmauery> in sdl, isn't blit the same as draw_pixel?
+<carter> nooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+<carter> blit is a copy
+<carter> between two surfaces
+<carter> this might be done in hardware
+<carter> dvhart: we really need off screen surfaces
+<carter> with fast blitting capability
+<carter>  IMNSHO
+<dvhart> agreed
+* carter otherwise gets some trouble when implementing charting etc
+<dvhart> this is something I don't know much about
+<carter> you shouldnt care
+<carter> your backend will do the work :)
+<carter> either SDL
+<carter> or directfb or something
+<dvhart> well, we want to write direct back ends
+<dvhart> for the eden fb for example
+<carter> yep
+<dvhart> just bypass dfb all together
+<carter> then you have to optimize
+<carter> but that is not our current concern
+<carter> :)
+<dvhart> true
+* carter has implemented blitting in kernelspace on a C&T 69000
+<dvhart> what's the question again?
+<carter> it is nearly always done in hardware
+<carter> question was how to do clipping
+<dvhart> right
+<carter> imo we have handled the question :)
+<dvhart> so at the draw_routine level
+<carter> yep
+<carter> and for fonts
+<carter> we need blitting
+<dvhart> so the idea is to have surfaces for images and 
+<carter> I M N S H O 
+<carter> the same goes for images
+<carter> yep
+<dvhart> stext which suses glyphs
+<carter> exactly
+<dvhart> but widgets still draw to the parent (and primary) surface
+<carter> yep
+<carter> right
+<carter> yep
+<carter> sure
+<carter> but there might be widgets
+<carter> like a spreadsheet
+<carter> which only draw to a private surface at all
+<carter> and when the draw routine is called
+<carter> only blit this private surface
+<carter> to the screen
+<dvhart> in a clipped rect
+<carter> (this is usually called double buffering *gggg*)
+<carter> yep
+<dvhart> *g*
+<carter> to avoid costly redraws
+<carter> very important when scrolling
+<dvhart> we are using double buffering implicity with SDL
+<dvhart> atm
+<carter> or when you have Verrrry costly redrwa functions
+<carter> (4 second cpu time or something)
+<dvhart> that is why we have an update() routine in surface
+<carter> dvhart: yep
+<carter> but that doesnt need to be the case
+<carter> hmmmmmm
+<carter> imo
+<carter> we shouldnt use full screen double buffering
+<carter> in a GUI toolkit
+<codec> hehe
+<codec> might be a pain in the ass
+<codec> on system with low memory
+<dvhart> I don't have enough experience in this area to offer much input
+<carter> read the SDL docs :)
+<carter> gets you started
+<dvhart> have, will do again
+<codec> :P
+<codec> whats next?
+<dvhart> ok, that is for later I think
+<dvhart> is there a next ?
+<codec> just checked
+<codec> nope
+<codec> :)
+<dvhart> carter had something I think
+<carter> yep
+<carter> last point
+<codec> err i wont scroll up those 100k lines now
+<carter> Touchscreen support
+* codec si quiet
+<carter> we really have everything we need for that one
+<dvhart> how is that part of libstk
+<carter> imo
+<dvhart> isn't it just another event producer ?
+<carter> we need some OSD keyboard support
+<dvhart> ah
+<carter> yep
+<carter> it is
+<codec> hm
+<codec> osd keyboard
+* carter thought about it
+<carter> the nicest solution id
+<carter> is
+<dvhart> basically a mouse interface with a osd widget
+<carter> hmmm
+<carter> no
+<carter> ok
+<carter> drop it
+<carter> the point
+<carter> i dont need any library changes
+<carter> to implement it
+<codec> :)
+<carter> :))))
+<carter> ok
+<carter> thats it
+<carter> otherwise the touch is only an event producer
+<dvhart> carter: I thnk it is a good widget to have
+<dvhart> we need to think about embedded widget types
+<codec> widget
+<dvhart> not just buttons / combos / etc
+<dvhart> what makes libstk special is that it caters to embedded systems
+<dvhart> so there are some widgets that make sense here and not in things like gtk, and vice versa
+<codec> hm
+<dvhart> the osd keyboard is a prime example
+<carter> yep
+* carter will create some
+<vhmauery> and dials and buttons..
+<carter> :)))
+<carter> have some in my brain
+<carter> OSD keyboard is one of them
+<codec> numpads
+* dvhart turns carter upside down and shakes them out
+<carter> lol
+<codec> öpö
+<carter> :)
+<carter> ok
+<codec> lol
+<carter> what should i do now
+<carter> ah
+<carter> right
+<carter> sample API docs
+<carter> for a property
+<dvhart> font manager
+<carter> anyone got the doxygen manual at hand?
+<dvhart> yup
+<codec> yup
+<carter> gimme a link :9
+<codec> err. no, not sure
+<dvhart> one sec... mine is local
+<dvhart> http://www.stack.nl/~dimitri/doxygen/download.html#latestman
+<dvhart> is that what you want?
+<carter> thx
+<dvhart> ok tasks:
+<dvhart> carter: api example (widget.h), font manager caching method
+<dvhart> dvhart: license, focus/hover events
+<carter> will do the api example
+<carter> in button.h
+<carter> :)
+<dvhart> ok
+<dvhart> anything else then gang?
+<codec> grrr i hate my nickname, channels always get marked when someone asks for a video codec or something
+<dvhart> LOL
+<dvhart> the codec is grounded
+<codec> codec: edit-box
+<codec> rofl
+<carter> wah
+<carter> button is missing
+<carter> accessor functions
+<carter> for label!
+<carter>  :)
+<codec> lol
+<carter> will add the prototypes now :)
+<carter> someone skilled should implement them later *ggg* (automatic redraw!?!?!?)
+<dvhart> carter: http://www.homestarrunner.com/sbemail45.html
+<dvhart> carter: automatic redraw ?
+<carter> when you change the buttons/label the button should be redrawn
+<carter> IMO :)
+* carter has no flash player
+<codec> install it with apt
+<carter> no
+<codec> ye
+* carter hates flashs
+<codec> s
+<dvhart> this one is actually worth it
+<codec> DO IT
+<carter> dont want to contaminate my system
+<carter> n o 
+<dvhart> LOL
+<dvhart> oh, yeah so call redraw() like the old even widget focus property setter did
+<dvhart> s/even/evil/
+* codec gets some redbull ready to sprinkle right over carters powersupply, DO IT
+<dvhart> *chuckle*
+<codec> hm on the other hand, i think carter isnt worth strong bad
+<dvhart> lol
+<codec> may we discuss some linux-coding.net now?
+<codec> still in need of a logo
+<codec> :P
+<dvhart> sure, I think we all have some libstk work and a better understanding of what is going one ?? ? ? ? 
+<dvhart> s/one/on/
+<codec> yes
+<codec> my primary task is getting into libstk with the help of edit-box

@@ -19,5 +19,6 @@ You should have received a copy of the GNU Lesser General Public License along w
 HOW TO CONTACT THE COPYRIGHT HOLDER: MAIL, ELECTRONIC ?
 
 EXCEPTION NOTICE
+you may statically link to the lib without releasing your source code.
 
 WRITEME TO MATCH INTENT
