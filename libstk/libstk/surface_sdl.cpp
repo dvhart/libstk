@@ -258,6 +258,7 @@ namespace stk
 				}
 				break;
 		}
+		return 0; // should never happen
 	}
 
 	void surface_sdl::put_pixel_aa(int x, int y, double distance, color clr)

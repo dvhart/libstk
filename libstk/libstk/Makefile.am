@@ -67,6 +67,6 @@ library_include_HEADERS= \
 
 
 # FIXME: do the autotools thing for freetype
-libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@
+libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ 
 
 INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir)

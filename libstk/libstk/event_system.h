@@ -3,7 +3,7 @@
  * DESCRIPTION: Event system singleton, primary access point for application to 
  *              get events from all event producers
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 09/Jun/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 10/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -18,6 +18,7 @@
 #include <queue>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/thread/mutex.hpp> // make this inclusion configurable (#ifdef THREADED)
 #include <libstk/event.h>
 
 namespace stk
@@ -33,6 +34,7 @@ namespace stk
 		private:
 			event_system();
 			static event_system::ptr instance_;
+			boost::mutex queue_mutex; // FIXME: make this configurable
 			std::queue<event::ptr> events_;
 			std::list<boost::shared_ptr<event_producer> > event_producers_;
 			

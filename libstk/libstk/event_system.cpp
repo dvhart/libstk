@@ -2,7 +2,7 @@
  *    FILENAME: event_system.cpp
  * DESCRIPTION: Event system implementation 
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 09/Jun/2003  LAST UPDATE: 09/Jun/2003
+ *  START DATE: 09/Jun/2003  LAST UPDATE: 10/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -13,6 +13,7 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/thread/mutex.hpp> // make this inclusion configurable (#ifdef THREADED)
 #include <libstk/event.h>
 #include <libstk/event_system.h>
 #include <libstk/event_producer.h>
@@ -45,6 +46,9 @@ namespace stk
 			
 	event::ptr event_system::poll_event()
 	{
+		// lock the queue FIXME: make this configuarable
+		boost::mutex::scoped_lock scoped_lock(queue_mutex); 
+		
 		// add any pending events to the queue
 		event::ptr e = event::create(event::none);
 		std::list<event_producer::ptr>::iterator iter = event_producers_.begin();
@@ -70,9 +74,8 @@ namespace stk
 	
 	void event_system::push_event(event::ptr e)
 	{
-		// lock the queue
-		cout << "event_system::push_event() - FIXME LOCK THE QUEUE" << endl;
-		
+		// lock the queue FIXME: make this configuarable
+		boost::mutex::scoped_lock scoped_lock(queue_mutex); 
 		// post the event to the queue
 		events_.push(e);
 	}
