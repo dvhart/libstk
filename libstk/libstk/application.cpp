@@ -94,19 +94,37 @@ namespace stk
         event::ptr event_ = event::create(event::none); // should we use create here ?
         while (!done_)
         {
-            rectangle t_rect = current_state_.lock()->redraw_rect();
-            if ( !t_rect.empty() )
+            try
             {
-                INFO("applicaiton::run() - redrawing state\n\tWith Cliprect " << t_rect);
-                on_predraw(t_rect);
-                current_state_.lock()->draw(surface_,t_rect);
-                on_postdraw(t_rect);
-                surface_->update( t_rect );
+                stk::state::ptr current_state_ptr=current_state_.lock();
+                if(current_state_ptr)
+                {    
+                    rectangle t_rect = current_state_.lock()->redraw_rect();
+                    if ( !t_rect.empty() )
+                    {
+                        INFO("applicaiton::run() - redrawing state\n\tWith Cliprect " << t_rect);
+                        on_predraw(t_rect);
+                        
+                        current_state_ptr->draw(surface_,t_rect);
+                        on_postdraw(t_rect);
+                        surface_->update( t_rect );
+                    }
+                    else
+                    {
+                        //INFO("nothing to redraw");
+                    }
+                }
+                else
+                    WARN("Current State is invalid");
             }
-            else
+            catch(std::exception &excp)
             {
-                //INFO("nothing to redraw");
+                ERROR("Exception " << excp.what() << " while redrawing");
             }
+            catch(...)
+            {
+                ERROR("Unknown exception while redrawing");
+            } 
 
             // handle all available events before redrawing
             event_ = event_system_->poll_event();
@@ -122,34 +140,42 @@ namespace stk
                         event_->type() == event::mouse_up)
 		    {
 			mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
-			
-			// update hover_widget as necessary
+
+                        INFO("Delegating mouse event from Mainloop");
+                        widget::ptr new_hover_ptr=current_state_.lock()->delegate_mouse_event(me);
 			widget::ptr hover_ptr = hover_widget_.lock();
-                        // FIXME: this is broken, me->x is world coords, contains uses local coords
-			if (!hover_ptr || !hover_ptr->contains(me->x(), me->y())) 
+                        INFO("Mouse event delivered");
+			
+			if (new_hover_ptr!=hover_ptr) 
 			{
 			    // NOTE: only leaf widgets can be hover widgets!!!
-			    if (hover_ptr)
-				hover_ptr->handle_event(event::create(event::mouse_leave));
-			    hover_ptr = current_state_.lock()->widget_at(me->x(), me->y());
+			    if(hover_ptr)
+ 				hover_ptr->handle_event(event::create(event::mouse_leave));
+			    hover_ptr = new_hover_ptr;
 			    if (hover_ptr)
 				hover_ptr->handle_event(event::create(event::mouse_enter));
-			    hover_widget_ = hover_ptr;
-			}
-			
+			} 
+
+                        INFO("handling focusing");
+                        
 			// FIXME: do some error checking on the widget pointers
 			// update focused widget as necessary
 			if (event_->type() == event::mouse_down &&
-                            hover_widget_.lock() && // not a null hover widget
-                            hover_widget_.lock() != focused_widget_.lock())
+                            hover_ptr && // not a null hover widget
+                            focused_widget_.lock() != hover_ptr) 
 			{
-			    focused_widget_.lock()->handle_event(event::create(event::un_focus));
-			    focused_widget_ = hover_widget_;
-			    focused_widget_.lock()->handle_event(event::create(event::focus));
-			}
-			
-			current_state_.lock()->delegate_mouse_event(me);
-		    }
+                            INFO("Unfocusing");
+                            if(focused_widget_.lock())
+                                focused_widget_.lock()->handle_event(event::create(event::un_focus));
+                            // Possible bug? focused_widget_ = hover_widget_; Accessing a weak pointer without lock is unsafe
+                            focused_widget_=hover_ptr;
+                            INFO("focusing");
+			    if(hover_ptr)
+                                hover_ptr->handle_event(event::create(event::focus));
+			} 
+                        INFO("focusing handled");
+//                        hover_widget_ = hover_ptr;                        
+ 		    }
 		    else
 		    {
 			INFO("passing event to focused_widget_");
@@ -165,8 +191,9 @@ namespace stk
 		    }
 		}
 		event_ = event_system_->poll_event();
+                INFO("Polled next event");
 	    }
-
+            
             // update all timers
             std::list<timer::ptr>::iterator t_iter = timers_.begin();
             for (t_iter; t_iter != timers_.end(); t_iter++)
@@ -300,29 +327,46 @@ namespace stk
 
     void application::current_state(state::ptr new_cur_state)
     {
-        // FIXME...
-        ///\todo check if this state is null and if it exists in our list, else through exception, return false,  or add it
-        
-        // remove focus from the current widget
-        if (focused_widget_.lock())
-            focused_widget_.lock()->handle_event(event::create(event::un_focus));
-        
-        current_state_ = new_cur_state;
-        
-        // focus the first focusable widget of the new current state
-        focused_widget_ = current_state_.lock()->focus_next();
-        if (focused_widget_.lock())
-            focused_widget_.lock()->handle_event(event::create(event::focus));
-        else
-            // FIXME: throw something
-            ERROR("application::run() - current state has no focusable widgets");
-        
-        new_cur_state->redraw(new_cur_state->rect());
-    }
+        try
+        {
+            INFO("Switching states");
+            // FIXME...
+            ///\todo check if this state is null and if it exists in our list, else through exception, return false,  or add it
+                if(!new_cur_state)
+                {
+                    ERROR("Target State Invalid");
+                    return;
+                }
+                
+                // remove focus from the current widget
+                if (focused_widget_.lock())
+                    focused_widget_.lock()->handle_event(event::create(event::un_focus));
 
+                INFO("Current widget unfocused");
+        
+                current_state_ = new_cur_state;
+                INFO("State Switched");
+        
+                // focus the first focusable widget of the new current state
+                focused_widget_ = current_state_.lock()->focus_next();
+                if (focused_widget_.lock())
+                    focused_widget_.lock()->handle_event(event::create(event::focus));
+                else
+                    // FIXME: throw something
+                    ERROR("application::run() - current state has no focusable widgets");
+        
+                new_cur_state->redraw(new_cur_state->rect());
+        }
+        catch(...)
+        {
+            ERROR("Unknown Exception");
+        }
+    }
+    
     state::ptr application::current_state() const
     {
         return current_state_.lock();
     }
 
 }
+
