@@ -80,7 +80,7 @@ namespace stk
 		// augment redraw_rect_ if it intersects any other children_
 		for (iter; iter != children_.end(); iter++)
 		{
-			if ((*iter)->intersects(redraw_rect_)) (*iter)->draw(surface);
+			if ((*iter)->intersects(redraw_rect_)) redraw_rect_ += (*iter)->rect();
 		}
 		make_shared(parent_)->redraw(true, redraw_rect_);
 	}

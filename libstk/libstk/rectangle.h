@@ -50,7 +50,7 @@ namespace stk
 			bool contains(int x, int y) 
 			{ return (x > p1_.x() && x < p2_.x() && y > p1_.y() && y < p2_.y()); }
 			
-			bool intersects(rectangle& rect)
+			bool intersects(const rectangle& rect)
 			{
 				bool x_in = ((rect.x1() > x1() && rect.x1() < x2()) || (rect.x2() > x1() && rect.x2() < x2()));
 				bool x_span = (rect.x1() <= x1() && rect.x2() >= x2());

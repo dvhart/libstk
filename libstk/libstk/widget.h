@@ -44,6 +44,7 @@ namespace stk
 		public:
 			virtual ~widget();
 
+			virtual rectangle rect() { return rect_; }
 			virtual bool contains(int x, int y) { return rect_.contains(x, y); }
 			virtual bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
 
