@@ -7,6 +7,7 @@
 #include <boost/weak_ptr.hpp>
 #include "application.h"
 #include "widget.h"
+#include "mouse_event.h"
 
 namespace stk
 {
@@ -17,9 +18,9 @@ namespace stk
 			typedef boost::weak_ptr<container> weak_ptr;
 
 		private:
-			std::vector<widget::ptr> children_;
 			
 		protected:
+			std::vector<widget::ptr> children_;
 			container(container::ptr parent);
 			container(parent::ptr parent);
 			
@@ -28,17 +29,21 @@ namespace stk
 
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
 			
-			//virtual bool is_container() { return true; }
+			virtual bool is_container() { return true; }
 			// FIXME :carter: implement all this
-			virtual widget::weak_ptr get_active_child()  // called when the tree parser for widget cycling switches focus to a container
+			virtual widget::ptr get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 
 			
+			// FIXME: write me
+			virtual widget::ptr widget_at(int x, int y);
+			virtual void delegate_mouse_event(mouse_event::ptr me);
+			
 			// event_handler interface
-			//virtual void handle_event(boost::shared_ptr<stk::event> e);
+			virtual void handle_event(event::ptr e);
 
 			// drawable interface
-			//virtual boost::shared_ptr<stk::surface> surface() 
-			//{ return parent_.get()->surface(); }
+			//virtual surface::ptr surface() 
+			//{ return make_shared(parent_)->surface(); }
 
 			// parent interface
 			// FIXME

@@ -13,6 +13,7 @@
 namespace stk
 {
 	class state;
+
 	//class application;
 	/// Application class, Runs the Mainloop, dispatches events etc
 	class application : public parent
@@ -22,11 +23,12 @@ namespace stk
 			typedef boost::weak_ptr<application> weak_ptr;
 
 		private:
-			boost::shared_ptr<stk::surface> surface_;
-			boost::shared_ptr<stk::event_system> event_system_;
-			std::list<boost::shared_ptr<stk::state> > states_;
+			surface::ptr surface_;
+			event_system::ptr event_system_;
+			std::list<boost::shared_ptr<state> > states_;
 			
-			boost::weak_ptr<stk::state> current_state_; 
+			// FIXME: what can we do to use state::weak_ptr
+			boost::weak_ptr<state> current_state_;  // FIXME: should this be a weak_ptr ?
 			widget::weak_ptr current_widget_;
 			widget::weak_ptr hover_widget_; 
 			

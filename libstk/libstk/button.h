@@ -17,7 +17,6 @@ namespace stk
 			typedef boost::weak_ptr<button> weak_ptr;
 
 		private:
-			rectangle rect_;
 			
 		protected:
 			button(container::ptr parent, std::string label, const rectangle& rect);

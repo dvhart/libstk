@@ -59,25 +59,52 @@ namespace stk
 			hover_widget_ = *states_.begin();
 		}
 		
+		// FIXME: we have to do something about all these make_shared calls!!!
 		event::ptr event_(new event(no_event));
 		while (!done_)
 		{
 			// FIXME: I don't think we want to do this 30 times a second
-			if (make_shared(current_state_)->redraw())
+			if (true /*make_shared(current_state_)->redraw()*/)
 			{
 				make_shared(current_state_)->draw(surface_);
 				surface_->flip();
 			}
 			
+			// handle all available events before redrawing
 			event_ = event_system_->poll_event();
-			if (event_->type() != no_event)
+			while (event_->type() != no_event)
 			{
-				//cout << "application::run() - event received of type: " << event_.type() << endl;
-				widget::ptr ptr=make_shared(current_widget_);
-				if (!ptr)
-					cout << "application::run() - no current widget" << endl;
+				cout << "application::run() - event received of type: " << event_->type() << endl;
+
+				// if it's a mouse event, let current_state_ determine who to send it too
+				if (event_->type() == mouse_motion || 
+						event_->type() == mouse_down ||
+						event_->type() == mouse_up)
+				{
+					mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
+					widget::ptr hover_ptr = boost::make_shared(hover_widget_);
+					if (!hover_ptr->contains(me->x(), me->y()))
+					{
+						cout << "changing hover_widget_" << endl;
+						boost::make_shared(hover_widget_)->hover(false);
+						boost::make_shared(hover_widget_)->redraw(true);
+						hover_widget_ = boost::make_shared(current_state_)->widget_at(me->x(), me->y());	
+						if (!make_shared(hover_widget_)) hover_widget_ = current_state_;
+						boost::make_shared(hover_widget_)->hover(true);
+						boost::make_shared(hover_widget_)->redraw(true);
+					}
+					boost::make_shared(current_state_)->delegate_mouse_event(me);
+				}
 				else
-					ptr->handle_event(event_);
+				{
+					widget::ptr ptr=make_shared(current_widget_);
+					if (!ptr)
+						cout << "application::run() - no current widget" << endl;
+					else
+						ptr->handle_event(event_);
+				}
+				
+				event_ = event_system_->poll_event();
 			}
 		}
 		cout << "application::run() - leaving" << endl;
@@ -105,7 +132,7 @@ namespace stk
 	// event_handler interface
 	void application::handle_event(event::ptr e)
 	{
-		cout << "application::handle_event()" << endl;
+		//cout << "application::handle_event()" << endl;
 		switch(e->type())
 		{
 			case key_down:

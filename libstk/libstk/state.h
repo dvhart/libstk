@@ -19,12 +19,12 @@ namespace stk
 
 		protected:
 			state(application::ptr parent);
-			boost::weak_ptr<widget> focused_widget_;
+			widget::weak_ptr focused_widget_; // FIXME: are we using this ?
 			
 		public:
 			virtual ~state();
 			static state::ptr create(application::ptr parent);
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void draw(surface::ptr surface);
 			widget::weak_ptr focused_widget();
 			void focused_widget(widget::weak_ptr value);
 

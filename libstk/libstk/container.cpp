@@ -4,6 +4,7 @@
 #include "widget.h"
 #include "container.h"
 #include "exceptions.h"
+#include "mouse_event.h"
 
 using std::cout;
 using std::endl;
@@ -26,11 +27,36 @@ namespace stk
 
 	void container::draw(boost::shared_ptr<stk::surface> surface)
 	{
-		redraw_ = false; 
-		std::vector<boost::shared_ptr<stk::widget> >::iterator iter = children_.begin();
+		std::vector<widget::ptr>::iterator iter = children_.begin();
 		for (iter; iter != children_.end(); iter++)
 		{
-			if ((*iter)->redraw()) (*iter)->draw(surface);
+			if (true /*(*iter)->redraw()*/) (*iter)->draw(surface);
+		}
+		redraw_ = false; 
+	}
+
+	widget::ptr container::widget_at(int x, int y)
+	{ 
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
+		{
+			if ((*iter)->contains(x, y)) return *iter;
+		}
+		cout << "widget_at not found, returning an empty shared_ptr" << endl;
+		return widget::ptr();
+		//return container::ptr(this); // FIXME: why does this cause a segfault
+	}
+	
+	void container::delegate_mouse_event(mouse_event::ptr me)
+	{
+		// pass a mouse event to the appropriate widget
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
+		{
+			if ((*iter)->contains(me->x(), me->y()))
+			{
+				(*iter)->handle_event(me);
+			}
 		}
 	}
 	
@@ -44,6 +70,15 @@ namespace stk
 		std::vector<boost::shared_ptr<stk::widget> >::iterator iter;
 		iter=std::find(children_.begin(), children_.end(), item);
 		children_.erase(iter);
+	}
+
+	void container::handle_event(event::ptr e)
+	{
+		// handle standard container events
+		// ... FIXME: writeme
+
+		// if we don't handle it, give it to the parent
+		boost::make_shared(parent_)->handle_event(e);
 	}
 
 }

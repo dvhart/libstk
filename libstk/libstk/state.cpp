@@ -24,33 +24,37 @@ namespace stk
 		container(boost::shared_static_cast<stk::parent>(parent))
 	{
 		cout << "state::state()" << endl;
-		cout << "state::state() - parent pointer is " << std::hex << parent.get() << endl;
 	}
 
 	state::~state()
 	{
 	}
 	
-	void state::draw(boost::shared_ptr<stk::surface> surface)
+	void state::draw(surface::ptr surface)
 	{
-		cout << "state::draw()" << endl;
-		theme::instance()->draw_state();
+		//cout << "state::draw()" << endl;
+		if (redraw()) theme::instance()->draw_state();
 		container::draw(surface);
 	}
+	
 	// event_handler interface - default back to parent
-	// FIXME: this is currently exactly like widget::handle_event()
-	void state::handle_event(boost::shared_ptr<stk::event> e)
+	void state::handle_event(event::ptr e)
 	{
-		cout << "state::handle_event()" << endl;
-		// FIXME: what is the best way to access the weak_ptr parent_
-		// should we make it shared first ? (see all other uses torc/te)
+		//cout << "state::handle_event()" << endl;
+		// handle appropriate events here FIXME
+		// ...
+
+		container::handle_event(e); 
+
+		// if we don't handle it, pass up to the parent
 		// mstr: broken in Boost_1_30_0 and in general! FIXME
-		//if (parent_.get() == 0)
-		//{ 
+		// FIXME: only run if not handled ???
+		if (!boost::make_shared(parent_))
+		{ 
 			// throw something
-//			cout << "state::handle_event() - null parent_ pointer" << endl;
-	//	}
-		//parent_.get()->handle_event(e);
+			cout << "state::handle_event() - null parent_ pointer" << endl;
+		}
+		make_shared(parent_)->handle_event(e); 
 	}
 
 

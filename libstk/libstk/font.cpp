@@ -24,12 +24,12 @@ namespace stk
 		int error;
 		if (font_count_ == 0)
 		{
-			cout << "font::font: initializing FreeType library" << endl;
+			//cout << "font::font: initializing FreeType library" << endl;
 			error = FT_Init_FreeType( &lib_ );
 			if ( error ) throw std::string("font::font: could not initialize Freetype library");
 		}
 		string filename = string("/usr/share/libstk/fonts/")+fontname;
-		cout << "font::font: opening font file " << filename << endl;
+		//cout << "font::font: opening font file " << filename << endl;
 		error = FT_New_Face( lib_, filename.c_str(), 0, &face_);
 		if (error == FT_Err_Unknown_File_Format)
 		{
@@ -59,7 +59,7 @@ namespace stk
 		// need to do reference counting for the lib handle
 		if (--font_count_ == 0)
 		{
-			cout << "font::~font: Done with FreeType library" << endl;
+			//cout << "font::~font: Done with FreeType library" << endl;
 			FT_Done_FreeType(lib_);
 		}
 

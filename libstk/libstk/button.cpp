@@ -23,7 +23,7 @@ namespace stk
 	}
 
 	button::button(boost::shared_ptr<container> parent, std::string label,
-					const rectangle& rect) : widget(parent), rect_(rect)
+					const rectangle& rect) : widget(parent, rect)
 	{
 		cout << "button::button()" << endl;
 	}
@@ -34,14 +34,14 @@ namespace stk
 
 	void button::draw(boost::shared_ptr<stk::surface> surface)
 	{
+		/*if (redraw())*/ theme::instance()->draw_button(rect_, active_, focused_, hover_);
 		redraw_ = false;
-		theme::instance()->draw_button(rect_, active_, focused_, hover_);
 	}
 			
 	// event_handler interface
-	void button::handle_event(boost::shared_ptr<stk::event> e)
+	void button::handle_event(event::ptr e)
 	{
-		cout << "button::handle_event()" << endl;
+		//cout << "button::handle_event()" << endl;
 		
 		switch (e->type())
 		{
@@ -55,18 +55,44 @@ namespace stk
 						on_click();
 						break;
 					default:
-						//FIXME: make_shared first ?... the parent should never be null...
 						//mstr: broken in boost_1_30_0 FIXME
-						//parent_.get()->handle_event(e);
-					;
+						boost::make_shared(parent_)->handle_event(e);
 				}
-				break;
+				break; // key_up
+			}
+			// FIXME: this stuff should be moved to application or state I think
+			case mouse_motion:
+			{
+				cout << "button: just got a mouse_motion event" << endl;
+				//boost::make_shared(parent_)->handle_event(e);
+				break; // mouse_motion
+			}
+			case mouse_down:
+			{
+				cout << "button: just got a mouse_down event" << endl;
+				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+				if (!active())
+				{
+					active(true);
+					redraw(true);
+				}
+				on_click();
+				break; // mouse_down
+			}
+			case mouse_up:
+			{
+				cout << "button: just got a mouse_up event" << endl;
+				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+				if (active())
+				{
+					active(false);
+					redraw(true);
+				}
+				break; // mouse_up
 			}
 			default:
-				//FIXME: make_shared first ?... the parent should never be null...
 				//mstr: broken in boost_1_30_0 FIXME
-				//parent_.get()->handle_event(e);
-			;
+				boost::make_shared(parent_)->handle_event(e);
 		}
 	}
 }

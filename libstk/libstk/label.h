@@ -18,7 +18,6 @@ namespace stk
 			typedef boost::weak_ptr<label> weak_ptr;
 
 		private:
-			rectangle rect_;
 			std::wstring text_;
 			
 		protected:

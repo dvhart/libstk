@@ -600,7 +600,7 @@ namespace stk
 
 	void surface::draw_text(int x, int y, const std::wstring &text, int kerning_mode)
 	{
-		cout << "surface::draw_text - begin" << endl;
+		//cout << "surface::draw_text - begin" << endl;
 
 		// ignore the bounds and stuff for now
 		// FIXME: add bounding boxes later
@@ -621,7 +621,7 @@ namespace stk
 			int w = bmp->width();
 			int by = bmp->bearing_y() >> 6;
 			int bx = bmp->bearing_x() >> 6;
-			cout << "surface::draw_text - " << (char)text[i] << ", bearingY="<<std::dec<< by << ", bearingX="<<bx<<endl;
+			//cout << "surface::draw_text - " << (char)text[i] << ", bearingY="<<std::dec<< by << ", bearingX="<<bx<<endl;
 			boost::shared_array<unsigned char> bits = bmp->bitmap();
 			// draw it
 			for (int dy=0; dy<bmp->height(); dy++)
@@ -636,7 +636,7 @@ namespace stk
 			if (i<text.length()-1) x += (fon->kerning(text[i], text[i+1]) >> 6);
 		}
 		
-		cout << "surface::draw_text - end" << endl;
+		//cout << "surface::draw_text - end" << endl;
 	}
 
 	// antialiased draw routines

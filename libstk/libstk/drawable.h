@@ -2,6 +2,7 @@
 #define STK_DRAWABLE_H
 
 #include "surface.h"
+#include "rectangle.h"
 
 namespace stk
 {
@@ -16,6 +17,8 @@ namespace stk
 			drawable() { };
 			virtual ~drawable() { };
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
+			//virtual void redraw(const rectangle& rect=rectangle(0,0,0,0)) { }
+			virtual void redraw(bool val) { }
 			
 	}; // class drawable
 } // namespace stk

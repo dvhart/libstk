@@ -13,6 +13,7 @@ email                : dvhart@byu.edu
 #include <iostream>
 #include <string>
 
+#include "parent.h"
 #include "application.h"
 #include "widget.h"
 #include "container.h"
@@ -23,63 +24,61 @@ using std::endl;
 namespace stk
 {
 
-	widget::widget(boost::shared_ptr<container> parent) : parent_(parent), 
-		redraw_(true), focusable_(false), active_(false), focused_(false), hover_(false)
+	widget::widget(container::ptr parent, const rectangle& rect)
+		: parent_(parent), rect_(rect), redraw_(true), focusable_(false), 
+	    active_(false), focused_(false), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(container)" << endl;
-		cout << "widget::widget(container) - parent pointer is " << std::hex << parent.get() << endl;
-		//parent->add_child(boost::shared_ptr<widget>(this));
+		//parent->add_child(widget::ptr(this)); // why is this not being called ?
 	}
 
-	widget::widget(boost::shared_ptr<parent> parent) : parent_(parent),
-		redraw_(true), focusable_(false), active_(false), focused_(false), hover_(false)
+	widget::widget(parent::ptr parent, const rectangle& rect)
+		: parent_(parent), rect_(rect), redraw_(true), focusable_(false), 
+	    active_(false), focused_(false), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(parent)" << endl;
-		cout << "widget::widget(parent) - parent pointer is " << std::hex << parent.get() << endl;
 	}
 
 	widget::~widget()
 	{
 	}
 
-	void widget::draw(boost::shared_ptr<stk::surface> surface)
+	void widget::draw(surface::ptr surface)
 	{
 		redraw_ = false;
 	}
 	
 	// event_handler interface - default back to parent
-	void widget::handle_event(boost::shared_ptr<stk::event> e)
+	void widget::handle_event(event::ptr e)
 	{
 		cout << "widget::handle_event()" << endl;
-		// FIXME: what is the best way to access the weak_ptr parent_
-		// should we make it shared first ? (see all other uses torc/te)
 		// MSTR:broken! (NO weak_ptr::GET in boost 1_30_0) FIXME
-		//if (parent_.get() == 0)
-		//{
+		if (!boost::make_shared(parent_))
+		{
 			// throw something
-//			cout << "widget::handle_event() - null parent_ pointer" << endl;
-	//	}
-		//parent_.get()->handle_event(e);
+			cout << "widget::handle_event() - null parent_ pointer" << endl;
+		}
+		boost::make_shared(parent_)->handle_event(e);
 	}
 
 	// drawable interface
-	boost::shared_ptr<stk::surface> widget::surface()
+	surface::ptr widget::surface()
 	{
 		// MSTR broken!
-		//return parent_.get()->surface(); 
+		return boost::make_shared(parent_)->surface(); 
 	}
 
 	// parent interface
-	boost::shared_ptr<widget> widget::focus_next()
+	widget::ptr widget::focus_next()
 	{ 
 		// MSTR broken!
-		//return parent_.get()->focus_next(); 
+		return boost::make_shared(parent_)->focus_next(); 
 	}
 
-	boost::shared_ptr<widget> widget::focus_prev()
+	widget::ptr widget::focus_prev()
 	{ 
 		// MSTR broken!
-		//return parent_.get()->focus_prev(); 
+		return boost::make_shared(parent_)->focus_prev(); 
 	}
 
 }

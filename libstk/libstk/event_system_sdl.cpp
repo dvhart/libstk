@@ -32,34 +32,34 @@ namespace stk
 		event::ptr event_(new event(no_event));
 		if (SDL_PollEvent(&new_event))
 		{
-			cout << "event_system_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
+			//cout << "event_system_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
 			switch(new_event.type)
 			{
 				case SDL_KEYDOWN:
-					cout << "SDL_KEYDOWN" << endl;
+					//cout << "SDL_KEYDOWN" << endl;
 					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_down));
 					break;
 				case SDL_KEYUP:
-					cout << "SDL_KEYUP" << endl;
+					//cout << "SDL_KEYUP" << endl;
 					return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_up));
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					cout << "SDL_MOUSEBUTTONDOWN" << endl;
+					//cout << "SDL_MOUSEBUTTONDOWN" << endl;
 					return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y, 
 							               new_event.button.button, mouse_down));
 					break;
 				case SDL_MOUSEBUTTONUP:
-					cout << "SDL_MOUSEBUTTONUP" << endl;
+					//cout << "SDL_MOUSEBUTTONUP" << endl;
 					return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y, 
 							               new_event.button.button, mouse_up));
 					break;
 				case SDL_MOUSEMOTION:
-					cout << "SDL_MOUSEMOTION" << endl;
+					//cout << "SDL_MOUSEMOTION" << endl;
 					return mouse_event::ptr(new mouse_event(new_event.motion.x, new_event.motion.y, 
 							               -1, mouse_motion));
 					break;
 				case SDL_QUIT:
-					cout << "SDL_QUIT" << endl;
+					//cout << "SDL_QUIT" << endl;
 					return event::ptr(new event(event_quit));
 					break;
 				default:

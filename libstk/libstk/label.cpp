@@ -17,7 +17,7 @@ namespace stk
 	}
 
 	label::label(boost::shared_ptr<container> parent, std::wstring text,
-					const rectangle& rect) : widget(parent), text_(text), rect_(rect)
+					const rectangle& rect) : widget(parent, rect), text_(text)
 	{
 		cout << "label::label()" << endl;
 	}

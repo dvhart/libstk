@@ -11,6 +11,10 @@
 #define MIN(A,B) (((A)<(B))?(A):(B))
 #endif
 
+#ifndef MAX
+#define MAX(A,B) (((A)>(B))?(A):(B))
+#endif
+
 namespace stk
 {
 	// FIXME

@@ -1,6 +1,7 @@
 #ifndef STK_RECTANGLE_H
 #define STK_RECTANGLE_H
 
+#include "stk.h" // is this where we should define MIN,MAX,color etc... ?
 #include "point.h"
 #include "exceptions.h"
 
@@ -44,6 +45,17 @@ namespace stk
 			void y2(int val) { p2_.y(val); };
 			void w(int val) { p2_.x(val + p1_.x()); };
 			void h(int val) { p2_.y(val + p1_.y()); };
+
+			// utilities
+			bool contains(int x, int y) 
+			{ return (x > p1_.x() && x < p2_.x() && y > p1_.y() && y < p2_.y()); }
+
+			// operators
+			rectangle operator+(const rectangle& rect) const
+			{
+				return rectangle(MIN(x1(), rect.x1()), MIN(y1(), rect.y1()), 
+						             MAX(x2(), rect.x2()), MAX(y2(), rect.y2()));
+			}
 	};
 }
 

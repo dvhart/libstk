@@ -25,14 +25,18 @@ namespace stk
 		private:
 
 		protected:
-			widget(boost::shared_ptr<container> parent);
-			widget(boost::shared_ptr<parent> parent);
-			boost::weak_ptr<parent> parent_;
+			// FIXME: what can we do to use container::ptr, etc here ?
+			widget(boost::shared_ptr<container> parent, const rectangle& rect=rectangle(0,0,0,0));
+			widget(parent::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
+			parent::weak_ptr parent_;
+			
+			rectangle rect_;
 			
 			// widget attributes
 			bool redraw_;
 			bool focusable_;
 			int tab_;
+			
 			// drawing related attributes
 			bool active_;
 			bool focused_;
@@ -42,10 +46,11 @@ namespace stk
 			virtual ~widget();
 
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual bool contains(int x, int y) { return rect_.contains(x, y); }
 
 			// widget attribute accessor methods
 			bool redraw() { return redraw_; }
-			void redraw(bool val) { redraw_ = val; }
+			virtual void redraw(bool val) { redraw_ = val; }
 			bool focusable() { return focusable_; }
 			void focusable(bool val) { focusable_ = val; }
 			int tab() { return tab_; }
@@ -58,7 +63,7 @@ namespace stk
 			void hover(bool val) { hover_ = val; }
 			
 			// event_handler interface
-			virtual void handle_event(boost::shared_ptr<stk::event> e);
+			virtual void handle_event(event::ptr e);
 
 			// drawable interface
 			virtual boost::shared_ptr<stk::surface> surface(); 
@@ -75,54 +80,19 @@ namespace stk
 			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keyup;
 
 			/*
-				 The signals currently all return void, however, it may be useful
-				 to define an AND combiner functor and have all slots return bool.  
-				 Then if any of the slots fail, the signal returns false, otherwise
-				 it returns true.  We might do something like:
-				 
-				 see combiners.h
-				 
-				 template <typename T>
-				 struct logical_and 
-				 { 
-					 typedef T return_type;
-
-					 template <typename InputIterator>
-				   T operator ()(InputIterator first, InputIterator last) const
-				   {
-				     if (first == last) return true; // no connections, so we didn't fail
-				     while (first != last)
-						 {
-				       if (! *first) return false; // one failed, so return false
-				       ++first;
-				     }
-				     return true; // no connections failed
-				   }
-				 };
-
-				 boost::signal<bool (), sig_and> sig;
-
-				 we can of course let the "user" specify all this... but as a widget set,
-				 I think it makes since to define a standard interface, and I doubt
-				 users are going to want to receive a vector of return values...
-
-				 sorry for the spewage in Marc's beautiful code... :-)
-
-				 
 			//some cool things we can do with boost::signals
 
 			VideoPanel my_vp(new stk::video_panel);
 			Button my_button(new stk::button);
 
 			// we don't need any arguments in general for slots since we can connect
-			// functors, and specific object member variables
+			// functors, and specific object member methods
 			my_button.on_click.connect(boost::bind(&stk::video_panel::play, my_vp));
 
 			// perhaps we want to rewind and start over on_click (in that order)
 			my_button.on_click.connect(0, boost::bind(&stk::video_panel::rewind, my_vp));
 			my_button.on_click.connect(1, boost::bind(&stk::video_panel::play, my_vp));
-
-*/
+			*/
 			
 	}; // class widget
 } // namespace stk

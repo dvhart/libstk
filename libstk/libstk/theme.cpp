@@ -28,7 +28,7 @@ namespace stk
 	
 	void theme::draw_state()
 	{
-		cout << "theme::draw_state()" << endl;
+		//cout << "theme::draw_state()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(surface_->gen_color("0xFFFFFFFF")); 
 		surface_->gc(gc);
@@ -37,13 +37,14 @@ namespace stk
 	
 	void theme::draw_button(rectangle& rect, bool active, bool focused, bool hover)
 	{
-		cout << "theme::draw_button()" << endl;
+		//cout << "theme::draw_button()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		if (active)
 		{
-			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+			gc->fill_color(surface_->gen_color("0x00FF00FF")); 
 			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
+			surface_->fill_rect(rect);
 			surface_->draw_rect(rect);
 		}
 		else if(focused)
@@ -51,6 +52,7 @@ namespace stk
 			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
 			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
+			surface_->fill_rect(rect);
 			surface_->draw_rect(rect);
 		}
 		else if (hover)
@@ -58,20 +60,22 @@ namespace stk
 			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
 			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
+			surface_->fill_rect(rect);
 			surface_->draw_rect(rect);
 		}
 		else
 		{
-			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+			gc->fill_color(surface_->gen_color("0xFFFFFFFF")); 
 			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
+			surface_->fill_rect(rect);
 			surface_->draw_rect(rect);
 		}
 	}
 
 	void theme::draw_label(rectangle& rect, std::wstring text)
 	{
-		cout << "theme::draw_label()" << endl;
+		//cout << "theme::draw_label()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
 		gc->line_color(surface_->gen_color("0x0000FFFF")); 
