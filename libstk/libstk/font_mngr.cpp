@@ -32,28 +32,28 @@ font_manager::~font_manager()
 
 font::ptr font_manager::get_font(font_properties properties)
 {
-	std::cout << "get font called...\t";
+	//std::cout << "get font called...\t";
 	Tfonts::iterator font_iter=fonts.find(properties);
 	if(font_iter==fonts.end())
 	{
-		std::cout << "not font description yet...\t";
+		//std::cout << "not font description yet...\t";
 		font::ptr newfont(new font(properties.fontname,properties.height,0));
 		fonts[properties]=newfont;
-		std::cout << "created\n";
+		//std::cout << "created\n";
 		return newfont;
 	}
 	else
 	{
-		font::ptr font_ptr=font_iter->second.lock();
+		font::ptr font_ptr=font_iter->second;
 		if(font_ptr)
 		{
-			std::cout << "cached\n";
+			//std::cout << "cached\n";
 			return font_ptr;
 		}
-		std::cout << "uncached...\t";
+		//std::cout << "uncached...\t";
 		font::ptr newfont(new font(properties.fontname,properties.height,0));
 		fonts[properties]=newfont;
-		std::cout << "Created\n";
+		//std::cout << "Created\n";
 		return newfont;
 	}
 }

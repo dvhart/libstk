@@ -34,7 +34,7 @@ public:
 private:
 	static font_manager::ptr instance;
 
-	typedef std::map<font_properties,font::weak_ptr> Tfonts;
+	typedef std::map<font_properties,font::ptr> Tfonts;
 	Tfonts fonts;
 
 	font_manager();
