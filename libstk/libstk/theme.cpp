@@ -97,9 +97,9 @@ namespace stk
 			surface_->draw_rect(rect);
 			surface_->draw_text(rect, text);
 		}
-		catch (exception e)
+		catch (const exception& e)
 		{
-			cout << "theme::draw_label: error: " << e.to_string() << endl;
+			cout << "theme::draw_label: error: " << e.what() << endl;
 		}
 	}
 }

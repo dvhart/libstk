@@ -26,7 +26,8 @@ namespace stk
 
 		protected:
 			// FIXME: what can we do to use container::ptr, etc here ?
-			widget(boost::shared_ptr<container> parent, const rectangle& rect=rectangle(0,0,0,0));
+			widget(boost::shared_ptr<container> parent, 
+				const rectangle& rect=rectangle(0,0,0,0));
 			widget(parent::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
 			parent::weak_ptr parent_;
 			
@@ -49,7 +50,8 @@ namespace stk
 			bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
 
 			// widget attribute accessor methods
-			// FIXME: have the setters return bool ? (ie label would return false for a focus(true) call) ?
+			// FIXME: have the setters return bool ? 
+			// (ie label would return false for a focus(true) call) ?
 			bool focusable() { return focusable_; }
 			void focusable(bool val) { focusable_ = val; }
 			int tab() { return tab_; }
@@ -59,12 +61,7 @@ namespace stk
 			bool focused() { return focused_; }
 			void focused(bool val) { focused_ = val; redraw(rect_); }
 			bool hover() { return hover_; } 
-			void hover(bool val) 
-			{ 
-				hover_ = val; 
-				redraw(rect_);
-				cout << "set hover to widget with rect: " << rect_ << endl;
-			}
+			void hover(bool val) { hover_ = val; redraw(rect_); }
 			
 			// event_handler interface
 			virtual void handle_event(event::ptr e);

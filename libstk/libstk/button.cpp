@@ -52,7 +52,23 @@ namespace stk
 				{
 					case key_enter:
 						cout << "button::handle_event() - emitting signal on_click()" << endl;
+						active(false);
 						on_click();
+						break;
+					default:
+						//mstr: broken in boost_1_30_0 FIXME
+						boost::make_shared(parent_)->handle_event(e);
+				}
+				break; // key_up
+			}
+			case key_down:
+			{
+				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+				switch ( ke->key() )
+				{
+					case key_enter:
+						cout << "button::handle_event() - emitting signal on_click()" << endl;
+						active(true);
 						break;
 					default:
 						//mstr: broken in boost_1_30_0 FIXME
@@ -72,7 +88,6 @@ namespace stk
 				if (!active())
 				{
 					active(true);
-					redraw(rect_);
 				}
 				break; // mouse_down
 			}
@@ -82,7 +97,6 @@ namespace stk
 				if (active())
 				{
 					active(false);
-					redraw(rect_);
 					on_click();
 				}
 				break; // mouse_up
