@@ -41,7 +41,6 @@ namespace stk
             /// line ends are cut perpendicular to their centerline
             square
         };
-
     private:
         /// The width in pixels of the pen used to draw primitives
         int line_width_;
@@ -55,11 +54,15 @@ namespace stk
         stk::font::ptr font_;
         color font_fill_color_;
         color font_outline_color_;
+        en_vertical_alignment vertical_alignment_;
+        en_horizontal_alignment horizontal_alignment_;
+        
         bool alpha_blend_;      /// If enabled blitting and drawing routines alpha
                                 /// blend with the surface_color and the current colors
                                 /// alpha channel, default is on.
     protected:
-        graphics_context() : alpha_blend_(true)
+        graphics_context() : vertical_alignment_(va_top), horizontal_alignment_(ha_left),
+                             alpha_blend_(true)
         {}
 
     public:
@@ -142,6 +145,22 @@ namespace stk
         void alpha_blend(bool newval) 
         {
             alpha_blend_ = newval;
+        }
+        en_vertical_alignment vertical_alignment() const
+        {
+            return vertical_alignment_;
+        }
+        void vertical_alignment(en_vertical_alignment new_alignment)
+        {
+            vertical_alignment_=new_alignment;
+        }
+        en_horizontal_alignment horizontal_alignment() const
+        {
+            return horizontal_alignment_;
+        }
+        void horizontal_alignment(en_horizontal_alignment new_alignment)
+        {
+            horizontal_alignment_=new_alignment;
         }
     };
 }
