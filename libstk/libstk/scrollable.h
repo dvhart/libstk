@@ -1,6 +1,6 @@
 /**************************************************************************************************
  *     CVS $Id$
- * DESCRIPTION: An abstract base class providing vertical and horizontal scroll models to widgets
+ * DESCRIPTION: An interface providing vertical and horizontal scroll models to widgets
  *              that need to be aware of their scrolling properties, such as text_are and viewport.
  *     AUTHORS: Darren Hart 
  *  START DATE: 2003/Oct/10
@@ -22,27 +22,28 @@
 
 namespace stk
 {
-    class scrollable : public widget
+    class scrollable
     {
         public:
             typedef boost::shared_ptr<scrollable> ptr;
             typedef boost::weak_ptr<scrollable> weak_ptr;
 
         protected:
-            scrollable(container::ptr parent, const rectangle& rect);
             scroll_model::ptr v_scroll_;
+            boost::signals::connection v_scroll_con_;
             scroll_model::ptr h_scroll_;
+            boost::signals::connection h_scroll_con_;
 
         public:
-            static scrollable::ptr create(container::ptr parent, const rectangle& rect);
+            scrollable();
             virtual ~scrollable();
 
             /********** SCROLLABLE INTERFACE **********/
-            scroll_model::ptr h_scroll() { return h_scroll_; }
-            void h_scroll(scroll_model::ptr model);
+            virtual scroll_model::ptr h_scroll() { return h_scroll_; }
+            virtual void h_scroll(scroll_model::ptr model);
 
-            scroll_model::ptr v_scroll() { return v_scroll_; }
-            void v_scroll(scroll_model::ptr model);
+            virtual scroll_model::ptr v_scroll() { return v_scroll_; }
+            virtual void v_scroll(scroll_model::ptr model);
             /********** END SCROLLABLE INTERFACE **********/
     };
 } // end namespace

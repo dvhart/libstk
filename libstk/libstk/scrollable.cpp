@@ -14,16 +14,7 @@
 
 namespace stk
 {
-
-    scrollable::ptr scrollable::create(container::ptr parent, const rectangle& rect)
-    {
-        scrollable::ptr new_scrollable(new scrollable(parent, rect));
-        parent->add(new_scrollable);
-        return new_scrollable;
-    }
-
-    scrollable::scrollable(container::ptr parent, const rectangle& rect)
-        : widget(parent, rect)
+    scrollable::scrollable()
     {
         INFO("constructor");
     }
@@ -32,14 +23,16 @@ namespace stk
     {
         INFO("destructor");
     }
-
+    
     void scrollable::h_scroll(scroll_model::ptr model)
     {
+        h_scroll_con_.disconnect();
         h_scroll_ = model;
     }
 
     void scrollable::v_scroll(scroll_model::ptr model)
     {
+        v_scroll_con_.disconnect();
         v_scroll_ = model;
     }
 
