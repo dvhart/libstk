@@ -22,11 +22,11 @@ else
  tests_fbdev  = 
 endif
 
-#if PRINTING
-# tests_printing = printing_test
-#else
+if PRINTING
+ tests_printing = printing_test
+else
  tests_printing = 
-#endif
+endif
 
 
 library_includedir  = $(includedir)/libstk-$(VERSION)/libstk
