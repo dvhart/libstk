@@ -197,17 +197,17 @@ namespace stk
                 int x=*(short*)&(message[3]);
                 int y=*(short*)&(message[5]);
                 elo_scale_xy(x,y);
-                WARN ("Touch message received type=" << (unsigned int)message[2]);
+                //WARN ("Touch message received type=" << (unsigned int)message[2]);
                 
                 if(message[2]==1) //TOUCH
                 {
                     event_.reset(new mouse_event(x,y,1,event::mouse_down));
-                    INFO("Touch at X=" << x << " Y=" << y);
+                    //INFO("Touch at X=" << x << " Y=" << y);
                 }
                 if(message[2]==4) //UNTOUCH
                 {
                     event_.reset(new mouse_event(x,y,1,event::mouse_up));
-                    INFO("Untouch at X=" << x << " Y=" << y);
+                    //INFO("Untouch at X=" << x << " Y=" << y);
                     just_untouched=true;
                 }
             } // message type == T
