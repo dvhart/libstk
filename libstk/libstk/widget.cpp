@@ -88,7 +88,7 @@ namespace stk
 	// drawable interface
 	surface::ptr widget::surface()
 	{
-		// MSTR broken!
+		// MSTR: broken!, we shouldnt use Smart pointers like this,VERY unsafe!
 		return parent_.lock()->surface(); 
 	}
 	

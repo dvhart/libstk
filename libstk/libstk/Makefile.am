@@ -49,7 +49,8 @@ libstk_la_SOURCES =\
 	widget.h widget.cpp
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
-	
+
+
 library_include_HEADERS= \
 	aa_filter.h      event_system.h      key_event.h    state.h \
 	application.h    keycode.h      stk.h	\
@@ -63,7 +64,7 @@ library_include_HEADERS= \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
 	posix_time.h     viewport.h          sdl_data.h     hotkey.h \
-	stk_types.h
+	stk_types.h scroll_bar.h event_producer.h 
 
 
 # FIXME: do the autotools thing for freetype
