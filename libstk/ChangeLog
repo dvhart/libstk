@@ -1,3 +1,19 @@
+2003-06-25 19:52  dvhart
+
+	* libstk/: button.cpp, button.h, combiners.h, container.cpp,
+	list.cpp, list_item.cpp, progress.cpp, spinner.cpp, state.cpp,
+	timer.h, viewport.cpp, widget.cpp, widget.h: -fixed several
+	handle_event bugs (containers call container::handle_event() and
+	widgets call widget::handle_event() when they don't handle it
+	themselves) -changed empty combiners to return false (allows
+	checking for event handling of empty signals)
+
+2003-06-23 11:40  dvhart
+
+	* ChangeLog, TODO, source_header.txt, libstk/application.cpp:
+	changelog update, source_header to new format width, so ugly
+	formatting fixes in application.cpp
+
 2003-06-23 10:34  carter
 
 	* libstk/: application.cpp, application.h: Reverted Darrens
