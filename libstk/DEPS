@@ -3,6 +3,8 @@ libboost-dev
 libboost-doc 
 libboost-signals-dev 
 libboost-signals1.30.0
+libfreetype6-dev
+libpng12-dev
 
 (gnu.org)
 autoconf-1.7
