@@ -37,7 +37,8 @@ libstk_la_SOURCES =\
 	exceptions.h scroll_model.h scroll_model.cpp \
 	theme.h theme.cpp \
 	timer.h timer.cpp \
-	tribal_theme.h tribal_theme.cpp 
+	tribal_theme.h tribal_theme.cpp \
+	scroll_bar.h scroll_bar.cpp 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
