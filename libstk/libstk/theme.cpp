@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME:  
- * DESCRIPTION: 
- *     AUTHORS: First Last, First Last, etc.
- *  START DATE: DD/MMM/YYYY  LAST UPDATE: DD/MMM/YYY
+ *    FILENAME: theme.cpp
+ * DESCRIPTION: Theme class implementation
+ *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
+ *  START DATE: 17/Mar/2003  LAST UPDATE: 14/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

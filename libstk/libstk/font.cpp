@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME:  
- * DESCRIPTION: 
- *     AUTHORS: First Last, First Last, etc.
- *  START DATE: DD/MMM/YYYY  LAST UPDATE: DD/MMM/YYY
+ *    FILENAME: font.cpp
+ * DESCRIPTION: Font class implementation.
+ *     AUTHORS: Vernon Mauery, Darren Hart, Marc Straemke
+ *  START DATE: 15/Mar/2003  LAST UPDATE: 14/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

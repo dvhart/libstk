@@ -14,7 +14,7 @@
 #include "libstk/color_manager.h"
 #include "libstk/graphics_context.h"
 #include "libstk/exceptions.h"
-#include "libstk/font_mngr.h"
+#include "libstk/font_manager.h"
 
 #include "libstk/point.h"
 #include "libstk/button.h"
