@@ -16,7 +16,7 @@
 namespace stk
 {
 
-    font_properties::font_properties(std::string name, int height, float rotation, font_style style);
+    font_properties::font_properties(std::string name, int height, font_style style, float rotation)
     : fontname(name), height(height), style(style), rotation(rotation)
     {
     }

@@ -215,7 +215,7 @@ namespace stk
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
         font::ptr Vera_18 = font_manager::get()->get_font(
-                font_properties("Vera", 18, 0, font_properties::italic));
+                font_properties("Vera", 18, font_properties::italic));
 
         gc->font(Vera_18);
         gc->font_fill_color(color_manager::get()->get_color(
@@ -534,7 +534,7 @@ namespace stk
 
         // prepare the font
         font::ptr Vera_18 = font_manager::get()->get_font(
-                font_properties("Vera",18, 0, font_properties::bold));
+                font_properties("Vera",18, font_properties::bold));
         gc->font(Vera_18);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));

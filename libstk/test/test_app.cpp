@@ -11,6 +11,9 @@
 
 #include <iostream>
 
+// for command line parsing
+#include <getopt.h>
+
 // stk common include
 #include <libstk/stk.h>
 
@@ -32,6 +35,11 @@
 
 using namespace stk;
 
+void help(const std::string& progname, int exitval);
+int parse_args(int argc, char *argv[]);
+
+log_level main_log_level = LL_Info;
+
 bool scroll_slot(scroll_model::ptr target, int increment)
 {
     INFO("Scrolling, old begin=" << target->begin() << " visible area=" 
@@ -50,35 +58,25 @@ bool print_edit_box_text(std::wstring text)
 int main(int argc, char* argv[])
 {
     int retval = 0;
- 
+
+    std::string progname = argv[0];
+    int arg_ind = parse_args(argc, argv);
+
+    // parse_args returns the index of the first non-option argv element
+    // in this case, we want to make sure we have on extra that is the surface type
+    if (arg_ind == argc)
+    {
+        std::cout << "must specify surface type" << std::endl;
+        help(progname, 3);
+    }
+    std::string surface_type = std::string(argv[arg_ind]);
+
     try
     {
 
 #ifdef HAVE_LOGGING
-        logger::get()->add_target(&std::cout, LL_Info);
+        logger::get()->add_target(&std::cout, main_log_level);
 #endif
-        
-        std::string surface_type;
-        std::string available_surfaces = "[ ";
-#ifdef HAVE_SDL
-        available_surfaces += "sdl |";
-#endif
-#ifdef HAVE_DIRECTFB
-        available_surfaces += " dfb |";
-#endif
-#ifdef HAVE_FBDEV
-        available_surfaces += " fbdev";
-#endif
-        available_surfaces += " ]";
-
-        if (argc < 2)
-        {
-            throw error_message_exception("Usage: app "+available_surfaces);
-        }
-        else
-        {
-            surface_type = std::string(argv[1]);
-        }
         
         // select the surface and event system
         INFO("app - selecting surface and event system");
@@ -223,4 +221,72 @@ int main(int argc, char* argv[])
     }
 
     return retval;
+}
+
+int parse_args(int argc, char *argv[])
+{
+    std::string progname = argv[0];
+
+    while (1) {
+        char c = getopt(argc, argv,
+                "h" // help
+                "v" // version
+                "l:" // logging level
+                );
+
+        if (c == -1)
+            break;
+
+        switch (c) {
+            case 'h':
+                help(progname, 0);
+                break;
+
+            case 'v':
+                // print version
+                std::cout << "$version $" << std::endl;
+                exit(0);
+                break;
+
+            case 'l':
+                if (strcmp("none", optarg) == 0) main_log_level = stk::LL_None;
+                else if (strcmp("error", optarg) == 0) main_log_level = stk::LL_Error;
+                else if (strcmp("warning", optarg) == 0) main_log_level = stk::LL_Warning;
+                else if (strcmp("info", optarg) == 0) main_log_level = stk::LL_Info;
+                else
+                {
+                    std::cout << "invalid log level " << optarg << std::endl;
+                    help(progname, 2);
+                }
+                break;
+
+            default:
+                std::cout << "unknown option " << c << std::endl;
+                help(progname, 1);
+                break;
+        }
+    }
+    return optind;
+}
+
+void help(const std::string& progname, int exitval)
+{
+    std::string available_surfaces = "< ";
+#ifdef HAVE_SDL
+    available_surfaces += "sdl |";
+#endif
+#ifdef HAVE_DIRECTFB
+    available_surfaces += " dfb |";
+#endif
+#ifdef HAVE_FBDEV
+    available_surfaces += " fbdev";
+#endif
+    available_surfaces += " >";
+
+    std::cout << progname << " [-hv] [-l log_level] " << available_surfaces << std::endl;
+    std::cout << "\t-h\tprint this message and exit" << std::endl;
+    std::cout << "\t-v\tprint version and exit" << std::endl;
+    std::cout << "\t-l\tchoose a logging level < none | error | warning | info >" << std::endl;
+    std::cout << "\t  \tdefault is info, the most verbose" << std::endl;
+    exit(exitval);
 }
