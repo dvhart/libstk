@@ -49,9 +49,9 @@ namespace stk
         case event::key_down:
         {
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            unsigned int sel_min = MIN(selection_end_, selection_start_);
-            unsigned int sel_width = abs(selection_end_-selection_start_);
-            unsigned int current_pos, new_pos;//for up and down
+            int sel_min = MIN(selection_end_, selection_start_);
+            int sel_width = abs(selection_end_-selection_start_);
+            int current_pos, new_pos;//for up and down
             switch ( ke->fn_key() )
             {
             case key_backspace:
@@ -81,7 +81,7 @@ namespace stk
                     redraw(rect());
                     on_change(text_);
                 }
-                else if (sel_min < text_.size())
+                else if (sel_min < (int)text_.size())
                 {
                     text_.erase(sel_min, 1);
                     redraw(rect());
@@ -108,16 +108,14 @@ namespace stk
                 return;
                 break;
             case key_rightarrow:
-                if (selection_end_ < text_.size()) selection_end_++;
+                if (selection_end_ < (int)text_.size()) selection_end_++;
                 if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
                 redraw(rect());
                 return;
                 break;
             case key_uparrow:
                 if (line_ == 0) //can't go up any more, ignore
-                {    
-                    selection_end_ = 0;
-                }
+                    return;
                 else
                 {
                     //position of cursor on current line
@@ -132,8 +130,12 @@ namespace stk
             case key_downarrow:
                 //position of cursor on current line
                 current_pos = selection_end_ - line_start_position(line_);
-                new_pos = MIN(chars_in_line(line_ + 1), current_pos);
-                selection_end_ = line_start_position(line_ + 1) + new_pos;
+                new_pos = chars_in_line(line_ +1);
+                if (new_pos == -1) //would move down to a non-existant line, ignore
+                    return;
+                new_pos = MIN(new_pos, current_pos);
+                new_pos = line_start_position(line_ + 1) + new_pos;
+                selection_end_ = new_pos;
                 if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
                 redraw(rect());                
                 return;

@@ -2,7 +2,7 @@
  *     CVS $Id$
  * DESCRIPTION: Default theme for Libstk.  Contains the user_theme class and 
  *              all concrete widget drawing routines.
- *     AUTHORS: Darren Hart, Marc Strämke
+ *     AUTHORS: Darren Hart, Marc Strämke, Chris Slade
  *  START DATE: 2003/Apr/27
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
@@ -639,7 +639,7 @@ namespace stk
             //parse out the next line
             nline_width = rest_of_text.find(L'\n');
             line_width = arial_14->chars_in_rect(line_rect, rest_of_text);
-            if (nline_width != -1 && (nline_width < line_width)) 
+            if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
                 
@@ -657,18 +657,16 @@ namespace stk
             //do cursor or selection
             if (selection_start_ == selection_end_ && focused_)
             {//nothing selected and we are focused -- print cursor
-                if (selection_start_ >= num_chars && selection_start_ <= (num_chars+line_str.length()))
+                if (selection_start_ >= num_chars && selection_start_ <= (num_chars+(int)line_str.length()))
                 {//cursor is on this line
                     int chars_before_cursor = selection_start_ - num_chars;
                     int cursor_x = arial_14->draw_len(line_str.substr(0,chars_before_cursor));
                     //draw cursor
-                    if (new_line || chars_before_cursor != line_str.length()) 
-                    {
-                        //don't put a cursor at the end when there is not a new line
-                        //because it is printed on the next line
-                        surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
-                                ,line_rect.x1()+cursor_x,line_rect.y2());
-                    }
+
+                        
+                    surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
+                        ,line_rect.x1()+cursor_x,line_rect.y2());
+                
                     line_ = line_num;//to remember where the cursor is
 
                 }
@@ -682,8 +680,8 @@ namespace stk
                 else
                     gc->fill_color(color_manager::get()->get_color(
                         color_properties(fill_color_focused_str, surface)));
-                if ( (sel_min >= num_chars && sel_min <= (num_chars+line_str.length()))
-                    && (sel_max >= num_chars && sel_max <= (num_chars+line_str.length())) ) 
+                if ( (sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()))
+                    && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) ) 
                 {//selection starts and ends on this line
                     int sel_start = sel_min - num_chars;
                     int sel_end = sel_max - num_chars;
@@ -693,7 +691,7 @@ namespace stk
                     rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
                     surface->fill_rect(sel_rect);
                     line_ = line_num;
-                } else if  ( sel_min >= num_chars && sel_min <= (num_chars+line_str.length()) ) 
+                } else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) ) 
                 {//selection starts on this line
                     int sel_start = sel_min - num_chars;
                     int start_x = arial_14->draw_len ( line_str.substr(0, sel_start) );
@@ -701,7 +699,7 @@ namespace stk
                     rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ == sel_min) line_ = line_num;//alway use selection_end_ to determine current line
-                } else if ( sel_max >= num_chars && sel_max <= (num_chars+line_str.length()) )
+                } else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
                 {//selection ends of this line
                     int sel_end = sel_max - num_chars;
                     
@@ -709,7 +707,7 @@ namespace stk
                     rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ ==  sel_max) line_ = line_num;
-                } else if ( sel_min < num_chars  && sel_max > num_chars+(line_str.length()) )
+                } else if ( sel_min < num_chars  && sel_max > num_chars+(int)line_str.length() )
                 {//selection covers line
                     int end_x = arial_14->draw_len(line_str);
                     rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
@@ -747,7 +745,7 @@ namespace stk
             //parse out the next line
             nline_width = rest_of_text.find('\n');
             line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
-            if (nline_width != -1 && (nline_width < line_width)) 
+            if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
                 rest_of_text = rest_of_text.substr(nline_width+1, 
@@ -772,7 +770,6 @@ namespace stk
                 cont = false;
         }
         // trying to get the last character, just return the last character
-        INFO("here again");
         return text_.length();
     }
     int text_area::line_start_position(int line)
@@ -790,7 +787,7 @@ namespace stk
             //parse out the next line
             nline_width = rest_of_text.find(L'\n');
             line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
-            if (nline_width != -1 && (nline_width < line_width)) 
+            if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
                 rest_of_text = rest_of_text.substr(nline_width+1, 
@@ -857,7 +854,7 @@ namespace stk
                 cont = false;
         }
         
-        return 0;
+        return -1;
 
     }
     
