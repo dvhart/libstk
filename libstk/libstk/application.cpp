@@ -103,7 +103,9 @@ namespace stk
 
 					// FIXME: do some error checking on the widget pointers
 					// update focused widget as necessary
-					if (event_->type() == mouse_down && hover_widget_.lock() != focused_widget_.lock())
+					if (event_->type() == mouse_down && 
+							hover_widget_.lock() && // not a null hover widget
+							hover_widget_.lock() != focused_widget_.lock())
 					{
 						// FIXME: the container with the previous focused_widget is now out of sync
 						// with the system!!!!!
