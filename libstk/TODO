@@ -7,6 +7,8 @@ add protected library signals mirroring the public signals. i.e. on_resize and o
   connections (included necessary library connections) and render the system broken.
 should we call redraw(rect()) whenever a widget is resized?  just add the call below each 
   on_resize call
+Fix focusable initialization, it should be set only by widget's constructor and passed up the
+  hierarchy by all derived widgets, using default values as appropriate
 
 MEETING TOPICS
 ==============
