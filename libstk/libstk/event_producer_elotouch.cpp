@@ -155,9 +155,13 @@ namespace stk
         int y_org=y;
         int width=ELO_MAX_X - ELO_MIN_X;
         int height=ELO_MAX_Y - ELO_MIN_Y;
-        
+
+        x=-0.236809f*x +884;    // Calibrated with ADS-TEC display
+        y=0.190707f*y -91.4806f;// Calibrated
+
+        /*
         x=800*(x_org-ELO_MIN_X) / width;
-        y=600*(y_org-ELO_MIN_Y) / height;
+        y=600*(y_org-ELO_MIN_Y) / height;*/
     }
     
     boost::shared_ptr<stk::event> event_producer_elotouch::poll_event()
@@ -193,13 +197,15 @@ namespace stk
             {
                 int x=*(short*)&(message[3]);
                 int y=*(short*)&(message[5]);
+                int prescalex=x;
+                int prescaley=y;
                 elo_scale_xy(x,y);
                 //WARN ("Touch message received type=" << (unsigned int)message[2]);
                 
                 if(message[2]==1) //TOUCH
                 {
                     event_.reset(new mouse_event(x,y,1,event::mouse_down));
-                    //INFO("Touch at X=" << x << " Y=" << y);
+//                    INFO("Touch at X=" << prescalex << " Y=" << prescaley <<  " Scaled: X=" << x << " Y=" <<y);
                 }
                 if(message[2]==4) //UNTOUCH
                 {
