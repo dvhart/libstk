@@ -14,11 +14,16 @@
 
 namespace stk
 {
+	scroll_model::ptr scroll_model::create()
+	{
+		scroll_model::ptr new_scroll_model(new scroll_model());
+		return new_scroll_model;
+	}
 
 	scroll_model::scroll_model() : begin_(0),vis_size_(1),size_(1)
 	{}
 	
-	int scroll_model::size()
+	int scroll_model::size() const
 	{
 		return size_;
 	}
@@ -29,7 +34,7 @@ namespace stk
 		on_change();
 	}
 	
-	int scroll_model::begin()
+	int scroll_model::begin() const
 	{
 		return begin_;
 	}
@@ -40,10 +45,16 @@ namespace stk
 		on_change();
 	}
 	
-	int scroll_model::vis_size()
+	int scroll_model::end() const
+	{
+		return begin_ + vis_size_;
+	}
+	
+	int scroll_model::vis_size() const
 	{
 		return vis_size_;
 	}
+
 	void scroll_model::vis_size(int newsize)
 	{
 		vis_size_=newsize;

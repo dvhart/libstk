@@ -39,6 +39,11 @@ namespace stk
 		return (x >= p1_.x() && x <= p2_.x() && y >= p1_.y() && y <= p2_.y()); 
 	}
 
+	bool rectangle::contains(const point& p) const
+	{ 
+		return (p.x(), p.y()); 
+	}
+
 	bool rectangle::intersects(const rectangle& rect) const
 	{
 		bool x_in = ((rect.x1() > x1() && rect.x1() < x2()) || 
@@ -59,6 +64,11 @@ namespace stk
 		p1_.y(y);
 		width(old_width);
 		height(old_height);
+	}
+	
+	void rectangle::position(const point& p)
+	{
+		position(p.x(), p.y());
 	}
 	
 	// operators

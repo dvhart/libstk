@@ -40,7 +40,8 @@ libstk_la_SOURCES =\
 	time_value.h \
 	timer.h timer.cpp \
 	tribal_theme.h tribal_theme.cpp \
-	scroll_bar.h scroll_bar.cpp 
+	scroll_bar.h scroll_bar.cpp \
+	viewport.h viewport.cpp
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
@@ -56,7 +57,7 @@ library_include_HEADERS= \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h
+	posix_time.h     viewport.h
 
 
 bin_PROGRAMS       = test_app surface_bm

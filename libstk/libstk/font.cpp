@@ -2,7 +2,7 @@
  *    FILENAME: font.cpp
  * DESCRIPTION: Font class implementation.
  *     AUTHORS: Vernon Mauery, Darren Hart, Marc Straemke
- *  START DATE: 15/Mar/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 15/Mar/2003  LAST UPDATE: 21/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available

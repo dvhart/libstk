@@ -306,16 +306,20 @@ namespace stk
 	// overridden drawing routines
 	void surface_sdl::fill_rect(int x1, int y1, int x2, int y2)
 	{
+		x1 += offset().x();
+		y1 += offset().y();
 		Uint32 sdl_color = (Uint32)gc_->fill_color();
 		rectangle rect(x1, y1, x2 - x1, y2 - y1);
 		SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
 		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
 	}
 	
-	void surface_sdl::fill_rect(const rectangle &rect)
+	void surface_sdl::fill_rect(const rectangle& rect)
 	{
+		rectangle t_rect = rect;
+		t_rect.position(t_rect.p1() + offset());
 		Uint32 sdl_color = (Uint32)gc_->fill_color();
-		SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
+		SDL_Rect sdl_rect = rect_to_sdl_rect(t_rect);
 		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
 	}
 

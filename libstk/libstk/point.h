@@ -17,9 +17,7 @@
 
 namespace stk
 {
-	class point    
-			: boost::addable< point> 
-    		, boost::subtractable<point>
+	class point	: boost::addable<point>, boost::subtractable<point>
 	{
 		private:
 			int x_, y_;
@@ -31,17 +29,21 @@ namespace stk
 			void x(int x) { x_ = x; }
 			void y(int y) { y_ = y; }
 
-			/// FIXME: shouldn't we return *this; ??????????????
-			point operator+=(const point& rhs)	
+			point& operator+=(const point& rhs)	
 			{
-				x_+=rhs.x_;
-				y_+=rhs.y_;
+				x_ += rhs.x_;
+				y_ += rhs.y_;
+				return *this;
 			}
-			point operator-=(const point& rhs)
+
+			point& operator-=(const point& rhs)
 			{
-				x_-=rhs.x_;
-				y_-=rhs.y_;
+				x_ -= rhs.x_;
+				y_ -= rhs.y_;
+				return *this;
 			}
+
 	};
 }
+
 #endif

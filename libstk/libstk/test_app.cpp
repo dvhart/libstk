@@ -2,7 +2,7 @@
  *    FILENAME: test_app.cpp
  * DESCRIPTION: An example application using Libstk.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 21/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -33,6 +33,7 @@
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
 #include "libstk/timer.h"
+#include "libstk/viewport.h"
 
 
 using namespace stk;
@@ -111,35 +112,42 @@ int main(int argc, char* argv[])
 		cout << "test_app - creating an image_panel in a scroll panel" << endl;
 		label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"), 
 			rectangle(10, 50, 150, 30));
-		scroll_box::ptr test_scroll = scroll_box::create(test_state, rectangle(10, 90, 350, 200));
+		viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
 		// fixme: having to define the rectangle like this is lame, perhaps
 		// rect should be relative to the parent container?
-		image_panel::ptr test_image_panel = image_panel::create(test_scroll, 
+		image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
 				rectangle(10, 90, 400, 300), image::create("parrots.ppm"));
 		
-		//scroll(test_scroll->h_scroll(),-10);
+		//scroll(test_viewport->h_scroll(),-10);
 		
 		button::ptr scroll_left=button::create(test_state,L"Scroll-", rectangle(100, 300, 90, 40));		
-		scroll_left->on_release.connect(boost::bind(&scroll_slot, test_scroll->h_scroll(), -10));
+		scroll_left->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), -10));
 		button::ptr scroll_right=button::create(test_state,L"Scroll+", rectangle(200, 300, 90, 40));		
-		scroll_right->on_release.connect(boost::bind(&scroll_slot, test_scroll->h_scroll(), 10));
+		scroll_right->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), 10));
 		
 		//void scroll(stk::scroll_model::ptr target,int increment)
 		// create a list
 		cout << "test_app - creating a list with items" << endl;
 		list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));
 		list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia", "armenia");
-		list_item::ptr test_item_2 = list_item::create(test_list, L"Germany", "germany");
-		list_item::ptr test_item_3 = list_item::create(test_list, L"Japan", "japan");
-		list_item::ptr test_item_4 = list_item::create(test_list, L"United States", "united_states");
+		list_item::ptr test_item_2 = list_item::create(test_list, L"Canada", "canada");
+		list_item::ptr test_item_3 = list_item::create(test_list, L"China", "china");
+		list_item::ptr test_item_4 = list_item::create(test_list, L"Germany", "germany");
+		list_item::ptr test_item_5 = list_item::create(test_list, L"Great Britain", "great_britain");
+		list_item::ptr test_item_6 = list_item::create(test_list, L"Guatemala", "guatemala");
+		list_item::ptr test_item_7 = list_item::create(test_list, L"Honduras", "honduras");
+		list_item::ptr test_item_8 = list_item::create(test_list, L"Japan", "japan");
+		list_item::ptr test_item_9 = list_item::create(test_list, L"Nicaragua", "nicaragua");
+		list_item::ptr test_item_10 = list_item::create(test_list, L"United States", "united_states");
+		list_item::ptr test_item_11 = list_item::create(test_list, L"Uruguay", "uruguay");
 		
 		// create a spinner
 		cout << "test_app - creating a spinner with items" << endl;
 		spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30));
-		list_item::ptr test_item_5 = list_item::create(test_spinner, L"Apple", "apple");
-		list_item::ptr test_item_6 = list_item::create(test_spinner, L"Banana", "banana");
-		list_item::ptr test_item_7 = list_item::create(test_spinner, L"Orange", "orange");
-		list_item::ptr test_item_8 = list_item::create(test_spinner, L"Plum", "plum");
+		list_item::ptr test_item_20 = list_item::create(test_spinner, L"Apple", "apple");
+		list_item::ptr test_item_21 = list_item::create(test_spinner, L"Banana", "banana");
+		list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange", "orange");
+		list_item::ptr test_item_23 = list_item::create(test_spinner, L"Plum", "plum");
 
 		// add a timer (no_op)
 		cout << "test_app - creating no_op timer" << endl;

@@ -31,6 +31,8 @@ namespace stk
 			rectangle(const point &p1, const point &p2);
 
 			// getters
+			point p1() const { return p1_; }
+			point p2() const { return p2_; }
 			int x1() const { return p1_.x(); }
 			int y1() const { return p1_.y(); }
 			int x2() const { return p2_.x(); }
@@ -49,8 +51,10 @@ namespace stk
 			// utilities
 			bool empty() const { return (!width() && !height()); }
 			bool contains(int x, int y) const;
+			bool contains(const point& p) const;
 			bool intersects(const rectangle& rect) const;
 			void position(int x, int y);
+			void position(const point& p);
 
 			// operators
 			const rectangle operator+(const rectangle& rect) const;

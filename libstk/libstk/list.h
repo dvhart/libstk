@@ -2,7 +2,7 @@
  *    FILENAME: list.h
  * DESCRIPTION: A listbox widget.  It contains a vector of list_items.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 22/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -19,6 +19,7 @@
 #include "libstk/widget.h"
 #include "libstk/container.h"
 #include "libstk/list_item.h"
+#include "libstk/scroll_model.h"
 
 namespace stk
 {
@@ -33,11 +34,17 @@ namespace stk
 
 		protected:
 			int selected_, prev_selected_;
-			list(container::ptr parent, const rectangle& rect);
+			list(container::ptr parent, const rectangle& rect, 
+					scroll_model::ptr v_scroll = scroll_model::create());
 			std::vector<list_item::ptr> items_;
 
+			// scrolling members
+			scroll_model::ptr v_scroll_; 
+			boost::signals::connection v_scroll_con;
+
 		public:
-			static list::ptr create(container::ptr parent, const rectangle& rect);
+			static list::ptr create(container::ptr parent, const rectangle& rect, 
+					scroll_model::ptr v_scroll = scroll_model::create());
 			virtual ~list();
 
 			/********** EVENT HANDLER INTERFACE **********/

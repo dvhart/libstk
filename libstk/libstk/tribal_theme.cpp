@@ -242,7 +242,7 @@ namespace stk
 	
 	void list::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
-		//cout << "list::draw()" << endl;
+		cout << "list::draw()" << endl;
 		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		float sel;
 		
@@ -279,6 +279,10 @@ namespace stk
 		// outline the list box
 		surface->draw_rect(rect_);
 		
+		// adjust the list items using the vertical scroll_model
+		surface->offset(surface->offset() - point(0,v_scroll_->begin()));
+		cout << "\tSurface offset: " << surface->offset().x() << "," << surface->offset().y() << endl;
+		
 		// draw the highlighted selection
 		rectangle cur_rect;
 		cur_rect.x1(rect_.x1() + 2);
@@ -290,13 +294,17 @@ namespace stk
 		// draw each item
 		cur_rect.x1(rect_.x1() + 10);
 		cur_rect.width(rect_.width() - 20);
-		for (int i = 0; i < items_.size(); i++)
+		// FIXME: magic 25s
+		for (int i = v_scroll_->begin()/25; i < MIN(items_.size(), v_scroll_->end() / 25); i++)
 		{
 			cur_rect.y1(rect_.y1() + i*25);
 			cur_rect.height(25);
 			items_[i]->rect(cur_rect);
-			items_[i]->draw(surface);
+			// FIXME: the clip_rect setting in list_item doesn't account for offset
+			items_[i]->draw(surface, surface->clip_rect()); 
 		}
+
+		surface->offset(surface->offset() + point(0,v_scroll_->begin()));
 	}
 	
 	void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
