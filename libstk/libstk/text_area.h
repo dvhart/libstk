@@ -15,6 +15,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
+//#include <pair.h>
 
 
 #include <libstk/widget.h>
@@ -27,6 +28,7 @@ namespace stk
     public:
         typedef boost::shared_ptr<text_area> ptr;
         typedef boost::weak_ptr<text_area> weak_ptr;
+        typedef std::pair<int,int> selection_pair;
 
     private:
         
@@ -38,6 +40,14 @@ namespace stk
         int line_start_position(int line);
         /// return the number of characters in line
         int chars_in_line(int line);
+        /*
+         * draws the text of the text box
+         * surface: the surface to draw on
+         * text_rect: rectangle of all the text
+         * clip_rect: rectangle of area needed to be drawn
+         * returns: the x,y point of where the cursor should be drawn.
+         * The Y position is at the top of the line where the cursor is on.
+         */
         point draw_text(surface::ptr surface, const rectangle& text_rect, const rectangle& clip_rect);
         std::wstring next_line();
 
@@ -74,6 +84,29 @@ namespace stk
             text_ = text;
             redraw(rect());
         }
+
+        // API to get/change selection
+
+        /*
+         * sets the selection
+         * start: the character position in the text of the start of the selection
+         * end: the character position in the text of the end of text.
+         * Set these two to the same value to have no selection.
+         * 
+         */
+         void selection(int start, int end);
+
+         /*
+          * returns the start and end position of the selected text.
+          * if they are equal then nothing is selected.
+          * start is the first value in the pair.
+          */
+         text_area::selection_pair selection();
+
+         /*
+          * returns the selected text, or "" if nothing is selected. 
+          */
+         std::wstring selected_text();
 
         // signals
         /// called when the text is changed

@@ -310,10 +310,18 @@ namespace stk
             line_width = nline_width;
             new_line_ = 1;
         }
-        else new_line_ = 0;
+        else
+        {
+            //go to the last whitespace
+            new_line_ = 0;
+            int temp_width = rest_of_text_.rfind(L" ",line_width);
+            line_width = (temp_width > 0) ? temp_width+1: line_width;
+        }
+
         line_str = rest_of_text_.substr(0, line_width);
         rest_of_text_ = rest_of_text_.substr(line_width+new_line_, 
                 rest_of_text_.length()-line_width-new_line_);
+        //go back and divide the line by the closest white space
         return line_str;
     }
     int text_area::region(int x, int y)
@@ -387,5 +395,22 @@ namespace stk
         }
         //there is no next_line
         return -1;
+    }
+    //public interface classes
+    void text_area::selection(int start, int end)
+    {
+        selection_start_ = start;
+        selection_end_ = end;
+        redraw(rect());
+    }
+    text_area::selection_pair text_area::selection()
+    {
+        return selection_pair(selection_start_, selection_end_);
+    }
+    std::wstring text_area::selected_text()
+    {
+        int start = MIN(selection_start_, selection_end_);
+        int end = MAX(selection_start_, selection_end_);
+        return text_.substr(start,end-start);
     }
 }

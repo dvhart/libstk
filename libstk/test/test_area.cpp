@@ -30,6 +30,17 @@
 
 using namespace stk;
 
+bool test_api(text_area::ptr area) {
+    INFO("TESTING API");
+    text_area::selection_pair test = area->selection();
+    INFO("Current Selection(start,end):" << test.first <<":"<<test.second);
+    std::wstring test_str = area->selected_text();
+    INFO("Selected Text: " << std::string(test_str.begin(),test_str.end()));
+    INFO("Changeing Selection to 5 to 55");
+    area->selection(5,55);
+    return true;
+}
+
 int main(int argc, char* argv[])
 {
     int retval = 0;
@@ -103,15 +114,16 @@ int main(int argc, char* argv[])
         state::ptr test_state = state::create(app);
 
         
-        text_area::ptr test_area = text_area::create(test_state, std::wstring(L"Hello World\nthisisareallylonglonglonglonglongstring\nHello World"), rectangle(30, 30, 180, 80));
+        text_area::ptr test_area = text_area::create(test_state, std::wstring(L"Hello World\nThis is a really long long long long String.\nHello World"), rectangle(30, 30, 180, 80));
 
-        button::ptr test_button_F1 = button::create(test_state, L"Quit", 
+        button::ptr quit_button = button::create(test_state, L"Quit", 
                 rectangle(30, 300, 100, 30));
-        test_button_F1->on_release.connect(boost::function<bool()>(
+        quit_button->on_release.connect(boost::function<bool()>(
                     (boost::bind(&application::quit, app.get()), true)));
         
-        button::ptr test_button_F2 = button::create(test_state, L"F2", 
+        button::ptr test_api_button = button::create(test_state, L"TEST", 
                 rectangle(10, 400, 100, 30));
+        test_api_button->on_release.connect(boost::bind(&test_api, test_area));
 
         // run the program
         retval = app->run();
