@@ -26,16 +26,19 @@
 #include <malloc.h>
 
 #include "widget.h"
+#include "container.h"
 #include "app.h"
 
 namespace stk
 {
 
-widget::widget(app* app,widget* parent):parent_app_(app),parent(parent)
-{}
+widget::widget(boost::weak_ptr<state> state,boost::weak_ptr<container> parent):parent_state_(state),parent_(parent)
+{
+}
+	
 
 widget::~widget()
-{}
-
+{
+}
 
 }

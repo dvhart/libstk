@@ -18,11 +18,9 @@
 #ifndef _STK_APP_H_
 #define _STK_APP_H_
 
-#include <SDL.h>
-#include <map>
 
 #include "surface.h"
-#include "widget.h"
+#include "state.h"
 
 namespace stk
 {
@@ -30,8 +28,8 @@ namespace stk
 class app
 {
 private:
-    stk::widget *focused_widget_;
-
+    state *current_state_;
+	
 public:
     app();
     ~app();

@@ -19,41 +19,35 @@
 #define STK_WIDGET_H
 
 #include <string>
-#include <string>
-#include <sigc++/signal_system.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <SDL/SDL.h>
 
 namespace stk
 {
 class widget;
-class app;
+class container;
+class state;
 typedef boost::shared_ptr<widget> Twidget_ptr;
-
-class widget : public SigC::Object
+typedef boost::shared_ptr<container> Tcontainer_ptr;
+	
+class widget 
 {
 public:
-    widget(app* app,widget* parent);
-    virtual ~widget();
+	virtual bool is_container() { return false;} 
+	widget(boost::weak_ptr<state> state,boost::weak_ptr<container> parent);
+	~widget();
 
-    void parent_app(app *val)
-    {
-        parent_app_ = val;
-    }
-    app *parent_app(void)
-    {
-        return parent_app_;
-    }
-
-    // the new signal system
+    /* DEMO , not really implemented (CHANGE TO BOOST::SIGNALS!)
     SigC::Signal1<void, widget&>         on_focus;     // void sig(widget&)
     SigC::Signal1<void, widget&>         on_unfocus;   // void sig(widget&)
-    SigC::Signal1<void, widget&>         on_activate;  // void sig(widget&)
+	SigC::Signal2<bool, widget&, SDLKey> on_keydown;  // bool sig(widget&, SDLKey)
+	SigC::Signal2<bool, widget&, SDLKey> on_keyup;  // bool sig(widget&, SDLKey)
     SigC::Signal2<bool, widget&, SDLKey> on_keypress;  // bool sig(widget&, SDLKey)
-
+	*/
 protected:
-    app *parent_app_;
-    widget *parent;
+    boost::weak_ptr<state> parent_state_;
+    boost::weak_ptr<container> parent_;
 };
 
 } // namespace stk
