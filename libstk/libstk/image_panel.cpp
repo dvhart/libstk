@@ -15,22 +15,22 @@
 
 namespace stk
 {
-	image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect, 
-			image::ptr img)
-	{
-		image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
-		parent->add(new_image_panel);
-		return new_image_panel;
-	}
-	
-	image_panel::image_panel(widget::ptr parent, const rectangle& rect, image::ptr img)
-		: widget(parent, rect), image_(img)
-	{
-		cout << "image_panel::image_panel()" << endl;
-	}
-	
-	image_panel::~image_panel()
-	{
-	}
-	
+    image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect,
+                                         image::ptr img)
+    {
+        image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
+        parent->add
+        (new_image_panel);
+        return new_image_panel;
+    }
+
+    image_panel::image_panel(widget::ptr parent, const rectangle& rect, image::ptr img)
+            : widget(parent, rect), image_(img)
+    {
+        cout << "image_panel::image_panel()" << endl;
+    }
+
+    image_panel::~image_panel()
+    {}
+
 }

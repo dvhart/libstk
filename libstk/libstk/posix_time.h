@@ -18,8 +18,8 @@
 
 namespace stk
 {
-	class time_value;
-	time_value get_current_time_value();
+    class time_value;
+    time_value get_current_time_value();
 }
 
 #endif

@@ -21,50 +21,58 @@
 
 namespace stk
 {
-	class time_value
-	{
-		private:
-			int seconds_;
-			int millis_;
-			
-		public:	
-			time_value()
-			{
-				time_value tv = get_current_time_value();
-				seconds_ = tv.seconds();
-				millis_ = tv.millis();
-			}
-			time_value(int seconds, int millis)
-				: seconds_(seconds), millis_(millis) { }
-			~time_value() { }
-			
-			int millis() const { return millis_; }
-			int seconds() const { return seconds_; }
-			
-			time_value operator-(const time_value& rhs)	
-			{
-				int carry = 0;
-				int t_millis = millis_ - rhs.millis();
-				if (t_millis < 0)
-				{
-					t_millis += 1000;
-					carry = 1;
-				}
-				return time_value(seconds_ - rhs.seconds() - carry, t_millis);
-			}
-			
-			time_value operator+(const time_value& rhs)	
-			{
-				int carry = 0;
-				int t_millis = millis_ + rhs.millis();
-				if (t_millis > 1000)
-				{
-					carry = 1;
-					t_millis -= 1000;
-				}
-				return time_value(seconds_ + rhs.seconds() + carry, t_millis);
-			}
-	};
+    class time_value
+    {
+    private:
+        int seconds_;
+        int millis_;
+
+    public:
+        time_value()
+        {
+            time_value tv = get_current_time_value();
+            seconds_ = tv.seconds();
+            millis_ = tv.millis();
+        }
+        time_value(int seconds, int millis)
+                : seconds_(seconds), millis_(millis)
+        { }
+        ~time_value()
+        { }
+
+        int millis() const
+        {
+            return millis_;
+        }
+        int seconds() const
+        {
+            return seconds_;
+        }
+
+        time_value operator-(const time_value& rhs)
+        {
+            int carry = 0;
+            int t_millis = millis_ - rhs.millis();
+            if (t_millis < 0)
+            {
+                t_millis += 1000;
+                carry = 1;
+            }
+            return time_value(seconds_ - rhs.seconds() - carry, t_millis);
+        }
+
+        time_value operator+(const time_value& rhs)
+        {
+            int carry = 0;
+            int t_millis = millis_ + rhs.millis();
+            if (t_millis > 1000)
+            {
+                carry = 1;
+                t_millis -= 1000;
+            }
+            return time_value(seconds_ + rhs.seconds() + carry, t_millis);
+        }
+    };
 }
 
 #endif

@@ -21,33 +21,33 @@
 
 namespace stk
 {
-	class state : public container
-	{
-		public:
-			typedef boost::shared_ptr<state> ptr;
-			typedef boost::weak_ptr<state> weak_ptr;
-			
-		private:
+    class state : public container
+    {
+    public:
+        typedef boost::shared_ptr<state> ptr;
+        typedef boost::weak_ptr<state> weak_ptr;
 
-		protected:
-			state(application::ptr parent);
-			
-		public:
-			virtual ~state();
-			static state::ptr create(application::ptr parent);
+    private:
 
-			// these two should probably be moved up to container
-			virtual widget::ptr focus_first();
-			virtual widget::ptr focus_last();
+    protected:
+        state(application::ptr parent);
 
-			// event_handler interface
-			virtual void handle_event(event::ptr e);
+    public:
+        virtual ~state();
+        static state::ptr create(application::ptr parent);
 
-			// drawable interface
-			//virtual surface::ptr surface(); 
-			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-			//virtual void redraw(bool val, const rectangle& rect);
-	};
+        // these two should probably be moved up to container
+        virtual widget::ptr focus_first();
+        virtual widget::ptr focus_last();
+
+        // event_handler interface
+        virtual void handle_event(event::ptr e);
+
+        // drawable interface
+        //virtual surface::ptr surface();
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+        //virtual void redraw(bool val, const rectangle& rect);
+    };
 }
 
 #endif

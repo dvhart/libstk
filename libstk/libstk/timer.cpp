@@ -19,36 +19,36 @@
 
 namespace stk
 {
-	timer::ptr timer::create(int interval, bool repeat)
-	{
-		timer::ptr new_timer(new timer(interval, repeat));
-		return new_timer;
-	}
+    timer::ptr timer::create(int interval, bool repeat)
+    {
+        timer::ptr new_timer(new timer(interval, repeat));
+        return new_timer;
+    }
 
-	timer::timer(int interval, bool repeat)
-		: interval_(interval), counter_(interval), repeat_(repeat)
-	{
-		last_tv_ = get_current_time_value();
-	}
+    timer::timer(int interval, bool repeat)
+            : interval_(interval), counter_(interval), repeat_(repeat)
+    {
+        last_tv_ = get_current_time_value();
+    }
 
-	timer::~timer()
-	{
-	}
+    timer::~timer()
+    {}
 
-	bool timer::update()
-	{
-		// decrement counter_ by elapsed millis since last time ready() was called
-		time_value cur_tv = get_current_time_value();
-		counter_ -= (cur_tv - last_tv_).millis();
-		last_tv_ = cur_tv;
-		
-		if (counter_ <= 0)
-		{
-			if (repeat_) counter_ = interval_;
-			return (on_timer() && repeat_);
-		}
-		
-		return true;
-	}
+    bool timer::update()
+    {
+        // decrement counter_ by elapsed millis since last time ready() was called
+        time_value cur_tv = get_current_time_value();
+        counter_ -= (cur_tv - last_tv_).millis();
+        last_tv_ = cur_tv;
+
+        if (counter_ <= 0)
+        {
+            if (repeat_)
+                counter_ = interval_;
+            return (on_timer() && repeat_);
+        }
+
+        return true;
+    }
 
 }

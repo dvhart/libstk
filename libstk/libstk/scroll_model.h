@@ -18,32 +18,32 @@
 
 namespace stk
 {
-	/// This class describes the modell or data associated with scrolling
-	class scroll_model
-	{
-		public:
-			typedef boost::shared_ptr<scroll_model> ptr;	
-			typedef boost::weak_ptr<scroll_model> weak_ptr;
-		private:
-			scroll_model();
-			/// The Size of the Scrollable area
-			int size_;
-			/// The Begin of the Visible Area
-			int begin_;
-			/// the size of the visible region
-			int vis_size_;
-		public:
-			static scroll_model::ptr create();
-			int size() const;
-			void size(int newsize);
-			int begin() const;
-			void begin(int value);
-			int end() const;
-			int vis_size() const;
-			void vis_size(int newsize);
+    /// This class describes the modell or data associated with scrolling
+    class scroll_model
+    {
+    public:
+        typedef boost::shared_ptr<scroll_model> ptr;
+        typedef boost::weak_ptr<scroll_model> weak_ptr;
+    private:
+        scroll_model();
+        /// The Size of the Scrollable area
+        int size_;
+        /// The Begin of the Visible Area
+        int begin_;
+        /// the size of the visible region
+        int vis_size_;
+    public:
+        static scroll_model::ptr create();
+        int size() const;
+        void size(int newsize);
+        int begin() const;
+        void begin(int value);
+        int end() const;
+        int vis_size() const;
+        void vis_size(int newsize);
 
-			boost::signal<void () > on_change;
-	};
+        boost::signal<void () > on_change;
+    };
 
 } // namespace stk
 

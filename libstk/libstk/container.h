@@ -24,73 +24,83 @@
 
 namespace stk
 {
-	class container : public widget
-	{
-		public:
-			typedef boost::shared_ptr<container> ptr;
-			typedef boost::weak_ptr<container> weak_ptr;
+    class container : public widget
+    {
+    public:
+        typedef boost::shared_ptr<container> ptr;
+        typedef boost::weak_ptr<container> weak_ptr;
 
-		private:
-			
-		protected:
-			std::vector<widget::ptr> children_;
-			container(component::ptr parent, const rectangle& rect);
-			rectangle redraw_rect_; 
-			
-		public:
-			virtual ~container();
-			
-			/********** EVENT HANDLER INTERFACE **********/
-			virtual void handle_event(event::ptr e);
-			/********** END EVENT HANDLER INTERFACE **********/
+    private:
 
-			/********** DRAWABLE INTERFACE **********/
-			//virtual surface::ptr surface(); 
-			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-			virtual void redraw(const rectangle& rect);
-			/********** END DRAWABLE INTERFACE **********/
+    protected:
+        std::vector<widget::ptr> children_;
+        container(component::ptr parent, const rectangle& rect);
+        rectangle redraw_rect_;
 
-			/********** PARENT INTERFACE **********/
-			/// Return the next focusable widget.
-			/// Find the focused widget, and return the next focusable one.  If we 
-			/// have no children, or reach the end, ask return an empty widget::ptr.
-			virtual widget::ptr focus_next();
-			
-			/// Return the prev focusable widget.
-			/// Find the focused widget, and return the previous focusable one.  If 
-			/// we have no children, or reach the beginning,  return an empty 
-			/// widget::ptr.
-			virtual widget::ptr focus_prev();
-			/// Add a child widget to the children vector
-			virtual void add(widget::ptr w);
-			/// Remove a child widget from the children vector
-			virtual void remove(widget::ptr item);
-			/********** END PARENT INTERFACE **********/
-			
-			/********** WIDGET INTERFACE **********/
-			/// If any of the children widgets are focused, return true.
-			bool focused();
-			virtual bool is_container() { return true; }
-			/********** END WIDGET INTERFACE **********/
-			
-			/********** CONTAINER INTERFACE **********/
-			// the container interface really defines the composite methods
-			// that parent and widget declared
-			
-			/// Returns a widget::ptr to the container's first child that contains
-			/// x,y.  It will call widget_at on a child that is a container.
-			virtual widget::ptr widget_at(int x, int y);
-			/// Pass mouse events down to widgets.
-			virtual void delegate_mouse_event(mouse_event::ptr me);
-			// FIXME :carter: implement all this
-			virtual widget::ptr get_active_child() // called when the tree parser for
-			{ return  *children_.begin(); }        // widget cycling switches focus 
-																						 // to a container
-			                                       // default behaviour for a container
-			                                       // is to switch into the FIRST child first 
-			virtual rectangle redraw_rect() { return redraw_rect_; } 
-			/********** END CONTAINER INTERFACE **********/
-	};
+    public:
+        virtual ~container();
+
+        /********** EVENT HANDLER INTERFACE **********/
+        virtual void handle_event(event::ptr e);
+        /********** END EVENT HANDLER INTERFACE **********/
+
+        /********** DRAWABLE INTERFACE **********/
+        //virtual surface::ptr surface();
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+        virtual void redraw(const rectangle& rect);
+        /********** END DRAWABLE INTERFACE **********/
+
+        /********** PARENT INTERFACE **********/
+        /// Return the next focusable widget.
+        /// Find the focused widget, and return the next focusable one.  If we
+        /// have no children, or reach the end, ask return an empty widget::ptr.
+        virtual widget::ptr focus_next();
+
+        /// Return the prev focusable widget.
+        /// Find the focused widget, and return the previous focusable one.  If
+        /// we have no children, or reach the beginning,  return an empty
+        /// widget::ptr.
+        virtual widget::ptr focus_prev();
+        /// Add a child widget to the children vector
+        virtual void add
+            (widget::ptr w);
+        /// Remove a child widget from the children vector
+        virtual void remove
+            (widget::ptr item);
+        /********** END PARENT INTERFACE **********/
+
+        /********** WIDGET INTERFACE **********/
+        /// If any of the children widgets are focused, return true.
+        bool focused();
+        virtual bool is_container()
+        {
+            return true;
+        }
+        /********** END WIDGET INTERFACE **********/
+
+        /********** CONTAINER INTERFACE **********/
+        // the container interface really defines the composite methods
+        // that parent and widget declared
+
+        /// Returns a widget::ptr to the container's first child that contains
+        /// x,y.  It will call widget_at on a child that is a container.
+        virtual widget::ptr widget_at(int x, int y);
+        /// Pass mouse events down to widgets.
+        virtual void delegate_mouse_event(mouse_event::ptr me);
+        // FIXME :carter: implement all this
+        virtual widget::ptr get_active_child() // called when the tree parser for
+        {
+            return  *children_.begin();
+        }        // widget cycling switches focus
+        // to a container
+        // default behaviour for a container
+        // is to switch into the FIRST child first
+        virtual rectangle redraw_rect()
+        {
+            return redraw_rect_;
+        }
+        /********** END CONTAINER INTERFACE **********/
+    };
 
 } // namespace stk
 

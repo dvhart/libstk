@@ -19,38 +19,40 @@ using std::endl;
 
 namespace stk
 {
-	sdl_data::ptr sdl_data::instance_;
+    sdl_data::ptr sdl_data::instance_;
 
-	sdl_data::ptr sdl_data::get()
-	{
-		if (instance_) return instance_;
-		instance_.reset(new sdl_data());
-		return instance_;
-	}
+    sdl_data::ptr sdl_data::get
+        ()
+    {
+        if (instance_)
+            return instance_;
+        instance_.reset(new sdl_data());
+        return instance_;
+    }
 
-	sdl_data::sdl_data() : first_init_(true)
-	{
-		std::cout << "sdl_data::sdl_data()" << endl;
-	}
+    sdl_data::sdl_data() : first_init_(true)
+    {
+        std::cout << "sdl_data::sdl_data()" << endl;
+    }
 
-	sdl_data::~sdl_data()
-	{
-		std::cout << "sdl_data::~sdl_data()" << endl;
-		cout << "\tuse_count: " << instance_.use_count() << endl;
-		SDL_Quit();
-	}
+    sdl_data::~sdl_data()
+    {
+        std::cout << "sdl_data::~sdl_data()" << endl;
+        cout << "\tuse_count: " << instance_.use_count() << endl;
+        SDL_Quit();
+    }
 
-	void sdl_data::init()
-	{
-		cout << "sdl_data::init()" << endl;
-		if (first_init_)
-		{
-			cout << "\tInitializing SDL" << endl;
-			if (SDL_Init(0) < 0) // FIXME: do we want to use the SDL_EVENT_THREAD flag here ? or joysticks ?
-				throw error_message_exception(std::string("Unable to init SDL: ") + 
-						std::string(SDL_GetError()));
-			first_init_ = false;
-		}
-	}
+    void sdl_data::init()
+    {
+        cout << "sdl_data::init()" << endl;
+        if (first_init_)
+        {
+            cout << "\tInitializing SDL" << endl;
+            if (SDL_Init(0) < 0) // FIXME: do we want to use the SDL_EVENT_THREAD flag here ? or joysticks ?
+                throw error_message_exception(std::string("Unable to init SDL: ") +
+                                              std::string(SDL_GetError()));
+            first_init_ = false;
+        }
+    }
 
 }

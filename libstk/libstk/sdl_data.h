@@ -20,28 +20,32 @@
 namespace stk
 {
 
-	class sdl_data
-	{
-		public:
-			typedef boost::shared_ptr<sdl_data> ptr;
-			typedef boost::weak_ptr<sdl_data> weak_ptr;
-			
-		private:
-			/// Whether or not SDL_Init() has been called yet
-			bool first_init_;
-			/// Singleton instance
-			static sdl_data::ptr instance_;
-			sdl_data();
+    class sdl_data
+    {
+    public:
+        typedef boost::shared_ptr<sdl_data> ptr;
+        typedef boost::weak_ptr<sdl_data> weak_ptr;
 
-		public:
-			~sdl_data();
-			/// Get the singleton instance_ 
-			static sdl_data::ptr get();
-			/// Initialize SDL with SDL_Init if it hasn't been already
-			void init();
-			/// Return true if SDL_Init has been called, false otherwise
-			bool first_init() const { return first_init_; }
-	};
+    private:
+        /// Whether or not SDL_Init() has been called yet
+        bool first_init_;
+        /// Singleton instance
+        static sdl_data::ptr instance_;
+        sdl_data();
+
+    public:
+        ~sdl_data();
+        /// Get the singleton instance_
+        static sdl_data::ptr get
+            ();
+        /// Initialize SDL with SDL_Init if it hasn't been already
+        void init();
+        /// Return true if SDL_Init has been called, false otherwise
+        bool first_init() const
+        {
+            return first_init_;
+        }
+    };
 
 }
 

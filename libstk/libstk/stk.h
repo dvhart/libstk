@@ -35,7 +35,7 @@
 #include <libstk/event_handler.h>
 #include <libstk/event_system.h>
 //#include <libstk/event_system_dfb.h> // backend specific
-//#include <libstk/event_system_sdl.h> // backend specific 
+//#include <libstk/event_system_sdl.h> // backend specific
 #include <libstk/exceptions.h>
 #include <libstk/font.h>
 #include <libstk/font_manager.h>
@@ -64,7 +64,7 @@
 #include <libstk/surface.h>
 //#include <libstk/surface_dfb.h> // backend specific
 #include <libstk/surface_impl.h>
-//#include <libstk/surface_sdl.h> // backend specific 
+//#include <libstk/surface_sdl.h> // backend specific
 #include <libstk/theme.h>
 #include <libstk/time_value.h>
 #include <libstk/timer.h>

@@ -11,17 +11,17 @@
  *****************************************************************************/
 
 #include <ctime>
-#include <sys/time.h> 
+#include <sys/time.h>
 
 #include "libstk/time_value.h"
 
 namespace stk
 {
-	time_value get_current_time_value()
-	{
-		struct timeval tv;
-		gettimeofday(&tv, NULL);
-		return time_value(tv.tv_sec, tv.tv_usec/1000);
-	}
+    time_value get_current_time_value()
+    {
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        return time_value(tv.tv_sec, tv.tv_usec/1000);
+    }
 }
 

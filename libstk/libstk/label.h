@@ -23,29 +23,35 @@
 
 namespace stk
 {
-	class label : public widget
-	{
-		public:
-			typedef boost::shared_ptr<label> ptr;
-			typedef boost::weak_ptr<label> weak_ptr;
+    class label : public widget
+    {
+    public:
+        typedef boost::shared_ptr<label> ptr;
+        typedef boost::weak_ptr<label> weak_ptr;
 
-		private:
-			std::wstring text_;
-			
-		protected:
-			label(container::ptr parent, std::wstring text, const rectangle& rect);
-			
-		public:
-			static label::ptr create(container::ptr parent, std::wstring text, 
-					const rectangle& rect);
-			virtual ~label();
+    private:
+        std::wstring text_;
 
-			std::wstring text() const { return text_; }
-			void text(const std::wstring& t) { text_ = t; }
+    protected:
+        label(container::ptr parent, std::wstring text, const rectangle& rect);
 
-			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-	};
-	
+    public:
+        static label::ptr create(container::ptr parent, std::wstring text,
+                                 const rectangle& rect);
+        virtual ~label();
+
+        std::wstring text() const
+        {
+            return text_;
+        }
+        void text(const std::wstring& t)
+        {
+            text_ = t;
+        }
+
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+    };
+
 } // namespace stk
 
 #endif

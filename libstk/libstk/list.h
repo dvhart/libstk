@@ -23,49 +23,49 @@
 
 namespace stk
 {
-	/// \todo is widget right.. not a container ?
-	class list : public widget
-	{
-		public:
-			typedef boost::shared_ptr<list> ptr;
-			typedef boost::weak_ptr<list> weak_ptr;
+    /// \todo is widget right.. not a container ?
+    class list : public widget
+    {
+    public:
+        typedef boost::shared_ptr<list> ptr;
+        typedef boost::weak_ptr<list> weak_ptr;
 
-		private:
+    private:
 
-		protected:
-			int selected_, prev_selected_;
-			list(container::ptr parent, const rectangle& rect, 
-					scroll_model::ptr v_scroll = scroll_model::create());
-			std::vector<list_item::ptr> items_;
+    protected:
+        int selected_, prev_selected_;
+        list(container::ptr parent, const rectangle& rect,
+             scroll_model::ptr v_scroll = scroll_model::create());
+        std::vector<list_item::ptr> items_;
 
-			// scrolling members
-			scroll_model::ptr v_scroll_; 
-			boost::signals::connection v_scroll_con;
+        // scrolling members
+        scroll_model::ptr v_scroll_;
+        boost::signals::connection v_scroll_con;
 
-		public:
-			static list::ptr create(container::ptr parent, const rectangle& rect, 
-					scroll_model::ptr v_scroll = scroll_model::create());
-			virtual ~list();
+    public:
+        static list::ptr create(container::ptr parent, const rectangle& rect,
+                                scroll_model::ptr v_scroll = scroll_model::create());
+        virtual ~list();
 
-			/********** EVENT HANDLER INTERFACE **********/
-			virtual void handle_event(event::ptr e);
-			/********** END EVENT HANDLER INTERFACE **********/
+        /********** EVENT HANDLER INTERFACE **********/
+        virtual void handle_event(event::ptr e);
+        /********** END EVENT HANDLER INTERFACE **********/
 
-			/********** DRAWABLE INTERFACE **********/
-			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-			/********** END DRAWABLE INTERFACE **********/
-			
-			/********** PARENT INTERFACE **********/
-			/// \todo this would have to return a this pointer!!! unless we make list_items a widget and list a container!!!
-			//virtual widget::ptr focus_next(); 
-			//virtual widget::ptr focus_prev();
-			/********** END PARENT INTERFACE **********/
+        /********** DRAWABLE INTERFACE **********/
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+        /********** END DRAWABLE INTERFACE **********/
+
+        /********** PARENT INTERFACE **********/
+        /// \todo this would have to return a this pointer!!! unless we make list_items a widget and list a container!!!
+        //virtual widget::ptr focus_next();
+        //virtual widget::ptr focus_prev();
+        /********** END PARENT INTERFACE **********/
 
 
-			/********** LIST INTERFACE **********/
-			virtual void add_item(list_item::ptr item);
-			/********** END LIST INTERFACE **********/
-	};
+        /********** LIST INTERFACE **********/
+        virtual void add_item(list_item::ptr item);
+        /********** END LIST INTERFACE **********/
+    };
 }
 
 #endif

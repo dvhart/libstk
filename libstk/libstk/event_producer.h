@@ -20,22 +20,24 @@
 
 namespace stk
 {
-	class event_producer
-	{
-		public:
-			typedef boost::shared_ptr<event_producer> ptr;
-			typedef boost::weak_ptr<event_producer> weak_ptr;
+    class event_producer
+    {
+    public:
+        typedef boost::shared_ptr<event_producer> ptr;
+        typedef boost::weak_ptr<event_producer> weak_ptr;
 
-		private:
-			
-		protected:
-			event_system::ptr event_system_;
-			event_producer() { }
+    private:
 
-		public:
-			virtual ~event_producer() { }
-			virtual boost::shared_ptr<stk::event> poll_event() = 0;
-	};
+    protected:
+        event_system::ptr event_system_;
+        event_producer()
+        { }
+
+    public:
+        virtual ~event_producer()
+        { }
+        virtual boost::shared_ptr<stk::event> poll_event() = 0;
+    };
 }
 
 #endif

@@ -49,47 +49,51 @@
 namespace stk
 {
 
-	class surface_sdl : public stk::surface_impl<surface_sdl>
-	{
-		public:
-			typedef boost::shared_ptr<surface_sdl> ptr;
-			typedef boost::weak_ptr<surface_sdl> weak_ptr;
-			
-		private:
-			SDL_Surface *sdl_surface_;
-			sdl_data::ptr sdl_data_;
+    class surface_sdl : public stk::surface_impl<surface_sdl>
+    {
+    public:
+        typedef boost::shared_ptr<surface_sdl> ptr;
+        typedef boost::weak_ptr<surface_sdl> weak_ptr;
 
-			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
-			{
-				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
-				return sdl_rect;
-			}
+    private:
+        SDL_Surface *sdl_surface_;
+        sdl_data::ptr sdl_data_;
 
-		protected:
-			surface_sdl(const rectangle& rect);
-			
-		public:
-			static surface_sdl::ptr create(const rectangle& rect);
-			~surface_sdl();
+        SDL_Rect rect_to_sdl_rect(const rectangle &rect)
+        {
+            SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
+            return sdl_rect;
+        }
 
-			SDL_Surface *sdl_surface() const { return sdl_surface_; };
+    protected:
+        surface_sdl(const rectangle& rect);
 
-			// methods which MUST be implemented in derived classes
-			inline void put_pixel(int x, int y, color clr);
-			inline void put_pixel_aa(int x, int y, double distance, color clr);
-			inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
-			inline color get_pixel(int x, int y) const;
-			virtual color gen_color(const std::string &str_color) const;
-			virtual color gen_color(byte r, byte g, byte b, byte a) const;
-			virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
-			virtual void unlock();
-			virtual void update(const rectangle& u_rect=rectangle());
-			
-			// overridden drawing routines
-			virtual void blit(surface &dst_surface);
-			virtual void fill_rect(int x1, int y1, int x2, int y2);
-			virtual void fill_rect(const rectangle& rect);
-	};
+    public:
+        static surface_sdl::ptr create(const rectangle& rect);
+        ~surface_sdl();
+
+        SDL_Surface *sdl_surface() const
+        {
+            return sdl_surface_;
+        };
+
+        // methods which MUST be implemented in derived classes
+        inline void put_pixel(int x, int y, color clr);
+        inline void put_pixel_aa(int x, int y, double distance, color clr);
+        inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
+        inline color get_pixel(int x, int y) const;
+        virtual color gen_color(const std::string &str_color) const;
+        virtual color gen_color(byte r, byte g, byte b, byte a) const;
+        virtual void lock(rectangle &rect, int flags, color** buf, int &stride)
+            ;
+        virtual void unlock();
+        virtual void update(const rectangle& u_rect=rectangle());
+
+        // overridden drawing routines
+        virtual void blit(surface &dst_surface);
+        virtual void fill_rect(int x1, int y1, int x2, int y2);
+        virtual void fill_rect(const rectangle& rect);
+    };
 } //end namespace stk
 
 #endif

@@ -23,62 +23,63 @@ using std::endl;
 
 namespace stk
 {
-	event_system::ptr event_system::instance_;
-	
-	event_system::ptr event_system::get()
-	{
-		if (!instance_) instance_.reset(new event_system());
-		return instance_;
-	}
-	
-	event_system::event_system() 
-	{ 
-	}
+    event_system::ptr event_system::instance_;
 
-	event_system::~event_system() 
-	{
-	}
-	
-	void event_system::add_producer(event_producer::ptr producer)
-	{
-		event_producers_.push_back(producer);
-	}
-			
-	event::ptr event_system::poll_event()
-	{
-		// lock the queue FIXME: make this configuarable
-		boost::mutex::scoped_lock scoped_lock(queue_mutex); 
-		
-		// add any pending events to the queue
-		event::ptr e = event::create(event::none);
-		std::list<event_producer::ptr>::iterator iter = event_producers_.begin();
-		for (iter; iter != event_producers_.end(); iter++)
-		{
-			e = (*iter)->poll_event();
-			while (e->type() != event::none)
-			{
-				events_.push(e);
-				e = (*iter)->poll_event();
-			}
-		}
-		
-		// return and pop the first item on the queue
-		if (!events_.empty())
-		{
-			e = events_.front();
-			events_.pop();
-		}
-		else e = event::create(event::none);
-		return e;
-	}
-	
-	void event_system::push_event(event::ptr e)
-	{
-		// lock the queue FIXME: make this configuarable
-		boost::mutex::scoped_lock scoped_lock(queue_mutex); 
-		// post the event to the queue
-		events_.push(e);
-	}
+    event_system::ptr event_system::get
+        ()
+    {
+        if (!instance_)
+            instance_.reset(new event_system());
+        return instance_;
+    }
+
+    event_system::event_system()
+{}
+
+    event_system::~event_system()
+    {}
+
+    void event_system::add_producer(event_producer::ptr producer)
+    {
+        event_producers_.push_back(producer);
+    }
+
+    event::ptr event_system::poll_event()
+    {
+        // lock the queue FIXME: make this configuarable
+        boost::mutex::scoped_lock scoped_lock(queue_mutex);
+
+        // add any pending events to the queue
+        event::ptr e = event::create(event::none);
+        std::list<event_producer::ptr>::iterator iter = event_producers_.begin();
+        for (iter; iter != event_producers_.end(); iter++)
+        {
+            e = (*iter)->poll_event();
+            while (e->type() != event::none)
+            {
+                events_.push(e);
+                e = (*iter)->poll_event();
+            }
+        }
+
+        // return and pop the first item on the queue
+        if (!events_.empty())
+        {
+            e = events_.front();
+            events_.pop();
+        }
+        else
+            e = event::create(event::none);
+        return e;
+    }
+
+    void event_system::push_event(event::ptr e)
+    {
+        // lock the queue FIXME: make this configuarable
+        boost::mutex::scoped_lock scoped_lock(queue_mutex);
+        // post the event to the queue
+        events_.push(e);
+    }
 
 }
 

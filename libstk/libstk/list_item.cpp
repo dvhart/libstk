@@ -19,32 +19,32 @@ using std::endl;
 
 namespace stk
 {
-	list_item::ptr list_item::create(list::ptr parent, std::wstring label, std::string data)
-	{
-		list_item::ptr new_list_item(new list_item(parent, label, data));
-		parent->add_item(new_list_item);
-		return new_list_item;
-	}
+    list_item::ptr list_item::create(list::ptr parent, std::wstring label, std::string data)
+    {
+        list_item::ptr new_list_item(new list_item(parent, label, data));
+        parent->add_item(new_list_item);
+        return new_list_item;
+    }
 
-	list_item::list_item(list::ptr parent, std::wstring label, std::string data)
-		: parent_(parent), label_(label), data_(data)
-	{
-		cout << "list_item::list_item()" << endl;
-	}
+    list_item::list_item(list::ptr parent, std::wstring label, std::string data)
+            : parent_(parent), label_(label), data_(data)
+    {
+        cout << "list_item::list_item()" << endl;
+    }
 
-	list_item::~list_item()
-	{
-		cout << "list_item::~list_item()" << endl;
-	}
+    list_item::~list_item()
+    {
+        cout << "list_item::~list_item()" << endl;
+    }
 
-	void list_item::handle_event(event::ptr e)
-	{
-		parent_.lock()->handle_event(e);
-	}
+    void list_item::handle_event(event::ptr e)
+    {
+        parent_.lock()->handle_event(e);
+    }
 
-	surface::ptr list_item::surface() 
-	{ 
-		parent_.lock()->surface();
-	}
-	
+    surface::ptr list_item::surface()
+    {
+        parent_.lock()->surface();
+    }
+
 }

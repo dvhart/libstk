@@ -20,27 +20,28 @@
 namespace stk
 {
 
-	class hotkey
-	{
-		private:
-			stk::keycode key_;
+    class hotkey
+    {
+    private:
+        stk::keycode key_;
 
-		public:
-			hotkey(const stk::keycode key) : key_(key) { }
+    public:
+        hotkey(const stk::keycode key) : key_(key)
+        { }
 
-			boost::signal<bool ()> sig;
+        boost::signal<bool ()> sig;
 
-			bool operator()(stk::keycode key)
-			{ 
-				cout << "hotkey::operator() - received a " << key << endl;
-				if (!sig.empty() && key == key_) 
-				{
-					cout << "\texecuting slot\n\t";
-					sig();
-				}
-				cout << endl;
-				return true;
-			}
-	};
+        bool operator()(stk::keycode key)
+        {
+            cout << "hotkey::operator() - received a " << key << endl;
+            if (!sig.empty() && key == key_)
+            {
+                cout << "\texecuting slot\n\t";
+                sig();
+            }
+            cout << endl;
+            return true;
+        }
+    };
 }
 #endif

@@ -19,47 +19,56 @@
 namespace stk
 {
 
-	class event
-	{
-		public:
-			typedef boost::shared_ptr<event> ptr;
-			typedef boost::weak_ptr<event> weak_ptr;
+    class event
+    {
+    public:
+        typedef boost::shared_ptr<event> ptr;
+        typedef boost::weak_ptr<event> weak_ptr;
 
-			/// fixme: should this be static ?
-			enum event_type
-			{
-				key_down,
-				key_up,
-				mouse_down,
-				mouse_up,
-				mouse_motion,
-				mouse_enter,
-				mouse_leave,
-				focus,
-				un_focus,
-				quit,
-				none,
-				unknown
-			};
+        /// fixme: should this be static ?
+        enum event_type
+        {
+            key_down,
+            key_up,
+            mouse_down,
+            mouse_up,
+            mouse_motion,
+            mouse_enter,
+            mouse_leave,
+            focus,
+            un_focus,
+            quit,
+            none,
+            unknown
+        };
 
-		private:
+    private:
 
-		protected:
-			event(event_type type) : type_(type) { } 
-			event_type type_;
+    protected:
+        event(event_type type) : type_(type)
+        { }
+        event_type type_;
 
-		public:
-			static event::ptr create(event_type type)
-			{
-				event::ptr new_event(new event(type));
-				return new_event;
-			}
-			virtual ~event() { }
-			event_type type() { return type_; }
-			bool operator!() { return type_ == none; }
-			
-	}; //class event
-	
+    public:
+        static event::ptr create(event_type type)
+        {
+            event::ptr new_event(new event(type));
+            return new_event;
+        }
+        virtual ~event()
+        { }
+        event_type type()
+        {
+            return type_;
+        }
+        bool operator!()
+        {
+            return type_ == none;
+        }
+
+    }
+    ; //class event
+
 } // namespace stk
 
 #endif

@@ -23,28 +23,29 @@
 
 namespace stk
 {
-	class event_producer;
+    class event_producer;
 
-	class event_system
-	{
-		public:
-			typedef boost::shared_ptr<event_system> ptr;
-			typedef boost::weak_ptr<event_system> weak_ptr;
-			
-		private:
-			event_system();
-			static event_system::ptr instance_;
-			boost::mutex queue_mutex; // FIXME: make this configurable
-			std::queue<event::ptr> events_;
-			std::list<boost::shared_ptr<event_producer> > event_producers_;
-			
-		public:
-			static event_system::ptr get();
-			~event_system();
-			void add_producer(boost::shared_ptr<event_producer> producer);
-			event::ptr poll_event();
-			void push_event(event::ptr e);
-	};
+    class event_system
+    {
+    public:
+        typedef boost::shared_ptr<event_system> ptr;
+        typedef boost::weak_ptr<event_system> weak_ptr;
+
+    private:
+        event_system();
+        static event_system::ptr instance_;
+        boost::mutex queue_mutex; // FIXME: make this configurable
+        std::queue<event::ptr> events_;
+        std::list<boost::shared_ptr<event_producer> > event_producers_;
+
+    public:
+        static event_system::ptr get
+            ();
+        ~event_system();
+        void add_producer(boost::shared_ptr<event_producer> producer);
+        event::ptr poll_event();
+        void push_event(event::ptr e);
+    };
 
 }
 

@@ -18,26 +18,36 @@
 
 namespace stk
 {
-	class mouse_event : public event
-	{
-		public:
-			typedef boost::shared_ptr<mouse_event> ptr;
-			typedef boost::weak_ptr<mouse_event> weak_ptr;
-		private:
+    class mouse_event : public event
+    {
+    public:
+        typedef boost::shared_ptr<mouse_event> ptr;
+        typedef boost::weak_ptr<mouse_event> weak_ptr;
+    private:
 
-		protected:
-			int x_, y_, button_;
+    protected:
+        int x_, y_, button_;
 
-		public:
-			mouse_event(int x=-1, int y=-1, int button=-1, event_type type=mouse_up);
-			virtual ~mouse_event();
-			int x() { return x_; }
-			int y() { return y_; }
-			int button() { return button_; }
-			
-	}; //class mouse_event
+    public:
+        mouse_event(int x=-1, int y=-1, int button=-1, event_type type=mouse_up);
+        virtual ~mouse_event();
+        int x()
+        {
+            return x_;
+        }
+        int y()
+        {
+            return y_;
+        }
+        int button()
+        {
+            return button_;
+        }
 
-	
+    }
+    ; //class mouse_event
+
+
 } // namespace stk
 
 #endif
