@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "progress.h"
 #include "widget.h"
 #include "theme.h"
@@ -30,7 +31,13 @@ namespace stk
 
 	void progress::draw(surface::ptr surface)
 	{
-		theme::instance()->draw_progress(rect_, label_, percent());
+		std::wstringstream label_stream;
+		// FIXME: create the label based on some properties of what to show
+		// be sure to format the percent to no more than 2 decimal places
+		label_stream.setf(std::ios::showpoint);
+		label_stream.precision(4);
+		label_stream << label_ << " - " << percent()*100 << "%";
+		theme::instance()->draw_progress(rect_, label_stream.str(), percent());
 	}
 			
 }
