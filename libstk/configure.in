@@ -8,49 +8,60 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
+dnl **** SDL compile flags
 AC_ARG_ENABLE(sdl,
   [  --enable-sdl          build with SDL support [default=no]],,
   enable_sdl=no)
 
 if test x$enable_sdl = xyes; then
- SDL_VERSION=1.2.0	
- AM_PATH_SDL($SDL_VERSION,:,AC_MSG_WARN([*** SDL version $SDL_VERSION not found!]);enable_sdl=no)
+  SDL_VERSION=1.2.0	
+  AM_PATH_SDL($SDL_VERSION,:,AC_MSG_WARN([*** SDL version $SDL_VERSION not found!]);enable_sdl=no)
 
- if test x$enable_sdl = xyes; then
-	 AC_MSG_RESULT([ *** SDL Support enabled])
-	AC_DEFINE(HAVE_SDL,true,[SDL support compiled in])
- fi
+  AC_MSG_RESULT([ *** SDL Support enabled])
+  AC_DEFINE(HAVE_SDL,true,[SDL support compiled in])
 fi
 
 AM_CONDITIONAL(SDL, test x$enable_sdl = xyes)
 
-
+dnl **** DirectFB compile flags
 AC_ARG_ENABLE(directfb,
   [  --enable-directfb          build with directfb support [default=no]],,
   enable_directfb=no)
 
 if test x$enable_directfb = xyes; then
-
- if test x$enable_directfb = xyes; then
-	 AC_MSG_RESULT([ *** DirectFB Support enabled])
-	AC_DEFINE(HAVE_DFB,true,[DirectFB Support compiled in])
- fi
+  AC_MSG_RESULT([ *** DirectFB Support enabled])
+  AC_DEFINE(HAVE_DFB,true,[DirectFB Support compiled in])
 fi
 
 AM_CONDITIONAL(DFB, test x$enable_directfb = xyes)
 
+dnl **** Framebuffer compile flags
+AC_ARG_ENABLE(fbdev,
+  [  --enable-fbdev             build with FrameBuffer support [default=no]],,
+  enable_fbdev=no)
 
-if test x$enable_sdl = xno && test x$enable_directfb = xno ; then
+if test x$enable_fbdev = xyes; then
+  AC_MSG_RESULT([ *** FrameBuffer Support enabled])
+  AC_DEFINE(HAVE_DFB,true,[FrameBuffer Support compiled in])
+fi
+
+AM_CONDITIONAL(FBDEV, test x$enable_fbdev = xyes)
+
+dnl no backend error
+if test x$enable_sdl = xno && test x$enable_directfb = xno && test x$enable_fbdev = xno ; then
  AC_MSG_ERROR([No Backend Selected])
 fi
 
+dnl Logging flags
 AC_ARG_ENABLE(enable_logging,
  	[  --enable-logging	builds with Debug message logger activated [default=no]],,
 	)
 if test x$enable_logging == xyes; then
-	AC_DEFINE(LOGGING,true,[Logging should be compiled in])
+	AC_DEFINE(HAVE_LOGGING,true,[Logging should be compiled in])
 	AC_MSG_RESULT([ *** Logging enabled])
 fi
+
+AM_CONDITIONAL(LOGGING, test x$enable_logging = xyes)
 
 AC_SUBST(top_srcdir)
 AC_SUBST(SDL_CFLAGS)

@@ -13,7 +13,7 @@
 
 #include <libstk/config.h>
 
-#ifdef LOGGING
+#ifdef HAVE_LOGGING
 #include <sstream>
 #include <boost/smart_ptr.hpp>
 #include <list>

@@ -18,8 +18,15 @@ if SDL
 		sdl_data.h sdl_data.cpp 
 endif
 
+if FBDEV
+ headers_fbdev = surface_fbdev.h
+ sources_fbdev = surface_fbdev.h surface_fbdev.cpp
+endif
 
-
+if LOGGING
+ headers_logging = logging.h
+ sources_logging = logging.h logging.cpp
+endif
 
 libstk_la_SOURCES =\
 	application.h	application.cpp \
@@ -62,10 +69,11 @@ libstk_la_SOURCES =\
 	tribal_theme.h tribal_theme.cpp \
 	viewport.h viewport.cpp \
 	widget.h widget.cpp \
-	logging.h logging.cpp \
+	$(sources_logging) $(sources_fbdev) \
 	$(sources_sdl) $(sources_dfb) \
 	edit_box.h edit_box.cpp  \
-	event_producer_elotouch.h event_producer_elotouch.cpp  spreadsheet.cpp spreadsheet.h
+	event_producer_elotouch.h event_producer_elotouch.cpp \
+	spreadsheet.cpp spreadsheet.h
 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
@@ -86,9 +94,10 @@ library_include_HEADERS= \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
 	posix_time.h     viewport.h          hotkey.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
-	numeric_spinner.h \
-	$(headers_sdl)   $(headers_dfb)      config.h       \
-	event_producer_elotouch.h logging.h spreadsheet.h
+	event_producer_elotouch.h spreadsheet.h \
+	numeric_spinner.h config.h \
+	$(headers_sdl)   $(headers_dfb) \
+	$(headers_fbdev) $(headers_logging)
 
 # FIXME: do the autotools thing for freetype
 libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb)
