@@ -223,6 +223,10 @@ namespace stk
             {
                 ERROR("Exception " << excp.what() << " while redrawing");
             }
+            catch(stk::exception &excp)
+            {
+                ERROR("Stk Exception " << excp.what() << " while redrawing");
+            }
             catch(...)
             {
                 ERROR("Unknown exception while redrawing");
