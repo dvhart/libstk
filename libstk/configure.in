@@ -67,5 +67,4 @@ AC_OUTPUT([
 Makefile 
 doc/Makefile 
 src/Makefile 
-tests/Makefile 
 ])
