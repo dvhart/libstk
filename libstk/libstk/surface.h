@@ -57,10 +57,11 @@ namespace stk
 
 			// non antialiased draw routines
 			// methods which must be implemented in the derived classes
-			virtual void draw_line(int x1, int y1, int x2, int y2) = 0;
-			virtual void draw_arc(rectangle &rect, int quadrant) = 0;
-			virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant) = 0;
+			virtual void draw_pixel(int x, int y) = 0;
 			// methods with a default implementation in this base class
+			virtual void draw_line(int x1, int y1, int x2, int y2);
+			virtual void draw_arc(rectangle &rect, int quadrant);
+			virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant) = 0;
 			virtual void draw_rect(rectangle &rect);
 			virtual void draw_rect(int x1, int y1, int x2, int y2);
 			virtual void draw_circle(int x, int y, int radius);
@@ -68,10 +69,8 @@ namespace stk
 			virtual void draw_poly(std::vector<point> points);
 
 			// antialiased draw routines
-			// methods which must be implemented in the derived classes
-			virtual void draw_line_aa(int x1, int y1, int x2, int y2) = 0;
-			virtual void draw_arc_aa() = 0;
-			// methods with a default implementation in this base class
+			virtual void draw_line_aa(int x1, int y1, int x2, int y2);
+			virtual void draw_arc_aa();
 			virtual void draw_rect_aa();
 			virtual void draw_ellipse_aa();
 			virtual void draw_poly_aa(std::vector<point> points);
