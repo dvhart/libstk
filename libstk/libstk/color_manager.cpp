@@ -10,8 +10,9 @@ namespace stk
 
 	bool color_properties::operator<(const color_properties& rhs) const
 	{
-		// FIXME: make this include surface in the < calculation
-		return (int_color < rhs.int_color) /*&& (surface_ < rhs.surface_)*/;
+		if (int_color < rhs.int_color) return true;
+		if (int_color == rhs.int_color) return (surface_ < rhs.surface_);
+		return false;
 	}
 
 	color color_manager::get_color(const color_properties& properties)
