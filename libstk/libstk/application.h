@@ -13,18 +13,21 @@
 namespace stk
 {
 	class state;
-
+	//class application;
 	/// Application class, Runs the Mainloop, dispatches events etc
 	class application : public parent
 	{
+		public:
+			typedef boost::shared_ptr<application> ptr;
+			typedef boost::weak_ptr<application> weak_ptr;
 		private:
 			boost::shared_ptr<stk::surface> surface_;
 			boost::shared_ptr<stk::event_system> event_system_;
 			std::list<boost::shared_ptr<stk::state> > states_;
 			
-			boost::weak_ptr<stk::state> current_state_; 
-			boost::weak_ptr<stk::widget> current_widget_;
-			boost::weak_ptr<stk::widget> hover_widget_; 
+			state::weak_ptr current_state_; 
+			widget::weak_ptr current_widget_;
+			widget::weak_ptr hover_widget_; 
 			
 			bool done_;
 			
@@ -34,8 +37,8 @@ namespace stk
 			/// Constructs a new Application Object
 			/// \param surface Target surface for drawing 
 			/// \param event_system Source for events
-			application(boost::shared_ptr<stk::surface> surface, 
-			            boost::shared_ptr<stk::event_system> event_system);
+			application(surface::ptr surface, 
+			            event_system::ptr event_system);
 			~application();
 
 			/// Runs The Application, returns when the application is shut down
@@ -43,20 +46,20 @@ namespace stk
 			bool quit(); // bool is so we can use it as a slot
 			
 			/// Adds a new state to the Application
-			void add_state(boost::shared_ptr<stk::state>);
+			void add_state(state::ptr);
 			
 			/// Returns the Target surface for drawing operations
-			boost::shared_ptr<stk::surface> surface();
+			surface::ptr surface();
 
 			// event_handler interface
-			virtual void handle_event(boost::shared_ptr<stk::event> e);
+			virtual void handle_event(event::ptr e);
 			
 			/// parent interface - is this necessary ? 
 			/// \todo Carter: I think it is, have to talk about this one
-			virtual boost::shared_ptr<widget> focus_next();
-			virtual boost::shared_ptr<widget> focus_prev();
+			virtual widget::ptr focus_next();
+			virtual widget::ptr focus_prev();
 			/// \todo Maybe this one should throw an exception ?
-			void add_child(boost::shared_ptr<widget>);
+			void add_child(widget::ptr);
 			
 			// do we want to make these available?
 			// or should they be strictly internal to application ? 
