@@ -165,6 +165,7 @@ namespace stk
                 offscreen_surface->draw_pixel(x, y, pixel_color);
             }
         }
+        gc->alpha_blend(true);  // If the user draws the image, he should get alpha blending by default
         
 //        png_read_end(png_ptr, end_info);
 
