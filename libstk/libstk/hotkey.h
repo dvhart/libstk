@@ -1,4 +1,4 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: hotkey.h definition and implementation
  * DESCRIPTION: Used to Bind keys to functors that can be connected widget 
  *              on_keyup signals.
@@ -6,10 +6,9 @@
  *  START DATE: 03/Jun/2003  LAST UPDATE: 03/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_HOTKEY_H
 #define STK_HOTKEY_H
@@ -37,10 +36,10 @@ namespace stk
             if (!sig.empty() && key == key_)
             {
                 cout << "\texecuting slot\n\t";
-                sig();
+                return sig();
             }
             cout << endl;
-            return true;
+            return false; // not handled
         }
     };
 }

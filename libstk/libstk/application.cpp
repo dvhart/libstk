@@ -210,7 +210,7 @@ namespace stk
             // FIXME :Carter: shouldnt this be a polymorphic cast?
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
             //cout << "application::handle_event() - key pressed: " << ke->key() << endl;
-            switch ( ke->key() )
+            switch (ke->key())
             {
             case key_esc:
                 quit();

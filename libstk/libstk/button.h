@@ -39,25 +39,27 @@ namespace stk
         static button::ptr create(container::ptr parent, const std::wstring label,
                                   const rectangle& _rect);
         virtual ~button();
+        
+        /********** EVENT HANDLER INTERFACE **********/
+        virtual void handle_event(event::ptr e);
+        /********** END EVENT HANDLER INTERFACE **********/
 
+        /********** DRAWABLE INTERFACE **********/
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+        /********** END DRAWABLE INTERFACE **********/
+
+        /********** PARENT INTERFACE **********/
+        /********** END PARENT INTERFACE **********/
+
+        /********** BUTTON INTERFACE **********/
         /// set the property label (#label_)
         void label(std::wstring newlabel);
         /// get the property label (#label_)
         std::wstring label();
-
         // button signals
         boost::signal<bool (), combiner::logical_or<bool> > on_press;
         boost::signal<bool (), combiner::logical_or<bool> > on_release;
-
-        // event_handler interface
-        virtual void handle_event(event::ptr e);
-
-        // drawable interface
-        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-        // using defaults (widget.h)
-
-        // parent interface
-        // using defaults (widget.h)
+        /********** END BUTTON INTERFACE **********/
     };
 
 } // namespace stk

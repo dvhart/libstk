@@ -49,12 +49,14 @@ namespace stk
                 {
                 case up_arrow:
                     --selected_%=items_.size();
+                    on_change();
                     redraw(rect_);
                     return;
                     break;
                 case key_enter:
                 case down_arrow:
                     ++selected_%=items_.size();
+                    on_change();
                     redraw(rect_);
                     return;
                     break;
@@ -68,6 +70,7 @@ namespace stk
                     --selected_%=items_.size();
                 else
                     ++selected_%=items_.size();
+                on_change();
                 redraw(rect_);
                 return;
             }

@@ -28,7 +28,8 @@ namespace stk
     public:
         typedef boost::shared_ptr<spinner> ptr;
         typedef boost::weak_ptr<spinner> weak_ptr;
-
+        
+    private:
         // region codes
         /// Region code for the area encompassing the down arrow
         static const int DOWN_ARROW = 0;
@@ -36,8 +37,6 @@ namespace stk
         static const int UP_ARROW   = 1;
         /// Region code for the area encompassing the label
         static const int LABEL      = 2;
-        
-    private:
 
     protected:
         spinner(container::ptr parent, const rectangle& rect);
@@ -73,6 +72,9 @@ namespace stk
         /// Return a region code for an x,y coordinate (defined by the theme).
         /// If the x,y coordinate is over the up arrow, then UP_ARROW is returned.
         int region(int x, int y);
+        // spinner signals
+        ///\todo perhaps this belongs in list ?
+        boost::signal<bool (), combiner::logical_or<bool> > on_change;
         /********** END SPINNER INTERFACE **********/
     };
 }
