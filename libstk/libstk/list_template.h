@@ -128,9 +128,9 @@ namespace stk
                     }
                     else 
                     {
-                        if (current() && !current()->selected())
+                        if (current_item() && !current_item()->selected())
                         {
-                            current()->selected(true);
+                            current_item()->selected(true);
                             on_update_selection();
                         }
                     }
@@ -155,9 +155,9 @@ namespace stk
                     }
                     else 
                     {
-                        if (current() && !current()->selected())
+                        if (current_item() && !current_item()->selected())
                         {
-                            current()->selected(true);
+                            current_item()->selected(true);
                             on_update_selection();
                         }
                     }
@@ -186,12 +186,12 @@ namespace stk
         /********** COMPONENT INTERFACE **********/
         virtual widget::ptr focus_next()
         {
-           return current();
+           return current_item();
         }
  
         virtual widget::ptr focus_prev()
         {
-            return current();
+            return current_item();
         }
         /********** END COMPONENT INTERFACE **********/
 
@@ -339,10 +339,16 @@ namespace stk
         }
 
         /// Returns the current item or a null pointer
-        virtual Titem current()
+        virtual Titem current_item()
         {
             if (current_ < items_.size()) return items_[current_];
             return Titem(); 
+        }
+
+        /// Returs the current index
+        virtual int current()
+        {
+            return current_;
         }
 
         /// Sets the current item, or the first on bad index
@@ -357,7 +363,7 @@ namespace stk
             else 
             {
                 current_ = 0;
-                if (current()) current()->current(true);
+                if (current_item()) current_item()->current(true);
             }
             on_update_current();
         }

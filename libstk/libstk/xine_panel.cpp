@@ -194,10 +194,12 @@ namespace stk
     void xine_panel::event_listener(const xine_event_t* xine_event)
     {
         // FIXME: get a list of events and create corresponding signals...
-        switch(xine_event->type) { 
+        switch(xine_event->type) 
+        { 
         case XINE_EVENT_UI_PLAYBACK_FINISHED:
             //running = 0;
             INFO("XINE_EVENT_UI_PLAYBACK_FINISHED");
+            on_playback_finished();
             break;
         case XINE_EVENT_PROGRESS:
         {
