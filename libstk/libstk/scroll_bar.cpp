@@ -27,8 +27,10 @@ namespace stk
     {
         INFO("constructor");
         focusable_ = true;
-        model_ = (model ? model : scroll_model::create()); 
+        model_ = (model ? model : scroll_model::create());
+        INFO("Connecting scroll modell");
         scroll_con_ = model_->on_change.connect(boost::bind(&scroll_bar::redraw, this));
+        INFO("Connected");
     }
 
     scroll_bar::~scroll_bar()
@@ -51,7 +53,29 @@ namespace stk
 
     void scroll_bar::handle_event(event::ptr e)
     {
+        if(!e)
+        {
+            ERROR("Invalid mouse event passed to scrollbar");
+            return;
+        }
+        if(e->type()==event::mouse_up)
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+            regions_ clicked_region=region(me->x(),me->y());
+            if(clicked_region==BELOW_BAR)
+            {
+                WARN("Scrollbar hit Below Bar");
+                model_->begin(model_->begin()+model_->vis_size()/2);
+            }
+            else if(clicked_region==ABOVE_BAR)
+            {
+                WARN("Scrollbar hit Above Bar");
+                model_->begin(model_->begin()-model_->vis_size()/2);
+            }
+            else
+                widget::handle_event(me);
+            return;
+        }
         widget::handle_event(e);
     }
-
 }
