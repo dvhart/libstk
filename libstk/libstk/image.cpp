@@ -253,7 +253,6 @@ namespace stk
         jpeg_stdio_src(&cinfo, infile);
         //read the jpeg header
         jpeg_read_header(&cinfo, TRUE);
-        INFO("Color Components: " << cinfo.out_color_components);
         cinfo.out_color_space = JCS_RGB;
         //start decompression
         jpeg_start_decompress(&cinfo);

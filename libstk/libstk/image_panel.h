@@ -33,8 +33,8 @@ namespace stk
     protected:
         image_panel(const rectangle& rect, image::ptr img);
         image::ptr image_;
-        int width_;
-        int height_;
+        //int width_;
+        //int height_;
 
     public:
         static image_panel::ptr create(container::ptr parent,
@@ -62,15 +62,18 @@ namespace stk
         void setimage(image::ptr img)
         {
             image_ = img;
+            redraw(rect());
         }
-        int width()
+        //FIXME why were these here??
+        //It doesn't seem to be used
+        /*(int width()
         {
             return width_;
         }
         int height()
         {
             return height_;
-        }
+        }*/
         /********** END IMAGE_PANEL INTERFACE **********/
     };
 }
