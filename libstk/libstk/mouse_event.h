@@ -31,12 +31,12 @@ namespace stk
         mouse_event(int x=-1, int y=-1, int button=-1, event_type type=mouse_up);
         virtual ~mouse_event();
         int x() { return x_; }
+        void x(int val) { x_ = val; }
         int y() { return y_; }
+        void y(int val) { y_ = val; }
         int button() { return button_; }
 
-    }
-    ; //class mouse_event
-
+    }; //class mouse_event
 
 } // namespace stk
 

@@ -111,9 +111,25 @@ namespace stk
             return;
             break;
         case event::key_up:
+        {
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
             if (on_keyup(ke->fn_key())) return;
             break;
+        }
+        case event::mouse_motion:
+        case event::mouse_up:
+        case event::mouse_down:
+        {
+            // if this is a mouse event, translate the coordinates back relative to the parent
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+            widget::ptr widget_parent = boost::shared_dynamic_cast<widget>(parent_.lock());
+            if (widget_parent)
+            {
+                me->x(me->x() + widget_parent->position().x());
+                me->y(me->y() + widget_parent->position().y());
+            }
+            // this is handed up to the parent below
+        }
         }
 
         parent_.lock()->handle_event(e);

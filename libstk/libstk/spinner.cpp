@@ -76,6 +76,7 @@ namespace stk
             case event::mouse_up:
             {
                 mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+                INFO("spinner mouse up at: " << me->x() << "," << me->y());
                 if (region(me->x(), me->y()) == UP_ARROW)
                 {
                     --current_;
