@@ -49,11 +49,11 @@ namespace stk
     private:
 
     protected:
-        surface() : offset_(0,0)
+        surface() : offset_(0, 0)
         {
             INFO("constructor");
         }
-        surface(const rectangle &rect) : rect_(rect),offset_(0,0)
+        surface(const rectangle &rect) : rect_(rect),offset_(0, 0)
         {
             INFO("constructor");
         }

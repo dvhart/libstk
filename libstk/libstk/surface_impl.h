@@ -131,11 +131,11 @@ namespace stk
         {}
 
     public:
-        surface_impl()
+        surface_impl() : surface()
         { }
         surface_impl(const rectangle& rect) : surface(rect)
         { }
-        ~surface_impl()
+        virtual ~surface_impl()
         { }
 
         // methods to be implemented by the backend
@@ -1328,11 +1328,12 @@ namespace stk
         virtual void surface_impl::draw_image(int x, int y, image::ptr img)
         {
             rectangle source_rect = img->offscreen_surface->rect();
+            rectangle dest_rect = source_rect;
+            dest_rect.position(offset()+point(x, y));
             INFO("surface_impl::draw_image(" << x << "," << y << ")");
             INFO("Image rect: X1=" << source_rect.x1() << " Y1=" << source_rect.y1() << " X2= "
                  << source_rect.x2() << " Y2=" << source_rect.y2());
-            INFO("Prior to blit, pixel 0,0 of image is: 0x" << std::hex << static_cast<surface_backend*>(img->offscreen_surface.get())->get_pixel(0, 0));
-            img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect, rectangle(x, y, 0, 0));
+            img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect, dest_rect);
         }
 
     };

@@ -83,7 +83,11 @@ namespace stk
         for (iter; iter != children_.end(); iter++)
         {
             if ((*iter)->intersects(temp_rect))
+            {
+                surface->offset(surface->offset() + (*iter)->rect().p1());
                 (*iter)->draw(surface);
+                surface->offset(surface->offset() - (*iter)->rect().p1());
+            }
         }
     }
 

@@ -137,7 +137,6 @@ namespace stk
     // optimized pixel routines
     void surface_sdl::blit(surface& dst_surface)
     {
-        INFO("blit no arguments");
         // blit the local surface to the destination surface
         surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
         if (dst_surface_ptr != NULL)
@@ -147,8 +146,8 @@ namespace stk
             if (SDL_BlitSurface(sdl_surface_, NULL,
                                 dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
             {
-                throw error_message_exception(
-                    "widget: Failed to blit sdl_surface_ to screen");
+                throw error_message_exception("widget: Failed to blit sdl_surface_ to dst_surface: "
+                        + std::string(SDL_GetError()));
             }
         }
         else
@@ -160,19 +159,6 @@ namespace stk
     }
     void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
-        INFO("blit with arguments");
-        
-        // testing red rect blit
-        gc_ = graphics_context::create();
-        gc_->fill_color(gen_color("0xFF0000FF"));
-        fill_rect(rectangle(0, 0, 100, 100)); // this works
-        gc_->fill_color(gen_color("0x00FF00FF"));
-        fill_rect(rectangle(40, 40, 20, 20)); // this works
-        draw_pixel(50, 50, gen_color("0xFFFFFFFF")); // these don't
-        draw_pixel(50, 51, gen_color("0xFFFFFFFF"));
-        draw_pixel(51, 50, gen_color("0xFFFFFFFF"));
-        draw_pixel(51, 51, gen_color("0xFFFFFFFF"));
-        
         // blit the local surface to the destination surface
         surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
         if (dst_surface_ptr != NULL)
@@ -183,7 +169,8 @@ namespace stk
 	    if (SDL_BlitSurface(sdl_surface_, &src_sdl_rect,
                         dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
             {
-                throw error_message_exception("widget: Failed to blit sdl_surface_ to screen");
+                throw error_message_exception("widget: Failed to blit sdl_surface_ to dst_surface_: " 
+                        + std::string(SDL_GetError()));
             }
         }
         else
@@ -199,8 +186,7 @@ namespace stk
         int x = x_ + offset_.x();
         int y = y_ + offset_.y();
 
-        if(!clip_rect_.contains(x,y))
-            return;
+        if(!clip_rect_.contains(x,y)) return;
 
         Uint32 sdl_color = (Uint32)clr;
 
@@ -212,48 +198,54 @@ namespace stk
             return;
         }
 
+        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
+        SDL_LockSurface(sdl_surface_);
+
         switch (sdl_surface_->format->BytesPerPixel)
         {
         case 1:                                       // Assuming 8-bpp
-            {
-                Uint8 *bufp;
-                bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
-                *bufp = sdl_color;
-            }
-            break;
-        case 2:                                       // Probably 15-bpp or 16-bpp
-            {
-                Uint16 *bufp;
-                bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
-                *bufp = sdl_color;
-            }
-            break;
-        case 3:                                       // Slow 24-bpp mode, usually not used
-            {
-                Uint8 *bufp;
-                bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
-                if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-                {
-                    bufp[0] = sdl_color;
-                    bufp[1] = sdl_color >> 8;
-                    bufp[2] = sdl_color >> 16;
-                }
-                else
-                {
-                    bufp[2] = sdl_color;
-                    bufp[1] = sdl_color >> 8;
-                    bufp[0] = sdl_color >> 16;
-                }
-            }
-            break;
-        case 4:                                       // Probably 32-bpp
-            {
-                Uint32 *bufp;
-                bufp = (Uint32 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 4 + x;
-                *bufp = sdl_color;
-            }
-            break;
+        {
+            Uint8 *bufp;
+            bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
+            *bufp = sdl_color;
         }
+        break;
+        case 2:                                       // Probably 15-bpp or 16-bpp
+        {
+            Uint16 *bufp;
+            bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
+            *bufp = sdl_color;
+        }
+        break;
+        case 3:                                       // Slow 24-bpp mode, usually not used
+        {
+            Uint8 *bufp;
+            bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
+            if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
+            {
+                bufp[0] = sdl_color;
+                bufp[1] = sdl_color >> 8;
+                bufp[2] = sdl_color >> 16;
+            }
+            else
+            {
+                bufp[2] = sdl_color;
+                bufp[1] = sdl_color >> 8;
+                bufp[0] = sdl_color >> 16;
+            }
+        }
+        break;
+        case 4:                                       // Probably 32-bpp
+        {
+            if (x == 0 && y == 0) INFO("put_pixel 0,0 to " << std::hex << sdl_color);
+            Uint32 *bufp;
+            bufp = (Uint32 *)sdl_surface_->pixels + y*sdl_surface_->pitch/4 + x;
+            *bufp = sdl_color;
+        }
+        break;
+        }
+        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
+        SDL_UnlockSurface(sdl_surface_);
     }
 
     color surface_sdl::get_pixel(int x_, int y_) const
@@ -264,25 +256,28 @@ namespace stk
         if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
         {
             //throw error_message_exception("surface_sdl::get_pixel() - pixel coords out of bounds");
-            INFO("surface_sdl::get_pixel() - pixel coords out of bounds");
+            //INFO("surface_sdl::get_pixel() - pixel coords out of bounds");
             return 0;
         }
 
         //INFO("get_pixel Bytes Per Pixel: " << (int)sdl_surface_->format->BytesPerPixel);
+        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
+        SDL_LockSurface(sdl_surface_);
+        Uint32 sdl_color = 0;
         switch (sdl_surface_->format->BytesPerPixel)
         {
         case 1:                                       // Assuming 8-bpp
         {
             Uint8 *bufp;
             bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
-            return (Uint32)(*bufp);
+            sdl_color = (Uint32)(*bufp);
         }
         break;
         case 2:                                       // Probably 15-bpp or 16-bpp
         {
             Uint16 *bufp;
             bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
-            return (Uint32)(*bufp);
+            sdl_color = (Uint32)(*bufp);
         }
         break;
         case 3:                                       // Slow 24-bpp mode, usually not used
@@ -290,7 +285,6 @@ namespace stk
             // FIXME
             Uint8 *bufp;
             bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
-            Uint32 sdl_color;
             if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
             {
                 sdl_color =  bufp[0];
@@ -303,18 +297,21 @@ namespace stk
                 sdl_color += (bufp[1] >> 8);
                 sdl_color += (bufp[0] >> 16);
             }
-            return (color)sdl_color;
         }
         break;
         case 4:                                       // Probably 32-bpp
         {
             Uint32 *bufp;
             bufp = (Uint32 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 4 + x;
-            return (color)*bufp;
+            sdl_color = *bufp;
         }
         break;
         }
-        return 0; // should never happen
+
+        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
+        SDL_UnlockSurface(sdl_surface_);
+
+        return (color)sdl_color; // should never happen
     }
 
     void surface_sdl::put_pixel_aa(int x, int y, double distance, color clr)

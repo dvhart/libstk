@@ -114,7 +114,7 @@ namespace stk
 
         // FIXME: the rect_.y1() should be removed from the item's y1 position, allowing
         //        the surface offset to handle that (children x,y relative to parent)
-        item->rect(rectangle(rect_.x1(), v_scroll_->size(), 
+        item->rect(rectangle(0, v_scroll_->size(), 
                     rect_.width(), item->height()));
         
         // adjust scroll properties

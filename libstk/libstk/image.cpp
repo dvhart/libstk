@@ -117,7 +117,7 @@ namespace stk
 
         offscreen_surface = onscreen_surface->create_surface(rectangle(0, 0, width, height));
         
-        INFO("Reading PNG data, row by row");
+        offscreen_surface->clip_rect(rectangle(0, 0, width, height));
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -128,12 +128,14 @@ namespace stk
                 char a = 255; // FIXME we need acces to stk::opaque here
                 if (bytes_per_pixel > 3) a = row_pointers[y][(x*bytes_per_pixel)+3];
                 color pixel_color = offscreen_surface->gen_color(r, g, b, a);
-                if (x == 0 && y == 0) INFO("IMAGE PIXEL 0,0 IS: 0x" << std::hex << pixel_color 
-                        << " from rgba: " << (int)r << "," << (int)g << "," << (int)b << "," << (int)a);
+                
+                /*
+                SDL_Surface* ts = static_cast<surface_sdl*>(offscreen_surface.get())->sdl_surface();
+                SDL_Rect tr = {x, y, 1, 1};
+                //SDL_FillRect(ts, &tr, pixel_color);
+                */
+                
                 offscreen_surface->draw_pixel(x, y, pixel_color);
-                if (x == 0 && y == 0)
-                    INFO("IMAGE PIXEL 0,0 DREW AS: 0x" << std::hex 
-                            << static_cast<surface_sdl*>(offscreen_surface.get())->get_pixel(0, 0));
             }
         }
         

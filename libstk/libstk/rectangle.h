@@ -30,73 +30,29 @@ namespace stk
         rectangle(const point &p1, const point &p2);
 
         // getters
-        point p1() const
-        {
-            return p1_;
-        }
-        point p2() const
-        {
-            return p2_;
-        }
-        int x1() const
-        {
-            return p1_.x();
-        }
-        int y1() const
-        {
-            return p1_.y();
-        }
-        int x2() const
-        {
-            return p2_.x();
-        }
-        int y2() const
-        {
-            return p2_.y();
-        }
-        int width() const
-        {
-            return p2_.x() - p1_.x() + 1;
-        } // inclusive width
-        int height() const
-        {
-            return p2_.y() - p1_.y() + 1;
-        } // inclusive height
+        point p1() const { return p1_; }
+        point p2() const { return p2_; }
+        int x1() const { return p1_.x(); }
+        int y1() const { return p1_.y(); }
+        int x2() const { return p2_.x(); }
+        int y2() const { return p2_.y(); }
+        int width() const { return p2_.x() - p1_.x() + 1; } // inclusive width
+        int height() const { return p2_.y() - p1_.y() + 1; } // inclusive height
 
         // setters
-        void x1(int val)
-        {
-            p1_.x(val);
-        }
-        void y1(int val)
-        {
-            p1_.y(val);
-        }
-        void x2(int val)
-        {
-            p2_.x(val);
-        }
-        void y2(int val)
-        {
-            p2_.y(val);
-        }
-        void width(int val)
-        {
-            p2_.x(val + p1_.x() - 1);
-        }
-        void height(int val)
-        {
-            p2_.y(val + p1_.y() - 1);
-        }
+        void x1(int val) { p1_.x(val); }
+        void y1(int val) { p1_.y(val); }
+        void x2(int val) { p2_.x(val); }
+        void y2(int val) { p2_.y(val); }
+        void width(int val) { p2_.x(val + p1_.x() - 1); }
+        void height(int val) { p2_.y(val + p1_.y() - 1); }
 
         // utilities
-        bool empty() const
-        {
-            return (!width() && !height());
-        }
+        bool empty() const { return (!width() && !height()); }
         bool contains(int x, int y) const;
         bool contains(const point& p) const;
         bool intersects(const rectangle& rect) const;
+        point position() const { return p1_; }
         void position(int x, int y);
         void position(const point& p);
 

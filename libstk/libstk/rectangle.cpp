@@ -53,7 +53,7 @@ namespace stk
         bool y_span (rect.y1() <= y1() && rect.y2() >= y2());
         return ((x_span || x_in) && (y_span || y_in));
     }
-
+ 
     void rectangle::position(int x, int y)
     {
         int old_width = width();
