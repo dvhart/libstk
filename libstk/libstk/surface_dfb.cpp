@@ -42,11 +42,12 @@ namespace stk
 
         if (rect_specified)
         {
-            dsc.flags = (DFBSurfaceDescriptionFlags)( dsc.flags | DSDESC_WIDTH | DSDESC_HEIGHT);
+            INFO("Rect was specified: " << *rect);
+            dsc.flags = (DFBSurfaceDescriptionFlags)( dsc.flags + DSDESC_WIDTH + DSDESC_HEIGHT);
             dsc.width = (*rect).width();
             dsc.height = (*rect).height();
         }
-
+ 
         IDirectFB* dfb = backend_handle->get_interface();
         
         dfb->CreateSurface(dfb, &dsc, &surface);
@@ -76,6 +77,7 @@ namespace stk
     
     surface_dfb::ptr surface_dfb::create(const rectangle& rect, bool primary)
     {
+        INFO("Creating surface_dfb with rectangle");
         surface_dfb::ptr res(new surface_dfb(boost::optional<rectangle>(rect), primary));
         return res;
     }
@@ -184,12 +186,11 @@ namespace stk
     void surface_dfb::blit(stk::surface& dst_surface)
     {
         // FIXME: implement me!
-        WARN("surface_dfb::blit(surface) not implemented");
+        ERROR("surface_dfb::blit(surface) not implemented");
     }
     
     void surface_dfb::blit(stk::surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
-        INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
         surface_dfb* dst = dynamic_cast<surface_dfb*>(&dst_surface);
         if (dst != NULL)
         {
