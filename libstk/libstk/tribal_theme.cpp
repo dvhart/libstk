@@ -129,8 +129,10 @@ namespace stk
     // define the various widget theme routines (draw(), region(), etc.)
     void state::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
+        INFO("state::draw()");
+        INFO("setting clip_rect: " << (clip_rect.empty() ? rect() : clip_rect));
         surface->offset(point(0,0));
+        surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
@@ -243,6 +245,7 @@ namespace stk
         }
         else
             arial = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
+
         gc->font(arial);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
@@ -253,6 +256,8 @@ namespace stk
 
     void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
     {
+        INFO("image_panel::draw()");
+        INFO("setting clip rect: " << (clip_rect.empty() ? rect() : clip_rect));
         surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
@@ -274,6 +279,7 @@ namespace stk
         else
             gc->fill_color(color_manager::get()->get_color(
                         color_properties(fill_color_normal_str, surface)));
+
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         font::ptr arial_12 = font_manager::get()->get_font(font_properties("Arial.ttf", 12));
@@ -573,30 +579,35 @@ namespace stk
     }
     void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
     {
-        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, screen_position.width()-6, screen_position.height()-6);
-        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, screen_position.width()-2, screen_position.height()-2);
+        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, 
+                screen_position.width()-6, screen_position.height()-6);
+        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, 
+                screen_position.width()-2, screen_position.height()-2);
 
         graphics_context::ptr gc = graphics_context::create();
 
         if(focused_)
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
         }
         else
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
         }
-        gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
+        gc->line_color(color_manager::get()->get_color(
+                    color_properties(outline_color_normal_str, surface)));
         
-
         surface->fill_rect(interior_rect);
-
         surface->draw_rect(outline_rect);
     }
     void spreadsheet_cell_text::draw(surface::ptr surface, const rectangle& screen_position)
     {
-        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, screen_position.width()-6, screen_position.height()-6);
-        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, screen_position.width()-2, screen_position.height()-2);
+        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, 
+                screen_position.width()-6, screen_position.height()-6);
+        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, 
+                screen_position.width()-2, screen_position.height()-2);
         
         graphics_context::ptr gc = graphics_context::create();
 
@@ -607,24 +618,27 @@ namespace stk
         
         if(focused_)
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
         }
         else
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
         }
-        gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
+        gc->line_color(color_manager::get()->get_color(
+                    color_properties(outline_color_normal_str, surface)));
 
-        gc->font_outline_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
-        gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
+        gc->font_outline_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
 
         surface->gc(gc);
 
         surface->fill_rect(interior_rect);
-
         surface->draw_rect(outline_rect);
         surface->draw_text(interior_rect, text_);
     }
-
     
 }

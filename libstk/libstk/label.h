@@ -32,6 +32,7 @@ namespace stk
     private:
         std::wstring text_;
         boost::optional<int> text_size_;
+
     protected:
         label(container::ptr parent, std::wstring text, const rectangle& rect);
 
@@ -48,13 +49,15 @@ namespace stk
         {
             text_ = t;
         }
+
         boost::optional<int> text_size()
         {
             return text_size_;
         }
+
         void text_size(boost::optional<int> newsize)
         {
-            text_size_=newsize;
+            text_size_ = newsize;
             redraw(rect());
         }
         
