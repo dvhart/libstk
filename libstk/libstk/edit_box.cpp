@@ -15,6 +15,8 @@
 #include "libstk/container.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
+#include "libstk/font_manager.h"
+#include "libstk/font.h"
 
 namespace stk
 {
@@ -29,6 +31,7 @@ namespace stk
     edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect) 
         : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0)
     {
+        selection_state_ = false;
         INFO("constructor");
         focusable(true);
     }
@@ -128,10 +131,46 @@ namespace stk
         case event::mouse_down:
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-            // FIXME: reposition the curesor
+            //FIXME: we need to get the font from the tribal_theme
+            //we can't just assume that they will always use arial
+            //we can't even assume that they will always have 3 pixels around the boarder
+
+            font::ptr edit_box_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+            int new_cursor_pos = edit_box_font->chars_in_rect(rectangle(3,0,me->x()-x1(),y2()-y1()),text_);
+            selection_start_ = selection_end_ = new_cursor_pos;
+            selection_state_ = true;
             redraw(rect());
             return;
             break; // mouse_down
+        }
+        case event::mouse_motion:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
+            INFO("Recieved Mouse Motion event.");
+            if (selection_state_) {
+                font::ptr edit_box_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+                selection_end_ = edit_box_font->chars_in_rect(rectangle(3,0,me->x()-x1(),y2()-y1()),text_);
+                
+            }
+            redraw(rect());
+            return;
+            break;
+        }
+        case event::mouse_up:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
+            INFO("Recieved Mouse Up event.");
+            selection_state_  = false;
+            return;
+            break;
+        }
+        case event::mouse_leave:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
+            INFO("Recieved Mouse Leave event.");
+            selection_state_ = false;
+            return;
+            break;
         }
         }
         // if we haven't handled it, try the defaults and possibly pass it up
