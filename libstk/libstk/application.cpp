@@ -64,6 +64,7 @@ namespace stk
 			focused_widget_.lock()->handle_event(event::create(event::focus));
 		}
 		
+		// enter the main application loop: draw, handle_events, call timed_events
 		// FIXME: we have to do something about all these .lock() calls!!!
 		event::ptr event_(new event(event::none)); // should we use create here ?
 		while (!done_)
@@ -131,6 +132,26 @@ namespace stk
 				
 				event_ = event_system_->poll_event();
 			}
+
+			// call all ready timed_events
+			std::list<timed_event::ptr>::iterator te_iter = timed_events_.begin();
+			for (te_iter; te_iter != timed_events_.end(); te_iter++)
+			{
+				if ((*te_iter)->ready()) 
+				{
+					(*te_iter)->on_timer();
+					if ((*te_iter)->interval() >= 0)
+					{
+						(*te_iter)->update();
+					}
+					else
+					{
+						// FIXME
+						// delete this timed_event
+					}
+				}
+			}
+			
 			usleep(1000); // 1 ms
 		}
 		cout << "application::run() - leaving" << endl;
@@ -147,6 +168,12 @@ namespace stk
 	{
 		cout << "application::add_state()" << endl;
 		states_.push_back(state);
+	}
+
+	void application::add_timed_event(timed_event::ptr timed_event)
+	{
+		cout << "application::add_timed_event()" << endl;
+		timed_events_.push_back(timed_event);
 	}
 
 	// drawable interface

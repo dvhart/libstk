@@ -35,7 +35,9 @@ libstk_la_SOURCES =\
 	spinner.h spinner.cpp \
 	font_mngr.h font_mngr.cpp\
 	theme.h theme.cpp \
+	timed_event.h timed_event.cpp \
 	tribal_theme.h tribal_theme.cpp 
+	
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	

@@ -1,3 +1,6 @@
+#ifndef STK_COMBINERS_H
+#define STK_COMBINERS_H
+
 #include <vector>
 
 namespace stk
@@ -120,3 +123,5 @@ namespace stk
 
 	}
 }
+
+#endif

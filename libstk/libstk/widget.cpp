@@ -30,7 +30,7 @@ namespace stk
 	// event_handler interface - default back to parent
 	void widget::handle_event(event::ptr e)
 	{
-		cout << "widget::handle_event()" << endl;
+		//cout << "widget::handle_event()" << endl;
 
 		// default handlers for focus/un_focus mouse_enter/leave events
 		// a derived widget should call widget::handle_event() for these basic events
@@ -63,7 +63,6 @@ namespace stk
 		}
 
 		parent_.lock()->handle_event(e);
-		cout << "widget::handle_event() done" << endl;
 	}
 
 	// drawable interface
