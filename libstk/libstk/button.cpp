@@ -1,13 +1,13 @@
 #include <iostream>
 #include "button.h"
 #include "widget.h"
+#include "theme.h"
 
 // FIXME: should we include these like this, or maybe in one events.h file for convenience ?
 #include "event.h"
 #include "key_event.h"
 #include "mouse_event.h"
 #include "keycode.h"
-#include "theme.h"
 
 using std::cout;
 using std::endl;
@@ -34,8 +34,8 @@ namespace stk
 
 	void button::draw(boost::shared_ptr<stk::surface> surface)
 	{
-		cout << "button::draw()" << endl;
-		theme::instance()->draw_button(rect_);
+		redraw_ = false;
+		theme::instance()->draw_button(rect_, active_, focused_, hover_);
 	}
 			
 	// event_handler interface

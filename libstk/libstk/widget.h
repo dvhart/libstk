@@ -29,10 +29,33 @@ namespace stk
 			widget(boost::shared_ptr<parent> parent);
 			boost::weak_ptr<parent> parent_;
 			
+			// widget attributes
+			bool redraw_;
+			bool focusable_;
+			int tab_;
+			// drawing related attributes
+			bool active_;
+			bool focused_;
+			bool hover_;
+			
 		public:
 			virtual ~widget();
 
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
+
+			// widget attribute accessor methods
+			bool redraw() { return redraw_; }
+			void redraw(bool val) { redraw_ = val; }
+			bool focusable() { return focusable_; }
+			void focusable(bool val) { focusable_ = val; }
+			int tab() { return tab_; }
+			void tab(int val) { tab_ = val; }
+			bool active() { return active_; }
+			void active(bool val) { active_ = val; }
+			bool focused() { return focused_; }
+			void focused(bool val) { focused_ = val; }
+			bool hover() { return hover_; }
+			void hover(bool val) { hover_ = val; }
 			
 			// event_handler interface
 			virtual void handle_event(boost::shared_ptr<stk::event> e);

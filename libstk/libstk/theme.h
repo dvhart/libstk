@@ -11,22 +11,22 @@ namespace stk
 	class theme
 	{
 		public:
-			//typedef boost::shared_ptr<theme> ptr; 
-			//typedef boost::weak_ptr<theme> weak_ptr;
+			typedef boost::shared_ptr<theme> ptr; 
+			typedef boost::weak_ptr<theme> weak_ptr;
 			
 		private:
 			stk::surface::ptr surface_;
-			static stk::theme* instance_;
+			static stk::theme::ptr instance_;
 			
 		protected:
 			theme(stk::surface::ptr surface);
 			
 		public:
-			static void create(stk::surface::ptr surface);
-			static stk::theme* instance();
+			static theme::ptr create(stk::surface::ptr surface);
 			virtual ~theme();
+			static stk::theme::ptr instance();
 			virtual void draw_state();
-			virtual void draw_button(rectangle& rect);
+			virtual void draw_button(rectangle& rect, bool active, bool focused, bool hover);
 			virtual void draw_label();
 	};
 }

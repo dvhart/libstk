@@ -23,14 +23,16 @@ using std::endl;
 namespace stk
 {
 
-	widget::widget(boost::shared_ptr<container> parent) : parent_(parent)
+	widget::widget(boost::shared_ptr<container> parent) : parent_(parent), 
+		redraw_(true), focusable_(false), active_(false), focused_(false), hover_(false)
 	{
 		cout << "widget::widget(container)" << endl;
 		cout << "widget::widget(container) - parent pointer is " << std::hex << parent.get() << endl;
 		//parent->add_child(boost::shared_ptr<widget>(this));
 	}
 
-	widget::widget(boost::shared_ptr<parent> parent) : parent_(parent)
+	widget::widget(boost::shared_ptr<parent> parent) : parent_(parent),
+		redraw_(true), focusable_(false), active_(false), focused_(false), hover_(false)
 	{
 		cout << "widget::widget(parent)" << endl;
 		cout << "widget::widget(parent) - parent pointer is " << std::hex << parent.get() << endl;
@@ -42,7 +44,7 @@ namespace stk
 
 	void widget::draw(boost::shared_ptr<stk::surface> surface)
 	{
-		cout << "widget::draw()" << endl;
+		redraw_ = false;
 	}
 	
 	// event_handler interface - default back to parent
