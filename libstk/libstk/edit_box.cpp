@@ -158,6 +158,7 @@ namespace stk
         case event::mouse_leave:
         {
             pressed_ = false;
+            hover_ = false;
             redraw(rect());
             return;
             break;
