@@ -207,7 +207,7 @@ namespace stk
         // draw each line
         font::ptr font = get_font();
         int spacing = line_spacing();
-        point cursor_pos = point(-1,-1);
+        point cursor_pos = point(-1,-1);//-1 means that you don't draw the cursor
         // variables to keep track of the lines
         int ypos = 0, num_chars = 0;
         std::wstring line_str;
@@ -218,8 +218,19 @@ namespace stk
         int line_num = 0;
         //intialize next_line
         rest_of_text_ = text_;
-        // FIXME: start with the first line IN the clip rect and stop if drawing beyond the clip
-        while (ypos+font->height()+spacing < text_rect.y2() && (rest_of_text_.length() || new_line_)) 
+        //skip all of the lines before clip_rect
+        while (ypos+font->height()+spacing < clip_rect.y1() && (rest_of_text_.length() || new_line_))
+        {
+            line_str = next_line();
+            // move to next line
+            num_chars += line_str.length()+new_line_;
+            ypos += font->height()+spacing;
+            line_num++;
+            
+        }
+        //while still in text area and in clip rect and the is still stuff to draw
+        while (ypos+font->height()+spacing < text_rect.y2() && (rest_of_text_.length() || new_line_)
+                && ypos < clip_rect.y2()) 
         {
             line_rect = rectangle(text_rect.x1(), text_rect.y1()+ypos, text_rect.x2()-text_rect.x1(), font->height()+spacing);
             // parse out the next line
