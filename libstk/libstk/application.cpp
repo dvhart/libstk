@@ -94,18 +94,94 @@ namespace stk
         event::ptr event_ = event::create(event::none); // should we use create here ?
         while (!done_)
         {
+            // handle all available events before redrawing
+            event_ = event_system_->poll_event();
+            while (event_->type() != event::none)
+            {
+                //INFO("event received of type: 0x" << std::hex << event_->type());
+		bool handled_by_on_event = on_event(event_);
+		if (!handled_by_on_event)
+		{
+		    // if it's a mouse event, let current_state_ determine who to send it too
+		    if (event_->type() == event::mouse_motion ||
+                        event_->type() == event::mouse_down ||
+                        event_->type() == event::mouse_up)
+		    {
+			mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
+
+                        widget::ptr new_hover_ptr=current_state_.lock()->delegate_mouse_event(me);
+			widget::ptr hover_ptr = hover_widget_.lock();
+			
+			if (new_hover_ptr!=hover_ptr) 
+			{
+			    // NOTE: only leaf widgets can be hover widgets!!!
+			    if(hover_ptr)
+ 				hover_ptr->handle_event(event::create(event::mouse_leave));
+			    hover_ptr = new_hover_ptr;
+			    if (hover_ptr)
+				hover_ptr->handle_event(event::create(event::mouse_enter));
+			} 
+
+                        
+			// FIXME: do some error checking on the widget pointers
+			// update focused widget as necessary
+			if (event_->type() == event::mouse_down &&
+                            hover_ptr && // not a null hover widget
+                            focused_widget_.lock() != hover_ptr) 
+			{
+                            INFO("Unfocusing");
+                            if(focused_widget_.lock())
+                                focused_widget_.lock()->handle_event(event::create(event::un_focus));
+                            // Possible bug? focused_widget_ = hover_widget_; Accessing a weak pointer without lock is unsafe
+                            focused_widget_=hover_ptr;
+                            INFO("focusing");
+			    if(hover_ptr)
+                                hover_ptr->handle_event(event::create(event::focus));
+			} 
+                        hover_widget_ = hover_ptr;                        
+ 		    }
+		    else
+		    {
+			INFO("passing event to focused_widget_");
+			widget::ptr ptr = focused_widget_.lock();
+			if (!ptr)
+                        {
+			    WARN("no current widget, pass to state ?");
+                        }
+			else
+                        {
+			    ptr->handle_event(event_);
+                        }
+		    }
+		}
+		event_ = event_system_->poll_event();
+	    }
+            
+            // update all timers
+            std::list<timer::ptr>::iterator t_iter = timers_.begin();
+            for (t_iter; t_iter != timers_.end(); t_iter++)
+            {
+                if (!(*t_iter)->update())
+                {
+                    // FIXME: delete this timer
+                }
+            }
             try
             {
                 stk::state::ptr current_state_ptr=current_state_.lock();
                 if(current_state_ptr)
                 {    
-                    rectangle t_rect = current_state_.lock()->redraw_rect();
+                    rectangle t_rect = redraw_rect;
                     if ( !t_rect.empty() )
                     {
                         INFO("applicaiton::run() - redrawing state\n\tWith Cliprect " << t_rect);
                         on_predraw(t_rect);
                         
-                        current_state_ptr->draw(surface_,t_rect);
+                        current_state_ptr->draw(surface_,t_rect);                                                
+                        redraw_rect.width(0);
+                        redraw_rect.height(0);
+                        assert(redraw_rect.empty());
+
                         on_postdraw(t_rect);
                         surface_->update( t_rect );
                     }
@@ -126,84 +202,9 @@ namespace stk
                 ERROR("Unknown exception while redrawing");
             } 
 
-            // handle all available events before redrawing
-            event_ = event_system_->poll_event();
-            while (event_->type() != event::none)
-            {
-                //INFO("event received of type: 0x" << std::hex << event_->type());
-		bool handled_by_on_event = on_event(event_);
-		if (!handled_by_on_event)
-		{
-		    // if it's a mouse event, let current_state_ determine who to send it too
-		    if (event_->type() == event::mouse_motion ||
-                        event_->type() == event::mouse_down ||
-                        event_->type() == event::mouse_up)
-		    {
-			mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
-
-                        INFO("Delegating mouse event from Mainloop");
-                        widget::ptr new_hover_ptr=current_state_.lock()->delegate_mouse_event(me);
-			widget::ptr hover_ptr = hover_widget_.lock();
-                        INFO("Mouse event delivered");
-			
-			if (new_hover_ptr!=hover_ptr) 
-			{
-			    // NOTE: only leaf widgets can be hover widgets!!!
-			    if(hover_ptr)
- 				hover_ptr->handle_event(event::create(event::mouse_leave));
-			    hover_ptr = new_hover_ptr;
-			    if (hover_ptr)
-				hover_ptr->handle_event(event::create(event::mouse_enter));
-			} 
-
-                        INFO("handling focusing");
-                        
-			// FIXME: do some error checking on the widget pointers
-			// update focused widget as necessary
-			if (event_->type() == event::mouse_down &&
-                            hover_ptr && // not a null hover widget
-                            focused_widget_.lock() != hover_ptr) 
-			{
-                            INFO("Unfocusing");
-                            if(focused_widget_.lock())
-                                focused_widget_.lock()->handle_event(event::create(event::un_focus));
-                            // Possible bug? focused_widget_ = hover_widget_; Accessing a weak pointer without lock is unsafe
-                            focused_widget_=hover_ptr;
-                            INFO("focusing");
-			    if(hover_ptr)
-                                hover_ptr->handle_event(event::create(event::focus));
-			} 
-                        INFO("focusing handled");
-//                        hover_widget_ = hover_ptr;                        
- 		    }
-		    else
-		    {
-			INFO("passing event to focused_widget_");
-			widget::ptr ptr = focused_widget_.lock();
-			if (!ptr)
-                        {
-			    WARN("no current widget, pass to state ?");
-                        }
-			else
-                        {
-			    ptr->handle_event(event_);
-                        }
-		    }
-		}
-		event_ = event_system_->poll_event();
-                INFO("Polled next event");
-	    }
             
-            // update all timers
-            std::list<timer::ptr>::iterator t_iter = timers_.begin();
-            for (t_iter; t_iter != timers_.end(); t_iter++)
-            {
-                if (!(*t_iter)->update())
-                {
-                    // FIXME: delete this timer
-                }
-            }
 
+            
             usleep(1000); // 1 ms
         }
         INFO("Done");
@@ -367,6 +368,12 @@ namespace stk
     {
         return current_state_.lock();
     }
-
+    void application::redraw(const rectangle& rect)
+    {
+        INFO("Application redraw");
+        redraw_rect+=rect;
+    }
 }
+
+
 

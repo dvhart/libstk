@@ -132,15 +132,12 @@ namespace stk
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         surface->offset(point(0,0));
         
-        INFO("state::draw");
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
                     color_properties(fill_state_color_str, surface)));
         surface->gc(gc);
         surface->fill_rect(rect_);
-        INFO("Filling rect with x,y,w,h=" << rect_.x1() << "," << rect_.y1() << ","
-             << rect_.width() << "," << rect_.height());
-        container::draw(surface); // this will draw all the children - document this for theme howto
+        container::draw(surface, clip_rect); // this will draw all the children - document this for theme howto
     }
 
     void button::draw(surface::ptr surface, const rectangle& clip_rect)

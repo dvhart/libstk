@@ -25,7 +25,6 @@ namespace stk
     {
         INFO("constructor");
         focusable_ = false;
-        redraw_rect_ = parent->surface()->rect();
     }
 
     container::~container()
@@ -66,29 +65,32 @@ namespace stk
 	return widget::ptr();
     }
 
-    void container::add
-        (widget::ptr w)
+    void container::add(widget::ptr w)
     {
         children_.push_back(w);
     }
 
-    void container::remove
-        (widget::ptr item)
+    void container::remove(widget::ptr item)
     {
         std::vector<boost::shared_ptr<stk::widget> >::iterator iter;
         iter=std::find(children_.begin(), children_.end(), item);
         children_.erase(iter);
     }
 
+    // the routine manages the draw calls of the children, clip rect is in
+    // screen space coordinates, redraw_rect is in local coordinates
     void container::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        // FIXME: do something with clip_rect
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        rectangle temp_rect = redraw_rect_;
-        redraw_rect_ = rectangle();
+        rectangle redraw_rect = clip_rect;
+        // Intersection tests should be in local coordinates
+        redraw_rect.position(redraw_rect.position()-surface->offset());
+        redraw_rect=redraw_rect.intersection(rect());
+        INFO("container::draw redraw_rect is " << redraw_rect );
+        
         for (iter; iter != children_.end(); iter++)
         {
-            if ((*iter)->intersects(temp_rect))
+            if ((*iter)->intersects(redraw_rect))
             {
                 surface->offset(surface->offset() + (*iter)->rect().p1());
                 (*iter)->draw(surface,clip_rect);
@@ -100,21 +102,9 @@ namespace stk
     void container::redraw(const rectangle& rect)
     {
         // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
-        redraw_rect_ += rect;
-        // augment redraw_rect_ if it intersects any other children_
-/*  MSTR, Why? They will get redrawn with the correct clipping, there is no need
-        to fully redraw them, is there?
-
-        std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
-        {
-            if ((*iter)->intersects(redraw_rect_))
-                redraw_rect_ += (*iter)->rect();
-                }*/
-        
-        // Move to parents coordinate system
-        redraw_rect_.position(redraw_rect_.position()+rect_.position());
-        parent_.lock()->redraw(redraw_rect_);
+        rectangle redraw_rect = rect;
+        redraw_rect.position(redraw_rect.position()+rect_.position());
+        parent_.lock()->redraw(redraw_rect);
     }
 
     /// Handle common container events

@@ -107,8 +107,6 @@ namespace stk
     {
 	handle_event(me);
 	widget::ptr this_ptr=shared_from_this();
-	WARN("use count of this ptr in widget::delegate_mouse_event is " << this_ptr.use_count() );
-	
 	return this_ptr;
     }
     

@@ -45,11 +45,12 @@ namespace stk
         widget::weak_ptr focused_widget_;
         widget::weak_ptr hover_widget_;
 
+        rectangle redraw_rect;
+        
         bool done_;
 
     protected:
         application(surface::ptr surface);
-
 
     public:
         /// Constructs a new Application Object
@@ -86,6 +87,8 @@ namespace stk
 
         void current_state(boost::shared_ptr<stk::state> new_cur_state);
         boost::shared_ptr<stk::state> current_state() const;
+
+        virtual void redraw(const rectangle& rect);
 
         // Triggered before STK's drawing code ran  \FIXME what does the return value mean?
         boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_predraw;

@@ -121,10 +121,6 @@ namespace stk
         {
             return shared_from_this();
         }
-        virtual rectangle redraw_rect()
-        {
-            return rectangle();
-        }
         /********** END COMPOSITE INTERFACE **********/
 
 

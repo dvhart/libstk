@@ -34,7 +34,6 @@ namespace stk
     protected:
         std::vector<widget::ptr> children_;
         container(component::ptr parent, const rectangle& rect);
-        rectangle redraw_rect_;
 
     public:
         virtual ~container();
@@ -86,11 +85,6 @@ namespace stk
         virtual widget::ptr widget_at(int x, int y);
         /// Pass mouse events down to widgets.
         virtual widget::ptr delegate_mouse_event(mouse_event::ptr me);
-        
-        virtual rectangle redraw_rect()
-        {
-            return redraw_rect_;
-        }
         /********** END CONTAINER INTERFACE **********/
     };
 
