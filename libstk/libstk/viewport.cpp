@@ -15,15 +15,18 @@
 #include "libstk/viewport.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
+#include "libstk/override_return.h"
 
 namespace stk
 {
     viewport::ptr viewport::create(container::ptr parent, const rectangle& rect)
     {
         viewport::ptr new_viewport(new viewport(rect));
+        new_viewport->on_resize.connect(boost::function<bool()>(
+                (boost::bind(&scrollable::update_vis_sizes, new_viewport.get(), 
+                    boost::bind(&rectangle::height, new_viewport.get()), 
+                    boost::bind(&rectangle::width, new_viewport.get())), true)));
         new_viewport->parent(parent);
-        new_viewport->h_scroll(scroll_model::create());
-        new_viewport->v_scroll(scroll_model::create());
         return new_viewport;
     }
 
@@ -31,6 +34,8 @@ namespace stk
     {
         INFO("constructor");
         focusable_ = true;
+        v_scroll_->vis_size(height());
+        h_scroll_->vis_size(width());
     }
 
     viewport::~viewport()

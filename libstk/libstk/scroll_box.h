@@ -26,17 +26,18 @@ namespace stk
     public:
         typedef boost::shared_ptr<scroll_box> ptr;
         typedef boost::weak_ptr<scroll_box> weak_ptr;
-
-    private:
+        typedef enum { always, never, automatic} scroll_policy;
 
     protected:
         scroll_box(const rectangle& rect);
+        void update_model_cons();
+        void model_change();
 
         // FIXME: this is not thread safe
         bool check_scrollable_;
-        // FIXME: use an enum with always, never, auto
-        bool v_policy_;
-        bool h_policy_;
+        
+        scroll_policy v_policy_;
+        scroll_policy h_policy_;
         rectangle child_rect_;
         
         scroll_bar::ptr h_scroll_bar_;
@@ -44,10 +45,12 @@ namespace stk
         viewport::ptr viewport_;
         widget::ptr child_;
 
+        boost::signals::connection v_scroll_con_;
+        boost::signals::connection h_scroll_con_;
+
     public:
-        // FIXME: consider scroll_bar show properties { never, always, if_needed }
         static scroll_box::ptr create(container::ptr parent, const rectangle& rect, 
-                bool v_policy, bool h_policy);
+                scroll_policy v_policy, scroll_policy h_policy);
         ~scroll_box();
 
         /********** DRAWABLE INTERFACE **********/
@@ -66,13 +69,12 @@ namespace stk
 
         /********** SCROLL BOX INTERFACE **********/
         scroll_model::ptr h_scroll();
-        void h_scroll(scroll_model::ptr model); 
+        void h_scroll(scroll_model::ptr model); // FIXME: should we provide this?
 
         scroll_model::ptr v_scroll();
-        void v_scroll(scroll_model::ptr model);
+        void v_scroll(scroll_model::ptr model); // FIXME: should we provide this?
 
-        // FIXME: use an enum with always, never, auto
-        void scroll_policies(bool h_policy, bool v_policy);
+        void scroll_policies(scroll_policy h_policy, scroll_policy v_policy);
         /********** END SCROLL BOX INTERFACE **********/
     };
 }

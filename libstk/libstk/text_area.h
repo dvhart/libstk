@@ -27,7 +27,7 @@ namespace stk
     public:
         typedef boost::shared_ptr<text_area> ptr;
         typedef boost::weak_ptr<text_area> weak_ptr;
-        typedef std::pair<int,int> selection_pair;
+        typedef std::pair<int, int> selection_pair;
 
     private:
         //functions inplemented in text_area.cpp
@@ -71,31 +71,14 @@ namespace stk
         std::wstring rest_of_text_;
 
     protected:
-        
         text_area(const std::wstring& text, const rectangle& rect, bool line_wrap);
         void resize();
-
-        //this is called by create to initialize the size
-        void init();
         boost::signals::connection v_scroll_con_;
+        
     public:
         static text_area::ptr create(container::ptr parent, const std::wstring& text,
                 const rectangle& rect, bool line_wrap);
-
-
         virtual ~text_area();
-
-        /***** RECTANGLE INTERFACE *****/
-
-        virtual void rect(const rectangle& rect) 
-        {
-            widget::rect(rect);
-            init();
-            //h_scroll_->vis_size(width());
-            //v_scroll_->vis_size(height());
-        }
-
-        /***** END RECTANGLE INTERFACE *****/
 
         /***** TEXT AREA INTERFACE *****/
         std::wstring text() const

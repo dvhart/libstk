@@ -26,4 +26,9 @@ namespace stk
         INFO("destructor");
     }
     
+    void scrollable::update_vis_sizes(int height, int width)
+    {
+        v_scroll_->vis_size(height);
+        h_scroll_->vis_size(width);
+    }
 } // namespace stk

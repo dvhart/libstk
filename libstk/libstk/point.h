@@ -56,6 +56,13 @@ namespace stk
             return *this;
         }
 
+        bool operator==(const point& rhs)
+        {
+            return (x_ == rhs.x() && y_ == rhs.y());
+        }
+
+        bool operator!=(const point& rhs) { return !(*this == rhs); }
+
     };
 }
 

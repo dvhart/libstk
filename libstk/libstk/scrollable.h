@@ -41,6 +41,8 @@ namespace stk
 
             virtual scroll_model::ptr v_scroll() { return v_scroll_; }
             virtual void v_scroll(scroll_model::ptr model) { v_scroll_ = model; }
+
+            virtual void update_vis_sizes(int height, int width);
             /********** END SCROLLABLE INTERFACE **********/
     };
 } // end namespace

@@ -42,7 +42,6 @@ namespace stk
         virtual ~component()
         { }
 
-
         /********** COMPONENT INTERFACE **********/
         /// Return the parent, widgets all return a valid pointer.
         /// Return an empty pointer here as not all derived classes have parents.
@@ -74,8 +73,7 @@ namespace stk
         { }
         /********** END COMPONENT INTERFACE **********/
 
-    }
-    ; // class parent
+    }; // class component
 } // namespace stk
 
 #endif

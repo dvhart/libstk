@@ -10,6 +10,7 @@
  *************************************************************************************************/
 
 #include <iostream>
+#include <boost/bind.hpp>
 
 #include "libstk/text_area.h"
 #include "libstk/container.h"
@@ -17,6 +18,7 @@
 #include "libstk/key_event.h"
 #include "libstk/font_manager.h"
 #include "libstk/font.h"
+#include "libstk/override_return.h"
 
 namespace stk
 {
@@ -24,23 +26,31 @@ namespace stk
             const rectangle& rect, bool line_wrap)
     {
         text_area::ptr new_text_area(new text_area(text, rect, line_wrap));
+        new_text_area->on_resize.connect(boost::function<bool()>(
+                (boost::bind(&scrollable::update_vis_sizes, new_text_area.get(), 
+                    boost::bind(&rectangle::height, 
+                        boost::bind(&text_area::text_rectangle, new_text_area.get())),
+                    boost::bind(&rectangle::width, 
+                        boost::bind(&text_area::text_rectangle, new_text_area.get())) ), true)));
+        new_text_area->on_resize.connect(boost::function<bool()>(
+                    (boost::bind(&text_area::resize, new_text_area.get()), true)));
         new_text_area->parent(parent);
-        new_text_area->init();
+        new_text_area->on_resize();
         return new_text_area;
     }
+
     text_area::text_area(const std::wstring& text, const rectangle& rect, bool line_wrap) : widget(rect), 
          text_(text), selection_start_(0), selection_end_(0), pressed_(false), line_wrap_(line_wrap)
     {
         INFO("constructor");
         focusable(true);
     }
-    void text_area::init()
+
+    text_area::~text_area()
     {
-        rectangle text_rect = text_rectangle();
-        v_scroll_->vis_size(text_rect.height());
-        h_scroll_->vis_size(text_rect.width());
-        resize();
+        INFO("destructor");
     }
+
     void text_area::resize()
     {
         if (line_wrap_)
@@ -71,10 +81,7 @@ namespace stk
             h_scroll_->begin(scr);
         }
     }
-    text_area::~text_area()
-    {
-        INFO("destructor");
-    }
+
     // event handler
     void text_area::handle_event(event::ptr e)
     {
@@ -376,6 +383,7 @@ namespace stk
         
         return cursor_pos;
     }
+    
     std::wstring text_area::next_line()
     {
         std::wstring line_str;
@@ -410,6 +418,7 @@ namespace stk
         //go back and divide the line by the closest white space
         return line_str;
     }
+    
     int text_area::region(int x, int y)
     {
         rectangle text_rect = text_rectangle();
@@ -444,6 +453,7 @@ namespace stk
         // trying to get the last character, just return the last character
         return text_.length();
     }
+    
     int text_area::line_start_position(int line)
     {
         font::ptr font = get_font();
@@ -468,6 +478,7 @@ namespace stk
 
         return text_.length();
     }
+    
     int text_area::chars_in_line(int line)
     {
         font::ptr font = get_font();
@@ -489,6 +500,7 @@ namespace stk
         //there is no next_line
         return -1;
     }
+    
     int text_area::total_lines()
     {
         int line_num=0;
@@ -500,6 +512,7 @@ namespace stk
         }
         return line_num;
     }
+    
     point text_area::cursor_position()
     {
         int line_num = 0;
@@ -527,6 +540,7 @@ namespace stk
         }
         return point(0,0);
     }
+    
     void text_area::scroll()
     {
         //get position of cursor
@@ -555,6 +569,7 @@ namespace stk
             h_scroll_->begin(cur_pos.x()-h_scroll_->vis_size());
         }
     }
+    
     //public interface classes
     void text_area::selection(int start, int end)
     {
@@ -562,16 +577,19 @@ namespace stk
         selection_end_ = end;
         redraw(widget::rect());
     }
+    
     text_area::selection_pair text_area::selection()
     {
         return selection_pair(selection_start_, selection_end_);
     }
+    
     std::wstring text_area::selected_text()
     {
         int start = MIN(selection_start_, selection_end_);
         int end = MAX(selection_start_, selection_end_);
         return text_.substr(start,end-start);
     }
+
     void text_area::v_scroll(scroll_model::ptr model)
     {
         v_scroll_con_.disconnect();

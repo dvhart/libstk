@@ -1,3 +1,115 @@
+2003-10-18 02:28  carter
+
+	* libstk/: application.cpp, application.h: Made it possible that
+	  the user sets the active state before application->run().  Made
+	  application a weak_ptr based singleton to allow controlled
+	  destruction of the widget tree
+
+2003-10-17 16:20  cslade
+
+	* libstk/text_area.cpp, libstk/text_area.h,
+	  libstk/tribal_theme.cpp, test/test_area.cpp: I made Text area
+	  scrollable.
+
+2003-10-17 14:59  dvhart
+
+	* libstk/xine_panel.cpp, libstk/xine_panel.h, test/xine_test.cpp:
+	  fixed xine_panel creation crash where the vo_port requires the
+	  parent to be set so it can get the surface, moved init code into
+	  xine_panel::init
+
+2003-10-13 13:53  dvhart
+
+	* libstk/: numeric_spinner.cpp, progress.cpp, tribal_theme.cpp:
+	  spinner and progress number formatting
+
+2003-10-13 12:03  dvhart
+
+	* libstk/list.cpp: fixed a bug in list that selected the wrong item
+	  if the v_scroll_ wasn't at the top
+
+2003-10-13 11:55  dvhart
+
+	* libstk/: container.cpp, widget.cpp: fixed a bug in delegate event
+
+2003-10-13 11:33  vhmauery
+
+	* libstk/: read_dir.cpp, read_dir.h: really fixed sorting now
+
+2003-10-13 11:09  vhmauery
+
+	* libstk/: font.cpp, read_dir.h: sorting for read_dir-oops
+
+2003-10-12 17:34  dvhart
+
+	* libstk/list.cpp, libstk/list.h, libstk/spinner.cpp,
+	  libstk/spinner.h, libstk/tribal_theme.cpp, libstk/viewport.cpp,
+	  libstk/viewport.h, test/test_app.cpp: untested list::remove_item
+	  update to update the items_ rectangles, override rect(const
+	  rectangle&) in scrollable widgets to update the vis_size on the
+	  scroll models.  Clicking inside scroll_boxes is still broken
+
+2003-10-12 16:27  dvhart
+
+	* doc/Doxyfile, libstk/button.cpp, libstk/button.h,
+	  libstk/component.h, libstk/container.cpp, libstk/container.h,
+	  libstk/edit_box.cpp, libstk/edit_box.h, libstk/image.h,
+	  libstk/image_panel.cpp, libstk/image_panel.h, libstk/label.cpp,
+	  libstk/label.h, libstk/list.cpp, libstk/list.h,
+	  libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
+	  libstk/progress.cpp, libstk/progress.h, libstk/scroll_bar.cpp,
+	  libstk/scroll_bar.h, libstk/scroll_box.cpp, libstk/scroll_box.h,
+	  libstk/scroll_model.h, libstk/spinner.cpp, libstk/spinner.h,
+	  libstk/spreadsheet.cpp, libstk/spreadsheet.h, libstk/state.cpp,
+	  libstk/state.h, libstk/switched_panel.cpp,
+	  libstk/switched_panel.h, libstk/text_area.cpp,
+	  libstk/text_area.h, libstk/viewport.cpp, libstk/viewport.h,
+	  libstk/widget.cpp, libstk/widget.h, libstk/xine_panel.cpp,
+	  libstk/xine_panel.h: new composition model implemented, to add a
+	  widget to a container you should now call
+	  my_widget->parent(my_container) NOT my_container->add(my_widget).
+	  The reason for this is that calling add() might give the
+	  impression a widget can be in more than container at a time,
+	  while calling parent() is clear that a widget only belongs in
+	  one.	Also some updates to scroll_box.  Still need to write the
+	  create() routines without parent pointers
+
+2003-10-12 09:24  carter
+
+	* libstk/surface_dfb.cpp: Fixed the lines to origin bug (how did
+	  the surface ever work?)
+
+2003-10-12 09:23  carter
+
+	* test/hello_world.cpp: Removed some stuff i accidantly added to
+	  hello world
+
+2003-10-12 09:21  carter
+
+	* test/Makefile.am: Readded printing test after someone (Darren?)
+	  Commented it out in the makefile
+
+2003-10-12 06:55  carter
+
+	* libstk/Makefile.am: Fixed missing headers in distribution
+
+2003-10-11 11:13  dvhart
+
+	* ChangeLog, libstk/list.cpp, libstk/list.h, libstk/scroll_bar.cpp,
+	  libstk/scroll_box.cpp, libstk/scroll_box.h,
+	  libstk/scrollable.cpp, libstk/scrollable.h, libstk/viewport.cpp,
+	  libstk/viewport.h, test/Makefile.am, test/test_app.cpp:
+	  preliminary scrollable interface - list is broken atm
+
+2003-10-11 09:03  carter
+
+	* configure.in: Fixed error in print configuration
+
+2003-10-11 07:38  dvhart
+
+	* libstk/: scrollable.cpp, scrollable.h: non widget version of
+	  scrollable
+
 2003-10-11 06:06  carter
 
 	* configure.in, libstk/Makefile.am, libstk/font.cpp,

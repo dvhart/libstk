@@ -27,7 +27,7 @@ namespace stk
         typedef boost::shared_ptr<viewport> ptr;
         typedef boost::weak_ptr<viewport> weak_ptr;
         
-        // fixme: we shouldn't need these !
+        // FIXME: we shouldn't need these !
         using scrollable::h_scroll;
         using scrollable::v_scroll;
     private:
@@ -44,16 +44,6 @@ namespace stk
         static viewport::ptr create(container::ptr parent, const rectangle& rect);
         virtual ~viewport();
 
-        /********** RECTANGLE INTERFACE **********/
-        // FIXME: every scrollable widget has to do this... is there another way?
-        virtual void rect(const rectangle& rect) 
-        {
-            widget::rect(rect);
-            h_scroll_->vis_size(width());
-            v_scroll_->vis_size(height());
-        }
-        /********** END RECTANGLE INTERFACE **********/
-
         /********** DRAWABLE INTERFACE **********/
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
         /********** END DRAWABLE INTERFACE **********/
@@ -69,10 +59,7 @@ namespace stk
         /********** END COMPONENT INTERFACE **********/
 
         /********** VIEWPORT INTERFACE **********/
-        //virtual scroll_model::ptr h_scroll() { return scrollable::h_scroll(); }
         virtual void h_scroll(scroll_model::ptr model);
-
-        //virtual scroll_model::ptr v_scroll() { return scrollable::v_scroll(); }
         virtual void v_scroll(scroll_model::ptr model);
         /********** END VIEWPORT INTERFACE **********/
     };

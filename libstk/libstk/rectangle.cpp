@@ -35,6 +35,40 @@ namespace stk
         }
     }
 
+    // setters
+    void rectangle::p1(const point&  p)
+    { 
+        p1_ = p; 
+    }
+    void rectangle::p2(const point&  p) 
+    { 
+        p2_ = p; 
+    }
+    void rectangle::x1(int val) 
+    { 
+        p1_.x(val); 
+    }
+    void rectangle::y1(int val) 
+    { 
+        p1_.y(val); 
+    }
+    void rectangle::x2(int val) 
+    { 
+        p2_.x(val); 
+    }
+    void rectangle::y2(int val) 
+    { 
+        p2_.y(val); 
+    }
+    void rectangle::width(int val) 
+    { 
+        p2_.x(val + p1_.x() - 1); 
+    }
+    void rectangle::height(int val) 
+    { 
+        p2_.y(val + p1_.y() - 1); 
+    }
+
     // utilities
     bool rectangle::contains(int x, int y) const
     {
@@ -102,6 +136,12 @@ namespace stk
         }
         return *this;
     }
+
+    bool rectangle::operator==(const rectangle& rect)
+    {
+        return (p1_ == rect.p1() && p2_ == rect.p2());
+    }
+
     rectangle rectangle::intersection(const rectangle& rhs) const
     {
         rectangle retval;

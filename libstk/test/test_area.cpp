@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
         state::ptr test_state = state::create(app);
 
         scroll_box::ptr text_scroll = scroll_box::create(test_state, 
-                rectangle(30, 30, 200, 150), true, true); 
+                rectangle(30, 30, 200, 150), scroll_box::automatic, scroll_box::automatic); 
         text_area::ptr test_area = text_area::create(text_scroll, 
                 std::wstring(L"Hello World\nThis is a really long long\nlong\nlong String.\nHello World"),
                 rectangle()/*(30, 30, 180, 80)*/,true);

@@ -9,8 +9,9 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-#include "stk_types.h"
-#include "scroll_model.h"
+#include "libstk/logging.h"
+#include "libstk/stk_types.h"
+#include "libstk/scroll_model.h"
 
 namespace stk
 {
@@ -28,11 +29,15 @@ namespace stk
         return size_;
     }
 
-    void scroll_model::size(int newsize)
+    void scroll_model::size(int val)
     {
-        size_ = newsize;
-        begin_ = MAX(0, MIN(begin_, size_-vis_size_));
-        on_change();
+        if (size_ != val)
+        {
+            INFO("size: " << size_ << " <-- " << val);
+            size_ = val;
+            begin_ = MAX(0, MIN(begin_, size_-vis_size_));
+            on_change();
+        }
     }
 
     int scroll_model::begin() const
@@ -40,10 +45,16 @@ namespace stk
         return begin_;
     }
 
-    void scroll_model::begin(int value)
+    void scroll_model::begin(int val)
     {
-        begin_ = MAX(0, MIN(value, size_-vis_size_));
-        on_change();
+        if (begin_ != val)
+        {
+            INFO("begin: " << begin_ << " <-- " << val);
+            begin_ = MAX(0, MIN(val, size_-vis_size_));
+            INFO("  calling on_change()");
+            on_change();
+            INFO("  done");
+        }
     }
 
     int scroll_model::end() const
@@ -56,11 +67,15 @@ namespace stk
         return vis_size_;
     }
 
-    void scroll_model::vis_size(int newsize)
+    void scroll_model::vis_size(int val)
     {
-        vis_size_ = newsize;
-        begin_ = MAX(0, MIN(begin_, size_-vis_size_));
-        on_change();
+        if (vis_size_ != val)
+        {
+            INFO("vis_size: " << vis_size_ << " <-- " << val);
+            vis_size_ = val;
+            begin_ = MAX(0, MIN(begin_, size_-vis_size_));
+            on_change();
+        }
     }
 
 } // namespace stk

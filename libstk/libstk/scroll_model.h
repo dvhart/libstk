@@ -36,12 +36,12 @@ namespace stk
     public:
         static scroll_model::ptr create();
         int size() const;
-        void size(int newsize);
+        void size(int val);
         int begin() const;
-        void begin(int value);
+        void begin(int val);
         int end() const;
         int vis_size() const;
-        void vis_size(int newsize);
+        void vis_size(int val);
 
         boost::signal<void () > on_change;
     };

@@ -39,6 +39,96 @@ namespace stk
         INFO("destructor");
     }
 
+    // wrap the rectangle interface, emitting on_resize as appropriate
+    void widget::rect(const rectangle& rect) 
+    { 
+        INFO("widget::rect(): " << (rectangle)*this << " <-- " << rect);
+        if (*this != rect)
+        {
+            INFO("  setting rect");
+            rectangle::p1(rect.p1()); 
+            rectangle::p2(rect.p2());
+            INFO("  emitting on_resize()");
+            on_resize();
+        }
+    }
+    void widget::p1(const point&  p)
+    {
+        if (p1_ != p)
+        {
+            rectangle::p1(p);
+            on_resize();
+        }
+    }
+    void widget::p2(const point&  p)
+    {
+        if (p2_ != p)
+        {
+            rectangle::p2(p);
+            on_resize();
+        }
+    }
+    void widget::x1(int val)
+    {
+        if (x1() != val)
+        {
+            rectangle::x1(val);
+            on_resize();
+        }
+    }
+    void widget::y1(int val)
+    {
+        if (y1() != val)
+        {
+            rectangle::y1(val);
+            on_resize();
+        }
+    }
+    void widget::x2(int val)
+    {
+        if (x2() != val)
+        {
+            rectangle::x2(val);
+            on_resize();
+        }
+    }
+    void widget::y2(int val)
+    {
+        if (y2() != val)
+        {
+            rectangle::y2(val);
+            on_resize();
+        }
+    }
+    void widget::width(int val)
+    {
+        if (width() != val)
+        {
+            rectangle::width(val);
+            on_resize();
+        }
+    }
+    void widget::height(int val)
+    {
+        if (height() != val)
+        {
+            rectangle::height(val);
+            on_resize();
+        }
+    }
+    void widget::position(int x, int y)
+    {
+        position(point(x, y));
+    }
+    void widget::position(const point& p)
+    {
+        if (p1_ != p)
+        {
+            rectangle::position(p);
+            on_resize();
+        }
+    }
+
     /// Handle common widget events
     /// Try to handle the passed event, if there is nothing to do with it pass it up to the parent.
     /// Every non container should call widget::handle_event(e) from within its handle_event

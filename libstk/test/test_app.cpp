@@ -161,21 +161,24 @@ int main(int argc, char* argv[])
         label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"),
                 rectangle(10, 50, 150, 30));
         scroll_box::ptr test_scroll_box = scroll_box::create(test_state, 
-                rectangle(10, 90, 350, 200), true, true);
+                rectangle(10, 90, 350, 200), scroll_box::automatic, scroll_box::automatic);
         image_panel::ptr test_image_panel = image_panel::create(test_scroll_box, 
-                rectangle(0, 0, 384, 256), image::create(test_scroll_box->surface(), "parrots.png"));
+                rectangle(0, 0, 384, 256), image::create(test_scroll_box->surface(), 
+                    "parrots.png"));
         
         button::ptr scroll_left = button::create(test_state,L"Scroll-", 
 			rectangle(100, 300, 90, 40));
-        scroll_left->on_release.connect(boost::bind(&scroll_slot, test_scroll_box->h_scroll(), -10));
-        button::ptr scroll_right=button::create(test_state,L"Scroll+", 
+        scroll_left->on_release.connect(boost::bind(&scroll_slot, 
+                    boost::bind(&scroll_box::h_scroll, test_scroll_box.get()), -10));
+        button::ptr scroll_right = button::create(test_state,L"Scroll+", 
 			rectangle(200, 300, 90, 40));
-        scroll_right->on_release.connect(boost::bind(&scroll_slot, test_scroll_box->h_scroll(), 10));
+        scroll_right->on_release.connect(boost::bind(&scroll_slot, 
+                    boost::bind(&scroll_box::h_scroll, test_scroll_box.get()), 10));
 
         // create a list
         INFO("app - creating a list with items");
         scroll_box::ptr list_scroll_box = scroll_box::create(test_state, 
-                rectangle(370, 90, 150, 200), true, false);
+                rectangle(370, 90, 150, 200), scroll_box::automatic, scroll_box::automatic);
         list::ptr test_list = list::create(list_scroll_box, rectangle()/*0, 0, 130, 180)*/);
         list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia");
         list_item::ptr test_item_2 = list_item::create(test_list, L"Canada");
@@ -191,7 +194,7 @@ int main(int argc, char* argv[])
 
         // create a spinner
         INFO("app - creating a spinner with items");
-        spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30), false);
+        spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30),false);
         list_item::ptr test_item_20 = list_item::create(test_spinner, L"Apple");
         list_item::ptr test_item_21 = list_item::create(test_spinner, L"Banana");
         list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange");
@@ -204,7 +207,8 @@ int main(int argc, char* argv[])
 
         // create an edit_box
         INFO("app - creating edit_box");
-        edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", rectangle(340, 440, 260, 30));
+        edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", 
+                rectangle(340, 440, 260, 30));
         test_edit->on_confirm.connect(&print_edit_box_text);
         
         // add a timer (quit after 30 seconds)

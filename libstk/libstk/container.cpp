@@ -145,6 +145,8 @@ namespace stk
                 // find the next focusable widget
                 while (++iter != children_.end() )
                 {
+                    // FIXME: consider using same pattern as widget_at() ie call focus_next on the children as well
+                    // and ensure leaf widgets return shared_from_this()
                     if ((*iter)->focusable()) return *iter;
                 }
                 break;
@@ -174,6 +176,8 @@ namespace stk
                 // find the previous focusable widget
                 while (iter != children_.begin())
                 {
+                    // FIXME: consider using same pattern as widget_at() ie call focus_prev on the children as well
+                    // and ensure leaf widgets return shared_from_this()
                     if ((*--iter)->focusable()) return *iter;
                 }
                 break;

@@ -48,14 +48,16 @@ namespace stk
         virtual int height() const { return p2_.y() - p1_.y() + 1; } // inclusive height
 
         // setters
-        virtual void p1(const point&  p) { p1_ = p; }
-        virtual void p2(const point&  p) { p2_ = p; }
-        virtual void x1(int val) { p1_.x(val); }
-        virtual void y1(int val) { p1_.y(val); }
-        virtual void x2(int val) { p2_.x(val); }
-        virtual void y2(int val) { p2_.y(val); }
-        virtual void width(int val) { p2_.x(val + p1_.x() - 1); }
-        virtual void height(int val) { p2_.y(val + p1_.y() - 1); }
+        virtual void p1(const point&  p);
+        virtual void p2(const point&  p);
+        virtual void x1(int val);
+        virtual void y1(int val);
+        virtual void x2(int val);
+        virtual void y2(int val);
+        virtual void width(int val);
+        virtual void height(int val);
+        virtual void position(int x, int y);
+        virtual void position(const point& p);
 
         // utilities
         /// Returns true if the rectangle is empty(w==0 h==0)
@@ -70,14 +72,12 @@ namespace stk
         virtual rectangle intersection(const rectangle& rhs) const;
         /// Returns the upper left corner of the rectangle (this is duplicated by p1())
         virtual point position() const { return p1_; }
-        /// Sets the upper left corner of the rectangle
-        virtual void position(int x, int y);
-        /// Sets the upper left corner of the rectangle
-        virtual void position(const point& p);
 
         // operators
         const rectangle operator+(const rectangle& rect) const;
         const rectangle& operator+=(const rectangle& rect);
+        bool operator==(const rectangle& rect);
+        bool operator!=(const rectangle& rect) { return !(*this == rect); }
     };
 }
 std::ostream& operator<<(std::ostream& os, const stk::rectangle& rect);

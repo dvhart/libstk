@@ -60,15 +60,30 @@ namespace stk
         virtual ~widget();
 
         /********** RECTANGLE INTERFACE **********/
-        /// Get the rectangular region oocupied by the drawable
+        /// Get the rectangular region ocupied by the drawable
         virtual rectangle rect() { return rectangle(p1_, p2_); }
-
+        // FIXME: why do we have to do this?
+        using rectangle::p1;
+        using rectangle::p2;
+        using rectangle::x1;
+        using rectangle::x2;
+        using rectangle::y1;
+        using rectangle::y2;
+        using rectangle::width;
+        using rectangle::height;
+        using rectangle::position;
         /// Set the position and size of the drawable
-        virtual void rect(const rectangle& rect) 
-        { 
-            p1(rect.p1()); 
-            p2(rect.p2()); 
-        }
+        virtual void rect(const rectangle& rect);
+        virtual void p1(const point&  p);
+        virtual void p2(const point&  p);
+        virtual void x1(int val);
+        virtual void y1(int val);
+        virtual void x2(int val);
+        virtual void y2(int val);
+        virtual void width(int val);
+        virtual void height(int val);
+        virtual void position(int x, int y);
+        virtual void position(const point& p);
         /********** END RECTANGLE INTERFACE **********/
 
         /********** EVENT HANDLER INTERFACE **********/
@@ -104,6 +119,7 @@ namespace stk
         /// Return the hover property of the widget
         virtual bool hover() { return hover_; }
 
+        boost::signal<bool (), combiner::logical_or<bool> > on_resize;
         boost::signal<bool (), combiner::logical_or<bool> > on_focus;
         boost::signal<bool (), combiner::logical_or<bool> > on_unfocus;
         boost::signal<bool (), combiner::logical_or<bool> > on_mouse_enter;

@@ -10,19 +10,24 @@
  *************************************************************************************************/
 
 #include <iostream>
+#include <boost/bind.hpp>
+
 #include "libstk/list.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/keycode.h"
-
-#include <boost/bind.hpp>
+#include "libstk/override_return.h"
 
 namespace stk
 {
     list::ptr list::create(container::ptr parent, const rectangle& rect)
     {
         list::ptr new_list(new list(rect));
+        new_list->on_resize.connect(boost::function<bool()>(
+                (boost::bind(&scrollable::update_vis_sizes, new_list.get(), 
+                    boost::bind(&rectangle::height, new_list.get()), 
+                    boost::bind(&rectangle::width, new_list.get())), true)));
         new_list->parent(parent);
         return new_list;
     }
