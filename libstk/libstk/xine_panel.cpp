@@ -27,7 +27,8 @@ namespace stk
         widget(parent, rect)
     {
         xine_ = xine_new();
-        xine_config_load(xine_, "/home/dvhart/.xine/config"/*configfile path*/);
+        // FIXME: make this configurable or set it from the configure prefix
+        xine_config_load(xine_, "/usr/local/share/libstk/xine_config");
         xine_init(xine_);
 
         // get the video and audio drivers
@@ -97,7 +98,31 @@ namespace stk
     bool xine_panel::speed(int val)
     {
         INFO(__FUNCTION__ << " not implemented");
+        switch(val)
+        {
+            case  XINE_SPEED_PAUSE:
+            case  XINE_SPEED_SLOW_4:
+            case  XINE_SPEED_SLOW_2:
+            case  XINE_SPEED_NORMAL:
+            case  XINE_SPEED_FAST_2:
+            case  XINE_SPEED_FAST_4:
+                xine_set_param(xine_stream_, XINE_PARAM_SPEED, val);
+                break;
+            default:
+                INFO("undefined speed parameter: " << val);
+        }
+        return true;
     }
+
+/*
+#define XINE_SPEED_PAUSE                   0
+#define XINE_SPEED_SLOW_4                  1
+#define XINE_SPEED_SLOW_2                  2
+#define XINE_SPEED_NORMAL                  4
+#define XINE_SPEED_FAST_2                  8
+#define XINE_SPEED_FAST_4                  16
+*/
+
 
     int xine_panel::speed()
     {
@@ -106,12 +131,20 @@ namespace stk
 
     bool xine_panel::faster()
     {
-        INFO(__FUNCTION__ << " not implemented");
+        int speed = xine_get_param(xine_stream_, XINE_PARAM_SPEED) << 1;
+        if (speed > XINE_SPEED_FAST_4) 
+            speed = XINE_SPEED_FAST_4;
+        else if (speed == XINE_SPEED_PAUSE) 
+            speed = XINE_SPEED_SLOW_4;
+        xine_set_param(xine_stream_, XINE_PARAM_SPEED, speed);
+        return true;
     }
 
     bool xine_panel::slower()
     {
-        INFO(__FUNCTION__ << " not implemented");
+        int speed = xine_get_param(xine_stream_, XINE_PARAM_SPEED) >> 1;
+        xine_set_param(xine_stream_, XINE_PARAM_SPEED, speed);
+        return true;
     }
 
 } 
