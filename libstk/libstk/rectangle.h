@@ -29,49 +29,49 @@ namespace stk
     public:
         rectangle(int x1 = 0, int y1 = 0, int w = 0, int h = 0);
         rectangle(const point &p1, const point &p2);
-        virtual ~rectangle() { }
+        ~rectangle() { }
 
         // getters
         /// Returns the upper left corner of the rectangle (this is duplicated by position())
-        virtual point p1() const { return p1_; }
+        point p1() const { return p1_; }
         /// Returns the lower right corner of the rectangle
-        virtual point p2() const { return p2_; }
+        point p2() const { return p2_; }
         /// Returns the x coordinate of the left edge
-        virtual int x1() const { return p1_.x(); }
+        int x1() const { return p1_.x(); }
         /// Returns the y coordinate of the top edge
-        virtual int y1() const { return p1_.y(); }
+        int y1() const { return p1_.y(); }
         /// Returns the x coordinate of the right edge
-        virtual int x2() const { return p2_.x(); }
+        int x2() const { return p2_.x(); }
         /// Returns the y coordinate of the bottom edge
-        virtual int y2() const { return p2_.y(); }
-        virtual int width() const { return p2_.x() - p1_.x() + 1; }  // inclusive width
-        virtual int height() const { return p2_.y() - p1_.y() + 1; } // inclusive height
+        int y2() const { return p2_.y(); }
+        int width() const { return p2_.x() - p1_.x() + 1; }  // inclusive width
+        int height() const { return p2_.y() - p1_.y() + 1; } // inclusive height
 
         // setters
-        virtual void p1(const point&  p);
-        virtual void p2(const point&  p);
-        virtual void x1(int val);
-        virtual void y1(int val);
-        virtual void x2(int val);
-        virtual void y2(int val);
-        virtual void width(int val);
-        virtual void height(int val);
-        virtual void position(int x, int y);
-        virtual void position(const point& p);
+        void p1(const point&  p);
+        void p2(const point&  p);
+        void x1(int val);
+        void y1(int val);
+        void x2(int val);
+        void y2(int val);
+        void width(int val);
+        void height(int val);
+        void position(int x, int y);
+        void position(const point& p);
 
         // utilities
         /// Returns true if the rectangle is empty(w==0 h==0)
-        virtual bool empty() const { return (!width() && !height()); }
+        bool empty() const { return (!width() && !height()); }
         /// Returns true if the given Point lies inside the rectangle
-        virtual bool contains(int x, int y) const;
+        bool contains(int x, int y) const;
         /// Returns true if the given Point lies inside the rectangle
-        virtual bool contains(const point& p) const;
+        bool contains(const point& p) const;
         /// Returns true if the given rectangle intersects with this one
-        virtual bool intersects(const rectangle& rect) const;
+        bool intersects(const rectangle& rect) const;
         /// Returns the area of intersection between both rectangles (the area they share)
-        virtual rectangle intersection(const rectangle& rhs) const;
+        rectangle intersection(const rectangle& rhs) const;
         /// Returns the upper left corner of the rectangle (this is duplicated by p1())
-        virtual point position() const { return p1_; }
+        point position() const { return p1_; }
 
         // operators
         const rectangle operator+(const rectangle& rect) const;
