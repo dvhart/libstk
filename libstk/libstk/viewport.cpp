@@ -21,8 +21,7 @@ namespace stk
     viewport::ptr viewport::create(container::ptr parent, const rectangle& rect)
     {
         viewport::ptr new_viewport(new viewport(parent, rect));
-        parent->add
-        (new_viewport);
+        parent->add(new_viewport);
         return new_viewport;
     }
 
@@ -39,11 +38,6 @@ namespace stk
         INFO("destructor");
     }
 
-    scroll_model::ptr viewport::h_scroll()
-    {
-        return h_scroll_;
-    }
-
     void viewport::h_scroll(scroll_model::ptr value)
     {
         h_scroll_con.disconnect();
@@ -53,11 +47,6 @@ namespace stk
         if (!children_.empty())
             h_scroll_->size(children_[0]->width());
         h_scroll_->vis_size(width());
-    }
-
-    scroll_model::ptr viewport::v_scroll()
-    {
-        return v_scroll_;
     }
 
     void viewport::v_scroll(scroll_model::ptr value)
@@ -79,6 +68,20 @@ namespace stk
     void viewport::handle_event(event::ptr e)
     {
         widget::handle_event(e);
+    }
+
+    void viewport::add(widget::ptr item)
+    {
+        children_.push_back(item);
+
+        rectangle rect;
+
+        // Fixme, this should really be using for each shouldnt it?
+        for(unsigned int i=0;i<children_.size();i++)
+            rect+=children_[i]->rect();
+
+        h_scroll()->size(rect.x2());
+        v_scroll()->size(rect.y2());
     }
 
 }

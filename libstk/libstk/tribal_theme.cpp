@@ -27,6 +27,7 @@
 #include "libstk/list_item.h"
 #include "libstk/numeric_spinner.h"
 #include "libstk/progress.h"
+#include "libstk/scroll_bar.h"
 #include "libstk/scroll_box.h"
 #include "libstk/spinner.h"
 #include "libstk/spreadsheet.h"
@@ -389,7 +390,35 @@ namespace stk
         return LABEL;
     }
 
+    void scroll_bar::draw(surface::ptr surface, const rectangle& clip_rect)
+    {
+        INFO("scoll_bar::draw()");
+        // translate model coordinates into scroll_bar coords
+        rectangle outline_rect = rect(); outline_rect.position(0, 0);
+        rectangle vis_rect = outline_rect; 
+        INFO("  model begin: " << model_->begin() << ", vis_size" << model_->vis_size());
+        if (width() > height())
+        { // horizontal scrollbar
+            // FIXME: the scrollbar move backwards!
+            vis_rect.x1(width()*model_->begin()/model_->size());            
+            vis_rect.x2(vis_rect.x1()+width()*model_->vis_size()/model_->size());            
+        }
+        else
+        { // vertical scrollbar
+            // FIXME: the scrollbar move backwards!
+            vis_rect.y1(height()*model_->begin()/model_->size());            
+            vis_rect.y2(vis_rect.y1() + height()*model_->vis_size()/model_->size());            
+        }
 
+        graphics_context::ptr gc = graphics_context::create();
+        gc->line_color(color_manager::get()->get_color(
+                    color_properties(outline_color_focused_str, surface)));
+        surface->gc(gc);
+        INFO("  drawing outline: " << outline_rect);
+        surface->draw_rect(outline_rect);
+        INFO("  drawing bar: " << vis_rect);
+        surface->draw_rect(vis_rect);
+    }
     
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
@@ -560,12 +589,82 @@ namespace stk
         return Vera_18->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
     }
 
+    void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
+    {
+        // FIXME: why is different than all the other widgets?
+        if (screen_position.empty()) return;
+
+        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, 
+                screen_position.width()-6, screen_position.height()-6);
+        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, 
+                screen_position.width()-2, screen_position.height()-2);
+
+        graphics_context::ptr gc = graphics_context::create();
+
+        if(focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
+        }
+        gc->line_color(color_manager::get()->get_color(
+                    color_properties(outline_color_normal_str, surface)));
+        
+        surface->fill_rect(interior_rect);
+        surface->draw_rect(outline_rect);
+    }
+    void spreadsheet_cell_text::draw(surface::ptr surface, const rectangle& screen_position)
+    {
+        // FIXME: why is different than all the other widgets?
+        if (screen_position.empty()) return;
+
+        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, 
+                screen_position.width()-6, screen_position.height()-6);
+        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, 
+                screen_position.width()-2, screen_position.height()-2);
+        
+        graphics_context::ptr gc = graphics_context::create();
+
+        // prepare the font
+        font::ptr the_font = font_manager::get()->get_font(font_properties("Vera.ttf", 10));
+        
+        gc->font(the_font);
+        
+        if (focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
+        }
+        gc->line_color(color_manager::get()->get_color(
+                    color_properties(outline_color_normal_str, surface)));
+
+        gc->font_outline_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
+
+        surface->gc(gc);
+
+        surface->fill_rect(interior_rect);
+        surface->draw_rect(outline_rect);
+        surface->draw_text(interior_rect, text_);
+    }
+
     void text_area::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         rectangle interior_rect(3, 3, width()-6, height()-6);
         rectangle outline_rect(1, 1, width()-2, height()-2);
         rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
-        
+
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
@@ -642,7 +741,7 @@ namespace stk
             if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
-                
+
                 rest_of_text = rest_of_text.substr(nline_width+1, 
                         rest_of_text.length()-nline_width-1);
                 new_line = 1;//used to add in the new line character
@@ -653,20 +752,21 @@ namespace stk
                 rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
                 new_line = 0;
             }
-            
+
             //do cursor or selection
             if (selection_start_ == selection_end_ && focused_)
             {//nothing selected and we are focused -- print cursor
-                if (selection_start_ >= num_chars && selection_start_ <= (num_chars+(int)line_str.length()))
+                if (selection_start_ >= num_chars && 
+                        selection_start_ <= (num_chars+(int)line_str.length()))
                 {//cursor is on this line
                     int chars_before_cursor = selection_start_ - num_chars;
                     int cursor_x = Vera_14->draw_len(line_str.substr(0,chars_before_cursor));
                     //draw cursor
 
-                        
+
                     surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
-                        ,line_rect.x1()+cursor_x,line_rect.y2());
-                
+                            ,line_rect.x1()+cursor_x,line_rect.y2());
+
                     line_ = line_num;//to remember where the cursor is
 
                 }
@@ -675,42 +775,50 @@ namespace stk
                 //yellow selection
                 if (focused_)
                     gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_normal_str, surface)));
+                                color_properties(fill_color_normal_str, surface)));
                 // light blue selection
                 else
                     gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_focused_str, surface)));
+                                color_properties(fill_color_focused_str, surface)));
                 if ( (sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()))
-                    && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) ) 
+                        && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) )
                 {//selection starts and ends on this line
                     int sel_start = sel_min - num_chars;
                     int sel_end = sel_max - num_chars;
-                    
+
                     int start_x = Vera_14->draw_len( line_str.substr(0, sel_start) );
                     int end_x = Vera_14->draw_len( line_str.substr(0, sel_end) );
-                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, Vera_14->height()+3);
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), 
+                            end_x-start_x, Vera_14->height()+3);
                     surface->fill_rect(sel_rect);
                     line_ = line_num;
-                } else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) ) 
+                } 
+                else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) )
                 {//selection starts on this line
                     int sel_start = sel_min - num_chars;
                     int start_x = Vera_14->draw_len ( line_str.substr(0, sel_start) );
                     int end_x = Vera_14->draw_len (line_str);//to end of text
-                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, Vera_14->height()+3);
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), 
+                            end_x-start_x, Vera_14->height()+3);
                     surface->fill_rect(sel_rect);
-                    if (selection_end_ == sel_min) line_ = line_num;//alway use selection_end_ to determine current line
-                } else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
+                    //alway use selection_end_ to determine current line
+                    if (selection_end_ == sel_min) line_ = line_num;
+                } 
+                else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
                 {//selection ends of this line
                     int sel_end = sel_max - num_chars;
-                    
+
                     int end_x = Vera_14->draw_len ( line_str.substr(0, sel_end) );
-                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, Vera_14->height()+3);
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, 
+                            Vera_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ ==  sel_max) line_ = line_num;
-                } else if ( sel_min < num_chars  && sel_max > num_chars+(int)line_str.length() )
+                } 
+                else if ( sel_min < num_chars  && sel_max > num_chars+(int)line_str.length() )
                 {//selection covers line
                     int end_x = Vera_14->draw_len(line_str);
-                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, Vera_14->height()+3);
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, 
+                            Vera_14->height()+3);
                     surface->fill_rect(sel_rect);
                 }
             }
@@ -734,7 +842,7 @@ namespace stk
         //create font
         font::ptr Vera_14 = font_manager::get()->get_font(font_properties("Vera.ttf",14));
         //pass through text to find the position
-        int ypos = (y1()+ 3) + (Vera_14->height() + 3);//the start of y plus a line
+        int ypos = (y1()+3) + (Vera_14->height()+3);//the start of y plus a line
         bool cont = true;
         std::wstring line_str;
         std::wstring rest_of_text = text_;
@@ -803,15 +911,15 @@ namespace stk
             //if is on this line
             if (line_num == line)
                 return num_chars;
-            
-            num_chars+=line_str.length()+new_line;
+
+            num_chars += line_str.length()+new_line;
             //move to next line
-            line_num ++;
+            line_num++;
             //stop if no more text
             if (rest_of_text.length() == 0)
                 cont = false;
         }
-        
+
         return text_.length();
     }
     int text_area::chars_in_line(int line)
@@ -853,81 +961,11 @@ namespace stk
             if (rest_of_text.length() == 0)
                 cont = false;
         }
-        
+
         return -1;
 
     }
-    
-    void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
-    {
-        // FIXME: why is different than all the other widgets?
-        if (screen_position.empty()) return;
-
-        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, 
-                screen_position.width()-6, screen_position.height()-6);
-        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, 
-                screen_position.width()-2, screen_position.height()-2);
-
-        graphics_context::ptr gc = graphics_context::create();
-
-        if(focused_)
-        {
-            gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_focused_str, surface)));
-        }
-        else
-        {
-            gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_normal_str, surface)));
-        }
-        gc->line_color(color_manager::get()->get_color(
-                    color_properties(outline_color_normal_str, surface)));
-        
-        surface->fill_rect(interior_rect);
-        surface->draw_rect(outline_rect);
-    }
-    void spreadsheet_cell_text::draw(surface::ptr surface, const rectangle& screen_position)
-    {
-        // FIXME: why is different than all the other widgets?
-        if (screen_position.empty()) return;
-
-        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, 
-                screen_position.width()-6, screen_position.height()-6);
-        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, 
-                screen_position.width()-2, screen_position.height()-2);
-        
-        graphics_context::ptr gc = graphics_context::create();
-
-        // prepare the font
-        font::ptr the_font = font_manager::get()->get_font(font_properties("Vera.ttf", 10));
-        
-        gc->font(the_font);
-        
-        if (focused_)
-        {
-            gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_focused_str, surface)));
-        }
-        else
-        {
-            gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_normal_str, surface)));
-        }
-        gc->line_color(color_manager::get()->get_color(
-                    color_properties(outline_color_normal_str, surface)));
-
-        gc->font_outline_color(color_manager::get()->get_color(
-                    color_properties(font_color_normal_str, surface)));
-        gc->font_fill_color(color_manager::get()->get_color(
-                    color_properties(font_color_normal_str, surface)));
-
-        surface->gc(gc);
-
-        surface->fill_rect(interior_rect);
-        surface->draw_rect(outline_rect);
-        surface->draw_text(interior_rect, text_);
-    }
-    
+ 
     void viewport::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         point scroll_offset(h_scroll()->begin(), v_scroll()->begin());

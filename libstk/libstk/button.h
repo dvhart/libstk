@@ -36,7 +36,7 @@ namespace stk
 
     public:
         static button::ptr create(container::ptr parent, const std::wstring label,
-                                  const rectangle& rect);
+                const rectangle& rect);
         virtual ~button();
         
         /********** EVENT HANDLER INTERFACE **********/

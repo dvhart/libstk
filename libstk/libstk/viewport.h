@@ -31,16 +31,6 @@ namespace stk
     protected:
         viewport(container::ptr parent, const rectangle& rect);
 
-        // FIXME: remove these in favor of the scroll_properties objects
-        /*/// the height of the scroll area
-        int vrange_;
-        /// the width of the scroll area
-        int hrange_;
-        /// the verticle position of the scroll area (first y value in the window)
-        int vposition_;
-        /// the horizontal position of the scroll area (first x value in the window)
-        int hposition_; */
-
         scroll_model::ptr h_scroll_;
         boost::signals::connection h_scroll_con;
         scroll_model::ptr v_scroll_;
@@ -64,27 +54,14 @@ namespace stk
         /********** COMPONENT INTERFACE **********/
         /// Set the internal widget, replace it if already set.
         /// viewport only manages one child.
-        virtual void add
-            (widget::ptr item)
-        {
-            children_.push_back(item);
-
-            rectangle rect;
-
-            // Fixme, this should really be using for each shouldnt it?
-            for(unsigned int i=0;i<children_.size();i++)
-                rect+=children_[i]->rect();
-            
-            h_scroll()->size(rect.x2());
-            v_scroll()->size(rect.y2());
-        }
+        virtual void add(widget::ptr item);
         /********** END COMPONENT INTERFACE **********/
 
         /********** VIEWPORT INTERFACE **********/
-        scroll_model::ptr h_scroll();
+        scroll_model::ptr h_scroll() { return h_scroll_; }
         void h_scroll(scroll_model::ptr value);
 
-        scroll_model::ptr v_scroll();
+        scroll_model::ptr v_scroll() { return v_scroll_; }
         void v_scroll(scroll_model::ptr value);
         /********** END VIEWPORT INTERFACE **********/
     };
