@@ -198,7 +198,10 @@ namespace stk
         {
             // default software blit
         }
-
+        virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect)
+        {
+            // default software blit
+        }
         // non antialiased draw routines
         virtual void draw_line(int x1, int y1, int x2, int y2)
         {

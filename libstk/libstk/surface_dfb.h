@@ -53,6 +53,7 @@ namespace stk
 
         // overridden drawing routines
         virtual void blit(stk::surface &dst_surface);
+        virtual void blit(stk::surface &dst_surface, rectangle src_rect, rectangle dst_rect) ;
         virtual void fill_rect(int x1, int y1, int x2, int y2);
         virtual void fill_rect(const rectangle& rect);
         virtual void draw_line(int x1, int y1, int x2, int y2) ;

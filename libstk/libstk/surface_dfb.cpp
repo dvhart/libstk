@@ -26,9 +26,10 @@ namespace stk
         
         dsc.flags = DSDESC_CAPS;
         
-        dsc.caps = primary?DSCAPS_PRIMARY:(DFBSurfaceCapabilities)0;
-        dsc.caps =  static_cast<DFBSurfaceCapabilities>(dsc.caps | DSCAPS_FLIPPING);
-        
+        if(primary)
+        {
+            dsc.caps =  static_cast<DFBSurfaceCapabilities>( DSCAPS_FLIPPING | DSCAPS_PRIMARY) ;
+        }        
 
         if(rect_specified)
         {
@@ -43,6 +44,12 @@ namespace stk
         
         dfb->CreateSurface(dfb,&dsc,&surface);
         rect_=*rect;
+
+        if(primary)
+        {
+            surface->GetPixelFormat(surface,&backend_handle->format);
+            INFO("Pixel format is =" << backend_handle->format);
+        }
         
         INFO("surface create");
     }
@@ -125,6 +132,21 @@ namespace stk
     // overridden drawing routines
     void surface_dfb::blit(stk::surface &dst_surface)
     {
+    }
+    void surface_dfb::blit(stk::surface &dst_surface, rectangle src_rect, rectangle dst_rect)
+    {
+        surface_dfb* dst=dynamic_cast<surface_dfb*>(&dst_surface);
+        if(dst!=NULL)
+        {
+            std::cout << "DFB to DFB blit\n";
+            DFBRectangle source_rect;
+            source_rect.x=src_rect.x1();
+            source_rect.y=src_rect.y1();
+            source_rect.w=src_rect.width();
+            source_rect.h=src_rect.height();
+            
+            surface->Blit(surface,dst->surface,&source_rect,dst_rect.x1(),dst_rect.x2());
+        }        
     }
     
     void surface_dfb::fill_rect(int x1, int y1, int x2, int y2)

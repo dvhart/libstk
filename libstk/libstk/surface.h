@@ -155,7 +155,8 @@ namespace stk
         virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) = 0;
         virtual color read_pixel(int x, int y) = 0;
         virtual void blit(surface &dst_surface) = 0;
-
+        virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect) = 0;
+        
         // non antialiased draw routines
         virtual void draw_line(int x1, int y1, int x2, int y2) = 0;
         /* draw_arc() routines draw an arc with the rectangle passed or defined

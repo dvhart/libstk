@@ -32,6 +32,7 @@ namespace stk
         static boost::weak_ptr<backend_dfb> instance_;
         IDirectFB* primary_pointer;
     public:
+        DFBSurfacePixelFormat format;
         static boost::shared_ptr<backend_dfb> get();
         backend_dfb();
         ~backend_dfb();
