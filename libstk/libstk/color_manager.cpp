@@ -18,7 +18,7 @@ using std::endl;
 
 namespace stk
 {
-    color_manager::Tcolor_map color_manager::color_map_;
+    color_manager::ptr color_manager::instance_;
 
     bool color_properties::operator<(const color_properties& rhs) const
     {
@@ -31,6 +31,12 @@ namespace stk
         return false;
     }
 
+    color_manager::ptr color_manager::get()
+    {
+        if (!instance_) instance_.reset(new color_manager());
+        return instance_;
+    }
+    
     color color_manager::get_color(const color_properties& properties)
     {
         //cout << "color_manager::get_color()" << endl;
