@@ -87,7 +87,7 @@ namespace stk
         {
             return text_;
         }
-        void text(std::wstring& text)
+        void text(const std::wstring& text)
         {
             text_ = text;
             resize();

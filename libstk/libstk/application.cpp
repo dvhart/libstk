@@ -345,6 +345,16 @@ namespace stk
         return current_state_.lock()->focus_last();
     }
 
+    void application::focused_widget(widget::ptr new_focused_widget)
+    {
+        focused_widget_ = new_focused_widget;
+    }
+
+    widget::ptr application::focused_widget()
+    {
+        return focused_widget_.lock();
+    }
+
     void application::current_state(state::ptr new_cur_state)
     {
         try

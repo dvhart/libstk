@@ -87,6 +87,11 @@ namespace stk
         virtual widget::ptr focus_next();
         virtual widget::ptr focus_prev();
 
+        /// Sets the current focused widget
+        virtual void focused_widget(widget::ptr new_focused_widget);
+        /// returns the current focused widget - returns NULL if none
+        virtual widget::ptr focused_widget();
+
         virtual void current_state(boost::shared_ptr<stk::state> new_cur_state);
         virtual boost::shared_ptr<stk::state> current_state() const;
 

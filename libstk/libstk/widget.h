@@ -43,8 +43,9 @@ namespace stk
         rectangle rect_;
 
         // widget attributes
-        // FIXME: add visible_
         bool focusable_;
+        bool visible_;
+        bool modal_;
         /// used for animation by the draw routine, or ignored for non-animated widgets
         int frame_;
 
@@ -94,15 +95,23 @@ namespace stk
         // FIXME: have the setters return bool ?
         // (ie label would return false for a focus(true) call) ?
         /// Return a bool indicating if the widget is focusable
-        virtual bool focusable() { return focusable_; }
+        virtual bool focusable() const { return focusable_; }
         /// Set the focusable property of the widget
         virtual void focusable(bool val) { focusable_ = val; }
+        /// Return a bool indicating if the widget is visible
+        virtual bool visible() const { return visible_; }
+        /// Set the visible property of the widget
+        virtual void visible(bool val) { visible_ = val; }
+        /// Return a bool indicating if the widget is modal
+        virtual bool modal() const { return modal_; }
+        /// Set the modal property of the widget
+        virtual void modal(bool val) { modal_ = val; }
         /// Return the pressed property of the widget
-        virtual bool pressed() { return pressed_; }
+        virtual bool pressed() const { return pressed_; }
         /// Return the focused property of the widget
-        virtual bool focused() { return focused_; }
+        virtual bool focused() const { return focused_; }
         /// Return the hover property of the widget
-        virtual bool hover() { return hover_; }
+        virtual bool hover() const { return hover_; }
 
         boost::signal<bool (), combiner::logical_or<bool> > on_resize;
         boost::signal<bool (), combiner::logical_or<bool> > on_focus;

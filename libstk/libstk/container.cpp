@@ -53,10 +53,21 @@ namespace stk
 
     widget::ptr container::delegate_mouse_event(mouse_event::ptr me)
     {
-        // pass a mouse event to the appropriate widget
+        // pass a mouse event to the first visible modal widget
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (; iter != children_.end(); iter++)
         {
+            if ((*iter)->visible() && (*iter)->modal())
+            {
+                return (*iter)->delegate_mouse_event(me);
+            }
+        }
+
+        // pass a mouse event to the appropriate widget
+        iter = children_.begin();
+        for (; iter != children_.end(); iter++)
+        {
+            if (!(*iter)->visible()) continue;
             if ((*iter)->rect().contains(me->x()-rect_.x1(), me->y()-rect_.y1()))
             {
                 mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(), 
@@ -84,6 +95,7 @@ namespace stk
 
     void container::draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child)
     {
+        if (!child->visible()) return;
         if (!child->rect().intersects(clip_rect)) return;
 
         // calculate the child redraw rect
@@ -147,6 +159,7 @@ namespace stk
                 {
                     // FIXME: consider using same pattern as widget_at() ie call focus_next on the children as well
                     // and ensure leaf widgets return shared_from_this()
+                    if (!(*iter)->visible()) continue;
                     if ((*iter)->focusable()) return *iter;
                 }
                 break;
@@ -156,6 +169,7 @@ namespace stk
         iter = children_.begin();
         while (iter != children_.end() )
         {
+            if (!(*iter)->visible()) continue;
             if ((*iter)->focusable()) return *iter;
             iter++;
         }

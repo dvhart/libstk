@@ -26,8 +26,8 @@
 namespace stk
 {
 
-    widget::widget(const rectangle& rect) : rect_(rect), focusable_(false), frame_(0), 
-    pressed_(false), focused_(false), hover_(false)
+    widget::widget(const rectangle& rect) : rect_(rect), focusable_(false), visible_(true),
+        modal_(false), frame_(0), pressed_(false), focused_(false), hover_(false)
     {
         INFO("constructor");
     }
