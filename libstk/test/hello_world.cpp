@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
         else if (surface_type == "sdl")
         {
             INFO("creating sdl surface");
-            screen = surface_sdl::create(rectangle(0, 0, 640, 480));
+            screen = surface_sdl::create(rectangle(0, 0, 640, 480), false); // not full screen
             INFO("creating sdl event_producer");
             ep = event_producer_sdl::create();
         }

@@ -64,10 +64,11 @@ namespace stk
         }
 
     protected:
-        surface_sdl(const rectangle& rect);
+        surface_sdl(const rectangle& rect, bool fullscreen);
 
     public:
-        static surface_sdl::ptr create(const rectangle& rect);
+        /// \param fullscreen since SDL is meant as a development surface, you can specify fullscreen on creation of the initial surface
+        static surface_sdl::ptr create(const rectangle& rect, bool fullscreen=true);
         ~surface_sdl();
 
         SDL_Surface* sdl_surface() const

@@ -39,13 +39,13 @@
 namespace stk
 {
 
-    surface_sdl::ptr surface_sdl::create(const rectangle& rect)
+    surface_sdl::ptr surface_sdl::create(const rectangle& rect, bool fullscreen)
     {
-        surface_sdl::ptr new_surface_sdl(new surface_sdl(rect));
+        surface_sdl::ptr new_surface_sdl(new surface_sdl(rect, fullscreen));
         return new_surface_sdl;
     }
 
-    surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
+    surface_sdl::surface_sdl(const rectangle &rect, bool fullscreen) : surface_impl<surface_sdl>(rect)
     {
         // ensure that SDL has been initialized
         INFO("getting sdl_data pointer");
@@ -58,9 +58,9 @@ namespace stk
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0)
         {
             SDL_InitSubSystem(SDL_INIT_VIDEO);
+            // FIXME: SDL_DOUBLEBUF causes a blackscreen in framebuffer mode
             sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 32, 
-                    SDL_HWSURFACE /*| SDL_DOUBLEBUF | SDL_FULLSCREEN*/);
-                                            // FIXME: SDL_DOUBLEBUF causes a blackscreen in framebuffer mode
+                    SDL_HWSURFACE /*| SDL_DOUBLEBUF*/ | (fullscreen ? SDL_FULLSCREEN : 0) );
             if (!sdl_surface_)
                 ERROR("SDL_SetVideoMode failed: " << SDL_GetError());
             primary_ = true;
