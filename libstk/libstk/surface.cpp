@@ -111,7 +111,7 @@ int direction(int x1, int y1, int x2, int y2)
   int dx = ((x2 > x1) ? (x2 - x1) : (x1 - x2));
   if (dy != 0 && dx != 0)
     if (dy > dx) dir += S1;
-    else if (dy < dx) dir += S0;
+    else if (dy <= dx) dir += S0;
   
   // determine verticle direction
   if (y1 < y2) dir += UP;
