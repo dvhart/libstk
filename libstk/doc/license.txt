@@ -1,24 +1,54 @@
-Libstk Library License, Version 1.0
+                      Libstk Library License, Version 1.0
 
-Copyright (C) 2003 Darren Hart
+  Copyright (C) 2003 Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
 
 INTENT
 
-The intent of this license is to allow anyone and everyone to make use of Libstk as is most fitting to their needs and goals.  You may use, modify, link, and distribute derived works in binary form under your terms.  We have chosen the LGPL as the license base and provide the exceptions below to better meet the needs of commercial developers.
-
-FIXME: WE DO NOT WANT A COMPANY TO HIJACK OUR CODE, ADD A FEW WIDGETS AND SELL IT COMMERCIALLY.
+The intent of this license is to allow anyone and everyone to make use of 
+Libstk as is most fitting to their needs and goals.  You may use, modify, link,
+and distribute derived works in binary form under your own terms.  We have 
+chosen the LGPL as the license base and provide the exceptions below to better 
+meet the needs of commercial developers.
 
 LICENSE
 
-This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+This library is free software; you can redistribute it and/or modify it under 
+the terms of the GNU Lesser General Public License as published by the 
+Free Software Foundation; either version 2.1 of the License, or 
+(at your option) any later version.
 
-This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+This library is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+You should have received a copy of the GNU Lesser General Public License along 
+with this library; if not, write to the Free Software Foundation, Inc., 
+59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
 
-HOW TO CONTACT THE COPYRIGHT HOLDER: MAIL, ELECTRONIC ?
+You may contact the copyright holders by writing to:
+WRITEME
 
 EXCEPTION NOTICE
-you may statically link to the lib without releasing your source code.
 
-WRITEME TO MATCH INTENT
+1. You may use, link (staticly or dynamicly), modify and distribute binary 
+versions of works that use this library under your own terms.  
+
+2. If you copy code from files distributed under the terms of the GNU General 
+Public Licence or the GNU Library General Public Licence into a copy of this 
+library, as this licence permits, the exception does not apply to the code that
+you add in this way.  To avoid misleading anyone as to the status of such 
+modified files, you must delete this exception notice from such code and/or
+adjust the licensing conditions notice accordingly.
+
+3. Modifications to the existing library source must be made in accordance with
+this license and be presented for inclusion in the primary distribution of this
+library.  Additions to Libstk, in the form of new widgets, themes, event 
+systems, and surface classes are not considered modifications to the existing
+library and may be licensed under your own terms.
+
+NOTE: this is different from wx-windows, but I *thought* this is want we wanted
+to say.  Or do we want companies to be able to modify the library and not 
+release the source.  You would think I would know what I want...  I hate legalease.
+
+
+
