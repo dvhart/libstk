@@ -25,7 +25,7 @@ namespace stk
 {
 
 	widget::widget(container::ptr parent, const rectangle& rect)
-		: parent_(parent), rect_(rect), redraw_(true), focusable_(false), 
+		: parent_(parent), rect_(rect), focusable_(false), 
 	    active_(false), focused_(false), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(container)" << endl;
@@ -33,7 +33,7 @@ namespace stk
 	}
 
 	widget::widget(parent::ptr parent, const rectangle& rect)
-		: parent_(parent), rect_(rect), redraw_(true), focusable_(false), 
+		: parent_(parent), rect_(rect), focusable_(false), 
 	    active_(false), focused_(false), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(parent)" << endl;

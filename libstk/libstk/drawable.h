@@ -15,7 +15,7 @@ namespace stk
 			rectangle redraw_rect_;
 			
 		public:
-			drawable() { };
+			drawable() : redraw_(true) { };
 			virtual ~drawable() { };
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
 			virtual bool redraw() { return redraw_; }
