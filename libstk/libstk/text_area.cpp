@@ -202,4 +202,190 @@ namespace stk
         // if we haven't handled it, try the defaults and possibly pass it up
         widget::handle_event(e);
     }
+    point text_area::draw_text(surface::ptr surface, const rectangle& text_rect, const rectangle& clip_rect)
+    {
+        // draw each line
+        font::ptr font = get_font();
+        int spacing = line_spacing();
+        point cursor_pos = point(-1,-1);
+        // variables to keep track of the lines
+        int ypos = 0, num_chars = 0;
+        std::wstring line_str;
+        rectangle line_rect;
+        // variables for the selection/cursor
+        int sel_min = MIN(selection_start_, selection_end_);
+        int sel_max = MAX(selection_start_, selection_end_);
+        int line_num = 0;
+        //intialize next_line
+        rest_of_text_ = text_;
+        // FIXME: start with the first line IN the clip rect and stop if drawing beyond the clip
+        while (ypos+font->height()+spacing < text_rect.y2() && (rest_of_text_.length() || new_line_)) 
+        {
+            line_rect = rectangle(text_rect.x1(), text_rect.y1()+ypos, text_rect.x2()-text_rect.x1(), font->height()+spacing);
+            // parse out the next line
+            line_str = next_line();
+
+            // draw cursor or selection
+            if (selection_start_ != selection_end_)
+            {// draw selection
+
+                if ( (sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()))
+                        && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) )
+                {// selection starts and ends on this line
+                    int sel_start = sel_min - num_chars;
+                    int sel_end = sel_max - num_chars;
+
+                    int start_x = font->draw_len(line_str.substr(0, sel_start));
+                    int end_x = font->draw_len(line_str.substr(0, sel_end));
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), 
+                            end_x-start_x, font->height()+spacing);
+                    surface->fill_rect(sel_rect);
+                    line_ = line_num;
+                } 
+                else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) )
+                {// selection starts on this line
+                    int sel_start = sel_min - num_chars;
+                    int start_x = font->draw_len(line_str.substr(0, sel_start));
+                    int end_x = font->draw_len(line_str);//to end of text
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), 
+                            end_x-start_x, font->height()+spacing);
+                    surface->fill_rect(sel_rect);
+                    // alway use selection_end_ to determine current line
+                    if (selection_end_ == sel_min) line_ = line_num;
+                } 
+                else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
+                {// selection ends of this line
+                    int sel_end = sel_max - num_chars;
+
+                    int end_x = font->draw_len ( line_str.substr(0, sel_end) );
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, 
+                            font->height()+spacing);
+                    surface->fill_rect(sel_rect);
+                    if (selection_end_ ==  sel_max) line_ = line_num;
+                } 
+                else if ( sel_min < num_chars  && sel_max > num_chars+(int)line_str.length() )
+                {// selection covers line
+                    int end_x = font->draw_len(line_str);
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, 
+                            font->height()+spacing);
+                    surface->fill_rect(sel_rect);
+                }
+            } 
+            // set the cursor_pos so the theme can draw it
+            // and set the line number, so we know where the cursor is
+            if ( selection_end_ >= num_chars &&
+                    selection_end_ <= (num_chars+(int)line_str.length()) )
+            {
+                //if the cursor (selection_end_) is in this line
+                int chars_before_cursor = selection_start_ - num_chars;
+                //if it is in the middle of the line, or at end of line with a new line,
+                // or it is at the end of the text
+                if ((chars_before_cursor != (int)line_str.length()) ||    
+                      new_line_ || ((num_chars+chars_before_cursor) == (int)text_.length()))
+                { 
+                    int cursor_x = font->draw_len(line_str.substr(0, chars_before_cursor));
+                    cursor_pos = point(cursor_x+line_rect.x1(), line_rect.y1());
+                    line_ = line_num; // to remember where the cursor is
+                }
+               
+            }  
+            // draw line
+            surface->draw_text(line_rect, line_str );
+            // move to next line
+            num_chars += line_str.length()+new_line_;
+            ypos += font->height()+spacing;
+            line_num++;
+        } // while
+        return cursor_pos;
+    }
+    std::wstring text_area::next_line()
+    {
+        std::wstring line_str;
+        font::ptr font = get_font();
+        int line_width = font->chars_in_rect(rectangle(0, 0, text_width(),
+                    font->height()+3), rest_of_text_);
+        int nline_width = rest_of_text_.find(L'\n');
+        if (nline_width  > 0 && nline_width<line_width) 
+        {
+            line_width = nline_width;
+            new_line_ = 1;
+        }
+        else new_line_ = 0;
+        line_str = rest_of_text_.substr(0, line_width);
+        rest_of_text_ = rest_of_text_.substr(line_width+new_line_, 
+                rest_of_text_.length()-line_width-new_line_);
+        return line_str;
+    }
+    int text_area::region(int x, int y)
+    {// finds where in the text the x,y is
+        // create font
+        font::ptr font = get_font();
+        // pass through text to find the position
+        int ypos = (y1()+3) + (font->height()+3); // the start of y plus a line
+        std::wstring line_str;
+        //intialize next_line
+        rest_of_text_ = text_;
+        int num_chars = 0;
+        while (rest_of_text_.length()) 
+        {
+            // parse out the next line
+            line_str = next_line();
+            // if is on this line
+            if (y <= ypos) 
+            {
+                return num_chars + font->chars_in_rect(rectangle(3, 0, x-x1(), 
+                            font->height()+6), line_str);
+            }
+            num_chars+=line_str.length()+new_line_;
+            // move to next line
+            ypos += font->height()+3;
+        }
+        // trying to get the last character, just return the last character
+        return text_.length();
+    }
+    int text_area::line_start_position(int line)
+    {
+        font::ptr font = get_font();
+        // pass through text to find the position
+        std::wstring line_str;
+        //initialize next_line
+        rest_of_text_ = text_;
+        int num_chars = 0;
+        int line_num = 0; 
+        while (rest_of_text_.length()) 
+        {
+            // parse out the next line
+            line_str = next_line();
+            // if is on this line
+            if (line_num == line)
+                return num_chars;
+
+            num_chars += line_str.length()+new_line_;
+            // move to next line
+            line_num++;
+        }
+
+        return text_.length();
+    }
+    int text_area::chars_in_line(int line)
+    {
+        font::ptr font = get_font();
+        //pass through text to find the position
+        std::wstring line_str;
+        //initialize next_linw
+        std::wstring rest_of_text_ = text_;
+        int line_num = 0; 
+        while (rest_of_text_.length()) 
+        {
+            // parse out the next line
+            line_str = next_line();
+            // if is on this line
+            if (line_num == line)
+                return line_str.length();
+            //move to next line
+            line_num++;
+        }
+        //there is no next_line
+        return -1;
+    }
 }

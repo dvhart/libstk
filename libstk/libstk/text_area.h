@@ -16,6 +16,7 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 
+
 #include <libstk/widget.h>
 #include <libstk/container.h>
 
@@ -28,18 +29,32 @@ namespace stk
         typedef boost::weak_ptr<text_area> weak_ptr;
 
     private:
+        
+
+        //functions inplemented in text_area.cpp
         /// return the character index under the x, y coordinate
         int region(int x, int y);
         /// return the starting position of line
         int line_start_position(int line);
         /// return the number of characters in line
         int chars_in_line(int line);
+        point draw_text(surface::ptr surface, const rectangle& text_rect, const rectangle& clip_rect);
+        std::wstring next_line();
+
+        //functions implemented in the theme
+        font::ptr get_font();
+        int text_width();
+        int line_spacing();
 
         std::wstring text_;
         int selection_start_;
         int selection_end_;
         int pressed_;
         int line_; //used to store the line of the cursor
+
+        //next_line state variables
+        int new_line_;
+        std::wstring rest_of_text_;
 
     protected:
         text_area(container::ptr parent, const std::wstring& text, const rectangle& rect);

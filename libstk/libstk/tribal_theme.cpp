@@ -740,225 +740,35 @@ namespace stk
         // draw the background and outline
         surface->fill_rect(interior_rect);
         surface->draw_rect(outline_rect);
-
-        // draw each line
-        // variables to keep track of the lines
-        int ypos = 3, line_width, nline_width, new_line = 0, num_chars = 0;
-        std::wstring line_str, rest_of_text = text_;
-        rectangle line_rect;
-        // variables for the selection/cursor
-        int sel_min = MIN(selection_start_, selection_end_);
-        int sel_max = MAX(selection_start_, selection_end_);
-        int line_num = 0;
-
-        // FIXME: start with the first line IN the clip rect and stop if drawing beyond the clip
-        while (ypos+Vera_14->height()+3 < interior_rect.y2() && (rest_of_text.length() || new_line)) 
-        {
-            line_rect = rectangle(3, ypos, width()-6, Vera_14->height()+3);
-            // parse out the next line
-            line_width = Vera_14->chars_in_rect(line_rect, rest_of_text);
-            if ((nline_width = rest_of_text.find(L'\n')) > 0) 
-                line_width = MIN(nline_width, line_width);
-            new_line = ((line_width == nline_width) ? 1 : 0);
-            line_str = rest_of_text.substr(0, line_width);
-            rest_of_text = rest_of_text.substr(line_width+new_line, 
-                    rest_of_text.length()-line_width-new_line);
-
-            // draw cursor or selection
-            if (selection_start_ != selection_end_)
-            {// draw selection
-                // yellow selection
-                if (focused_)
-                    gc->fill_color(color_manager::get()->get_color(
-                                color_properties(fill_color_normal_str, surface)));
-                // light blue selection
-                else
-                    gc->fill_color(color_manager::get()->get_color(
-                                color_properties(fill_color_focused_str, surface)));
-                if ( (sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()))
-                        && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) )
-                {// selection starts and ends on this line
-                    int sel_start = sel_min - num_chars;
-                    int sel_end = sel_max - num_chars;
-
-                    int start_x = Vera_14->draw_len(line_str.substr(0, sel_start));
-                    int end_x = Vera_14->draw_len(line_str.substr(0, sel_end));
-                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), 
-                            end_x-start_x, Vera_14->height()+3);
-                    surface->fill_rect(sel_rect);
-                    line_ = line_num;
-                } 
-                else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) )
-                {// selection starts on this line
-                    int sel_start = sel_min - num_chars;
-                    int start_x = Vera_14->draw_len(line_str.substr(0, sel_start));
-                    int end_x = Vera_14->draw_len(line_str);//to end of text
-                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), 
-                            end_x-start_x, Vera_14->height()+3);
-                    surface->fill_rect(sel_rect);
-                    // alway use selection_end_ to determine current line
-                    if (selection_end_ == sel_min) line_ = line_num;
-                } 
-                else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
-                {// selection ends of this line
-                    int sel_end = sel_max - num_chars;
-
-                    int end_x = Vera_14->draw_len ( line_str.substr(0, sel_end) );
-                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, 
-                            Vera_14->height()+3);
-                    surface->fill_rect(sel_rect);
-                    if (selection_end_ ==  sel_max) line_ = line_num;
-                } 
-                else if ( sel_min < num_chars  && sel_max > num_chars+(int)line_str.length() )
-                {// selection covers line
-                    int end_x = Vera_14->draw_len(line_str);
-                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, 
-                            Vera_14->height()+3);
-                    surface->fill_rect(sel_rect);
-                }
-            } 
-            // draw the cursor if there is no selection, we are focused, and it is on this line
-            else if ( focused_ && selection_start_ >= num_chars &&
-                    selection_start_ <= (num_chars+(int)line_str.length()) )
-            {
-                int chars_before_cursor = selection_start_ - num_chars;
-                if ((chars_before_cursor != (int)line_str.length()) ||    
-                     new_line || ((num_chars+chars_before_cursor) == (int)text_.length()))
-                {
-                    int cursor_x = Vera_14->draw_len(line_str.substr(0, chars_before_cursor));
-                    surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1(),
-                            line_rect.x1()+cursor_x,line_rect.y2());
-                    line_ = line_num; // to remember where the cursor is
-                }
-            } 
+        
  
-            // draw line
-            surface->draw_text(line_rect, line_str );
-            // move to next line
-            num_chars += line_str.length()+new_line;
-            ypos += Vera_14->height()+3;
-            line_num++;
-        } // while
+        // yellow selection
+        if (focused_)
+           gc->fill_color(color_manager::get()->get_color(
+               color_properties(fill_color_normal_str, surface)));
+        // light blue selection
+        else
+        gc->fill_color(color_manager::get()->get_color(
+                color_properties(fill_color_focused_str, surface)));
+        //6 pixels of padding (3 from the interior_rect
+        rectangle text_rect = rectangle(6,3,width()-12,height()-6);
+        point cur_pos = draw_text(surface,text_rect,clip_rect);
+        if (cur_pos.x() != -1 && selection_end_ == selection_start_ && focused_)
+        {// cursor should be drawn
+            surface->draw_line(cur_pos.x(), cur_pos.y(), cur_pos.x(), cur_pos.y()+Vera_14->height()+3);
+        }   
     }
-    int text_area::region(int x, int y)
-    {// finds where in the text the x,y is
-        // create font
-        font::ptr Vera_14 = font_manager::get()->get_font(font_properties("Vera.ttf",14));
-        // pass through text to find the position
-        int ypos = (y1()+3) + (Vera_14->height()+3); // the start of y plus a line
-        std::wstring line_str;
-        std::wstring rest_of_text = text_;
-        int line_width, nline_width, new_line;
-        int num_chars = 0;
-        while (rest_of_text.length()) 
-        {
-            // parse out the next line
-            nline_width = rest_of_text.find('\n');
-            line_width = Vera_14->chars_in_rect(rectangle(3, 0, x2()-x1(), 
-                        Vera_14->height()+6), rest_of_text);
-            if (nline_width != -1 && (nline_width <= line_width)) 
-            {// if there is a new line in the line
-                line_str = rest_of_text.substr(0, nline_width);
-                rest_of_text = rest_of_text.substr(nline_width+1, 
-                        rest_of_text.length()-nline_width-1);
-                new_line = 1;// used to add in the new line character to the total characters
-            }
-            else 
-            {// no new line, just get the width
-                line_str = rest_of_text.substr(0, line_width);
-                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
-                new_line = 0;
-            }
-            // if is on this line
-            if (y <= ypos) 
-            {
-                return num_chars + Vera_14->chars_in_rect(rectangle(3, 0, x-x1(), 
-                            Vera_14->height()+6), line_str);
-            }
-            num_chars+=line_str.length()+new_line;
-            // move to next line
-            ypos += Vera_14->height()+3;
-        }
-        // trying to get the last character, just return the last character
-        return text_.length();
-    }
-    int text_area::line_start_position(int line)
+    font::ptr text_area::get_font()
     {
-        font::ptr Vera_14 = font_manager::get()->get_font(font_properties("Vera.ttf",14));
-        // pass through text to find the position
-        std::wstring line_str;
-        std::wstring rest_of_text = text_;
-        int line_width, nline_width, new_line;
-        int num_chars = 0;
-        int line_num = 0; 
-        while (rest_of_text.length()) 
-        {
-            // parse out the next line
-            nline_width = rest_of_text.find(L'\n');
-            line_width = Vera_14->chars_in_rect(rectangle(3, 0, x2()-x1(), 
-                        Vera_14->height()+6), rest_of_text);
-            if (nline_width != -1 && (nline_width <= line_width)) 
-            {// if there is a new line in the line
-                line_str = rest_of_text.substr(0, nline_width);
-                rest_of_text = rest_of_text.substr(nline_width+1, 
-                        rest_of_text.length()-nline_width-1);
-                new_line = 1; // used to add in the new line character to the total characters
-            }
-            else 
-            {// no new line, just get the width
-                line_str = rest_of_text.substr(0, line_width);
-                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
-                new_line = 0;
-            }
-            // if is on this line
-            if (line_num == line)
-                return num_chars;
-
-            num_chars += line_str.length()+new_line;
-            // move to next line
-            line_num++;
-        }
-
-        return text_.length();
+        return font_manager::get()->get_font(font_properties("Vera.ttf",14));
     }
-    int text_area::chars_in_line(int line)
+    int text_area::text_width()
     {
-        font::ptr Vera_14 = font_manager::get()->get_font(font_properties("Vera.ttf",14));
-        //pass through text to find the position
-        std::wstring line_str;
-        std::wstring rest_of_text = text_;
-        int line_width, nline_width, new_line;
-        int num_chars = 0;
-        int line_num = 0; 
-        while (rest_of_text.length()) 
-        {
-            // parse out the next line
-            nline_width = rest_of_text.find(L'\n');
-            line_width = Vera_14->chars_in_rect(rectangle(3, 0, x2()-x1(), 
-                        Vera_14->height()+6), rest_of_text);
-            if (nline_width != -1 && (nline_width < line_width)) 
-            {// if there is a new line in the line
-                line_str = rest_of_text.substr(0, nline_width);
-                rest_of_text = rest_of_text.substr(nline_width+1, 
-                        rest_of_text.length()-nline_width-1);
-                new_line = 1;//used to add in the new line character to the total characters
-            }
-            else 
-            {// no new line, just get the width
-                line_str = rest_of_text.substr(0, line_width);
-                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
-                new_line = 0;
-            }
-            // if is on this line
-            if (line_num == line)
-                return line_str.length();
-
-            num_chars += line_str.length()+new_line;
-            //move to next line
-            line_num++;
-        }
-
-        return -1;
+        return width()-12;//minus the padding
+    }
+    int text_area::line_spacing()
+    {
+        return 3;
     }
  
     void viewport::draw(surface::ptr surface, const rectangle& clip_rect)
