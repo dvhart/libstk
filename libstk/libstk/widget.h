@@ -2,11 +2,11 @@
  *    FILENAME: widget.h
  * DESCRIPTION: The abstract base class for all widgets.
  *     AUTHORS: Darren Hart
- *  START DATE: 08/Sep/2002  LAST UPDATE: 25/Jun/2003
+ *  START DATE: 08/Sep/2002  LAST UPDATE: 12/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
- *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
 #ifndef STK_WIDGET_H
@@ -44,7 +44,6 @@ namespace stk
 
         // widget attributes
         bool focusable_;
-        int tab_;
         /// used for animation by the draw routine, or ignored for non-animated widgets
         int frame_;
 
@@ -96,12 +95,6 @@ namespace stk
         virtual bool focusable() { return focusable_; }
         /// Set the focusable property of the widget
         virtual void focusable(bool val) { focusable_ = val; }
-        /// Return the tab index of the widget
-        /// \todo this is currently not implemented
-        virtual int tab() { return tab_; }
-        /// Set the tab index of the widget
-        /// \todo this is currently not implemented
-        virtual void tab(int val) { tab_ = val; }
         /// Return the pressed property of the widget
         virtual bool pressed() { return pressed_; }
         /// Return the focused property of the widget

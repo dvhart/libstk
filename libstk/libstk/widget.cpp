@@ -2,11 +2,11 @@
  *    FILENAME: widget.cpp
  * DESCRIPTION: Widget abstract base class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke, Dirk Hoerner
- *  START DATE: 08/Sep/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 08/Sep/2003  LAST UPDATE: 12/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as
- *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
 #ifdef HAVE_CONFIG_H
@@ -30,7 +30,7 @@ namespace stk
 {
 
     widget::widget(component::ptr parent, const rectangle& rect) : parent_(parent), rect_(rect),
-        focusable_(false), pressed_(false), focused_(false), hover_(false), tab_(0), frame_(0)
+        focusable_(false), pressed_(false), focused_(false), hover_(false), frame_(0)
     {
         cout << "widget::widget(parent)" << endl;
     }

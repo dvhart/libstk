@@ -8,12 +8,22 @@ MEETING TOPICS
 
 TASKS (Some duplicated items here and below)
 ============================================
-Spinner / Numeric Spinner
-List Item Height (not built into theme)
+Spinner
+    RFC (dvhart): should spinner really derive from list ?
+Numeric Spinner
+    RFC (dvhart): should we derive from spinner, or create new ?
+List Item Height
+    RFC (dvhart): height is not part of list_item, it is determined by the 
+    draw routine based on the size of the font.  In a subclass list_item
+    (like list_item_image) its corresponding draw routine will determine
+    the appropriate height based on font size and image height.  Padding may
+    be a const int in the theme itself. 
 Purge all magic numbers
 Convert all output to new logger
 remove tab stop code (maybe add in libstk 2.0, not really critical)
-Scroll bars / box
+    DONE: dvhart
+Scrollbars
+Scrollbox
 Edit Box
 Combo Box
 Text Area
@@ -21,9 +31,15 @@ Markup Area (simple html renderer ?)
 Surface blitting / locking / creation (from app surface ?)
 rectangle& or rectangle::ptr
 input capabilities
-list item data type
+list item data type (what should it be, if anything)
+    RFC (dvhart): what if we made list_item templated ?
+    we would have to make list,combo,spinner etc. templated as well
+    what about using a list_model ala:
+        http://java.sun.com/j2se/1.4.1/docs/api/javax/swing/ListModel.html
+        http://java.sun.com/j2se/1.4.1/docs/api/javax/swing/JList.html
 widget regions (define in theme, check in handle_event() on pointer
-     click, ie UP_ARROW, DOWN_ARROW, TEXT_BOX)
+    click, ie UP_ARROW, DOWN_ARROW, TEXT_BOX)
+    DONE: dvhart
 Image (png loader, own surface, blit)
 Video Panel
 surface_fbdev
@@ -68,4 +84,7 @@ MEDIA WIDGETS
 =============
 ??
 
+INTERESTED USERS
+================
+tyler@harmor.org (Tyler - from Jeremy's)
 
