@@ -1,18 +1,18 @@
 /***************************************************************************
-			  app.h  -  stk::app header
-			     -------------------
-    begin		: Sat Apr 27 2002
-    copyright	    : (C) 2002 by Darren Hart
-    email		: dvhart@byu.edu
+     app.h  -  stk::app header
+        -------------------
+    begin  : Sat Apr 27 2002
+    copyright     : (C) 2002 by Darren Hart
+    email  : dvhart@byu.edu
 ***************************************************************************/
 
 /***************************************************************************
- *									 *
+ *          *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.				   *
- *									 *
+ *   (at your option) any later version.       *
+ *          *
  ***************************************************************************/
 
 #ifndef _STK_APP_H_

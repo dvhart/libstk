@@ -30,7 +30,7 @@
 
 namespace stk
 {
-	
+
 widget::widget(app* app,widget* parent):parent_app_(app),parent(parent)
 {}
 
