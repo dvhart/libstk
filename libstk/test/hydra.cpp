@@ -1,6 +1,6 @@
 /**************************************************************************************************
- *    FILENAME: dihmen.cpp
- * DESCRIPTION: A simple concept app of DIHMEN (DIstribute Home MEdia Network) 
+ *    FILENAME: hydra.cpp
+ * DESCRIPTION: A simple concept app of the Hydra multi-client distributed home media network 
  *     AUTHORS: Darren Hart
  *  START DATE: 13/Jul/2003  LAST UPDATE: 13/Jul/2003
  *
