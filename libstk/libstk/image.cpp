@@ -434,7 +434,7 @@ namespace stk
         jpeg_finish_compress(&cinfo);
         jpeg_destroy_compress(&cinfo);
 #else
-        throw image_write_exception("image::write_jpeg() No support for writting JPEG files compiled in!")
+        throw image_write_exception("image::write_jpeg() No support for writting JPEG files compiled in!");
 #endif
     }
 
