@@ -76,6 +76,11 @@ namespace stk
             SDL_FreeSurface(sdl_surface_);
     }
 
+    surface::ptr surface_sdl::create_surface(const rectangle& rect)
+    {
+        return surface_sdl::create(rect);
+    }
+
     color surface_sdl::gen_color(const std::string &str_color) const
     {
         Uint8 r, g, b, a;

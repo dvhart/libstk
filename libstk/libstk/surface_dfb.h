@@ -58,5 +58,11 @@ namespace stk
         virtual void draw_line(int x1, int y1, int x2, int y2) ;
         virtual void draw_rect(const rectangle& rect);
         virtual void draw_rect(int x1, int y1, int x2, int y2);
+
+        virtual surface::ptr create_surface(const rectangle& rect);
+
+        //virtual void offset(const point& newoffset);
+        virtual void clip_rect(const rectangle& clip_rectangle);
+        
     };
 } //end namespace stk

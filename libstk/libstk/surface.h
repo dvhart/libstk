@@ -22,6 +22,7 @@
 #include <libstk/rectangle.h>
 #include <libstk/graphics_context.h>
 #include <libstk/stk_types.h>
+#include <libstk/logging.h>
 
 using std::cout;
 using std::endl;
@@ -86,7 +87,7 @@ namespace stk
         {
             return clip_rect_;
         }
-        void clip_rect(const rectangle& clip_rectangle)
+        virtual void clip_rect(const rectangle& clip_rectangle)
         {
             clip_rect_ = clip_rectangle;
         }
@@ -217,6 +218,9 @@ namespace stk
 
         // image routines
         virtual void draw_image(int x, int y, boost::shared_ptr<image> img) = 0;
+
+        /// Factory for offscreen surfaces
+        virtual boost::shared_ptr<surface> create_surface(const rectangle& rect) = 0;
     };
 
 } //end namespace stk

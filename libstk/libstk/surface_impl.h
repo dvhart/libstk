@@ -25,6 +25,7 @@
 #include <libstk/exceptions.h>
 #include <libstk/image.h>
 #include <libstk/stk_types.h>
+#include <libstk/logging.h>
 
 namespace stk
 {
@@ -1327,26 +1328,12 @@ namespace stk
         // like most unaccelerated routines, this implementation is really slow
         virtual void surface_impl::draw_image(int x, int y, image::ptr img)
         {
-            //cout << "surface_impl::draw_image(" << x << "," << y << ")" << endl;
-
-            // trivial clipping tests
-            //if (x + img->width() < clip_rect_.x1() || y + img->height() < clip_rect_.y1()) return;
-            //if (x > clip_rect_.x2() || y > clip_rect_.y2()) return;
-
-            // find the area to draw, intersection of img area and clip_rect_
-            int x1 = 0; //clip_rect_.x1() - x;
-            int y1 = 0; // clip_rect_.y1() - y;
-
-            for (int tx = MAX(0, x1); tx < img->width(); tx++)
-            {
-                for (int ty = MAX(0, y1); ty < img->height(); ty++)
-                {
-                    // convert the RRGGBBAA image color format to that of the
-                    color clr =  img->pixel(tx, ty);
-                    color sclr = gen_color((clr>>24)&0XFF, (clr>>16)&0xFF, (clr>>8)&0xFF, clr&0xFF);
-                    static_cast<surface_backend*>(this)->put_pixel(x+tx, y+ty, sclr);
-                }
-            }
+            rectangle source_rect=img->offscreen_surface->rect();
+            INFO("surface_impl::draw_image(" << x << "," << y << ")");
+            INFO("Image rect: X1=" << source_rect.x1() << " Y1=" << source_rect.y1() << " X2= "
+                 << source_rect.x2() << " Y2=" << source_rect.y2());
+                  
+            img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect,rectangle(x,y,0,0));
         }
 
     };

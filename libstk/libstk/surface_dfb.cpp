@@ -68,6 +68,11 @@ namespace stk
         surface_dfb::ptr res(new surface_dfb(boost::optional<rectangle>(rect),primary));
         return res;
     }
+
+    surface::ptr surface_dfb::create_surface(const rectangle& rect)
+    {
+        return surface_dfb::create(rect,false);
+    }
     
     void surface_dfb::put_pixel(int x, int y, color clr)
     {
@@ -143,7 +148,10 @@ namespace stk
         surface_dfb* dst=dynamic_cast<surface_dfb*>(&dst_surface);
         if(dst!=NULL)
         {
-            std::cout << "DFB to DFB blit\n";
+            INFO("DFB to DFB blit\n");
+            dst_rect.x1(dst_rect.x1()+dst_surface.offset().x());
+            dst_rect.y1(dst_rect.y1()+dst_surface.offset().y());
+            
             DFBRectangle source_rect;
             source_rect.x=src_rect.x1();
             source_rect.y=src_rect.y1();
@@ -169,8 +177,7 @@ namespace stk
     {
         color clr = gc_->line_color();
         surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,0xff);
-        surface->DrawLine(surface,x1,y1,x2-x1,y2-y1);
-        
+        surface->DrawLine(surface,x1,y1,(x2-x1),(y2-y1));
     }
     void surface_dfb::draw_rect(const rectangle& rect)
     {
@@ -180,8 +187,24 @@ namespace stk
     {
         color clr = gc_->line_color();
         surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,0xff);
-        surface->DrawRectangle(surface,x1,y1,x2-x1,y2-y1);
+        surface->DrawRectangle(surface,x1,y1,(x2-x1),(y2-y1));
         
     }
-    
+    void surface_dfb::clip_rect(const rectangle& clip_rectangle)
+    {
+        if(clip_rectangle.empty())
+            surface->SetClip(surface,NULL);
+        else
+        {
+            DFBRegion region;
+            region.x1=clip_rectangle.x1();
+            region.x2=clip_rectangle.x2();
+            region.y1=clip_rectangle.y1();
+            region.y2=clip_rectangle.y2();
+            
+            surface->SetClip(surface,&region); 
+        }
+        
+        
+    }
 }

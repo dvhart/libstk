@@ -92,6 +92,8 @@ namespace stk
 	virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect);
         virtual void fill_rect(int x1, int y1, int x2, int y2);
         virtual void fill_rect(const rectangle& rect);
+
+        virtual surface::ptr create_surface(const rectangle& rect);
     };
 } //end namespace stk
 
