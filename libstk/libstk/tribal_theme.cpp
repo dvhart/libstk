@@ -8,7 +8,7 @@
 #include "libstk/list.h"
 #include "libstk/list_item.h"
 #include "libstk/progress.h"
-#include "libstk/scroll_decorator.h"
+#include "libstk/scroll_box.h"
 #include "libstk/spinner.h"
 #include "libstk/state.h"
 
@@ -293,21 +293,24 @@ namespace stk
 		items_[selected_]->draw(surface);
 	}
 	
-	void scroll_decorator::draw(surface::ptr surface, const rectangle& clip_rect)
+	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		cout << "scroll_decorator::draw()" << endl;
 
 		// draw the component
-		if (clip_rect.empty())
+		if (children_.size() > 0)
 		{
-			rectangle temp_rect = rect_;
-			temp_rect.width(rect_.width() - 20);
-			temp_rect.height(rect_.height() - 20);
-			decorator::draw(surface, temp_rect);
-		}
-		else
-		{
-			decorator::draw(surface, clip_rect);
+			if (clip_rect.empty())
+			{
+				rectangle temp_rect = rect_;
+				temp_rect.width(rect_.width() - 20);
+				temp_rect.height(rect_.height() - 20);
+				children_[0]->draw(surface, temp_rect);
+			}
+			else
+			{
+				children_[0]->draw(surface, clip_rect);
+			}
 		}
 		
 		// outline the scroll panel

@@ -2,7 +2,6 @@ lib_LTLIBRARIES  =\
 	libstk.la
 
 libstk_la_SOURCES =\
-	decorator.h \
 	event_system.h \
 	event_system_sdl.h event_system_sdl.cpp \
 	event_system_dfb.h event_system_dfb.cpp \
@@ -30,7 +29,7 @@ libstk_la_SOURCES =\
 	image_panel.h image_panel.cpp \
 	image.h image.cpp \
 	label.h label.cpp \
-	scroll_decorator.h scroll_decorator.cpp \
+	scroll_box.h scroll_box.cpp \
 	spinner.h spinner.cpp \
 	tribal_theme.cpp \
 	font_mngr.h font_mngr.cpp\
@@ -46,9 +45,9 @@ library_include_HEADERS= \
 	combo.h          font.h              list_item.h    surface_sdl.h \
 	container.h      font_mngr.h         mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             parent.h       widget.h 	\
-	edge.h           graphics_context.h  point.h		    decorator.h \
-	event.h          image.h             progress.h 	  scroll_decorator.h \
-	event_handler.h  image_panel.h       
+	edge.h           graphics_context.h  point.h		    image.h \
+	event.h          progress.h 	       scroll_box.h  	event_handler.h \
+	image_panel.h       
 
 
 bin_PROGRAMS      = test_app

@@ -27,7 +27,7 @@ namespace stk
 			int height_;
 			
 		public:
-			static image_panel::ptr create(widget::ptr parent, 
+			static image_panel::ptr create(container::ptr parent, 
 					const rectangle& _rect, image::ptr img);
 			virtual ~image_panel();
 

@@ -3,7 +3,7 @@
 
 namespace stk
 {
-	image_panel::ptr image_panel::create(widget::ptr parent, const rectangle& rect, 
+	image_panel::ptr image_panel::create(container::ptr parent, const rectangle& rect, 
 			image::ptr img)
 	{
 		image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
@@ -15,7 +15,6 @@ namespace stk
 		: widget(parent, rect), image_(img)
 	{
 		cout << "image_panel::image_panel()" << endl;
-		focusable_ = true; // FIXME: this should be false, it is set for testing the scroll decorator
 	}
 	
 	image_panel::~image_panel()

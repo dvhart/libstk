@@ -16,7 +16,7 @@
 #include "libstk/list_item.h"
 #include "libstk/progress.h"
 #include "libstk/spinner.h"
-#include "libstk/scroll_decorator.h"
+#include "libstk/scroll_box.h"
 #include "libstk/state.h"
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
@@ -90,8 +90,7 @@ int main(int argc, char* argv[])
 		cout << "test_app - creating an image_panel in a scroll panel" << endl;
 		label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"), 
 			rectangle(10, 50, 150, 30));
-		scroll_decorator::ptr test_scroll = scroll_decorator::create(test_state, 
-				rectangle(10, 90, 350, 200));
+		scroll_box::ptr test_scroll = scroll_box::create(test_state, rectangle(10, 90, 350, 200));
 		// fixme: having to define the rectangle like this is lame, perhaps
 		// rect should be relative to the parent container?
 		image_panel::ptr test_image_panel = image_panel::create(test_scroll, 

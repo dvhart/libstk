@@ -59,8 +59,9 @@ namespace stk
 		children_.erase(iter);
 	}
 
-	void container::draw(surface::ptr surface)
+	void container::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
+		// FIXME: do something with clip_rect
 		std::vector<widget::ptr>::iterator iter = children_.begin();
 		rectangle temp_rect = redraw_rect_;
 		redraw_rect_ = rectangle();
