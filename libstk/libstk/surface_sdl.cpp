@@ -112,11 +112,34 @@ namespace stk
         return (color)sdl_color;
     }
 
-    void surface_sdl::lock(rectangle &rect, int flags, color** buf, int &stride)
-    {}
+    void surface_sdl::lock(rectangle &rect, int flags, color** buf, int& stride)
+    {
+        // FIXME: what shall we do with flags?
+        SDL_LockSurface(sdl_surface_);
+        switch (sdl_surface_->format->BytesPerPixel)
+        {
+        case 1:                                       
+        case 2:                                      
+        case 3:                                     
+        {
+            // FIXME: provide a means to use non 32 bit surfaces
+            //        perhaps set a format variable
+            // create a virtual framebuffer for the region requested
+            WARN("surface_sdl::lock - non 32 bit surface, unable to set buf");
+            break;
+        }
+        case 4:                                       // Probably 32-bpp
+            *buf = (color*)sdl_surface_->pixels + rect.y1()*sdl_surface_->pitch/4 + rect.x1();
+            break;
+        }
+        stride = sdl_surface_->pitch;
+
+    }
 
     void surface_sdl::unlock()
-    {}
+    {
+        SDL_UnlockSurface(sdl_surface_);
+    }
 
     void surface_sdl::update(const rectangle& u_rect)
     {
@@ -244,7 +267,6 @@ namespace stk
         break;
         case 4:                                       // Probably 32-bpp
         {
-            if (x == 0 && y == 0) INFO("put_pixel 0,0 to " << std::hex << sdl_color);
             Uint32 *bufp;
             bufp = (Uint32 *)sdl_surface_->pixels + y*sdl_surface_->pitch/4 + x;
             *bufp = sdl_color;

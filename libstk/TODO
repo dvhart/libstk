@@ -27,7 +27,6 @@ event_producer_directfb
 IR support (IRDA / generic serial / lirc) ?
 Software Pointer (common to all graphic backends) - YES, make part of surface backends
 Document all existing classes / APIs
-Add libstk to freshmeat
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion
 Video Panel - more discussion needed
@@ -44,6 +43,7 @@ dvhart: rename PARENT INTERFACE to COMPONENT INTERFACE
 dvhart: List Item Height is no longer fixed to 25 pixels, fixed in theme, list, and list_item
 dvhart: widgets are now positioned relative to their parent container
 dvhart: Polish the build environment (added checks for boost, directfb, libpng, freetype, etc)
+dvhart: Add libstk to freshmeat
 
 
 DOCUMENTATION
