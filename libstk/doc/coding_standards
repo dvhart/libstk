@@ -1,0 +1,5 @@
+RFC, Draft
+1:Private vars: All private variables use _ as a suffix.
+2:Code formatting:
+2.1:Indentation use the Ansi Identation style {} on their own line etc, look @ astyle docu for complete spec(astyle.sf.net)
+2.2:operators have to be seperated by spaces , like int i = 1; not int i=1; 
