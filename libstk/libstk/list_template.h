@@ -274,21 +274,19 @@ namespace stk
         virtual void remove_item(int index)
         {
             Titem item = items_.at(index);
-            if (item)
-            {
-                items_.erase(items_.begin()+index);
 
-                // Regenerate Item positionen
-                v_scroll_->size(0);
-                for (int i = 0; i < items_.size(); i++)
-                {
-                    Titem item = items_.at(i);
-                    item->rect(rectangle(0, v_scroll_->size(), width(), items_[i]->height()));
-                    v_scroll_->size(v_scroll_->size()+items_[i]->height());
-                }
-                current_ = MAX(0, MIN(current_, items_.size()-1));
-                redraw(rect());
+            items_.erase(items_.begin()+index);
+            
+            // Regenerate Item positions
+            v_scroll_->size(0);
+            for (int i = 0; i < items_.size(); i++)
+            {
+                Titem item = items_.at(i);
+                item->rect(rectangle(0, v_scroll_->size(), width(), item->height()));
+                v_scroll_->size(v_scroll_->size()+items_[i]->height());
             }
+            current_ = MAX(0, MIN(current_, items_.size()-1));
+            redraw(rect());
         }
 
         virtual std::vector<Titem> selection()
