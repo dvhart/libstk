@@ -2,9 +2,9 @@
 #define _STK_CONTAINER_H_
 
 #include <map>
-#include <string>
+#include <vector>
 
-#include "stk.h"
+#include "widget.h"
 
 namespace stk
 {
@@ -12,24 +12,23 @@ namespace stk
 class container : public stk::widget
 {
 private:
-    typedef std::map<std::string, stk::widget *> child_map;
-
-    child_map _childs;
-    child_map::const_iterator _iter;
+    typedef std::vector<Twidget_ptr> Tchilds;
+    
+	Tchilds childs_;	
 
 public:
-    container();
+    container(app* app,widget* parent);
     ~container();
 
-    void add
-        (std::string name, stk::widget &widget);
-    void erase(std::string name);
-    void erase(stk::widget &widget);
+    void add(Twidget_ptr widget);
+    void erase(Twidget_ptr widget);
 
-    stk::widget &prev();
-    stk::widget &next();
+    Twidget_ptr prev();
+    Twidget_ptr next();
 
-    stk::widget &lookup_widget(std::string name);
+    Twidget_ptr lookup_widget(std::string name);
 };
 
 } // namespace stk
+
+#endif
