@@ -44,8 +44,8 @@ namespace stk
         int x2() const { return p2_.x(); }
         /// Returns the y coordinate of the bottom edge
         int y2() const { return p2_.y(); }
-        int width() const { return p2_.x() - p1_.x() + 1; }  // inclusive width
-        int height() const { return p2_.y() - p1_.y() + 1; } // inclusive height
+        int width() const { return p2_.x() - p1_.x(); }  // inclusive width
+        int height() const { return p2_.y() - p1_.y(); } // inclusive height
 
         // setters
         void p1(const point&  p);

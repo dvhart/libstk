@@ -16,12 +16,25 @@
 namespace stk
 {
     rectangle::rectangle(int x1, int y1, int w, int h) :
-            p1_(point(x1, y1)), p2_(x1 + w - 1, y1 + h - 1)
+            p1_(point(x1, y1)), p2_(x1 + w, y1 + h)
     {
+        int temp;
+        if(p1_.x()>p2_.x())
+        {
+            temp=p2_.x();
+            p2_.x(p1_.x());
+            p1_.x(p2_.x());
+        }
+        if(p1_.y()>p2_.y())
+        {
+            temp=p2_.y();
+            p2_.y(p1_.y());
+            p1_.y(p2_.y());
+        }
         // enforce p1 as upper left coordinate
         // (this assume 0,0 is the upper left corner of the screen (like SDL))
-        if ((x1 > x1+w) || (y1 > y1+h))
-            throw error_message_exception("x1,y1 must be less than x2,y2");
+//        if ((x1 > x1+w) || (y1 > y1+h))
+//            throw error_message_exception("x1,y1 must be less than x2,y2");
     }
 
     rectangle::rectangle(const point &p1, const point &p2) : p1_(p1), p2_(p2)
@@ -62,17 +75,17 @@ namespace stk
     }
     void rectangle::width(int val) 
     { 
-        p2_.x(val + p1_.x() - 1); 
+        p2_.x(val + p1_.x()); 
     }
     void rectangle::height(int val) 
     { 
-        p2_.y(val + p1_.y() - 1); 
+        p2_.y(val + p1_.y()); 
     }
 
     // utilities
     bool rectangle::contains(int x, int y) const
     {
-        return (x >= p1_.x() && x <= p2_.x() && y >= p1_.y() && y <= p2_.y());
+        return (x >= p1_.x() && x < p2_.x() && y >= p1_.y() && y < p2_.y());
     }
 
     bool rectangle::contains(const point& p) const
