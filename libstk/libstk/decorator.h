@@ -33,18 +33,19 @@ namespace stk
 			virtual ~decorator() { }
 			
 			/********** EVENT HANDLER INTERFACE **********/
-			/// fixme: this has the potential for an infinite loop as the component_ may try to
-			/// pass the event back to its parent (this)
+			/// handle_event is an upward method, do not use it to pass events down
+			/// or infinite recursion will result.
 			virtual void handle_event(event::ptr e) 
 			{ 
 				cout << "decorator::handle_event()" << endl;
-				component_->handle_event(e);
+				parent_.lock()->handle_event(e);
 			}
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/
-			// fixme: infinite loop
-			virtual surface::ptr surface() { return component_->surface(); }
+			/// surface is an upward method, do not call down from within surface
+			/// or infinite recursion will result.
+			//virtual surface::ptr surface() { return component_->surface(); }
 			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle())
 			{ 
 				if (clip_rect.empty())
@@ -53,15 +54,26 @@ namespace stk
 					component_->draw(surface, clip_rect);
 			}
 			
-			// fixme: infinite loop
-			virtual void redraw(const rectangle& rect) { component_->redraw(rect); }
+			/// redraw is an upward method, do not call down from within redraw
+			/// or infinite recursion will result.
+			//virtual void redraw(const rectangle& rect) { parent_.lock()->redraw(rect); }
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/
-			// fixme: infinite loop
-			virtual widget::ptr focus_next() { return component_->focus_next(); }
-			// fixme: infinite loop
-			virtual widget::ptr focus_prev() { return component_->focus_prev(); }
+			/// FIXME: these two are problematic.  We have to call focus_next on 
+			/// component_ if it is a container, but that could call this->focus_next
+			/// constituting a major problem.  Perhaps we should redefine the parent
+			/// of the component_ to be the parent of the decorator but don't tell 
+			/// the parent of the change... will this cause shared_ptr ownership problems?
+			/// ... will work on this more
+			virtual widget::ptr focus_next() 
+			{
+				return component_->focus_next(); 
+			}
+			virtual widget::ptr focus_prev() 
+			{ 
+				return component_->focus_prev(); 
+			}
 			/// Assign the first item added to component_.
 			/// Subsequent adds get passed along to component_.
 			virtual void add(widget::ptr item) 
@@ -75,7 +87,9 @@ namespace stk
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
+			/// FIXME: I think we may want this to just return true...
 			virtual bool is_container() { return component_->is_container(); }
+			/// FIXME: these should all be virtual too!!!
 			/// Return a bool indicating if component_ is focusable
 			bool focusable() { return component_->focusable(); }
 			/// Set the focusable property of component_

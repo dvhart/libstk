@@ -99,6 +99,8 @@ namespace stk
 		//parent_.lock()->handle_event(e);
 	}
 
+	/// fixme: how do we handle containers that are our children?
+	/// if we call down with focus_next() it may result in an infinite loop
 	widget::ptr container::focus_next()
 	{
 		cout << "container::focus_next()" << endl;
@@ -120,9 +122,11 @@ namespace stk
 				break;
 			}
 		}
+		// FIXME: this can lead to an infinite loop if our parent is a container!!!!!! (which it is)
 		return parent_.lock()->focus_next();
 	}
 	
+	/// fixme: same infinite loop problem as focus_next()
 	widget::ptr container::focus_prev()
 	{
 		cout << "container::focus_prev()" << endl;

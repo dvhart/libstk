@@ -197,7 +197,10 @@ namespace stk
 		
 		graphics_context::ptr gc = graphics_context::create();
 		gc->line_color(surface->gen_color(outline_color_normal_str));
-		gc->fill_color(surface->gen_color(fill_color_focused_str));
+		if (focused_)
+			gc->fill_color(surface->gen_color(fill_color_focused_str));
+		else
+			gc->fill_color(surface->gen_color(fill_color_normal_str));
 		gc->font_fill_color(surface->gen_color(font_color_normal_str));
 		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
 		gc->font(arial_18);
