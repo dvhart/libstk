@@ -1,3 +1,15 @@
+/******************************************************************************
+ *    FILENAME: edge.h
+ * DESCRIPTION: Edge class used by the surface classes to draw polygons.
+ *     AUTHORS: Darren Hart
+ *  START DATE: 10/Dec/2002  LAST UPDATE: 13/May/2003
+ *
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *     LICENSE: This software is licenced under the Libstk license available
+ *              with the source as license.txt or at 
+ *              http://www.libstk.org/index.php?page=docs/license
+ *****************************************************************************/
+
 #ifndef STK_EDGE_H
 #define STK_EDGE_H
 

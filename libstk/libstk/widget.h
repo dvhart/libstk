@@ -1,3 +1,15 @@
+/******************************************************************************
+ *    FILENAME: widget.h
+ * DESCRIPTION: The abstract base class for all widgets.
+ *     AUTHORS: Darren Hart
+ *  START DATE: 08/Sep/2002  LAST UPDATE: 13/May/2003
+ *
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *     LICENSE: This software is licenced under the Libstk license available
+ *              with the source as license.txt or at 
+ *              http://www.libstk.org/index.php?page=docs/license
+ *****************************************************************************/
+
 #ifndef STK_WIDGET_H
 #define STK_WIDGET_H
 

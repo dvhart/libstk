@@ -1,5 +1,17 @@
-#ifndef FONT_MNGR_H
-#define FONT_MNGR_H
+/******************************************************************************
+ *    FILENAME: font_manager.h
+ * DESCRIPTION: Classes to cache fonts by name and height.
+ *     AUTHORS: Marc Straemke, Darren Hart 
+ *  START DATE: 28/Mar/2003  LAST UPDATE: 13/May/2003
+ *
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *     LICENSE: This software is licenced under the Libstk license available
+ *              with the source as license.txt or at 
+ *              http://www.libstk.org/index.php?page=docs/license
+ *****************************************************************************/
+
+#ifndef FONT_MANAGER_H
+#define FONT_MANAGER_H
 
 #include <boost/smart_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -32,6 +44,8 @@ public:
 	typedef boost::shared_ptr<font_manager> ptr;
 	typedef boost::weak_ptr<font_manager> weak_ptr;
 private:
+	/// fixme: make this a static class or use the namespace idiom, there is no 
+	/// need for it to be singleton (see color_manager)
 	static font_manager::ptr instance_; 
 
 	/// FIXME: both Tfonts and fonts are names contrary to coding standards

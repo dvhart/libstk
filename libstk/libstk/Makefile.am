@@ -33,7 +33,7 @@ libstk_la_SOURCES =\
 	label.h label.cpp \
 	scroll_box.h scroll_box.cpp \
 	spinner.h spinner.cpp \
-	font_mngr.h font_mngr.cpp\
+	font_manager.h font_manager.cpp\
 	exceptions.h scroll_modell.h scroll_modell.cpp\
 	theme.h theme.cpp \
 	timer.h timer.cpp \
@@ -47,7 +47,7 @@ library_include_HEADERS= \
 	button.h         event_system_sdl.h  label.h        surface.h	\
 	combiners.h      exceptions.h        list.h         surface_dfb.h \
 	combo.h          font.h              list_item.h    surface_sdl.h \
-	container.h      font_mngr.h         mouse_event.h  rectangle.h \
+	container.h      font_manager.h      mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             component.h    widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \

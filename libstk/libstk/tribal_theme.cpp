@@ -1,3 +1,16 @@
+/******************************************************************************
+ *    FILENAME: tribal_theme.cpp
+ * DESCRIPTION: Default theme for Libstk.  Contains the user_theme class and 
+ *              all themeable widget drawing routines.
+ *     AUTHORS: Darren Hart, Marc Straemke
+ *  START DATE: 27/Apr/2003  LAST UPDATE: 13/May/2003
+ *
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *     LICENSE: This software is licenced under the Libstk license available
+ *              with the source as license.txt or at 
+ *              http://www.libstk.org/index.php?page=docs/license
+ *****************************************************************************/
+
 #include "libstk/color_manager.h"
 #include "libstk/graphics_context.h"
 #include "libstk/exceptions.h"

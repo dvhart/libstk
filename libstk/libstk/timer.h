@@ -1,5 +1,18 @@
-#ifndef STK_timer
-#define STK_timer
+/******************************************************************************
+ *    FILENAME: timer.h
+ * DESCRIPTION: A timer class that emits its signal after a specified interval,
+ *              with the option to repeat.
+ *     AUTHORS: Darren Hart 
+ *  START DATE: 13/May/2003  LAST UPDATE: 13/May/2003
+ *
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *     LICENSE: This software is licenced under the Libstk license available
+ *              with the source as license.txt or at 
+ *              http://www.libstk.org/index.php?page=docs/license
+ *****************************************************************************/
+
+#ifndef STK_TIMER
+#define STK_TIMER
 
 #include <ctime>
 #include <sys/time.h>
