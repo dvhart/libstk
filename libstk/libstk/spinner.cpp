@@ -110,7 +110,7 @@ namespace stk
     }
     void spinner::selected(unsigned int index)
     {
-        if (index >= 0 && index < items_.size())
+        if (index < items_.size())
         {
             current_ = index;
             redraw(rect_);

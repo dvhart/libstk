@@ -774,7 +774,7 @@ namespace stk
             color fill_color = gc_->font_fill_color();
             // loop through the text and draw each character
             int fh = fon->height();
-            for (int i=0; i<chars_to_draw; i++)
+            for (int i = 0; i < chars_to_draw; i++)
             {
                 // get the glyph
                 glyph::ptr bmp = fon->glyph(text[i]);
@@ -783,17 +783,18 @@ namespace stk
                 int bx = bmp->bearing_x() >> 6;
                 boost::shared_array<unsigned char> bits = bmp->bitmap();
                 // draw it
-                for (int dy=0; dy<bmp->height(); dy++)
+                for (int dy = 0; dy < bmp->height(); dy++)
                 {
-                    for (int dx=0; dx<w; dx++)
+                    for (int dx = 0; dx < w; dx++)
                     {
                         // clip to the rect
                         unsigned char nc = bits[dy*w + dx];
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x+dx+bx, y+dy+fh-by, nc, fill_color);
+                        static_cast<surface_backend*>(this)->put_pixel_aa(x+dx+bx, y+dy+fh-by, nc,
+                                fill_color);
                     }
                 }
                 x += (bmp->advance_x() >> 6);
-                if (i<text.length()-1)
+                if (i < (int)text.length()-1)
                     x += (fon->kerning(text[i], text[i+1]) >> 6);
             }
         }
@@ -811,337 +812,337 @@ namespace stk
             switch(dir)
             {
             case LR:
-                {
-                    for (x; x <= x2; x++)
-                        static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
-                    break;
-                }
-            case RL:
-                {
-                    for (x; x >= x2; x--)
-                        static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
-                    break;
-                }
-            case UP:
-                {
-                    for (y; y <= y2; y++)
-                        static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
-                    break;
-                }
-            case DN:
-                {
-                    for (y; y >= y2; y--)
-                        static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
-                    break;
-                }
-            case LRU_0:
-                {
-                    int dx       = x2-x1;
-                    int dy       = y2-y1;
-                    int d        = 2*dy-dx;
-                    int delta_e  = 2*dy;
-                    int delta_ne = 2*(dy-dx);
-
-                    int two_v_dx = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
-                    double two_dx_inv_denom = 2.0*dx*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
-
-                    while (x < x2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dx = d + dx;
-                            d += delta_e;
-                            x++;
-                        }
-                        else
-                        {
-                            two_v_dx = d - dx;
-                            d += delta_ne;
-                            x++;
-                            y++;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
-                                two_dx_inv_denom - two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
-                                two_dx_inv_denom + two_v_dx*inv_denom, clr);
-                    }
-                    break;
-                }
-            case LRU_1:
-                {
-                    int dx       = x2-x1;
-                    int dy       = y2-y1;
-                    int d        = 2*dx-dy;
-                    int delta_e  = 2*dx;
-                    int delta_ne = 2*(dx-dy);
-
-                    int two_v_dy = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
-                    double two_dy_inv_denom = 2.0*dy*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
-
-                    while (y < y2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dy = d + dy;
-                            d += delta_e;
-                            y++;
-                        }
-                        else
-                        {
-                            two_v_dy = d - dy;
-                            d += delta_ne;
-                            y++;
-                            x++;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
-                                two_dy_inv_denom - two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
-                                two_dy_inv_denom + two_v_dy*inv_denom, clr);
-                    }
-                    break;
-                }
-            case LRD_0:
-                {
-                    int dx       = x2-x1;
-                    int dy       = y1-y2;
-                    int d        = 2*dy-dx;
-                    int delta_e  = 2*dy;
-                    int delta_ne = 2*(dy-dx);
-
-                    int two_v_dx = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
-                    double two_dx_inv_denom = 2.0*dx*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
-
-                    while (x < x2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dx = d + dx;
-                            d += delta_e;
-                            x++;
-                        }
-                        else
-                        {
-                            two_v_dx = d - dx;
-                            d += delta_ne;
-                            x++;
-                            y--;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
-                                two_dx_inv_denom - two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
-                                two_dx_inv_denom + two_v_dx*inv_denom, clr);
-                    }
-
-                    break;
-                }
-            case LRD_1:
-                {
-                    int dx       = x2-x1;
-                    int dy       = y1-y2;
-                    int d        = 2*dx-dy;
-                    int delta_e  = 2*dx;
-                    int delta_ne = 2*(dx-dy);
-
-                    int two_v_dy = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
-                    double two_dy_inv_denom = 2.0*dy*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
-
-                    while (y > y2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dy = d + dy;
-                            d += delta_e;
-                            y--;
-                        }
-                        else
-                        {
-                            two_v_dy = d - dy;
-                            d += delta_ne;
-                            x++;
-                            y--;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
-                                two_dy_inv_denom - two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
-                                two_dy_inv_denom + two_v_dy*inv_denom, clr);
-                    }
-                    break;
-                }
-            case RLU_0:
-                {
-                    int dx       = x1-x2;
-                    int dy       = y2-y1;
-                    int d        = 2*dy-dx;
-                    int delta_e  = 2*dy;
-                    int delta_ne = 2*(dy-dx);
-
-                    int two_v_dx = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
-                    double two_dx_inv_denom = 2.0*dx*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
-
-                    while (x > x2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dx = d + dx;
-                            d += delta_e;
-                            x--;
-                        }
-                        else
-                        {
-                            two_v_dx = d - dx;
-                            d += delta_ne;
-                            x--;
-                            y++;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
-                                two_dx_inv_denom - two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
-                                two_dx_inv_denom + two_v_dx*inv_denom, clr);
-                    }
-                    break;
-                }
-            case RLU_1:
-                {
-                    int dx       = x1-x2;
-                    int dy       = y2-y1;
-                    int d        = 2*dx-dy;
-                    int delta_e  = 2*dx;
-                    int delta_ne = 2*(dx-dy);
-
-                    int two_v_dy = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
-                    double two_dy_inv_denom = 2.0*dy*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
-
-                    while (x > x2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dy = d + dy;
-                            d += delta_e;
-                            y++;
-                        }
-                        else
-                        {
-                            two_v_dy = d - dy;
-                            d += delta_ne;
-                            x--;
-                            y++;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
-                                two_dy_inv_denom + two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
-                                two_dy_inv_denom - two_v_dy*inv_denom, clr);
-                    }
-                    break;
-                }
-            case RLD_0:
-                {
-                    int dx       = x1-x2;
-                    int dy       = y1-y2;
-                    int d        = 2*dy-dx;
-                    int delta_e  = 2*dy;
-                    int delta_ne = 2*(dy-dx);
-
-                    int two_v_dx = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
-                    double two_dx_inv_denom = 2.0*dx*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
-
-                    while (x > x2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dx = d + dx;
-                            d += delta_e;
-                            x--;
-                        }
-                        else
-                        {
-                            two_v_dx = d - dx;
-                            d += delta_ne;
-                            x--;
-                            y--;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
-                                two_dx_inv_denom + two_v_dx*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
-                                two_dx_inv_denom - two_v_dx*inv_denom, clr);
-                    }
-                    break;
-
-                    break;
-                }
-            case RLD_1:
-                {
-                    int dx       = x1-x2;
-                    int dy       = y1-y2;
-                    int d        = 2*dx-dy;
-                    int delta_e  = 2*dx;
-                    int delta_ne = 2*(dx-dy);
-
-                    int two_v_dy = 0;
-                    double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
-                    double two_dy_inv_denom = 2.0*dy*inv_denom;
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
-                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
-
-                    while (x > x2)
-                    {
-                        if (d <= 0)
-                        {
-                            two_v_dy = d + dy;
-                            d += delta_e;
-                            y--;
-                        }
-                        else
-                        {
-                            two_v_dy = d - dy;
-                            d += delta_ne;
-                            x--;
-                            y--;
-                        }
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
-                                two_dy_inv_denom + two_v_dy*inv_denom, clr);
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
-                                two_dy_inv_denom - two_v_dy*inv_denom, clr);
-                    }
-                    break;
-                }
+            {
+                for (x; x <= x2; x++)
+                    static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
+                break;
             }
+            case RL:
+            {
+                for (x; x >= x2; x--)
+                    static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
+                break;
+            }
+            case UP:
+            {
+                for (y; y <= y2; y++)
+                    static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
+                break;
+            }
+            case DN:
+            {
+                for (y; y >= y2; y--)
+                    static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
+                break;
+            }
+            case LRU_0:
+            {
+                int dx       = x2-x1;
+                int dy       = y2-y1;
+                int d        = 2*dy-dx;
+                int delta_e  = 2*dy;
+                int delta_ne = 2*(dy-dx);
+
+                int two_v_dx = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
+                double two_dx_inv_denom = 2.0*dx*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+
+                while (x < x2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dx = d + dx;
+                        d += delta_e;
+                        x++;
+                    }
+                    else
+                    {
+                        two_v_dx = d - dx;
+                        d += delta_ne;
+                        x++;
+                        y++;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
+                            two_dx_inv_denom - two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
+                            two_dx_inv_denom + two_v_dx*inv_denom, clr);
+                }
+                break;
+            }
+            case LRU_1:
+            {
+                int dx       = x2-x1;
+                int dy       = y2-y1;
+                int d        = 2*dx-dy;
+                int delta_e  = 2*dx;
+                int delta_ne = 2*(dx-dy);
+
+                int two_v_dy = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
+                double two_dy_inv_denom = 2.0*dy*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+
+                while (y < y2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dy = d + dy;
+                        d += delta_e;
+                        y++;
+                    }
+                    else
+                    {
+                        two_v_dy = d - dy;
+                        d += delta_ne;
+                        y++;
+                        x++;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
+                            two_dy_inv_denom - two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
+                            two_dy_inv_denom + two_v_dy*inv_denom, clr);
+                }
+                break;
+            }
+            case LRD_0:
+            {
+                int dx       = x2-x1;
+                int dy       = y1-y2;
+                int d        = 2*dy-dx;
+                int delta_e  = 2*dy;
+                int delta_ne = 2*(dy-dx);
+
+                int two_v_dx = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
+                double two_dx_inv_denom = 2.0*dx*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+
+                while (x < x2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dx = d + dx;
+                        d += delta_e;
+                        x++;
+                    }
+                    else
+                    {
+                        two_v_dx = d - dx;
+                        d += delta_ne;
+                        x++;
+                        y--;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
+                            two_dx_inv_denom - two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
+                            two_dx_inv_denom + two_v_dx*inv_denom, clr);
+                }
+
+                break;
+            }
+            case LRD_1:
+            {
+                int dx       = x2-x1;
+                int dy       = y1-y2;
+                int d        = 2*dx-dy;
+                int delta_e  = 2*dx;
+                int delta_ne = 2*(dx-dy);
+
+                int two_v_dy = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
+                double two_dy_inv_denom = 2.0*dy*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+
+                while (y > y2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dy = d + dy;
+                        d += delta_e;
+                        y--;
+                    }
+                    else
+                    {
+                        two_v_dy = d - dy;
+                        d += delta_ne;
+                        x++;
+                        y--;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
+                            two_dy_inv_denom - two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
+                            two_dy_inv_denom + two_v_dy*inv_denom, clr);
+                }
+                break;
+            }
+            case RLU_0:
+            {
+                int dx       = x1-x2;
+                int dy       = y2-y1;
+                int d        = 2*dy-dx;
+                int delta_e  = 2*dy;
+                int delta_ne = 2*(dy-dx);
+
+                int two_v_dx = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
+                double two_dx_inv_denom = 2.0*dx*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+
+                while (x > x2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dx = d + dx;
+                        d += delta_e;
+                        x--;
+                    }
+                    else
+                    {
+                        two_v_dx = d - dx;
+                        d += delta_ne;
+                        x--;
+                        y++;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
+                            two_dx_inv_denom - two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
+                            two_dx_inv_denom + two_v_dx*inv_denom, clr);
+                }
+                break;
+            }
+            case RLU_1:
+            {
+                int dx       = x1-x2;
+                int dy       = y2-y1;
+                int d        = 2*dx-dy;
+                int delta_e  = 2*dx;
+                int delta_ne = 2*(dx-dy);
+
+                int two_v_dy = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
+                double two_dy_inv_denom = 2.0*dy*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+
+                while (x > x2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dy = d + dy;
+                        d += delta_e;
+                        y++;
+                    }
+                    else
+                    {
+                        two_v_dy = d - dy;
+                        d += delta_ne;
+                        x--;
+                        y++;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
+                            two_dy_inv_denom + two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
+                            two_dy_inv_denom - two_v_dy*inv_denom, clr);
+                }
+                break;
+            }
+            case RLD_0:
+            {
+                int dx       = x1-x2;
+                int dy       = y1-y2;
+                int d        = 2*dy-dx;
+                int delta_e  = 2*dy;
+                int delta_ne = 2*(dy-dx);
+
+                int two_v_dx = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
+                double two_dx_inv_denom = 2.0*dx*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1, two_dx_inv_denom, clr);
+
+                while (x > x2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dx = d + dx;
+                        d += delta_e;
+                        x--;
+                    }
+                    else
+                    {
+                        two_v_dx = d - dx;
+                        d += delta_ne;
+                        x--;
+                        y--;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y+1,
+                            two_dx_inv_denom + two_v_dx*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y-1,
+                            two_dx_inv_denom - two_v_dx*inv_denom, clr);
+                }
+                break;
+
+                break;
+            }
+            case RLD_1:
+            {
+                int dx       = x1-x2;
+                int dy       = y1-y2;
+                int d        = 2*dx-dy;
+                int delta_e  = 2*dx;
+                int delta_ne = 2*(dx-dy);
+
+                int two_v_dy = 0;
+                double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
+                double two_dy_inv_denom = 2.0*dy*inv_denom;
+                static_cast<surface_backend*>(this)->put_pixel_aa(x, y, 0.0, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+                static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y, two_dy_inv_denom, clr);
+
+                while (x > x2)
+                {
+                    if (d <= 0)
+                    {
+                        two_v_dy = d + dy;
+                        d += delta_e;
+                        y--;
+                    }
+                    else
+                    {
+                        two_v_dy = d - dy;
+                        d += delta_ne;
+                        x--;
+                        y--;
+                    }
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x, y, two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x+1, y,
+                            two_dy_inv_denom + two_v_dy*inv_denom, clr);
+                    static_cast<surface_backend*>(this)->put_pixel_aa(x-1, y,
+                            two_dy_inv_denom - two_v_dy*inv_denom, clr);
+                }
+                break;
+            }
+            } // end switch
         }
 
         virtual void draw_arc_aa(const rectangle &rect, int quadrant)
@@ -1287,7 +1288,7 @@ namespace stk
             }
 
             std::list<edge>::iterator edge_iter, edge_iter2;
-            for (y; y < edges.size(); y++)
+            for (y; y < (int)edges.size(); y++)
             {
                 edge_iter = active_edges.begin();
                 while (edge_iter != active_edges.end())

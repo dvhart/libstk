@@ -78,22 +78,35 @@ namespace stk
 
         /********** WIDGET INTERFACE **********/
         virtual bool is_container() { return false; }
-        /// FIXME: what would be a better way to handle all these rect wrappers?
-        /// should widget possibly inherit from rectangle 
-        rectangle rect() { return rect_; }
-        bool contains(int x, int y) { return rect_.contains(x, y); }
-        bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
-        rectangle intersection(const rectangle& rhs) { return rect_.intersection(rhs); }
-        int width() { return rect_.width(); }
-        int height() { return rect_.height(); }
+
+        // wrap the rectangle interface
+        // getters
+        rectangle rect() const { return rect_; }
+        point p1() const { return rect_.p1(); }
+        point p2() const { return rect_.p2(); }
+        int x1() const { return rect_.x1(); }
+        int y1() const { return rect_.y1(); }
+        int x2() const { return rect_.x2(); }
+        int y2() const { return rect_.y2(); }
+        int width() const { return rect_.width(); }
+        int height() const { return rect_.height(); }
+        // setters
+        void rect(const rectangle& rect) { rect_ = rect; }
+        void x1(int val) { rect_.x1(val); }
+        void y1(int val) { rect_.y1(val); }
+        void x2(int val) { rect_.x2(val); }
+        void y2(int val) { rect_.y2(val); }
+        void width(int val) { rect_.width(val); }
+        void height(int val) { rect_.height(val); }
+        // utils
+        bool empty() const { return rect_.empty(); }
+        bool contains(int x, int y) const { return rect_.contains(x, y); }
+        bool contains(const point& p) const { return rect_.contains(p); }
+        bool intersects(const rectangle& rect) const { return rect_.intersects(rect); }
+        rectangle intersection(const rectangle& rhs) const { return rect_.intersection(rhs); }
         point position() const { return rect_.position(); }
         void position(int x, int y) { rect_.position(x, y); }
-        point p1() { return rect_.p1(); }
-        point p2() { return rect_.p2(); }
-        int x1() { return rect_.x1(); }
-        int y1() { return rect_.y1(); }
-        int x2() { return rect_.x2(); }
-        int y2() { return rect_.y2(); }
+        void position(const point& p) { rect_.position(p); }
 
         // widget attribute accessor methods
         // FIXME: have the setters return bool ?

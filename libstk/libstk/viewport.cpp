@@ -86,7 +86,9 @@ namespace stk
         scroll_offset.x(h_scroll()->begin());
         scroll_offset.y(v_scroll()->begin());
         surface->offset(surface->offset() + scroll_offset);        
-        std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,rect_,_1));
+        container::draw(surface, rect_); // draw all the children
+//        std::for_each(children_.begin(), children_.end(), 
+//                boost::bind(&container::draw_child, this, surface, rect_, _1));
         surface->offset(surface->offset() - scroll_offset);
     }
 

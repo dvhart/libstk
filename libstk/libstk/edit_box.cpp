@@ -46,8 +46,8 @@ namespace stk
         case event::key_down:
         {
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            int sel_min = MIN(selection_end_, selection_start_);
-            int sel_width = abs(selection_end_-selection_start_);
+            unsigned int sel_min = MIN(selection_end_, selection_start_);
+            unsigned int sel_width = abs(selection_end_-selection_start_);
             switch ( ke->fn_key() )
             {
             case key_backspace:

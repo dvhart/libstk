@@ -34,7 +34,7 @@ namespace stk
     private:
 
     protected:
-        unsigned int current_;
+        int current_;
         list(container::ptr parent, const rectangle& rect,
              scroll_model::ptr v_scroll = scroll_model::create());
         std::vector<list_item::ptr> items_;

@@ -63,14 +63,14 @@ namespace stk
         bool contains(const point& p) const;
         /// Returns true if the given rectangle intersects with this one
         bool intersects(const rectangle& rect) const;
+        /// Returns the area of intersection between both rectangles (the area they share)
+        rectangle intersection(const rectangle& rhs) const;
         /// Returns the upper left corner of the rectangle (this is duplicated by p1())
         point position() const { return p1_; }
         /// Sets the upper left corner of the rectangle
         void position(int x, int y);
         /// Sets the upper left corner of the rectangle
         void position(const point& p);
-        /// Returns the area of intersection between both rectangles (the area they share)
-        rectangle intersection(const rectangle& rhs) const;
 
         // operators
         const rectangle operator+(const rectangle& rect) const;

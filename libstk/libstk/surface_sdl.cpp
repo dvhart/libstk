@@ -351,11 +351,14 @@ namespace stk
     // overridden drawing routines
     color surface_sdl::read_pixel(int x, int y)
     {
-        return 0;               // FIXME
+        SDL_MUTEX_LOCK;
+        color clr = get_pixel(x, y);
+        SDL_MUTEX_UNLOCK;
+        return clr;
     }
     void surface_sdl::clip_rect(const rectangle& clip_rectangle)
     {
-        rectangle clip_rect=clip_rectangle;
+        rectangle clip_rect = clip_rectangle;
         
         clip_rect.position(clip_rectangle.position()+offset_);
                                     

@@ -12,6 +12,7 @@
 #include <iostream>
 #include "libstk/xine_panel.h"
 
+// FIXME: research how we should handle this
 void xine_event_listener(void *user_data, const xine_event_t *event) {
 }
 

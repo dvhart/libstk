@@ -50,7 +50,7 @@ namespace stk
             int y = 0;
             // FIXME: if CNTRL is pressed, don't deselect everything else
             select_none();
-            for (current_ = 0; current_ < items_.size(); current_++)
+            for (current_ = 0; current_ < (int)items_.size(); current_++)
             {
                 y += items_[current_]->height();
                 if (y > me->y()-rect_.y1()) break;
@@ -85,7 +85,7 @@ namespace stk
                 return;
                 break;
             case key_downarrow:
-                if (current_ < items_.size()-1)
+                if (current_ < (int)items_.size()-1)
                 {
                     current_++;
                     if (items_[current_]->y2() >= v_scroll_->end())

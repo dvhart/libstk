@@ -21,47 +21,47 @@
 
 namespace stk
 {
-	class edit_box : public widget
-	{
-	public:
-		typedef boost::shared_ptr<edit_box> ptr;
-		typedef boost::weak_ptr<edit_box> weak_ptr;
+    class edit_box : public widget
+    {
+    public:
+        typedef boost::shared_ptr<edit_box> ptr;
+        typedef boost::weak_ptr<edit_box> weak_ptr;
 
-	private:
-		std::wstring text_;
-                int selection_start_;
-                int selection_end_;
+    private:
+        std::wstring text_;
+        int selection_start_;
+        int selection_end_;
 
-	protected:
-		edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect);
-	
-	public:
-		//static edit_box::ptr create(container::ptr parent, const rectangle& rect);
-		static edit_box::ptr create(container::ptr parent, const std::wstring& text,
-				                        const rectangle& rect);
+    protected:
+        edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect);
 
-		virtual ~edit_box();
+    public:
+        //static edit_box::ptr create(container::ptr parent, const rectangle& rect);
+        static edit_box::ptr create(container::ptr parent, const std::wstring& text,
+                const rectangle& rect);
 
-		std::wstring text() const
-		{
-			return text_;
-		}
-		void text(std::wstring& text)
-		{
-			text_ = text;
-                        redraw(rect_);
-		}
+        virtual ~edit_box();
 
-		// signals
-                /// called when the text is changed
-		boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_change;
-                /// called when the user presses enter in the box
-                /// FIXME: what is a better name for this signal ?
-		boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_confirm;
-		
-		virtual void draw(surface::ptr surface, const rectangle& clip_rect);
-		virtual void handle_event(event::ptr e);
-	};
+        std::wstring text() const
+        {
+            return text_;
+        }
+        void text(std::wstring& text)
+        {
+            text_ = text;
+            redraw(rect_);
+        }
+
+        // signals
+        /// called when the text is changed
+        boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_change;
+        /// called when the user presses enter in the box
+        /// FIXME: what is a better name for this signal ?
+        boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_confirm;
+
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect);
+        virtual void handle_event(event::ptr e);
+    };
 }
 
 #endif

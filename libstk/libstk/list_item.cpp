@@ -44,6 +44,6 @@ namespace stk
 
     surface::ptr list_item::surface()
     {
-        parent_.lock()->surface();
+        return parent_.lock()->surface();
     }
 }

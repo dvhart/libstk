@@ -286,7 +286,8 @@ namespace stk
 
         // draw each item
         int y = 0;
-        if (focused_ && current_ >= 0 && current_ < items_.size()) items_[current_]->current(true);
+        if (focused_ && current_ >= 0 && current_ < (int)items_.size()) 
+            items_[current_]->current(true);
         for (unsigned int i = 0; i < items_.size(); i++)
         {
             if (y+items_[i]->height() > v_scroll_->begin() && y < v_scroll_->end())
@@ -295,7 +296,8 @@ namespace stk
             }
             y += items_[i]->height();
         }
-        if (focused_ && current_ >= 0 && current_ < items_.size()) items_[current_]->current(false);
+        if (focused_ && current_ >= 0 && current_ < (int)items_.size()) 
+            items_[current_]->current(false);
         
         surface->offset(surface->offset() + point(0, v_scroll_->begin()));
 
@@ -462,7 +464,7 @@ namespace stk
 
         // draw the arrows
 	bool fill_up = wrap_ || (current_ > 0);
-	bool fill_down = wrap_ || (current_ < items_.size()-1);
+	bool fill_down = wrap_ || (current_ < (int)items_.size()-1);
         theme::user()->draw_arrow(width()-15, 5, 12, surface, fill_up);
         theme::user()->draw_arrow(width()-15, height()-10, 6, surface, fill_down);
     }

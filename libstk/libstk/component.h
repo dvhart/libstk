@@ -63,13 +63,11 @@ namespace stk
         }
         /// Add a child.
         /// This does nothing by default and is overridden in container.
-        virtual void add
-            (boost::shared_ptr<widget> item)
+        virtual void add(boost::shared_ptr<widget> item)
         { }
         /// Remove a child
         /// This does nothing by default and is overridden in container.
-        virtual void remove
-            (boost::shared_ptr<widget> item)
+        virtual void remove(boost::shared_ptr<widget> item)
         { }
         /********** END COMPONENT INTERFACE **********/
 
