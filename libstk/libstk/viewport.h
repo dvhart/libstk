@@ -67,16 +67,16 @@ namespace stk
         virtual void add
             (widget::ptr item)
         {
-            if (children_.size() == 0)
-            {
-                children_.push_back(item);
-            }
-            else
-            {
-                children_[0] = item;
-            }
-            h_scroll()->size(children_[0]->width());
-            v_scroll()->size(children_[0]->height());
+            children_.push_back(item);
+
+            rectangle rect;
+
+            // Fixme, this should really be using for each shouldnt it?
+            for(unsigned int i=0;i<children_.size();i++)
+                rect+=children_[i]->rect();
+            
+            h_scroll()->size(rect.x2());
+            v_scroll()->size(rect.y2());
         }
         /********** END COMPONENT INTERFACE **********/
 

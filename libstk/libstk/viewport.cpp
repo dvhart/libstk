@@ -10,6 +10,7 @@
  *************************************************************************************************/
 
 #include <iostream>
+#include <algorithm>
 #include <boost/bind.hpp>
 #include "libstk/viewport.h"
 #include "libstk/event.h"
@@ -86,12 +87,9 @@ namespace stk
         scroll_offset.x(h_scroll()->begin());
         scroll_offset.y(v_scroll()->begin());
         surface->offset(surface->offset() + scroll_offset);
-
-        if (children_.size() > 0)
-        {
-            children_[0]->draw(surface, rect_);
-        }
-
+        
+        std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,rect_,_1));
+        
         surface->offset(surface->offset() - scroll_offset);
     }
 
