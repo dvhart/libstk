@@ -141,8 +141,7 @@ namespace stk
         // methods to be implemented by the backend
         virtual color gen_color(const std::string& str_color) const = 0;
         virtual color gen_color(byte r, byte g, byte b, byte a) const = 0;
-        virtual void lock(rectangle& rect, int flags, color** buf, int& stride)
-            = 0;
+        virtual void lock(rectangle& rect, int flags, color** buf, int& stride) = 0;
         virtual void unlock() = 0;
         virtual void update(const rectangle& u_rect = rectangle()) = 0;
         virtual overlay::ptr create_overlay(int width, int height, int format) = 0;
@@ -1328,12 +1327,12 @@ namespace stk
         // like most unaccelerated routines, this implementation is really slow
         virtual void surface_impl::draw_image(int x, int y, image::ptr img)
         {
-            rectangle source_rect=img->offscreen_surface->rect();
+            rectangle source_rect = img->offscreen_surface->rect();
             INFO("surface_impl::draw_image(" << x << "," << y << ")");
             INFO("Image rect: X1=" << source_rect.x1() << " Y1=" << source_rect.y1() << " X2= "
                  << source_rect.x2() << " Y2=" << source_rect.y2());
-                  
-            img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect,rectangle(x,y,0,0));
+            INFO("Prior to blit, pixel 0,0 of image is: 0x" << std::hex << static_cast<surface_backend*>(img->offscreen_surface.get())->get_pixel(0, 0));
+            img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect, rectangle(x, y, 0, 0));
         }
 
     };

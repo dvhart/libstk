@@ -22,7 +22,7 @@
 #include <libstk/sdl_data.h>
 
 // this is opposite from the docs, but it works
-#if SDL_BYTEORDER != SDL_BIG_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #define RMASK  0xff000000
 #define GMASK  0x00ff0000
 #define BMASK  0x0000ff00
@@ -80,7 +80,7 @@ namespace stk
         inline void put_pixel_aa(int x, int y, double distance, color clr);
         inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
         inline color get_pixel(int x, int y) const;
-        virtual color gen_color(const std::string& str_color) const;
+        virtual color gen_color(const std::string &str_color) const; // using default
         virtual color gen_color(byte r, byte g, byte b, byte a) const;
         virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
         virtual void unlock();

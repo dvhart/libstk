@@ -20,8 +20,12 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <string>
 #include "libstk/image.h"
 #include "libstk/logging.h"
+
+// temporary
+#include "libstk/surface_sdl.h"
 
 using std::cout;
 using std::endl;
@@ -48,9 +52,12 @@ namespace stk
 
     image::image(stk::surface::ptr onscreen_surface,const std::string& filename) : onscreen_surface(onscreen_surface)
     {
-        INFO("image::image(filename)");
-        //load_ppmx(filename);
-        load_png(filename);
+        INFO("image::image(" << filename << ")");
+        // switch on extension until we remove ppm support
+        if (filename.find(".ppm") != std::string::npos)
+            load_ppmx(filename);
+        else
+            load_png(filename);
     }
     
 
@@ -102,33 +109,37 @@ namespace stk
         
         INFO("Read PNG: width " << width << "  height " << height << "  depth " << bit_depth );
 
-        int bytes_per_pixel=png_get_channels(png_ptr,info_ptr);
+        int bytes_per_pixel = png_get_channels(png_ptr,info_ptr);
         
         INFO("PNG file has " << bytes_per_pixel << " Bytes per Pixel");
 
+        png_bytep* row_pointers = png_get_rows(png_ptr, info_ptr);
 
-        png_bytep* row_pointers=png_get_rows(png_ptr, info_ptr);
-
-
-        offscreen_surface = onscreen_surface->create_surface(rectangle(0,0,width,height));
+        offscreen_surface = onscreen_surface->create_surface(rectangle(0, 0, width, height));
         
-        for(int y=0;y<height;y++)
-            for(int x=0;x<width;x++)
+        INFO("Reading PNG data, row by row");
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
             {
-                char r=row_pointers[y][(x*bytes_per_pixel)+0];
-                char g=row_pointers[y][(x*bytes_per_pixel)+1];
-                char b=row_pointers[y][(x*bytes_per_pixel)+2];
-                char a=255;
-                if(bytes_per_pixel>3)
-                    a=row_pointers[y][(x*bytes_per_pixel)+3];
-                stk::color pixel_color=offscreen_surface->gen_color(r,g,b,a);
-                offscreen_surface->draw_pixel(x,y,pixel_color);
+                char r = row_pointers[y][(x*bytes_per_pixel)+0];
+                char g = row_pointers[y][(x*bytes_per_pixel)+1];
+                char b = row_pointers[y][(x*bytes_per_pixel)+2];
+                char a = 255; // FIXME we need acces to stk::opaque here
+                if (bytes_per_pixel > 3) a = row_pointers[y][(x*bytes_per_pixel)+3];
+                color pixel_color = offscreen_surface->gen_color(r, g, b, a);
+                if (x == 0 && y == 0) INFO("IMAGE PIXEL 0,0 IS: 0x" << std::hex << pixel_color 
+                        << " from rgba: " << (int)r << "," << (int)g << "," << (int)b << "," << (int)a);
+                offscreen_surface->draw_pixel(x, y, pixel_color);
+                if (x == 0 && y == 0)
+                    INFO("IMAGE PIXEL 0,0 DREW AS: 0x" << std::hex 
+                            << static_cast<surface_sdl*>(offscreen_surface.get())->get_pixel(0, 0));
             }
-                                                             
-        
+        }
         
 //        png_read_end(png_ptr, end_info);
 
+        INFO("Destroying png read struct");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 #else
         ERROR("No support for loading PNG files compiled in!");

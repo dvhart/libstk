@@ -14,7 +14,7 @@
 // we need to determine how exactly this mapping works
 // ***********************************************************
 
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <list>
 #include <iostream>
@@ -46,9 +46,10 @@ namespace stk
         // if this is the first surface, init video and set the video mode
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0)
         {
+            INFO("Creating initial surface");
             SDL_InitSubSystem(SDL_INIT_VIDEO);
-            sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 
-                                            0, SDL_HWSURFACE /*| SDL_DOUBLEBUF | SDL_FULLSCREEN*/);
+            sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 32, 
+                    SDL_HWSURFACE /*| SDL_DOUBLEBUF | SDL_FULLSCREEN*/);
                                             // FIXME: SDL_DOUBLEBUF causes a blackscreen in framebuffer mode
             if (!sdl_surface_)
                 ERROR("SDL_SetVideoMode failed: " << SDL_GetError());
@@ -58,9 +59,10 @@ namespace stk
         // this is not the first surface, so make one size rect of the same format as the first
         else
         {
+            INFO("Creating additional surface");
             // build a surface from the original and return that
-            SDL_Surface* temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA, rect.width(), rect.height(), 
-                                            0, RMASK, GMASK, BMASK, AMASK);
+            SDL_Surface* temp_surface = SDL_CreateRGBSurface(0, rect.width(), rect.height(), 32, 
+                    RMASK, GMASK, BMASK, AMASK);
             if (!temp_surface)
                 ERROR("SDL_CreateRGBSurface failed: " << SDL_GetError());
             sdl_surface_ = SDL_DisplayFormatAlpha(temp_surface); // convert to display format for faster blitting
@@ -85,18 +87,18 @@ namespace stk
         return surface_sdl::create(rect);
     }
 
-    color surface_sdl::gen_color(const std::string &str_color) const
+    // FIXME: this should just be surface_impl default
+    color surface_sdl::gen_color(const std::string& str_color) const
     {
-        Uint8 r, g, b, a;
-        Uint32 int_color = strtoll(str_color.c_str(), NULL, 16);
-        r = (int_color & RMASK) >> RSHIFT;
-        g = (int_color & GMASK) >> GSHIFT;
-        b = (int_color & BMASK) >> BSHIFT;
-        a = (int_color & AMASK) >> ASHIFT;
-        Uint32 sdl_color = gen_color(r, g, b, a);
-        return (color)sdl_color;
+        byte r, g, b, a;
+        unsigned int int_color = strtoll(str_color.c_str(), NULL, 16);
+        r = (int_color & 0xFF000000) >> 24;
+        g = (int_color & 0x00FF0000) >> 16;
+        b = (int_color & 0x0000FF00) >> 8;
+        a = (int_color & 0x000000FF) >> 0;
+        return gen_color(r, g, b, a);
     }
-
+    
     color surface_sdl::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
     {
         Uint32 sdl_color = SDL_MapRGBA(sdl_surface_->format, r, g, b, a);
@@ -133,8 +135,9 @@ namespace stk
     
 
     // optimized pixel routines
-    void surface_sdl::blit(surface &dst_surface)
+    void surface_sdl::blit(surface& dst_surface)
     {
+        INFO("blit no arguments");
         // blit the local surface to the destination surface
         surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
         if (dst_surface_ptr != NULL)
@@ -155,8 +158,21 @@ namespace stk
                                           "Can only blit an sdl_surface to another sdl_surface");
         }
     }
-    void surface_sdl::blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect)
+    void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
+        INFO("blit with arguments");
+        
+        // testing red rect blit
+        gc_ = graphics_context::create();
+        gc_->fill_color(gen_color("0xFF0000FF"));
+        fill_rect(rectangle(0, 0, 100, 100)); // this works
+        gc_->fill_color(gen_color("0x00FF00FF"));
+        fill_rect(rectangle(40, 40, 20, 20)); // this works
+        draw_pixel(50, 50, gen_color("0xFFFFFFFF")); // these don't
+        draw_pixel(50, 51, gen_color("0xFFFFFFFF"));
+        draw_pixel(51, 50, gen_color("0xFFFFFFFF"));
+        draw_pixel(51, 51, gen_color("0xFFFFFFFF"));
+        
         // blit the local surface to the destination surface
         surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
         if (dst_surface_ptr != NULL)
@@ -164,11 +180,10 @@ namespace stk
 	    SDL_Rect src_sdl_rect = rect_to_sdl_rect(src_rect);
 	    SDL_Rect dst_sdl_rect = rect_to_sdl_rect(dst_rect);
 	    
-	    if (SDL_BlitSurface(sdl_surface_, &src_sdl_rect ,
-                                dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
+	    if (SDL_BlitSurface(sdl_surface_, &src_sdl_rect,
+                        dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
             {
-                throw error_message_exception(
-                    "widget: Failed to blit sdl_surface_ to screen");
+                throw error_message_exception("widget: Failed to blit sdl_surface_ to screen");
             }
         }
         else
@@ -253,50 +268,51 @@ namespace stk
             return 0;
         }
 
+        //INFO("get_pixel Bytes Per Pixel: " << (int)sdl_surface_->format->BytesPerPixel);
         switch (sdl_surface_->format->BytesPerPixel)
         {
         case 1:                                       // Assuming 8-bpp
-            {
-                Uint8 *bufp;
-                bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
-                return (Uint32)(*bufp);
-            }
-            break;
+        {
+            Uint8 *bufp;
+            bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
+            return (Uint32)(*bufp);
+        }
+        break;
         case 2:                                       // Probably 15-bpp or 16-bpp
-            {
-                Uint16 *bufp;
-                bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
-                return (Uint32)(*bufp);
-            }
-            break;
+        {
+            Uint16 *bufp;
+            bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
+            return (Uint32)(*bufp);
+        }
+        break;
         case 3:                                       // Slow 24-bpp mode, usually not used
+        {
+            // FIXME
+            Uint8 *bufp;
+            bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
+            Uint32 sdl_color;
+            if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
             {
-                // FIXME
-                Uint8 *bufp;
-                bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
-                Uint32 sdl_color;
-                if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-                {
-                    sdl_color =  bufp[0];
-                    sdl_color += (bufp[1] >> 8);
-                    sdl_color += (bufp[2] >> 16);
-                }
-                else
-                {
-                    sdl_color =  bufp[2];
-                    sdl_color += (bufp[1] >> 8);
-                    sdl_color += (bufp[0] >> 16);
-                }
-                return (color)sdl_color;
+                sdl_color =  bufp[0];
+                sdl_color += (bufp[1] >> 8);
+                sdl_color += (bufp[2] >> 16);
             }
-            break;
+            else
+            {
+                sdl_color =  bufp[2];
+                sdl_color += (bufp[1] >> 8);
+                sdl_color += (bufp[0] >> 16);
+            }
+            return (color)sdl_color;
+        }
+        break;
         case 4:                                       // Probably 32-bpp
-            {
-                Uint32 *bufp;
-                bufp = (Uint32 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 4 + x;
-                return (color)*bufp;
-            }
-            break;
+        {
+            Uint32 *bufp;
+            bufp = (Uint32 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 4 + x;
+            return (color)*bufp;
+        }
+        break;
         }
         return 0; // should never happen
     }

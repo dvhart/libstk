@@ -133,8 +133,7 @@ int main(int argc, char* argv[])
 
         // create a button and bind it to application::quit()
         cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
-        button::ptr test_button = button::create(test_state, L"Quit",
-                rectangle(120, 10, 100, 30));
+        button::ptr test_button = button::create(test_state, L"Quit", rectangle(120, 10, 100, 30));
         // NOTE: we must use test_app.get() here or we inadvertantly create a circular shared_ptr reference
         // and application (and therefore nothing else) won't get destroyed when we exit()!!!
         test_button->on_release.connect( boost::bind(&application::quit, test_app.get()) );
@@ -145,8 +144,7 @@ int main(int argc, char* argv[])
         cout << "test_app - creating labels" << endl;
         label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"),
                 rectangle(10, 10, 100, 30));
-        label::ptr test_label2 = label::create(test_state,
-                std::wstring(L"stk::tribal_theme"),
+        label::ptr test_label2 = label::create(test_state, std::wstring(L"stk::tribal_theme"),
                 rectangle(490, 10, 150, 30));
 
         // create some buttons with hotkeys F1-F4
@@ -177,16 +175,17 @@ int main(int argc, char* argv[])
         viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
         // fixme: having to define the rectangle like this is lame, perhaps
         // rect should be relative to the parent container?
-        /* REMOVED UNTIL PNG AND SDL PLAY NICE
+        // REMOVED UNTIL PNG AND SDL PLAY NICE
         image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
-                rectangle(10, 90, 400, 300), 
-                image::create(test_viewport->surface(),"parrots.png"));
-        */
+                rectangle(0, 0, 0, 0), image::create(test_viewport->surface(), "parrots.png"));
+        
 
         //scroll(test_viewport->h_scroll(),-10);
-        button::ptr scroll_left=button::create(test_state,L"Scroll-", rectangle(100, 300, 90, 40));
+        button::ptr scroll_left = button::create(test_state,L"Scroll-", 
+			rectangle(100, 300, 90, 40));
         scroll_left->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), -10));
-        button::ptr scroll_right=button::create(test_state,L"Scroll+", rectangle(200, 300, 90, 40));
+        button::ptr scroll_right=button::create(test_state,L"Scroll+", 
+			rectangle(200, 300, 90, 40));
         scroll_right->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), 10));
         //void scroll(scroll_model::ptr target,int increment)
 

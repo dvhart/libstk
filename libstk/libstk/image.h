@@ -31,13 +31,13 @@ namespace stk
         void init_pixels();
         int width_;
         int height_;
-        stk::surface::ptr onscreen_surface; /// Used for offscreen surface construction
+        surface::ptr onscreen_surface; /// Used for offscreen surface construction
     public:
         static image::ptr create(stk::surface::ptr onscreen_surface,const std::string& filename="");
         static image::ptr create(stk::surface::ptr onscreen_surface,const rectangle& _rect);
         virtual ~image();
 
-        stk::surface::ptr offscreen_surface;
+        surface::ptr offscreen_surface;
         /********** IMAGE INTERFACE **********/
         void load_ppmx(const std::string filename);
         void load_png(const std::string filename);
