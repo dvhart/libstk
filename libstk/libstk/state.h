@@ -14,9 +14,10 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <libstk/widget.h>
-#include <libstk/container.h>
 #include <libstk/application.h>
+#include <libstk/container.h>
+#include <libstk/image.h>
+#include <libstk/widget.h>
 
 namespace stk
 {
@@ -29,11 +30,13 @@ namespace stk
     private:
 
     protected:
+        image::ptr bg_image_;
         state(application::ptr parent);
 
     public:
         virtual ~state();
         static state::ptr create(application::ptr parent);
+        static state::ptr create(application::ptr parent, std::string bg_image_path);
 
         // these two should probably be moved up to container
         virtual widget::ptr focus_first();

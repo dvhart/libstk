@@ -19,6 +19,13 @@
 
 namespace stk
 {
+    state::ptr state::create(application::ptr parent, std::string bg_image_path)
+    {
+        state::ptr new_state(new state(parent));
+        new_state->bg_image_ = image::create(new_state->surface(), bg_image_path);
+        parent->add_state(new_state);
+        return new_state;
+    }
 
     state::ptr state::create(application::ptr parent)
     {
@@ -55,7 +62,7 @@ namespace stk
         //INFO("state::focus_first()");
         widget::ptr temp_widget;
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
         {
             if (!temp_widget && (*iter)->focusable())
             {
@@ -80,7 +87,7 @@ namespace stk
         //INFO("state::focus_last()");
         widget::ptr temp_widget;
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
+        for (; iter != children_.end(); iter++)
         {
             if ((*iter)->focusable())
             {

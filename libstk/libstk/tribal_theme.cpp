@@ -128,11 +128,18 @@ namespace stk
     // define the various widget theme routines (draw(), region(), etc.)
     void state::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        graphics_context::ptr gc = graphics_context::create();
-        gc->fill_color(color_manager::get()->get_color(
-                    color_properties(fill_state_color_str, surface)));
-        surface->gc(gc);
-        surface->fill_rect(clip_rect);
+        if (bg_image_)
+        {
+            surface->draw_image(0, 0, bg_image_);
+        }
+        else
+        {
+            graphics_context::ptr gc = graphics_context::create();
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_state_color_str, surface)));
+            surface->gc(gc);
+            surface->fill_rect(clip_rect);
+        }
         container::draw(surface, clip_rect); // this will draw all the children - document this for theme howto
     }
 

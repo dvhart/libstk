@@ -813,25 +813,25 @@ namespace stk
             {
             case LR:
             {
-                for (x; x <= x2; x++)
+                for (; x <= x2; x++)
                     static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
                 break;
             }
             case RL:
             {
-                for (x; x >= x2; x--)
+                for (; x >= x2; x--)
                     static_cast<surface_backend*>(this)->put_pixel(x, y1, clr);
                 break;
             }
             case UP:
             {
-                for (y; y <= y2; y++)
+                for (; y <= y2; y++)
                     static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
                 break;
             }
             case DN:
             {
-                for (y; y >= y2; y--)
+                for (; y >= y2; y--)
                     static_cast<surface_backend*>(this)->put_pixel(x1, y, clr);
                 break;
             }
@@ -1288,7 +1288,7 @@ namespace stk
             }
 
             std::list<edge>::iterator edge_iter, edge_iter2;
-            for (y; y < (int)edges.size(); y++)
+            for (; y < (int)edges.size(); y++)
             {
                 edge_iter = active_edges.begin();
                 while (edge_iter != active_edges.end())
