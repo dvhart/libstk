@@ -657,13 +657,18 @@ namespace stk
             //do cursor or selection
             if (selection_start_ == selection_end_ && focused_)
             {//nothing selected and we are focused -- print cursor
-                if (selection_start_ >= num_chars && selection_start_ <= (num_chars+(int)line_str.length()))
+                if (selection_start_ >= num_chars && selection_start_ <= (num_chars+line_str.length()))
                 {//cursor is on this line
                     int chars_before_cursor = selection_start_ - num_chars;
                     int cursor_x = arial_14->draw_len(line_str.substr(0,chars_before_cursor));
                     //draw cursor
-                    surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
-                            ,line_rect.x1()+cursor_x,line_rect.y2());
+                    if (new_line || chars_before_cursor != line_str.length()) 
+                    {
+                        //don't put a cursor at the end when there is not a new line
+                        //because it is printed on the next line
+                        surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
+                                ,line_rect.x1()+cursor_x,line_rect.y2());
+                    }
                     line_ = line_num;//to remember where the cursor is
 
                 }
@@ -677,8 +682,8 @@ namespace stk
                 else
                     gc->fill_color(color_manager::get()->get_color(
                         color_properties(fill_color_focused_str, surface)));
-                if ( (sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()))
-                    && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) ) 
+                if ( (sel_min >= num_chars && sel_min <= (num_chars+line_str.length()))
+                    && (sel_max >= num_chars && sel_max <= (num_chars+line_str.length())) ) 
                 {//selection starts and ends on this line
                     int sel_start = sel_min - num_chars;
                     int sel_end = sel_max - num_chars;
@@ -688,7 +693,7 @@ namespace stk
                     rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
                     surface->fill_rect(sel_rect);
                     line_ = line_num;
-                } else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) ) 
+                } else if  ( sel_min >= num_chars && sel_min <= (num_chars+line_str.length()) ) 
                 {//selection starts on this line
                     int sel_start = sel_min - num_chars;
                     int start_x = arial_14->draw_len ( line_str.substr(0, sel_start) );
@@ -696,7 +701,7 @@ namespace stk
                     rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ == sel_min) line_ = line_num;//alway use selection_end_ to determine current line
-                } else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
+                } else if ( sel_max >= num_chars && sel_max <= (num_chars+line_str.length()) )
                 {//selection ends of this line
                     int sel_end = sel_max - num_chars;
                     
@@ -704,7 +709,7 @@ namespace stk
                     rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ ==  sel_max) line_ = line_num;
-                } else if ( sel_min < num_chars  && sel_max > num_chars+((int)line_str.length()) )
+                } else if ( sel_min < num_chars  && sel_max > num_chars+(line_str.length()) )
                 {//selection covers line
                     int end_x = arial_14->draw_len(line_str);
                     rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);

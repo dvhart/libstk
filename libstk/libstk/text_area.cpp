@@ -96,6 +96,7 @@ namespace stk
                     selection_start_ = selection_end_ = sel_min;
                 }
                 text_.insert(selection_end_, L"\n");
+                selection_start_ = ++selection_end_;
                 redraw(rect());
                 on_change(text_);
                 return;
