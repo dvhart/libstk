@@ -24,7 +24,7 @@ namespace stk
 		private:
 
 		protected:
-			widget(boost::shared_ptr<application> parent);
+			widget(boost::shared_ptr<parent> parent);
 			boost::weak_ptr<parent> parent_;
 			int x_;
 			int y_;

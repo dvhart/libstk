@@ -30,10 +30,10 @@ namespace stk
 		parent->add_child(boost::shared_ptr<widget>(this));
 	}
 
-	widget::widget(boost::shared_ptr<application> parent) : parent_(parent)
+	widget::widget(boost::shared_ptr<parent> parent) : parent_(parent)
 	{
-		cout << "widget::widget(application)" << endl;
-		cout << "widget::widget(application) - parent pointer is " << std::hex << parent.get() << endl;
+		cout << "widget::widget(parent)" << endl;
+		cout << "widget::widget(parent) - parent pointer is " << std::hex << parent.get() << endl;
 	}
 
 	widget::~widget()

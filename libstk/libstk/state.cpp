@@ -1,5 +1,6 @@
 #include <iostream>
 #include <boost/weak_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "state.h"
 #include "container.h"
@@ -11,11 +12,15 @@ using std::endl;
 namespace stk
 {
 
-	state::state(boost::shared_ptr<application> parent) : container(parent)
+	state::state(boost::shared_ptr<application> parent) : 
+		container(boost::shared_static_cast<stk::parent>(parent))
 	{
 		cout << "state::state()" << endl;
 		cout << "state::state() - parent pointer is " << std::hex << parent.get() << endl;
-		parent->add_state(boost::shared_ptr<state>(this));
+		state::ptr this_state(this);
+		cout << "***this_state.use_count() = " << this_state.use_count() << endl;
+		cout << "***this_state points to: " << std::hex << this_state.get() << endl;
+		parent->add_state(this_state);
 	}
 
 	state::~state()

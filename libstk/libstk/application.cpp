@@ -31,6 +31,7 @@ namespace stk
 
 	application::~application()
 	{
+		cout << "application::~application()" << endl;
 	}
 
 	int application::run()
@@ -78,7 +79,10 @@ namespace stk
 	
 	void application::add_state(state::ptr state)
 	{
+		cout << "application::add_state()" << endl;
+		cout << "\tstate.use_count() = " << state.use_count() << endl;
 		states_.push_back(state);
+		cout << "\tstate.use_count() = " << state.use_count() << endl;
 	}
 
 	// drawable interface

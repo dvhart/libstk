@@ -19,6 +19,7 @@
 #ifndef STK_SURFACE_H
 #define STK_SURFACE_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
@@ -27,6 +28,9 @@
 #include "rectangle.h"
 #include "graphics_context.h"
 #include "stk.h"
+
+using std::cout;
+using std::endl;
 
 /* stk::surface provides an interface to be implemented by all backend 
  * surface implementations.  In general, one creates a screen from one of
@@ -79,6 +83,7 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<surface> ptr;
 			typedef boost::weak_ptr<surface> weak_ptr;
+			
 		protected:
 			/* direction() returns one of the direction constants defined above.  
 			 * Line drawing routines use it to determine which of the twelve 
@@ -128,37 +133,37 @@ namespace stk
 			graphics_context gc_; // stores graphics settings used by draw routines
 
 		public:
-			surface() { };
-			surface(const rectangle &rect) : rect_(rect) { };
-			virtual ~surface() { };
+			surface() { cout << "surface::surface()" << endl; }
+			surface(const rectangle &rect) : rect_(rect) { cout << "surface::surface(rectangle)" << endl; }
+			virtual ~surface() { cout << "surface::~surface()" << endl; }
 
 			// inline property methods
-			rectangle rect() const { return rect_; };
+			rectangle rect() const { return rect_; }
 			// FIXME: we may not need alpha now that we only have one surface..
 			// it may be nice for special cases where we need another surface
 			// need to think on it -- dvhart
-			byte alpha() const { return alpha_; };
-			void alpha(byte a) { alpha_ = a; };
+			byte alpha() const { return alpha_; }
+			void alpha(byte a) { alpha_ = a; }
 			// FIXME: should we be using smart pointers here with gcs and rects ?
-			graphics_context gc() const { return gc_; };
-			void gc(graphics_context &new_gc) { gc_ = new_gc; }; 		
-			void x1(int x) { rect_.x1(x); };
-			void y1(int y) { rect_.y1(y); };
+			graphics_context gc() const { return gc_; }
+			void gc(graphics_context &new_gc) { gc_ = new_gc; }
+			void x1(int x) { rect_.x1(x); }
+			void y1(int y) { rect_.y1(y); }
 
 			/* The following methods MUST be implemented in derived classes.  They 
 			 * are not purely virtual here since we must be able to instantiate a 
 			 * surface class in certain situations.
 			 */
-			virtual void draw_pixel(int x, int y, color clr) { };
-			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { };
-			virtual color read_pixel(int x, int y) const { };
+			virtual void draw_pixel(int x, int y, color clr) { }
+			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { }
+			virtual color read_pixel(int x, int y) const { }
 			// format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
-			virtual color gen_color(const std::string &str_color) const { };
-			virtual color gen_color(byte r, byte g, byte b, byte a) const { };
-			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) { };
-			virtual void unlock() { };
-			virtual void blit(surface &dst_surface) { };
-			virtual void flip() { };
+			virtual color gen_color(const std::string &str_color) const { }
+			virtual color gen_color(byte r, byte g, byte b, byte a) const { }
+			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) { }
+			virtual void unlock() { }
+			virtual void blit(surface &dst_surface) { }
+			virtual void flip() { }
 
 			/* A NOTE ON EFFICIENCY AND PERFORMANCE
 			 * ----------------------------------

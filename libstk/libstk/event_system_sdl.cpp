@@ -3,7 +3,6 @@
 #include "event_system_sdl.h"
 #include "key_event.h"
 #include "mouse_event.h"
-#include "quit_event.h"
 
 using std::cout;
 using std::endl;
@@ -55,8 +54,7 @@ namespace stk
 					break;
 				case SDL_QUIT:
 					cout << "SDL_QUIT" << endl;
-					// FIXME: perhaps we don't need a QuitEvent, we can just use Event(new event(quit)); ??
-					return quit_event::ptr(new quit_event());
+					return event::ptr(new event(event_quit));
 					break;
 				default:
 					// throw something

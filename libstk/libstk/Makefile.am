@@ -11,7 +11,6 @@ libstk_la_SOURCES =\
 	event.h \
 	mouse_event.h mouse_event.cpp \
 	key_event.h key_event.cpp \
-	quit_event.h quit_event.cpp \
 	event_handler.h \
 	drawable.h \
 	parent.h \
@@ -38,7 +37,6 @@ test_app_SOURCES  = \
 	event.h \
 	mouse_event.h mouse_event.cpp \
 	key_event.h key_event.cpp \
-	quit_event.h quit_event.cpp \
 	event_handler.h \
 	drawable.h \
 	parent.h \

@@ -35,6 +35,7 @@ namespace stk
 
 	surface_sdl::~surface_sdl()
 	{
+		cout << "surface_sdl::~surface_sdl()" << endl;
 		if (sdl_surface_)
 			SDL_FreeSurface(sdl_surface_);
 	}

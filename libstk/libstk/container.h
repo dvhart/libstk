@@ -20,7 +20,7 @@ namespace stk
 			std::vector<widget::ptr> children_;
 			
 		protected:
-			container(application::ptr parent);
+			container(parent::ptr parent);
 			
 		public:
 			container(container::ptr parent);

@@ -18,6 +18,8 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {
+	int retval = 0;
+
 	// initialize sdl
 	// FIXME: where should this be done ?
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -35,18 +37,32 @@ int main(int argc, char* argv[])
 	// create the main state
 	cout << "test_app - creating state" << endl;
 	state::ptr test_state(new state(test_app));
+	cout << "***test_state.use_count() = " << test_state.use_count() << endl;
+	cout << "***test_state points to: " << std::hex << test_state.get() << endl;
 	test_app->add_state(test_state);
+	cout << "***test_state.use_count() = " << test_state.use_count() << endl;
+	
 	//Label test_label(new label(test_state, "Test Label", 10, 10, 100, 30));
 	
-	cout << "test_app - creating button" << endl;
+	// create a button and bind it to application::quit()
+	cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
 	button::ptr test_button(new button(test_state, "Test Button", 120, 10, 100, 30));
-	
-	test_state->add_child(test_button);
-	// bind button click to quit
 	test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
+	test_state->add_child(test_button);
 
+	// check use count prior to run
+	cout << "SHARED POINTER USE COUNT PRIOR TO RUN" << endl;
+	cout << "test_surface.use_count() = " << test_surface.use_count() << endl;
+	cout << "test_event_system.use_count() = " << test_event_system.use_count() << endl;
+	cout << "test_app.use_count() = " << test_app.use_count() << endl;
+	cout << "test_state.use_count() = " << test_state.use_count() << endl;
+	cout << "test_button.use_count() = " << test_button.use_count() << endl;
+	
 	// run the program
 	cout << "test_app - run" << endl;
-	return test_app->run();
+	retval = test_app->run();
+	cout << "test_app - returning " << std::dec << retval << endl;
+
+	return retval;
 }
 
