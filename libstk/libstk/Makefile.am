@@ -1,3 +1,6 @@
+## compiler flags
+AM_CXXFLAGS = -Wall
+
 lib_LTLIBRARIES  =\
 	libstk.la
 
