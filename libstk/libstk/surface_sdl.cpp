@@ -319,7 +319,7 @@ namespace stk
     void surface_sdl::update(const rectangle& u_rect)
     {
         SDL_MUTEX_LOCK;
-        INFO("updating SDL surface with u_rect=" << u_rect);
+        //INFO("updating SDL surface with u_rect=" << u_rect);
         if (u_rect.empty())
         {
             //INFO("surface_sdl::update() - updating entire screen");
@@ -332,7 +332,7 @@ namespace stk
         {
             //INFO("surface_sdl::update() - updating the rect: " << u_rect);
             // The SDL_UpdateRect call fails if the rect is outside the screen! 
-            rectangle u_rect_clipped=u_rect.intersection(rect_);
+            rectangle u_rect_clipped = u_rect.intersection(rect_);
             SDL_UpdateRect(sdl_surface_, u_rect_clipped.x1(), u_rect_clipped.y1(),
                            u_rect_clipped.width(), u_rect_clipped.height());
         }
@@ -360,10 +360,7 @@ namespace stk
     void surface_sdl::clip_rect(const rectangle& clip_rectangle)
     {
         rectangle clip_rect = clip_rectangle;
-        
         clip_rect.position(clip_rectangle.position()+offset_);
-                                    
-        INFO("new sdl clip_rect: " << clip_rect);
 
         SDL_MUTEX_LOCK;
         surface::clip_rect(clip_rect);

@@ -175,7 +175,7 @@ namespace stk
                 {    
                     if (!redraw_rect.empty())
                     {
-                        INFO("applicaiton::run() - redrawing state\n\tWith Cliprect " << redraw_rect);
+                        //INFO("applicaiton::run() - redrawing state");
                         on_predraw(redraw_rect);
 
                         // prepare the surface to draw a state
@@ -365,7 +365,7 @@ namespace stk
     {
         if((source != current_state_.lock().get()) && source)
             return;
-        INFO("Application redraw");
+        //INFO("Application redraw");
         redraw_rect += rect;
     }
 }

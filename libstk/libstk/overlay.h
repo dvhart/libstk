@@ -38,13 +38,13 @@ namespace stk
     protected:
         overlay()
         {
-            //INFO("constructor");
+            INFO("constructor");
         }
 
     public:
         virtual ~overlay()
         {
-            //INFO("destructor");
+            INFO("destructor");
         }
 
         // inline property methods

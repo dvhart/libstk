@@ -16,7 +16,7 @@ static std::vector<stk::overlay::ptr> overlays;
     
 overlay_t* stk_surface_create_overlay(surface_t* surface, int width, int height, int format)
 {
-    //INFO("stk_surface_create_overlay()");
+    INFO("stk_surface_create_overlay()");
     stk::overlay::ptr overlay = 
         reinterpret_cast<stk::surface*>(surface)->create_overlay(width, height, format);
     overlays.push_back(overlay);
@@ -25,12 +25,13 @@ overlay_t* stk_surface_create_overlay(surface_t* surface, int width, int height,
 
 void stk_overlay_free(overlay_t* overlay)
 {
-    //INFO("stk_overlay_free()");
+    INFO("stk_overlay_free(): " << overlays.size() << " overlays stored");
     stk::overlay::ptr temp_overlay(reinterpret_cast<stk::overlay*>(overlay));
     // remove from vector
     std::vector<stk::overlay::ptr>::iterator o_iter;
     if ((o_iter = std::find(overlays.begin(), overlays.end(), temp_overlay)) != overlays.end())
         overlays.erase(o_iter);
+    INFO("stk_overlay_free() done: " << overlays.size() << "remain");
 }
 
 void stk_overlay_lock(overlay_t* overlay)

@@ -53,6 +53,7 @@ namespace stk
 
         virtual ~overlay_sdl()
         {
+            INFO("destructor");
             SDL_MUTEX_LOCK;
             SDL_FreeYUVOverlay(overlay_impl_);
             SDL_MUTEX_UNLOCK;
