@@ -22,6 +22,7 @@ libstk_la_SOURCES =\
 	font.h font.cpp \
 	font_manager.h font_manager.cpp \
 	glyph.h glyph.cpp \
+	hotkey.h \
 	image_panel.h image_panel.cpp \
 	image.h image.cpp \
 	key_event.h key_event.cpp \
@@ -39,6 +40,7 @@ libstk_la_SOURCES =\
 	scroll_model.h scroll_model.cpp \
 	spinner.h spinner.cpp \
 	state.h state.cpp \
+	stk.h stk_types.h \
 	surface.h surface_impl.h \
 	surface_dfb.h surface_dfb.cpp \
 	theme.h theme.cpp \
@@ -62,7 +64,8 @@ library_include_HEADERS= \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h     viewport.h          sdl_data.h
+	posix_time.h     viewport.h          sdl_data.h     hotkey.h \
+	stk_types.h
 
 
 # FIXME: do the autotools thing for freetype

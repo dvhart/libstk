@@ -20,7 +20,7 @@
 #include <libstk/surface_impl.h>
 #include <libstk/point.h>
 #include <libstk/edge.h>
-#include <libstk/stk.h>
+#include <libstk/stk_types.h>
 #include <libstk/sdl_data.h>
 
 // this is opposite from the docs, but it works

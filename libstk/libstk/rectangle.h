@@ -2,7 +2,7 @@
  *    FILENAME: rectangle.h
  * DESCRIPTION: A simple rectangle class with some utilities like contains().
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 10/Dec/2002  LAST UPDATE: 13/May/2003
+ *  START DATE: 10/Dec/2002  LAST UPDATE: 03/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -13,7 +13,7 @@
 #ifndef STK_RECTANGLE_H
 #define STK_RECTANGLE_H
 
-#include <libstk/stk.h> // is this where we should define MIN,MAX,color etc... ?
+#include <libstk/stk_types.h>
 #include <libstk/point.h>
 #include <libstk/exceptions.h>
 

@@ -24,7 +24,7 @@
 #include <libstk/edge.h>
 #include <libstk/exceptions.h>
 #include <libstk/image.h>
-#include <libstk/stk.h>
+#include <libstk/stk_types.h>
 
 namespace stk
 {

@@ -15,6 +15,7 @@
 #define STK_COMPONENT_H
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <libstk/event_handler.h>
 #include <libstk/drawable.h>
 

@@ -22,7 +22,7 @@
 #include <libstk/point.h>
 #include <libstk/rectangle.h>
 #include <libstk/graphics_context.h>
-#include <libstk/stk.h>
+#include <libstk/stk_types.h>
 
 using std::cout;
 using std::endl;

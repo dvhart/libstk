@@ -2,7 +2,7 @@
  *    FILENAME: graphics_context.h
  * DESCRIPTION: A class used by surface to store colors, line styles, etc.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 10/Dec/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 10/Dec/2003  LAST UPDATE: 03/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -13,7 +13,7 @@
 #ifndef STK_GRAPHICS_CONTEXT_H
 #define STK_GRAPHICS_CONTEXT_H
 
-#include <libstk/stk.h>
+#include <libstk/stk_types.h>
 #include <libstk/font.h>
 
 namespace stk

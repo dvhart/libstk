@@ -12,31 +12,6 @@
 
 #include <iostream>
 
-// included in stk.h
-/*
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
-#include <boost/signal.hpp>
-#include <boost/bind.hpp>
-
-#include <libstk/application.h>
-#include <libstk/button.h>
-#include <libstk/event_system.h>
-#include <libstk/exceptions.h>
-#include <libstk/image.h>
-#include <libstk/image_panel.h>
-#include <libstk/label.h>
-#include <libstk/list.h>
-#include <libstk/list_item.h>
-#include <libstk/progress.h>
-#include <libstk/spinner.h>
-#include <libstk/scroll_box.h>
-#include <libstk/state.h>
-#include <libstk/surface.h>
-#include <libstk/timer.h>
-#include <libstk/viewport.h>
-*/
-
 // stk common include
 #include <libstk/stk.h>
 
@@ -52,27 +27,6 @@ struct no_op
 {
 	bool operator()() { cout << "no_op::operator()" << endl; return true; }
 };
-
-struct hotkey
-{
-	stk::keycode key_;
-	boost::signal<bool ()> sig;
-	
-	hotkey(stk::keycode key) : key_(key) { }
-	
-	bool operator()(stk::keycode key)
-	{ 
-		cout << "hotkey::operator() - received a " << key << endl;
-		if (!sig.empty() && key == key_) 
-		{
-			cout << "\texecuting slot\n\t";
-			sig();
-		}
-		cout << endl;
-		return true;
-	}
-};
-
 
 bool scroll_slot(stk::scroll_model::ptr target,int increment)
 {
