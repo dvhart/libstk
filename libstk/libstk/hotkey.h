@@ -26,7 +26,7 @@ namespace stk
         stk::keycode key_;
 
     public:
-        hotkey(const stk::keycode key) : key_(key)
+        hotkey(const stk::keycode key = key_unknown) : key_(key)
         { }
 
         boost::signal<bool ()> sig;

@@ -34,7 +34,7 @@ namespace stk
         return new_state;
     }
 
-    state::state(boost::shared_ptr<application> parent) : container(parent->surface()->rect())
+    state::state(application::ptr parent) : container(parent->surface()->rect())
     {
         INFO("state::state()");
         parent_ = boost::shared_static_cast<component>(parent);
