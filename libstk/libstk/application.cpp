@@ -97,7 +97,7 @@ namespace stk
             rectangle t_rect = current_state_.lock()->redraw_rect();
             if ( !t_rect.empty() )
             {
-                //cout << "applicaiton::run() - redrawing state" << endl;
+                //INFO("applicaiton::run() - redrawing state");
                 on_predraw(t_rect);
                 current_state_.lock()->draw(surface_);
                 on_postdraw(t_rect);
@@ -207,7 +207,7 @@ namespace stk
     // event_handler interface
     void application::handle_event(event::ptr e)
     {
-        //cout << "application::handle_event()" << endl;
+        //INFO("application::handle_event()");
         switch(e->type())
         {
         case event::key_down:
@@ -229,6 +229,7 @@ namespace stk
                 component::weak_ptr temp_widget = prev_focused_widget;
                 while (!focused_widget_.lock())
                 {
+                    INFO("no more focusable widgets, asking parent");
                     temp_widget = temp_widget.lock()->parent();
                     if (!temp_widget.lock())
                         throw error_message_exception("application::handle_event() - "
@@ -280,7 +281,7 @@ namespace stk
             break;
         default:
             break;
-            //cout << "application::handle_event - unknown event" << endl;
+            //INFO("application::handle_event - unknown event");
         }
     }
 

@@ -6,6 +6,7 @@
 #include "libstk/overlay.h"
 #include "libstk/xine_panel.h"
 #include "libstk/stk_c_wrapper.h"
+#include "libstk/logging.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +16,7 @@ static std::vector<stk::overlay::ptr> overlays;
     
 overlay_t* stk_surface_create_overlay(surface_t* surface, int width, int height, int format)
 {
-    //std::cout << "stk_surface_create_overlay()" << std::endl;
+    //INFO("stk_surface_create_overlay()");
     stk::overlay::ptr overlay = 
         reinterpret_cast<stk::surface*>(surface)->create_overlay(width, height, format);
     overlays.push_back(overlay);
@@ -24,7 +25,7 @@ overlay_t* stk_surface_create_overlay(surface_t* surface, int width, int height,
 
 void stk_overlay_free(overlay_t* overlay)
 {
-    //std::cout << "stk_overlay_free()" << std::endl;
+    //INFO("stk_overlay_free()");
     stk::overlay::ptr temp_overlay(reinterpret_cast<stk::overlay*>(overlay));
     // remove from vector
     std::vector<stk::overlay::ptr>::iterator o_iter;
@@ -34,31 +35,31 @@ void stk_overlay_free(overlay_t* overlay)
 
 void stk_overlay_lock(overlay_t* overlay)
 {
-    //std::cout << "stk_overlay_lock()" << std::endl;
+    //INFO("stk_overlay_lock()");
     reinterpret_cast<stk::overlay*>(overlay)->lock();
 }
 
 void stk_overlay_unlock(overlay_t* overlay)
 {
-    //std::cout << "stk_overlay_unlock()" << std::endl;
+    //INFO("stk_overlay_unlock()");
     reinterpret_cast<stk::overlay*>(overlay)->unlock();
 }
 
 void stk_overlay_display(overlay_t* overlay, int x, int y, int width, int height)
 {
-    //std::cout << "stk_overlay_display()" << std::endl;
+    //INFO("stk_overlay_display()");
     reinterpret_cast<stk::overlay*>(overlay)->display(stk::rectangle(x, y, width, height));
 }
 
 int stk_overlay_pitches(overlay_t* overlay, int index)
 {
-    //std::cout << "stk_overlay_pitches()" << std::endl;
+    //INFO("stk_overlay_pitches()");
     return reinterpret_cast<stk::overlay*>(overlay)->pitches(index);
 }
 
 unsigned char* stk_overlay_pixels(overlay_t* overlay, int index)
 {
-    //std::cout << "stk_overlay_pixels()" << std::endl;
+    //INFO("stk_overlay_pixels()");
     return reinterpret_cast<stk::overlay*>(overlay)->pixels(index);
 }
 

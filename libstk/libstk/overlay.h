@@ -25,9 +25,6 @@
 #define STK_FORMAT_YV12 0x32315659 
 #define STK_FORMAT_YUY2 0x32595559
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
     class overlay
@@ -41,13 +38,13 @@ namespace stk
     protected:
         overlay()
         {
-            cout << "overlay::overlay()" << endl;
+            INFO("constructor");
         }
 
     public:
         virtual ~overlay()
         {
-            cout << "overlay::~overlay()" << endl;
+            INFO("destructor");
         }
 
         // inline property methods

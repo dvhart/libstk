@@ -69,7 +69,8 @@ libstk_la_SOURCES =\
 	spinner.h spinner.cpp \
 	state.h state.cpp \
 	stk.h stk_types.h \
-	surface.h surface_impl.h \
+	surface.h \
+	surface_impl.h \
 	theme.h theme.cpp \
 	time_value.h \
 	timer.h timer.cpp \

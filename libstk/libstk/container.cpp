@@ -18,21 +18,20 @@
 #include "libstk/exceptions.h"
 #include "libstk/mouse_event.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
     container::container(component::ptr parent, const rectangle& rect) :
             widget(parent, rect)
     {
-        cout << "container::container(parent)" << endl;
+        INFO("constructor");
         focusable_ = false;
         redraw_rect_ = parent->surface()->rect();
     }
 
     container::~container()
-    {}
+    {
+        INFO("destructor");
+    }
 
     widget::ptr container::widget_at(int x, int y)
     {
@@ -42,7 +41,7 @@ namespace stk
             if ((*iter)->contains(x, y))
                 return *iter;
         }
-        //cout << "widget_at not found, returning an empty shared_ptr" << endl;
+        //INFO("widget_at not found, returning an empty shared_ptr");
         return widget::ptr();
         //return container::ptr(this); // FIXME: why does this cause a segfault
     }
@@ -118,7 +117,7 @@ namespace stk
 
     widget::ptr container::focus_next()
     {
-        cout << "container::focus_next()" << endl;
+        INFO("container::focus_next()");
         // walk through the children, find the focused, and return the next
         // return an empty pointer if we reach the end.
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -138,7 +137,11 @@ namespace stk
         iter = children_.begin();
         while (iter != children_.end() )
         {
-            if ((*iter)->focusable()) return *iter;
+            if ((*iter)->focusable()) 
+            {
+                INFO("  found a focusable widget");
+                return *iter;
+            }
             iter++;
         }
         // no focusable widgets, so return an empty pointer        
@@ -147,7 +150,7 @@ namespace stk
 
     widget::ptr container::focus_prev()
     {
-        cout << "container::focus_prev()" << endl;
+        INFO("container::focus_prev()");
         // walk through the children, find the focused, and return the prev
         // return an empty pointer if we reach the beginning.
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -176,14 +179,12 @@ namespace stk
 
     bool container::focused()
     {
-        cout << "container::focused()" << endl;
-
+        INFO("container::focused()");
+        // check ourself
+        if (focused_) return true;
+        // check our children (return true if one of our children is focused)
         std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (iter; iter != children_.end(); iter++)
-        {
-            if ((*iter)->focused())
-                return true;
-        }
+        for (iter; iter != children_.end(); iter++) if ((*iter)->focused()) return true;
         return false;
     }
 

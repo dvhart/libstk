@@ -13,9 +13,6 @@
 #include "libstk/label.h"
 #include "libstk/widget.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
 
@@ -30,11 +27,13 @@ namespace stk
     label::label(boost::shared_ptr<container> parent, std::wstring text,
                  const rectangle& rect) : widget(parent, rect), text_(text)
     {
-        cout << "label::label()" << endl;
+        INFO("constructor");
         focusable_ = false;
     }
 
     label::~label()
-    {}
+    {
+        INFO("destructor");
+    }
 
 }

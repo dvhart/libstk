@@ -24,12 +24,6 @@
 #include "libstk/image.h"
 #include "libstk/logging.h"
 
-// temporary
-#include "libstk/surface_sdl.h"
-
-using std::cout;
-using std::endl;
-
 namespace stk
 {
     image::ptr image::create(stk::surface::ptr onscreen_surface,const rectangle& rect)
@@ -128,13 +122,6 @@ namespace stk
                 char a = 255; // FIXME we need acces to stk::opaque here
                 if (bytes_per_pixel > 3) a = row_pointers[y][(x*bytes_per_pixel)+3];
                 color pixel_color = offscreen_surface->gen_color(r, g, b, a);
-                
-                /*
-                SDL_Surface* ts = static_cast<surface_sdl*>(offscreen_surface.get())->sdl_surface();
-                SDL_Rect tr = {x, y, 1, 1};
-                //SDL_FillRect(ts, &tr, pixel_color);
-                */
-                
                 offscreen_surface->draw_pixel(x, y, pixel_color);
             }
         }
@@ -150,7 +137,7 @@ namespace stk
     
     void image::load_ppmx(const std::string filename)
     {
-        cout << "image::load_ppmx() - no comment support" << endl;
+        INFO("image::load_ppmx() - no comment support");
 
         std::ifstream infile(filename.c_str(), std::ios::in);
         if (!infile)

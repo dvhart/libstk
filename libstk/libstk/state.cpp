@@ -17,9 +17,6 @@
 #include "libstk/container.h"
 #include "libstk/application.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
 
@@ -33,7 +30,7 @@ namespace stk
     state::state(boost::shared_ptr<application> parent) :
             container(boost::shared_static_cast<component>(parent), parent->surface()->rect())
     {
-        cout << "state::state()" << endl;
+        INFO("state::state()");
         focusable_ = false;
     }
 
@@ -43,7 +40,7 @@ namespace stk
     // event_handler interface - default back to parent
     void state::handle_event(event::ptr e)
     {
-        //cout << "state::handle_event()" << endl;
+        //INFO("state::handle_event()");
         // handle appropriate events here
         // WRITEME ...
 
@@ -55,7 +52,7 @@ namespace stk
     // we can return an empty pointer
     widget::ptr state::focus_first()
     {
-        //cout << "state::focus_first()" << endl;
+        //INFO("state::focus_first()");
         widget::ptr temp_widget;
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (iter; iter != children_.end(); iter++)
@@ -80,7 +77,7 @@ namespace stk
     // we can return an empty pointer
     widget::ptr state::focus_last()
     {
-        //cout << "state::focus_last()" << endl;
+        //INFO("state::focus_last()");
         widget::ptr temp_widget;
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (iter; iter != children_.end(); iter++)

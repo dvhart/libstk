@@ -121,6 +121,10 @@ namespace stk
         return r << 24 | g << 16 | b << 8 | a;
     }
     
+    void surface_dfb::lock()
+    {
+    }
+    
     void surface_dfb::lock(rectangle &rect, int flags, color** buf, int &stride)
     {
     }

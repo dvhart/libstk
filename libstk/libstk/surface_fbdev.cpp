@@ -55,11 +55,11 @@ namespace stk
         m_screensize	= m_linelength * m_height; //fscreeninfo.smem_len;
         m_bytesperpixel	= vscreeninfo.bits_per_pixel/8;
 
-        cout << "   m_width         = " << m_width << endl 
-            << "   m_height        = " << m_height << endl
-            << "   m_linelength    = " << m_linelength << endl
-            << "   m_screensize    = " << m_screensize << endl
-            << "   m_bytesperpixel = " << m_bytesperpixel << endl;
+        INFO("   m_width         = " << m_width
+            << "   m_height        = " << m_height
+            << "   m_linelength    = " << m_linelength
+            << "   m_screensize    = " << m_screensize
+            << "   m_bytesperpixel = " << m_bytesperpixel);
 
         ioctl (m_fbdev, FBIOPAN_DISPLAY, &vscreeninfo);
 
@@ -121,10 +121,10 @@ namespace stk
                 //((red<<4) & 0xE0) | ((green) & 0x18) | ((blue>>4) & 0x03);
                 break;
             case 2:	// 16-bit (64k) color mode
-                //cout << "before put (" << x << ", " << y << ")" << endl;
+                //INFO("before put (" << x << ", " << y << ")");
                 *(unsigned short*)&m_screen[m_linelength*y + m_bytesperpixel*x] = 
                     ((red<<8) & 0xF800) | ((green<<3) & 0x07E0) | ((blue>>3) & 0x001F);
-                //cout << "after put" << endl;
+                //INFO("after put");
                 break;
             case 3: // 24 bit color
                 // same as 32bpp ??
@@ -195,6 +195,10 @@ namespace stk
         return r << 24 | g << 16 | b << 8 | a;
     }
 
+    void surface_fbdev::lock()
+    {
+    }
+    
     void surface_fbdev::lock(rectangle &rect, int flags, color** buf, int &stride)
     {
     }
@@ -209,7 +213,7 @@ namespace stk
 
     overlay::ptr surface_fbdev::create_overlay(int width, int height, int format)
     {
-        cout << "surface_fbdev::create_overlay() - not implemented" << endl;
+        INFO("surface_fbdev::create_overlay() - not implemented");
         return overlay::ptr();
     }
 

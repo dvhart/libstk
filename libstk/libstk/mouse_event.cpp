@@ -13,20 +13,17 @@
 #include "libstk/event.h"
 #include "libstk/mouse_event.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
     mouse_event::mouse_event(int x, int y, int button, event_type type) :
             event(type), x_(x), y_(y), button_(button)
     {
         /*
-        cout << "mouse_event::mouse_event()" << endl;
-        cout << "\ttype:   " << type << endl;
-        cout << "\tx:      " << x_ << endl;
-        cout << "\ty:      " << y_ << endl;
-        cout << "\tbutton: " << button << endl;
+        INFO("mouse_event::mouse_event()");
+        INFO("\ttype:   " << type);
+        INFO("\tx:      " << x_);
+        INFO("\ty:      " << y_);
+        INFO("\tbutton: " << button);
         */
     }
 

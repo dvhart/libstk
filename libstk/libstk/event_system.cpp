@@ -16,9 +16,7 @@
 #include <libstk/event.h>
 #include <libstk/event_system.h>
 #include <libstk/event_producer.h>
-
-using std::cout;
-using std::endl;
+#include <libstk/logging.h>
 
 namespace stk
 {
@@ -31,10 +29,14 @@ namespace stk
     }
 
     event_system::event_system()
-    {}
+    {
+        INFO("constructor");
+    }
 
     event_system::~event_system()
-    {}
+    {
+        INFO("destructor");
+    }
 
     void event_system::add_producer(event_producer::ptr producer)
     {

@@ -27,15 +27,15 @@ namespace stk
     }
 
     edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect) 
-        : widget(parent, rect), text_(text)
+        : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0)
     {
+        INFO("constructor");
         focusable(true);
-        selection_start_ = 0;
-        selection_end_ = 0;
     }
 
     edit_box::~edit_box()
     {
+        INFO("destructor");
     }
 
     // event handler

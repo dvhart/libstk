@@ -1,5 +1,8 @@
 MEETING TOPICS
 ==============
+surface::lock - do we return a format, or always 32 bit RGBA.  If always rgba,
+  we need a way to know what rect was requested by the lock call so we can convert
+  and write back to the correct place in the buffer.
 
 
 TASKS (Some duplicated items here and below)
@@ -7,7 +10,6 @@ TASKS (Some duplicated items here and below)
 Axe pointless bool returns in API and create a bind_return syntax
 Spinner - (AUTOCOMPLETE, NO EDIT)
 Purge all magic numbers
-Convert all output to new logger
 Scrollbars - Marc to finish
 Scrollbox - Marc to finish
 Combo Box - Darren to write
@@ -33,18 +35,18 @@ Video Panel - more discussion needed
 add multiselect to list
 
 COMPLETED TASKS
-==============
+===============
 dvhart: tab order code removed (maybe add for libstk 2.0)
 dvhart: list_item user_data removed
 dvhart: widget regions (define in theme, check in handle_event() on clicks)
 dvhart: numeric_spinner added
-dvhart: make all include ifdef defines uniform: ie STK_WIDGET_H or WIDGET_H (atm we use both styles)
+dvhart: make all header conditional include defines conform to STK_FILENAME_H
 dvhart: rename PARENT INTERFACE to COMPONENT INTERFACE
 dvhart: List Item Height is no longer fixed to 25 pixels, fixed in theme, list, and list_item
 dvhart: widgets are now positioned relative to their parent container
 dvhart: Polish the build environment (added checks for boost, directfb, libpng, freetype, etc)
-dvhart: Add libstk to freshmeat
-
+dvhart: Added libstk to freshmeat
+dvhart: Converted all output to new logger
 
 DOCUMENTATION
 =============
@@ -58,7 +60,7 @@ ie:
 write it!!!!
 
 OTHER
-======
+=====
 
 
 WIDGETS TO WRITE

@@ -30,8 +30,6 @@
 // change this definition for the correct port 
 #define _POSIX_SOURCE 1 // POSIX compliant source 
 
-using std::cout;
-using std::endl;
 namespace
 {
     
@@ -134,19 +132,19 @@ namespace stk
     event_producer_elotouch::~event_producer_elotouch()
     {
         close(fd);
-        cout << "event_producer_sdl::~event_producer_sdl()" << endl;
+        INFO("event_producer_sdl::~event_producer_sdl()");
 /*
         for(int i=0;i<10;i++)
-            std::cout << std::hex << (unsigned int)(unsigned char)buf[i] << "  ";
-        std::cout << "\nType=" << buf[1] << " Lead=" << buf[0] << std::endl;
+            std::INFO(std::hex << (unsigned int)(unsigned char)buf[i] << "  ";
+        std::INFO("\nType=" << buf[1] << " Lead=" << buf[0] << std::endl;
         if(buf[1]=='T')
         {
-            if(buf[2]==1) std::cout << "Touch";
-            else if(buf[2]==2) std::cout << "Stream";
-            else if(buf[2]==4) std::cout << "Untouch";
+            if(buf[2]==1) std::INFO("Touch";
+            else if(buf[2]==2) std::INFO("Stream";
+            else if(buf[2]==4) std::INFO("Untouch";
             int x=*(short*)&(buf[3]);
             int y=*(short*)&(buf[5]);
-            std::cout << "\tX=" << std::dec << x << " \tY=" << y << std::endl;
+            std::INFO("\tX=" << std::dec << x << " \tY=" << y << std::endl;
             }*/
     
     }

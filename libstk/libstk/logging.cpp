@@ -26,12 +26,11 @@ namespace stk
     
     logger::logger()
     {
-        std::cout << "Info! " << __FILE__ << ":" << __LINE__ << "   constructor" << std::endl;
     }
 
     logger::~logger()
     {
-        std::cout << "Info! " << __FILE__ << ":" << __LINE__ << "   destructor" << std::endl;
+        log(__FILE__, __LINE__, "destructor", LL_Info);
     }
     
     void logger::add_target(std::ostream* target, int min_level)

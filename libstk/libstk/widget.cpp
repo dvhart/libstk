@@ -40,7 +40,8 @@ namespace stk
     /// Handle common widget events
     /// Try to handle the passed event, if there is nothing to do with it pass it up to the parent.
     /// Every non container should call widget::handle_event(e) from within its handle_event
-    /// routine if it hasn't handled the event on its own.
+    /// routine if it hasn't handled the event on its own. 
+    /// (or container::handle_event(e) which does just that)
     void widget::handle_event(event::ptr e)
     {
         // default handlers for focus/un_focus mouse_enter/leave events

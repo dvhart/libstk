@@ -97,20 +97,25 @@ namespace stk
         // format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
         virtual color gen_color(const std::string& str_color) const = 0;
         virtual color gen_color(byte r, byte g, byte b, byte a) const = 0;
+        /// prepare the surface for durect pixel access
+        /// lock can be called recursively, each call to lock should be accompanied 
+        /// by one to unlock
+        virtual void lock() = 0;
         /// Set buf to point to a framebuffer in RRGGBBAA format.
         /// If this is the native pixel format, then writing to this buffer is
         /// reflected immediate, if not, it will be translated to the appropriate
         /// format and written to the real framebuffer when unlock is called
+        /// can be called recursively as with lock above
         /// \param rect The area of the framebuffer requested
-        /// \param flags MARC WHAT DID YOU HAVE IN MIND HERE ? << marc:Read only, read write for example!
+        /// \param ie read or write (FIXME: not yet defined)
         /// \param buf The pointer to be set to the start of the area in the framebuffer
         /// \param stride The length in pixels between the first column in each row
-        virtual void lock(rectangle& rect, int flags, color** buf, int& stride)
-            = 0;
+        virtual void lock(rectangle& rect, int flags, color** buf, int& stride) = 0;
         /// Signal that the user is the done with the framebuffer area aquired with lock.
         /// If the native pixel format is not RRGGBBAA, then this will convert
         /// temporary framebuffer data to the native pixel format and write it
-        /// to the real framebuffer.
+        /// to the real framebuffer. 
+        /// (FIXME: atm it just unlocks the surface, no conversion or copying is done)
         virtual void unlock() = 0;
         virtual void update(const rectangle& u_rect = rectangle()) = 0;
         virtual boost::shared_ptr<overlay> create_overlay(int width, int height, int format) = 0;

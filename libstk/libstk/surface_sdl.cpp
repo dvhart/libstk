@@ -9,11 +9,6 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-// ***********************************************************
-// FIXME: we simply cast Uint32 sdl colors to stk colors,
-// we need to determine how exactly this mapping works
-// ***********************************************************
-
 #include <cmath>
 #include <vector>
 #include <list>
@@ -112,9 +107,16 @@ namespace stk
         return (color)sdl_color;
     }
 
+    void surface_sdl::lock()
+    {
+        if (SDL_LockSurface(sdl_surface_))
+            throw error_message_exception("surface_sdl::lock() failed - " + 
+                    std::string(SDL_GetError()));
+    }
+    
     void surface_sdl::lock(rectangle &rect, int flags, color** buf, int& stride)
     {
-        // FIXME: what shall we do with flags?
+        // FIXME: what shall we do with flags (i.e. read and write)
         SDL_LockSurface(sdl_surface_);
         switch (sdl_surface_->format->BytesPerPixel)
         {
@@ -146,7 +148,7 @@ namespace stk
         if (u_rect.empty())
         {
             //INFO("surface_sdl::update() - updating entire screen");
-            SDL_Flip(sdl_surface_); // FIXME: this is hw accelerated if supported,
+            SDL_Flip(sdl_surface_); // note: this is hw accelerated if supported,
             // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
             // would it be faster to call SDL_Flip regardless of u_rect
             // if we have accelerated hw ?
@@ -229,13 +231,11 @@ namespace stk
             return;
         }
 
-        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
-        SDL_LockSurface(sdl_surface_);
-
         switch (sdl_surface_->format->BytesPerPixel)
         {
         case 1:                                       // Assuming 8-bpp
         {
+            // untested
             Uint8 *bufp;
             bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
             *bufp = sdl_color;
@@ -243,6 +243,7 @@ namespace stk
         break;
         case 2:                                       // Probably 15-bpp or 16-bpp
         {
+            // untested
             Uint16 *bufp;
             bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
             *bufp = sdl_color;
@@ -250,6 +251,7 @@ namespace stk
         break;
         case 3:                                       // Slow 24-bpp mode, usually not used
         {
+            // untested
             Uint8 *bufp;
             bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
             if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
@@ -274,8 +276,6 @@ namespace stk
         }
         break;
         }
-        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
-        SDL_UnlockSurface(sdl_surface_);
     }
 
     color surface_sdl::get_pixel(int x, int y) const
@@ -290,14 +290,12 @@ namespace stk
             return 0;
         }
 
-        //INFO("get_pixel Bytes Per Pixel: " << (int)sdl_surface_->format->BytesPerPixel);
-        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
-        SDL_LockSurface(sdl_surface_);
         Uint32 sdl_color = 0;
         switch (sdl_surface_->format->BytesPerPixel)
         {
         case 1:                                       // Assuming 8-bpp
         {
+            // untested
             Uint8 *bufp;
             bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x;
             sdl_color = (Uint32)(*bufp);
@@ -305,6 +303,7 @@ namespace stk
         break;
         case 2:                                       // Probably 15-bpp or 16-bpp
         {
+            // untested
             Uint16 *bufp;
             bufp = (Uint16 *) sdl_surface_->pixels + y * sdl_surface_->pitch / 2 + x;
             sdl_color = (Uint32)(*bufp);
@@ -312,7 +311,7 @@ namespace stk
         break;
         case 3:                                       // Slow 24-bpp mode, usually not used
         {
-            // FIXME
+            // untested
             Uint8 *bufp;
             bufp = (Uint8 *) sdl_surface_->pixels + y * sdl_surface_->pitch + x * 3;
             if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
@@ -338,17 +337,11 @@ namespace stk
         break;
         }
 
-        // FIXME: DO NOT DO THIS IN HERE! move to higher level calls
-        SDL_UnlockSurface(sdl_surface_);
-
         return (color)sdl_color; // should never happen
     }
 
     void surface_sdl::put_pixel_aa(int x, int y, double distance, color clr)
     {
-        // FIXME: confirm the format of clr
-        // will it always be in SDL color format?
-        // or will it always be in some 32 bit stk RGBA format ??
         Uint32 color_a = (Uint32)clr;
 
         Uint8 red_a, green_a, blue_a, alpha_a;

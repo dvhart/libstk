@@ -58,9 +58,9 @@ namespace stk
 
     // static antialiased alpha falloff filter
     static byte alpha_filter[256] =
-        {
+    {
 #include "aa_filter.h"
-        };
+    };
 
 
     template<typename surface_backend>
@@ -104,6 +104,8 @@ namespace stk
          * draw_ellipse routines.  They take advantage of circles' eight way
          * symmetry and ellipses' four way summetry.
          */
+        /// draw all eight symmetric points
+        /// the surface should be locked when this is called
         void surface_impl::circle_points(int x, int y, int dx, int dy)
         {
             color clr = gc_->line_color();
@@ -117,6 +119,8 @@ namespace stk
             static_cast<surface_backend*>(this)->put_pixel(-x+dx, y+dy, clr);
         }
 
+        /// draw all four symmetric points
+        /// the surface should be locked when this is called
         void surface_impl::ellipse_points(int x, int y, int dx, int dy)
         {
             color clr = gc_->line_color();
@@ -126,21 +130,33 @@ namespace stk
             static_cast<surface_backend*>(this)->put_pixel(-x+dx, y+dy, clr);
         }
         void surface_impl::circle_points_aa(int x, int y, int dx, int dy)
-        {}
+        {
+            WARN("surface_impl::circle_points_aa - not implemented");
+        }
+        
         void surface_impl::ellipse_points_aa(int x, int y, int dx, int dy)
-        {}
+        {
+            WARN("surface_impl::ellipse_points_aa - not implemented");
+        }
 
     public:
         surface_impl() : surface()
-        { }
+        {
+            INFO("constructor");
+        }
         surface_impl(const rectangle& rect) : surface(rect)
-        { }
+        {
+            INFO("constructor");
+        }
         virtual ~surface_impl()
-        { }
+        {
+            INFO("destructor");
+        }
 
         // methods to be implemented by the backend
         virtual color gen_color(const std::string& str_color) const = 0;
         virtual color gen_color(byte r, byte g, byte b, byte a) const = 0;
+        virtual void lock() = 0;
         virtual void lock(rectangle& rect, int flags, color** buf, int& stride) = 0;
         virtual void unlock() = 0;
         virtual void update(const rectangle& u_rect = rectangle()) = 0;
@@ -177,35 +193,46 @@ namespace stk
         // implementation of drawing routines
         virtual void draw_pixel(int x, int y, color clr)
         {
+            lock();
             static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
+            unlock();
         }
 
         virtual void draw_pixel_aa(int x, int y, double distance, color clr)
         {
+            lock();
             static_cast<surface_backend*>(this)->put_pixel_aa(x, y, distance, clr);
+            unlock();
         }
 
         virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
         {
+            lock();
             static_cast<surface_backend*>(this)->put_pixel_aa(x, y, alpha_a, clr);
+            unlock();
         }
 
         virtual color read_pixel(int x, int y)
         {
+            lock();
             return static_cast<surface_backend*>(this)->get_pixel(x, y);
+            unlock();
         }
 
         virtual void blit(surface &dst_surface)
         {
             // default software blit
+            WARN("surface_impl::blit - not implemented");
         }
         virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect)
         {
             // default software blit
+            WARN("surface_impl::blit - not implemented");
         }
         // non antialiased draw routines
         virtual void draw_line(int x1, int y1, int x2, int y2)
         {
+            lock();
             // determine the line direction
             int dir = direction(x1, y1, x2, y2);
             int x = x1;
@@ -218,6 +245,7 @@ namespace stk
             case DOT:
                 {
                     static_cast<surface_backend*>(this)->put_pixel(x1, y1, clr);
+                    break;
                 }
             case LR:
                 {
@@ -464,16 +492,18 @@ namespace stk
                     break;
                 }
             }
+            unlock();
         }
 
 
         virtual void surface_impl::draw_arc(const rectangle& rect, int quadrant)
         {
-            cout << "surface_impl::draw_arc - not implemented" << endl;
+            WARN("surface_impl::draw_arc - not implemented");
         }
 
         virtual void surface_impl::draw_arc(int x1, int y1, int x2, int y2, int quadrant)
         {
+            lock();
             color clr = gc_->line_color();
             int a = x2 - x1;
             int b = y2 - y1;
@@ -588,25 +618,30 @@ namespace stk
                     break;
                 }
             }
+            unlock();
         }
 
 
         virtual void surface_impl::draw_rect(const rectangle &rect)
         {
+            // don't bother locking since draw_rect does it, and we only call it
             draw_rect(rect.x1(), rect.y1(), rect.x2(), rect.y2());
         }
 
         virtual void surface_impl::draw_rect(int x1, int y1, int x2, int y2)
         {
+            lock();
             draw_line(x1, y1, x2, y1);
             draw_line(x2, y1, x2, y2);
             draw_line(x1, y2, x2, y2);
             draw_line(x1, y1, x1, y2);
+            unlock();
         }
 
 
         virtual void surface_impl::draw_circle(int x, int y, int radius)
         {
+            lock();
             int xp = 0;
             int yp = radius;
             int d = 1 - radius;
@@ -632,16 +667,19 @@ namespace stk
                 xp++;
                 circle_points(xp, yp, x, y);
             }
+            unlock();
         }
 
         virtual void surface_impl::draw_circle(const rectangle &rect)
         {
+            // don't bother locking since draw_circle does it, and we only call it
             draw_circle(rect.x1() + rect.width()/2,
                         rect.y1() + rect.height()/2, rect.width()/2);
         }
 
         virtual void surface_impl::draw_ellipse(int x, int y, int a, int b)
         {
+            lock();
             int xp = 0;
             int yp = b;
 
@@ -699,20 +737,23 @@ namespace stk
                 yp--;
                 ellipse_points(xp, yp, x, y);
             }
+            unlock();
         }
 
         virtual void surface_impl::draw_ellipse(const rectangle &rect)
         {
-            cout << "surface_impl::draw_ellipse - did I get a and b right?" << endl;
+            // don't bother locking since draw_ellipse does it, and we only call it
+            WARN("surface_impl::draw_ellipse - did I get a and b right?");
             draw_ellipse(rect.x1() + rect.width()/2, rect.y1() + rect.height()/2,
                          rect.width()/2, rect.height()/2);
         }
 
         virtual void surface_impl::draw_poly(std::vector<point> points)
         {
+            lock();
             if (points.size() < 1)
             {
-                cout << "surface_impl::draw_poly - no points to draw" << endl;
+                INFO("surface_impl::draw_poly - no points to draw");
             }
             std::vector<point>::iterator p_iter_a;
             std::vector<point>::iterator p_iter_b = points.begin();
@@ -728,10 +769,12 @@ namespace stk
             p_iter_b = points.begin();
             draw_line(p_iter_a->x(), p_iter_a->y(),
                       p_iter_b->x(), p_iter_b->y());
+            unlock();
         }
 
         virtual void surface_impl::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
         {
+            lock();
             // ignore the bounds and stuff for now
             int x = rect.x1();
             int y = rect.y1();
@@ -766,11 +809,13 @@ namespace stk
                 if (i<text.length()-1)
                     x += (fon->kerning(text[i], text[i+1]) >> 6);
             }
+            unlock();
         }
 
         // antialiased draw routines
         virtual void surface_impl::draw_line_aa(int x1, int y1, int x2, int y2)
         {
+            lock();
             color clr = gc_->line_color();
 
             // determine the line direction
@@ -1112,56 +1157,60 @@ namespace stk
                     break;
                 }
             }
+            unlock();
         }
 
         virtual void surface_impl::draw_arc_aa(const rectangle &rect, int quadrant)
         {
-            cout << "surface_impl::draw_arc_aa - not implemented" << endl;
+            WARN("surface_impl::draw_arc_aa - not implemented");
         }
 
         virtual void surface_impl::draw_arc_aa(int x1, int y1, int x2, int y2, int quadrant)
         {
-            cout << "surface_impl::draw_arc_aa - not implementd" << endl;
+            WARN("surface_impl::draw_arc_aa - not implementd");
         }
 
         virtual void surface_impl::draw_rect_aa(const rectangle &rect)
         {
-            cout << "surface_impl::draw_rect_aa - not implemented" << endl;
+            WARN("surface_impl::draw_rect_aa - not implemented");
         }
 
         virtual void surface_impl::draw_rect_aa(int x1, int y1, int x2, int y2)
         {
-            cout << "surface_impl::draw_rect_aa - not implemented" << endl;
+            WARN("surface_impl::draw_rect_aa - not implemented");
         }
 
         virtual void surface_impl::draw_circle_aa(int x, int y, int radius)
         {
-            cout << "surface_impl::draw_circle_aa - not implemented" << endl;
+            WARN("surface_impl::draw_circle_aa - not implemented");
         }
 
         virtual void surface_impl::draw_circle_aa(const rectangle &rect)
         {
+            // don't bother locking since draw_circle_aa does it, and we only call it
             draw_circle_aa(rect.x1() + rect.width()/2,
                            rect.y1() + rect.height()/2, rect.width()/2);
         }
 
         virtual void surface_impl::draw_ellipse_aa(int x, int y, int a, int b)
         {
-            cout << "surface_impl::draw_ellipse_aa - not implemented" << endl;
+            WARN("surface_impl::draw_ellipse_aa - not implemented");
         }
 
         virtual void surface_impl::draw_ellipse_aa(const rectangle &rect)
         {
-            cout << "surface_impl::draw_ellipse_aa - did I get a and b right?" << endl;
-            draw_ellipse(rect.x1() + rect.width()/2, rect.y1() + rect.height()/2,
+            // don't bother locking since draw_ellipse does it, and we only call it
+            WARN("surface_impl::draw_ellipse_aa - did I get a and b right?");
+            draw_ellipse_aa(rect.x1() + rect.width()/2, rect.y1() + rect.height()/2,
                          rect.width()/2, rect.height()/2);
         }
 
         virtual void surface_impl::draw_poly_aa(std::vector<point> points)
         {
+            lock();
             if (points.size() < 1)
             {
-                cout << "surface_impl::draw_poly_aa - no points to draw" << endl;
+                WARN("surface_impl::draw_poly_aa - no points to draw");
             }
             std::vector<point>::iterator p_iter_a;
             std::vector<point>::iterator p_iter_b = points.begin();
@@ -1177,41 +1226,43 @@ namespace stk
             p_iter_b = points.begin();
             draw_line_aa(p_iter_a->x(), p_iter_a->y(),
                          p_iter_b->x(), p_iter_b->y());
+            unlock();
         }
 
         // non antialiased fill routines
         virtual void surface_impl::fill_rect(int x1, int y1, int x2, int y2)
         {
-            cout << "surface_impl::fill_rect - not implemented" << endl;
+            WARN("surface_impl::fill_rect - not implemented");
         }
 
         virtual void surface_impl::fill_rect(const rectangle &rect)
         {
-            cout << "surface_impl::fill_rect - not implemented" << endl;
+            WARN("surface_impl::fill_rect - not implemented");
         }
 
         virtual void surface_impl::fill_circle(int x, int y, int radius)
         {
-            cout << "surface_impl::fill_circle - not implemented" << endl;
+            WARN("surface_impl::fill_circle - not implemented");
         }
 
         virtual void surface_impl::fill_circle(const rectangle &rect)
         {
-            cout << "surface_impl::fill_circle - not implemented" << endl;
+            WARN("surface_impl::fill_circle - not implemented");
         }
 
         virtual void surface_impl::fill_ellipse(int x, int y, int a, int b)
         {
-            cout << "surface_impl::fill_ellipse - not implemented" << endl;
+            WARN("surface_impl::fill_ellipse - not implemented");
         }
 
         virtual void surface_impl::fill_ellipse(const rectangle &rect)
         {
-            cout << "surface_impl::fill_ellipse - not implemented" << endl;
+            WARN("surface_impl::fill_ellipse - not implemented");
         }
 
         virtual void surface_impl::fill_poly(std::vector<point> points)
         {
+            lock();
             typedef std::list<edge> edge_list;
             // FIXME: this will segfault for poly's outside the surface vertically
             std::vector<edge_list> edges(rect_.height());
@@ -1284,47 +1335,51 @@ namespace stk
                     edge_iter2++;
                 }
             }
+            unlock();
         }
 
         // antialiased fill routines
         virtual void surface_impl::fill_rect_aa(int x1, int y1, int x2, int y2)
         {
-            cout << "surface_impl::fill_rect_aa - not implemented" << endl;
+            WARN("surface_impl::fill_rect_aa - not implemented");
         }
 
         virtual void surface_impl::fill_rect_aa(const rectangle &rect)
         {
-            cout << "surface_impl::fill_rect_aa - not implemented" << endl;
+            WARN("surface_impl::fill_rect_aa - not implemented");
         }
 
         virtual void surface_impl::fill_circle_aa(int x, int y, int radius)
         {
-            cout << "surface_impl::fill_circle_aa - not implemented" << endl;
+            WARN("surface_impl::fill_circle_aa - not implemented");
         }
 
         virtual void surface_impl::fill_circle_aa(const rectangle &rect)
         {
-            cout << "surface_impl::fill_circle_aa - not implemented" << endl;
+            WARN("surface_impl::fill_circle_aa - not implemented");
         }
 
         virtual void surface_impl::fill_ellipse_aa(int x, int y, int a, int b)
         {
-            cout << "surface_impl::fill_ellipse_aa - not implemented" << endl;
+            WARN("surface_impl::fill_ellipse_aa - not implemented");
         }
 
         virtual void surface_impl::fill_ellipse_aa(const rectangle &rect)
         {
-            cout << "surface_impl::fill_ellipse_aa - not implemented" << endl;
+            WARN("surface_impl::fill_ellipse_aa - not implemented");
         }
 
         virtual void surface_impl::fill_poly_aa(std::vector<point> points)
         {
+            lock();
             fill_poly(points);
             draw_poly_aa(points);
+            unlock();
         }
 
         // image routines
         // like most unaccelerated routines, this implementation is really slow
+        // some backends (SDL) don't want the surface locked for blitting
         virtual void surface_impl::draw_image(int x, int y, image::ptr img)
         {
             rectangle source_rect = img->offscreen_surface->rect();

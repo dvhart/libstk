@@ -21,9 +21,6 @@
 #include <libstk/overlay.h>
 #include "libstk/backend_dfb.h"
 
-using std::cout;
-using std::endl;
-
 // FIXME: do this differently (ie without macros!)
 #define DFBCHECK(x...)                                         \
   {                                                            \
@@ -58,7 +55,7 @@ namespace stk
         overlay_dfb(int width, int height, int format) 
             : width_(width), height_(height), locked_(false), format_(format)
         {
-            INFO("overlay_dfb::overlay_dfb()")
+            INFO("constructor")
             
             dfb_ = backend_dfb::get()->get_interface();
             // FIXME: how do we know what layer we want? guessing 0.
@@ -87,7 +84,7 @@ namespace stk
             s_dsc.caps =(DFBSurfaceCapabilities)(0);
             s_dsc.width = width;
             s_dsc.height = height;
-            cout << "CREATE YUV SURFACE" << endl;    
+            INFO("CREATE YUV SURFACE");    
             DFBCHECK(dfb_->CreateSurface(dfb_, &s_dsc, &surface_));
 
             /*
@@ -98,14 +95,14 @@ namespace stk
             l_dsc.options = (DFBDisplayLayerOptions)(0);
             */
 
-            cout << "TESTING OVERLAY CONFIGURATION" << endl;
+            INFO("TESTING OVERLAY CONFIGURATION");
             /*
             DFBDisplayLayerConfigFlags failed;
             int ret = layer_->TestConfiguration(layer_, &l_dsc, &failed );
             if (ret == DFB_UNSUPPORTED) {
                 throw error_message_exception("TestConfiguration failed while creating DFB Overlay");
             }
-            cout << "SETTING LAYER CONFIGURATION" << endl;    
+            INFO("SETTING LAYER CONFIGURATION");    
             DFBCHECK(layer_->SetConfiguration(layer_, &l_dsc));
             */
         }
@@ -119,7 +116,7 @@ namespace stk
 
         virtual ~overlay_dfb()
         {
-            cout << "overlay_dfb::~overlay_dfb()" << endl;
+            INFO("destructor")
             if (locked_) unlock();
             DFBCHECK(surface_->Release(surface_));
             surface_ = NULL;
@@ -208,7 +205,6 @@ namespace stk
 
         virtual void display(const rectangle& rect)
         {
-            cout << "DISPLAY" << endl;
             IDirectFBSurface *screen;
             DFBCHECK(layer_->GetSurface(layer_, &screen));
             DFBCHECK(screen->Blit(screen, surface_, NULL, rect.x1(), rect.y1()));

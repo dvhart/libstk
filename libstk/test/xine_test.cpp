@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     try
     {
 #ifdef HAVE_LOGGING
-        logger::get()->add_target(&cout, LL_Info);
+        logger::get()->add_target(&std::cout, LL_Info);
 #endif
         std::string surface_type, filename;
         if (argc < 3)

@@ -23,9 +23,6 @@
 
 #include <SDL/SDL.h>
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
     class overlay_sdl : public overlay

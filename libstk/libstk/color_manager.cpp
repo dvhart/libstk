@@ -9,11 +9,9 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-#include "libstk/color_manager.h"
 #include <iostream>
-
-using std::cout;
-using std::endl;
+#include "libstk/color_manager.h"
+#include "libstk/logging.h"
 
 namespace stk
 {
@@ -38,22 +36,22 @@ namespace stk
     
     color color_manager::get_color(const color_properties& properties)
     {
-        //cout << "color_manager::get_color()" << endl;
-        //cout << "\trgba: " << std::hex << properties.red << " " << properties.green
+        //INFO("color_manager::get_color()");
+        //INFO("\trgba: " << std::hex << properties.red << " " << properties.green
         //    << " " << properties.blue << " " << properties.alpha << " -> ";
 
         Tcolor_map::iterator color_iter = color_map_.find(properties);
         if (color_iter == color_map_.end())
         {
-            //cout << "color not yet created...";
+            //INFO("color not yet created...";
             color_map_[properties] = properties.surface_->gen_color(properties.red,
                                      properties.green, properties.blue, properties.alpha);
-            //cout << "created: " << std::hex << color_map_[properties] << endl;
+            //INFO("created: " << std::hex << color_map_[properties]);
             return color_map_[properties];
         }
         else
         {
-            //cout << "cached: " << std::hex << color_iter->second << endl;
+            //INFO("cached: " << std::hex << color_iter->second);
             return color_iter->second;
         }
     }
