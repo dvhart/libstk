@@ -36,7 +36,7 @@ libstk_la_SOURCES =\
 	application.h	application.cpp \
 	button.h button.cpp \
 	color_manager.h color_manager.cpp \
-	combo.h combo.cpp \
+        combo.h combo.cpp \
 	component.h \
 	container.h container.cpp \
 	drawable.h \
@@ -107,6 +107,6 @@ library_include_HEADERS= \
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 
-libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) -version-info @libstk_libtool_version@ 
+libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) $(XINE_LIBS) -version-info @libstk_libtool_version@ 
 
-INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) -I$(top_srcdir) 
+INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) $(XINE_CFLAGS) -I$(top_srcdir) 

@@ -19,6 +19,10 @@
 #include <libstk/widget.h>
 #include <libstk/container.h>
 
+// xine headers
+#include <xine.h>
+#include <xine/xineutils.h>
+
 namespace stk
 {
     class xine_panel : public widget
@@ -28,14 +32,25 @@ namespace stk
         typedef boost::weak_ptr<xine_panel> weak_ptr;
 
     private:
-
-    protected:
         xine_panel(container::ptr parent, const rectangle& rect);
+        xine_t*             xine_;
+        xine_stream_t*      xine_stream_;
+        xine_video_port_t*  xine_vo_port_;
+        xine_audio_port_t*  xine_ao_port_;
+        xine_event_queue_t* xine_event_queue_;
 
     public:
         static xine_panel::ptr create(container::ptr parent, const rectangle& _rect);
-        virtual ~xine_panel();
-
+        ~xine_panel();
+        void open(const std::string& filename);
+        // FIXME: these are only bool to meet signal signature
+        bool play(int position, int millis);
+        bool pause();     
+        bool playpause(); 
+        bool speed(int val);
+        int speed();
+        bool faster();
+        bool slower();
     };
 
 } // namespace stk

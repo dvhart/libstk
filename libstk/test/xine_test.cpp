@@ -29,14 +29,7 @@
 // FIXME: should this be configurable also ?  --enable-elotouch ?
 #include <libstk/event_producer_elotouch.h>
 
-// xine headers
-#include <xine.h>
-#include <xine/xineutils.h>
-
 using namespace stk;
-
-void xine_event_listener(void *user_data, const xine_event_t *event) {
-}
 
 int main(int argc, char* argv[])
 {
@@ -62,8 +55,9 @@ int main(int argc, char* argv[])
         INFO("selecting surface and event system");
         surface::ptr screen;
         event_producer::ptr ep;
+        if (0) {}
 #ifdef HAVE_SDL
-        if (surface_type == "sdl")
+        else if (surface_type == "sdl")
         {
             screen = surface_sdl::create(rectangle(0, 0, 640, 480));
             ep = event_producer_sdl::create();
@@ -93,67 +87,51 @@ int main(int argc, char* argv[])
         // create the application
         application::ptr app = application::create(screen);
 
-        // create the main state and a button
+        // create the main state
         state::ptr main_state = state::create(app);
+        
+        // create the xine panel
+        xine_panel::ptr xp = xine_panel::create(main_state, rectangle(50, 50, 540, 380));
+        xp->open(filename);
+
+        // buttons
+        button::ptr prev_button = button::create(main_state, std::wstring(L"|<"), 
+                rectangle(50, 440, 81, 30));
+        prev_button->on_release.connect(boost::bind(&stk::xine_panel::play, xp.get(), 0, 0));
+        
+        button::ptr play_button = button::create(main_state, std::wstring(L"Play"), 
+                rectangle(141, 440, 81, 30));
+        play_button->on_release.connect(boost::bind(&stk::xine_panel::play, xp.get(), 0, 0));
+        
+        button::ptr pause_button = button::create(main_state, std::wstring(L"Pause"), 
+                rectangle(232, 440, 81, 30));
+        pause_button->on_release.connect(boost::bind(&stk::xine_panel::playpause, xp.get()));
+        
+        button::ptr rw_button = button::create(main_state, std::wstring(L"<<"), 
+                rectangle(323, 440, 81, 30));
+        rw_button->on_release.connect(boost::bind(&stk::xine_panel::slower, xp.get()));
+        
+        button::ptr ff_button = button::create(main_state, std::wstring(L">>"), 
+                rectangle(414, 440, 81, 30));
+        ff_button->on_release.connect(boost::bind(&stk::xine_panel::faster, xp.get()));
+        
         button::ptr quit_button = button::create(main_state, std::wstring(L"Quit"), 
-                rectangle(10, 10, 100, 30));
+                rectangle(505, 440, 81, 30));
         quit_button->on_release.connect(boost::bind(&stk::application::quit, app.get()));
 
 
-        // create the xine panel
-        xine_panel::ptr xp = xine_panel::create(main_state, rectangle(50, 50, 540, 380));
-
-        // start up xine
-        static xine_t*             xine;
-        static xine_stream_t*      stream;
-        static xine_video_port_t*  vo_port;
-        static xine_audio_port_t*  ao_port;
-        static xine_event_queue_t* event_queue;
-
-        xine = xine_new();
-        xine_config_load(xine, "/home/dvhart/.xine/config"/*configfile path*/);
-        xine_init(xine);
-
-        // get the video and audio drivers
-        INFO("creating the xine video port");
-        vo_port = xine_open_video_driver(xine, "stk", XINE_VISUAL_TYPE_FB, (void *)xp.get());
-        INFO("creating the xine audio port");
-        ao_port = xine_open_audio_driver(xine , "auto", NULL);
-
-        INFO("creating the xine stream");
-        stream = xine_stream_new(xine, ao_port, vo_port);
-        INFO("creating the xine event_queue");
-        event_queue = xine_event_new_queue(stream);
-        INFO("creating the xine event_listener");
-        xine_event_create_listener_thread(event_queue, xine_event_listener, NULL);
-
-        //xine_gui_send_vo_data(stream, XINE_GUI_SEND_DRAWABLE_CHANGED, (void *) window[fullscreen]);
-        //xine_gui_send_vo_data(stream, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void *) 1);
-
-        INFO("opening the stream");
-        if((!xine_open(stream, filename.c_str())) || (!xine_play(stream, 0, 0))) {
-            INFO("unable to open " << filename);
-            return 1;
-        }
 
         // add a timer (quit after 30 seconds)
+        /*
         INFO("xine_test - creating timer to quit after 30 seconds");
         timer::ptr quit_timer = timer::create(30000, false);
         quit_timer->on_timer.connect(boost::bind(&stk::application::quit, app.get()));
         app->add_timer(quit_timer);
+        */
 
         INFO("running the libstk app");
         // run the program
         retval = app->run();
-
-        // xine cleanup
-        INFO("xine cleanup");
-        xine_close(stream);
-        xine_event_dispose_queue(event_queue);
-        xine_dispose(stream);
-        xine_close_audio_driver(xine, ao_port);  
-        xine_close_video_driver(xine, vo_port);  
-        xine_exit(xine);
 
         INFO("shared pointer automatic destuction follows:");
     }

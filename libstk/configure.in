@@ -110,17 +110,22 @@ if test x$enable_sdl = xno && test x$enable_directfb = xno && test x$enable_fbde
  AC_MSG_ERROR([No Backend Selected])
 fi
 
-dnl **** xine compile flags
-dnl FIXME use something like xine-config here
+dnl **** xine support 
 AC_ARG_ENABLE(xine,
   [  --enable-xine          build with xine support [default=no]],,
   enable_xine=no)
-if test x$enable_xine = xyes; then
-  AC_MSG_RESULT([ *** xine Support enabled])
-  AC_DEFINE(HAVE_XINE,true,[xine Support compiled in])
-fi
+if test x$enable_xine == xyes; then
+    PKG_CHECK_MODULES(XINE, libxine,
+    [
+        AC_MSG_RESULT([ *** xine Support enabled])
+        AC_DEFINE(HAVE_XINE,true,[xine Support compiled in])
+    ],
+    [AC_MSG_WARN([ *** Xine support requested, but pkg-config failed to find it])]
+    )
+fi    
 AM_CONDITIONAL(XINE, test x$enable_xine = xyes)
-
+AC_SUBST(XINE_CFLAGS)
+AC_SUBST(XINE_LIBS)
 
 dnl Logging flags
 AC_ARG_ENABLE(logging,
