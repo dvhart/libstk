@@ -22,9 +22,6 @@ if not, check that you have the libs installed in
 and the header files in
     /usr/local/include/libstk-#.#.#/libstk/*.h
 
-please install Arial.ttf in the following directory
-    /usr/share/libstk/fonts/fonts
-
 run the test apps in test/ or /usr/local/bin
 
 let us know how it goes on the mailing list, see http://www.libstk.org

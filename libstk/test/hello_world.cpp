@@ -106,9 +106,9 @@ int main(int argc, char* argv[])
         switched_panel::ptr panel = switched_panel::create(test_state, rectangle(260,210,200,30));
         
         label::ptr test_label = label::create(panel, std::wstring(L"Hello World"), 
-                rectangle(0, 0, 100, 30));
+                rectangle(0, 0, 110, 30));
         button::ptr test_btn = button::create(panel, std::wstring(L"Bye World"), 
-                rectangle(20, 0, 100, 30));
+                rectangle(20, 0, 110, 30));
         panel->active_child(test_label);
 
         timer::ptr switch_timer = timer::create(5000, true);
