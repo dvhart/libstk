@@ -1,3 +1,13 @@
+2003-12-14 18:07  dvhart
+
+	* ChangeLog, TODO, libstk/list_item.cpp, libstk/progress.h,
+	  libstk/surface_sdl.cpp, libstk/widget.cpp, libstk/xine_panel.cpp,
+	  libstk/xine_panel.h: added default values for several
+	  constructors (so the defaults aren't public) added xine info
+	  getters to xine_panel xine_panel now draws a solid colorkey rect
+	  where the video will go (ugly HACK to work with XV) added label()
+	  command to progress
+
 2003-12-13 09:32  carter
 
 	* libstk/edit_box.h: Fixed stupid API, (passed an Reference where a
