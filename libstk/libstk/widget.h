@@ -130,18 +130,18 @@ namespace stk
 
 
         /*
-        //some cool things we can do with boost::signals
-
-        VideoPanel my_vp(new stk::video_panel);
-        Button my_button(new stk::button);
+        // some cool things we can do with boost::signals
+        //
+        video_panel::ptr my_vp = video_panel::create(...);
+        button::ptr my_button::create(...);
 
         // we don't need any arguments in general for slots since we can connect
         // functors, and specific object member methods
-        my_button.on_click.connect(boost::bind(&stk::video_panel::play, my_vp));
+        my_button->on_click.connect(boost::bind(&stk::video_panel::play, my_vp));
 
         // perhaps we want to rewind and start over on_click (in that order)
-        my_button.on_click.connect(0, boost::bind(&stk::video_panel::rewind, my_vp));
-        my_button.on_click.connect(1, boost::bind(&stk::video_panel::play, my_vp));
+        my_button->on_click.connect(0, boost::bind(&stk::video_panel::rewind, my_vp));
+        my_button->on_click.connect(1, boost::bind(&stk::video_panel::play, my_vp));
         */
 
     }
