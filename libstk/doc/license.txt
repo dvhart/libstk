@@ -5,11 +5,12 @@
 INTENT
 
 The intent of this license is to allow anyone and everyone to make use of 
-Libstk as is most fitting to their needs and goals.  We have chosen the LGPL 
-as the license base and provide the exceptions below to better meet the needs
-of commercial developers.  You may statically link your programs to the Libstk
-library and distribute them in binary form, the source for modifications to the
-library itself must be made available upon request.
+Libstk as is most fitting to their needs and goals.  We have chosen the 
+GNU Lesser General Public Licence (LGPL) as the license base and provide the 
+exceptions below to better meet the needs of commercial developers.  You may 
+statically link your programs to the Libstk library and distribute them in 
+binary form, the source for modifications to the library itself must be made 
+available upon request.
 
 LICENSE
 
@@ -32,7 +33,7 @@ EXCEPTION NOTICE
 versions of works that use this library under your own terms.  
 
 2. If you copy code from files distributed under the terms of the GNU General 
-Public Licence or the GNU Library General Public Licence into a copy of this 
+Public Licence or the GNU Lesser General Public Licence into a copy of this 
 library, as this licence permits, the exception does not apply to the code that
 you add in this way.  To avoid misleading anyone as to the status of such 
 modified files, you must delete this exception notice from such code and/or
