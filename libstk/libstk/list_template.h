@@ -93,8 +93,12 @@ namespace stk
                     if (y > me->y()-rect_.y1()+v_scroll_->begin()) break;
                 }
                 on_update_current();
-                if ((unsigned int)current_ < items_.size()) // Crashes otherwise
+                if ((unsigned int)current_ < items_.size())
+                {
+                    // Crashes otherwise
                     items_[current_]->selected(true);
+                    on_update_selection();
+                }
                 redraw(rect());
                 return;
                 break;
