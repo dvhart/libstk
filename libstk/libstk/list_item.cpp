@@ -17,13 +17,13 @@ namespace stk
 {
     list_item::ptr list_item::create(list::ptr parent, std::wstring label)
     {
-        list_item::ptr new_list_item(new list_item(parent, label));
+        list_item::ptr new_list_item(new list_item(label));
         parent->add_item(new_list_item);
+        new_list_item->parent_ = parent;
         return new_list_item;
     }
 
-    list_item::list_item(list::ptr parent, std::wstring label)
-            : parent_(parent), label_(label), selected_(false), current_(false)
+    list_item::list_item(std::wstring label) : label_(label), selected_(false), current_(false)
     {
         INFO("constructor");
     }

@@ -60,8 +60,9 @@ libstk_la_SOURCES =\
 	image.h image.cpp \
 	key_event.h key_event.cpp \
 	label.h label.cpp \
-	list.h list.cpp \
+	list.h \
 	list_item.h list_item.cpp \
+	list_template.h \
 	mouse_event.h mouse_event.cpp \
 	numeric_spinner.h numeric_spinner.cpp \
 	overlay.h \
@@ -104,7 +105,7 @@ library_include_HEADERS= \
 	aa_filter.h      event_system.h      key_event.h    state.h \
 	application.h    keycode.h           stk.h	\
 	button.h         label.h             surface.h	\
-	combiners.h      exceptions.h        list.h          \
+	combiners.h      exceptions.h        list.h         list_template.h \
         override_return.h \
 	combo.h          font.h              list_item.h  \
 	container.h      font_manager.h      mouse_event.h  rectangle.h \

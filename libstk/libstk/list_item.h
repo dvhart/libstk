@@ -9,8 +9,8 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
-#ifndef LIST_ITEM_H
-#define LIST_ITEM_H
+#ifndef STK_LIST_ITEM_H
+#define STK_LIST_ITEM_H
 
 #include <string>
 #include <boost/shared_ptr.hpp>
@@ -19,6 +19,7 @@
 #include <libstk/event_handler.h>
 #include <libstk/drawable.h>
 #include <libstk/event.h>
+#include <libstk/widget.h>
 
 namespace stk
 {
@@ -33,9 +34,9 @@ namespace stk
     private:
 
     protected:
-        boost::weak_ptr<list> parent_;
+        boost::weak_ptr<widget> parent_;
         bool current_, selected_;
-        list_item(boost::shared_ptr<list> parent, std::wstring label);
+        list_item(std::wstring label);
         std::wstring label_;
 
     public:
