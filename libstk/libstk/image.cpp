@@ -10,54 +10,133 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
+#include "libstk/config.h"
+
+#ifdef HAVE_LIBPNG
+# include <png.h>
+# include <stdio.h>
+# include <unistd.h>
+#endif
+
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include "libstk/image.h"
+#include "libstk/logging.h"
 
 using std::cout;
 using std::endl;
 
 namespace stk
 {
-    image::ptr image::create(const rectangle& rect)
+    image::ptr image::create(stk::surface::ptr onscreen_surface,const rectangle& rect)
     {
-        image::ptr new_image(new image(rect));
+        image::ptr new_image(new image(onscreen_surface,rect));
         return new_image;
     }
 
-    image::ptr image::create(const std::string& filename)
+    image::ptr image::create(stk::surface::ptr onscreen_surface,const std::string& filename)
     {
-        image::ptr new_image(new image(filename));
+        image::ptr new_image(new image(onscreen_surface,filename));
         return new_image;
     }
 
-    image::image(const rectangle& rect)
+    image::image(stk::surface::ptr onscreen_surface,const rectangle& rect) : onscreen_surface(onscreen_surface)
     {
-        cout << "image::image()" << endl;
-
-        cout << "\tcreating empty image in: " << rect << endl;
-        width_ = rect.width();
-        height_ = rect.height();
-        init_pixels();
+        INFO("image::image()");
+        offscreen_surface=onscreen_surface->create_surface(rect);
     }
 
-    image::image(const std::string& filename)
+    image::image(stk::surface::ptr onscreen_surface,const std::string& filename) : onscreen_surface(onscreen_surface)
     {
-        cout << "image::image()" << endl;
-        load_ppmx(filename);
+        INFO("image::image(filename)");
+        //load_ppmx(filename);
+        load_png(filename);
     }
+    
 
     image::~image()
     {
-        for (int x = 0; x < width_; x++)
-        {
-            delete[] pixels_[x];
-        }
-        delete[] pixels_;
     }
+    
+    void image::load_png(const std::string filename)
+    {
+#ifdef HAVE_LIBPNG
+        FILE *fp = fopen(filename.c_str(), "rb");
+        if (!fp)
+            throw error_message_exception("image::load_png - could not open file: " + filename);
+        char header[8];
+        fread(header,1,8,fp);
+        bool is_png= !png_sig_cmp((png_byte*)header,0,8);
+        if (!is_png)
+            throw error_message_exception("image::load_png - File is not in PNG format: " + filename);
 
-    void image::load_ppmx(const std::string& filename)
+        png_structp png_ptr = png_create_read_struct ( PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
+        if(!png_ptr)
+            throw error_message_exception("image::load_png - Couldnt create PNG read structure");
+        
+        png_infop info_ptr = png_create_info_struct(png_ptr);
+        if(!info_ptr)
+            throw error_message_exception("image::load_png - Couldnt create PNG info struct 1");
+
+        png_infop end_info = png_create_info_struct(png_ptr);
+        if(!end_info)
+            throw error_message_exception("image::load_png - Couldnt create PNG info struct 2");
+
+        if(setjmp(png_jmpbuf(png_ptr)))
+        {
+            png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+            fclose(fp);
+            throw error_message_exception("image::load_png - PNG error");
+        }
+
+        png_init_io(png_ptr,fp);
+        png_set_sig_bytes(png_ptr,8);
+        
+        png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND,NULL);
+
+        unsigned long width,height,bit_depth;
+
+        width=png_get_image_width(png_ptr,info_ptr);
+        height=png_get_image_height(png_ptr,info_ptr);
+        bit_depth=png_get_bit_depth(png_ptr,info_ptr);
+        
+        INFO("Read PNG: width " << width << "  height " << height << "  depth " << bit_depth );
+
+        int bytes_per_pixel=png_get_channels(png_ptr,info_ptr);
+        
+        INFO("PNG file has " << bytes_per_pixel << " Bytes per Pixel");
+
+
+        png_bytep* row_pointers=png_get_rows(png_ptr, info_ptr);
+
+
+        offscreen_surface = onscreen_surface->create_surface(rectangle(0,0,width,height));
+        
+        for(int y=0;y<height;y++)
+            for(int x=0;x<width;x++)
+            {
+                char r=row_pointers[y][(x*bytes_per_pixel)+0];
+                char g=row_pointers[y][(x*bytes_per_pixel)+1];
+                char b=row_pointers[y][(x*bytes_per_pixel)+2];
+                char a=255;
+                if(bytes_per_pixel>3)
+                    a=row_pointers[y][(x*bytes_per_pixel)+3];
+                stk::color pixel_color=offscreen_surface->gen_color(r,g,b,a);
+                offscreen_surface->draw_pixel(x,y,pixel_color);
+            }
+                                                             
+        
+        
+//        png_read_end(png_ptr, end_info);
+
+        png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+#else
+        ERROR("No support for loading PNG files compiled in!");
+#endif
+    }
+    
+    void image::load_ppmx(const std::string filename)
     {
         cout << "image::load_ppmx() - no comment support" << endl;
 
@@ -73,8 +152,9 @@ namespace stk
         if (magic != 0x5036)
             throw error_message_exception("image::load_ppmx() - file is not a ppmx image");
 
-        infile >> width_;
-        infile >> height_;
+        int width,height;
+        infile >> width ;
+        infile >> height;
         int max;
         infile >> max; // must be <= 255
         if (max != 255)
@@ -82,11 +162,11 @@ namespace stk
         // FIXME: what is the best way to get to the start of the hex data ? (the next line)
         infile.ignore(80, '\n');
 
-        init_pixels();
+        offscreen_surface=onscreen_surface->create_surface(rectangle(0,0,width,height));
 
-        for (int y = 0; y < height_; y++)
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width_; x++)
+            for (int x = 0; x < width; x++)
             {
                 unsigned char red, green, blue;
                 infile.read(reinterpret_cast<char *>(&red), 1);
@@ -98,27 +178,9 @@ namespace stk
                 green = (unsigned char)((255.0/(double)max)*green);
                 blue =  (unsigned char)((255.0/(double)max)*blue);
 
-                pixels_[x][y] = ((red << 24) | (green << 16) | (blue << 8));
-                pixels_[x][y] |= 0xFF; // set opaque
+                stk::color pixel_color = offscreen_surface->gen_color(red,green,blue,255);
+                offscreen_surface->draw_pixel(x,y,pixel_color);
             }
-        }
-    }
-
-    color image::pixel(int x, int y) const
-    {
-        return pixels_[x][y];
-    }
-
-    void image::pixel(int x, int y, color new_color)
-    {}
-
-    void image::init_pixels()
-    {
-        pixels_ = new color*[width_];
-        for (int x = 0; x < width_; x++)
-        {
-            pixels_[x] = new color[height_](0xFF);
-            memset(pixels_[x], 0, height_);
         }
     }
 }
