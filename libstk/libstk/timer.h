@@ -58,6 +58,10 @@ namespace stk
             interval_ = val;
             counter_ = val;
         }
+        void repeat(bool repeat)
+        {
+            repeat_ = repeat;
+        }
         boost::signal<bool (), combiner::logical_or<bool> > on_timer;
     };
 }
