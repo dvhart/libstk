@@ -23,9 +23,9 @@
 namespace stk
 {
     text_area::ptr text_area::create(container::ptr parent, const std::wstring& text, 
-            const rectangle& rect, bool line_wrap)
+            const rectangle& rect, bool line_wrap, bool editable)
     {
-        text_area::ptr new_text_area(new text_area(text, rect, line_wrap));
+        text_area::ptr new_text_area(new text_area(text, rect, line_wrap, editable));
         new_text_area->on_resize.connect(boost::function<bool()>(
                 (boost::bind(&scrollable::update_vis_sizes, new_text_area.get(), 
                     boost::bind(&rectangle::height, 
@@ -39,18 +39,22 @@ namespace stk
         return new_text_area;
     }
 
-    text_area::text_area(const std::wstring& text, const rectangle& rect, bool line_wrap) : widget(rect), 
-         text_(text), selection_start_(0), selection_end_(0), pressed_(false), line_wrap_(line_wrap)
+    text_area::text_area(const std::wstring& text, const rectangle& rect, bool line_wrap, bool editable) : widget(rect), 
+         text_(text), selection_start_(0), selection_end_(0), pressed_(false), line_wrap_(line_wrap), editable_(editable)
     {
         INFO("constructor");
-        focusable(true);
+        focusable(editable);
     }
 
     text_area::~text_area()
     {
         INFO("destructor");
     }
-
+    void text_area::editable(bool edit)
+    {
+        focusable(edit);
+        editable_ = edit;
+    }
     void text_area::resize()
     {
         if (line_wrap_)

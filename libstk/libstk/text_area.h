@@ -65,20 +65,21 @@ namespace stk
         int pressed_;
         int line_; //used to store the line of the cursor
         bool line_wrap_;
+        bool editable_;
         
         //next_line state variables
         int new_line_;
         std::wstring rest_of_text_;
 
     protected:
-        text_area(const std::wstring& text, const rectangle& rect, bool line_wrap);
+        text_area(const std::wstring& text, const rectangle& rect, bool line_wrap, bool editable);
         void resize();
         boost::signals::connection v_scroll_con_;
         boost::signals::connection h_scroll_con_;
         
     public:
         static text_area::ptr create(container::ptr parent, const std::wstring& text,
-                const rectangle& rect, bool line_wrap);
+                const rectangle& rect, bool line_wrap, bool editable = true);
         virtual ~text_area();
 
         /***** TEXT AREA INTERFACE *****/
@@ -101,6 +102,11 @@ namespace stk
         {
             line_wrap_ = wrap;
         }
+        bool editable()
+        {
+            return editable_;
+        }
+        void editable(bool edit);
 
         /*
          * sets the selection
