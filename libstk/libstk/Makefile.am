@@ -28,8 +28,8 @@ if LOGGING
 endif
 
 if XINE
- headers_xine = xine_panel.h
- sources_xine = xine_panel.cpp
+ headers_xine = xine_panel.h stk_c_wrapper.h
+ sources_xine = xine_panel.cpp stk_c_wrapper.cpp 
 endif
 
 libstk_la_SOURCES =\
@@ -77,12 +77,12 @@ libstk_la_SOURCES =\
 	tribal_theme.h tribal_theme.cpp \
 	viewport.h viewport.cpp \
 	widget.h widget.cpp \
+	spreadsheet.cpp spreadsheet.h\
 	$(sources_logging) $(sources_fbdev) \
 	$(sources_sdl) $(sources_dfb) \
 	edit_box.h edit_box.cpp  \
 	event_producer_elotouch.h event_producer_elotouch.cpp \
-	stk_c_wrapper.h stk_c_wrapper.cpp \
-	$(headers_xine) $(sources_xine)
+	$(headers_xine) $(sources_xine) 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 
