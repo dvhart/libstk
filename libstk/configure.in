@@ -8,15 +8,45 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
+
 dnl ---------------------------------------------
-dnl Find pkg-config
+dnl Find pkg-config -- perhaps we should axe this dependency and use freetype-config, libpng-config, etc...
 dnl ---------------------------------------------
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test x$PKG_CONFIG = xno ; then
   echo "*** pkg-config not found. See http://pkgconfig.sourceforge.net"
-  echo "*** All of DIRECTFB dependent parts will be disabled"
+  echo "***     Freetype2 cannot be detected (build will fail)"
+  echo "***     All of DirectFB dependent parts will be disabled"
+  echo "***     All of Libpng dependent parts will be disabled"
 dnl list other pkg-config dependent parts here
 fi
+
+
+dnl **** Freetype2 compile flags
+if test x$PKG_CONFIG != xno ; then
+    FREETYPE_CFLAGS=`$PKG_CONFIG --cflags freetype2`
+    FREETYPE_LIBS=`$PKG_CONFIG --libs freetype2`
+fi
+AC_SUBST(FREETYPE_CFLAGS)
+AC_SUBST(FREETYPE_LIBS)
+
+
+dnl **** Libpng support 
+if test x$PKG_CONFIG != xno ; then
+    AC_ARG_ENABLE(libpng,
+        [  --enable-libpng	builds with image loading support for lib png [default=yes]],,
+        enable_libpng=yes)
+    if test x$enable_libpng == xyes; then
+        AC_MSG_RESULT([ *** Libpng Support enabled])
+        LIBPNG_CFLAGS=`$PKG_CONFIG --cflags libpng`
+        LIBPNG_LIBS=`$PKG_CONFIG --libs libpng`
+        AC_DEFINE(HAVE_LIBPNG,true,[Libpng support should be compiled in])
+    fi
+fi
+AM_CONDITIONAL(LIBPNG, test x$enable_libpng = xyes)
+AC_SUBST(LIBPNG_CFLAGS)
+AC_SUBST(LIBPNG_LIBS)
+
 
 dnl **** SDL compile flags
 AC_ARG_ENABLE(sdl,
@@ -56,6 +86,11 @@ if test x$enable_fbdev = xyes; then
 fi
 AM_CONDITIONAL(FBDEV, test x$enable_fbdev = xyes)
 
+dnl no backend error
+if test x$enable_sdl = xno && test x$enable_directfb = xno && test x$enable_fbdev = xno ; then
+ AC_MSG_ERROR([No Backend Selected])
+fi
+
 dnl **** xine compile flags
 AC_ARG_ENABLE(xine,
   [  --enable-xine          build with xine support [default=no]],,
@@ -67,11 +102,6 @@ fi
 AM_CONDITIONAL(XINE, test x$enable_xine = xyes)
 
 
-dnl no backend error
-if test x$enable_sdl = xno && test x$enable_directfb = xno && test x$enable_fbdev = xno ; then
- AC_MSG_ERROR([No Backend Selected])
-fi
-
 dnl Logging flags
 AC_ARG_ENABLE(logging,
  	[  --enable-logging	builds with Debug message logger activated [default=no]],,
@@ -82,15 +112,6 @@ if test x$enable_logging == xyes; then
 fi
 AM_CONDITIONAL(LOGGING, test x$enable_logging = xyes)
 
-dnl Libpng support 
-AC_ARG_ENABLE(libpng,
- 	[  --enable-libpng	builds with image loading support for lib png [default=yes]],,
-        enable_libpng=yes)
-if test x$enable_libpng == xyes; then
-	AC_MSG_RESULT([ *** Libpng Support enabled])
-	AC_DEFINE(HAVE_LIBPNG,true,[Libpng support should be compiled in])
-fi
-AM_CONDITIONAL(LIBPNG, test x$enable_libpng = xyes)
 
 dnl Build the test apps 
 AC_ARG_ENABLE(tests,

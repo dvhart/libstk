@@ -27,11 +27,6 @@ if LOGGING
  sources_logging = logging.h logging.cpp
 endif
 
-if LIBPNG
- libpng_libs = -lpng -lz
- libpng_includes = -I/usr/include/libpng
-endif
-
 if XINE
  headers_xine = xine_panel.h
  sources_xine = xine_panel.cpp
@@ -111,7 +106,6 @@ library_include_HEADERS= \
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 
-# FIXME: do the autotools thing for freetype
-libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(DIRECTFB_LIBS) $(libpng_libs) $(libpng_includes)
+libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_CFLAGS) $(LIBPNG_LIBS) -version-info @libstk_libtool_version@ 
 
-INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) $(DIRECTFB_CFLAGS)
+INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) -I$(top_srcdir) 
