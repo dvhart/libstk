@@ -46,29 +46,33 @@ namespace stk
 		cout << "widget::handle_event()" << endl;
 		// FIXME: what is the best way to access the weak_ptr parent_
 		// should we make it shared first ? (see all other uses torc/te)
-		if (parent_.get() == 0)
-		{
+		// MSTR:broken! (NO weak_ptr::GET in boost 1_30_0) FIXME
+		//if (parent_.get() == 0)
+		//{
 			// throw something
-			cout << "widget::handle_event() - null parent_ pointer" << endl;
-		}
-		parent_.get()->handle_event(e);
+//			cout << "widget::handle_event() - null parent_ pointer" << endl;
+	//	}
+		//parent_.get()->handle_event(e);
 	}
 
 	// drawable interface
 	boost::shared_ptr<stk::surface> widget::surface()
 	{
-		return parent_.get()->surface(); 
+		// MSTR broken!
+		//return parent_.get()->surface(); 
 	}
 
 	// parent interface
 	boost::shared_ptr<widget> widget::focus_next()
 	{ 
-		return parent_.get()->focus_next(); 
+		// MSTR broken!
+		//return parent_.get()->focus_next(); 
 	}
 
 	boost::shared_ptr<widget> widget::focus_prev()
 	{ 
-		return parent_.get()->focus_prev(); 
+		// MSTR broken!
+		//return parent_.get()->focus_prev(); 
 	}
 
 }

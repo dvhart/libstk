@@ -50,13 +50,17 @@ namespace stk
 						break;
 					default:
 						//FIXME: make_shared first ?... the parent should never be null...
-						parent_.get()->handle_event(e);
+						//mstr: broken in boost_1_30_0 FIXME
+						//parent_.get()->handle_event(e);
+					;
 				}
 				break;
 			}
 			default:
 				//FIXME: make_shared first ?... the parent should never be null...
-				parent_.get()->handle_event(e);
+				//mstr: broken in boost_1_30_0 FIXME
+				//parent_.get()->handle_event(e);
+			;
 		}
 	}
 }

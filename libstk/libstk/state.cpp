@@ -37,12 +37,13 @@ namespace stk
 		cout << "state::handle_event()" << endl;
 		// FIXME: what is the best way to access the weak_ptr parent_
 		// should we make it shared first ? (see all other uses torc/te)
-		if (parent_.get() == 0)
-		{
+		// mstr: broken in Boost_1_30_0 and in general! FIXME
+		//if (parent_.get() == 0)
+		//{ 
 			// throw something
-			cout << "state::handle_event() - null parent_ pointer" << endl;
-		}
-		parent_.get()->handle_event(e);
+//			cout << "state::handle_event() - null parent_ pointer" << endl;
+	//	}
+		//parent_.get()->handle_event(e);
 	}
 
 
