@@ -5,7 +5,6 @@ MEETING TOPICS
 TASKS (Some duplicated items here and below)
 ============================================
 rename PARENT INTERFACE to COMPONENT INTERFACE
-make all include ifdef defines uniform: ie STK_WIDGET_H or WIDGTET_H (atm we use both styles)
 Axe pointless bool returns in API and create a bind_return syntax
 Spinner - (AUTOCOMPLETE, NO EDIT)
 List Item Height - ADD virtual int height()
@@ -13,8 +12,8 @@ Purge all magic numbers
 Convert all output to new logger
 Scrollbars - Marc to finish
 Scrollbox - Marc to finish
-Edit Box - Dirk to finish
 Combo Box - Darren to write
+Edit Box (could be prettier, setting cursor/selection support on click and via API needed)
 Text Area - simple, no line break strategy, just \n and spaces, editable parameter and scroll model
           - wrap visually, don't modify content
 Should widgets be positioned relative to their parent container ? YES
@@ -27,6 +26,7 @@ SDL - look into offscreen surfaces (can they be created prior to the main screen
 surface: finish locking and add pixel_format routine
 surface_fbdev - Vernon to finish
 event_producer_linux - Darren to finish
+event_producer_directfb
 IR support (IRDA / generic serial / lirc) ?
 Software Pointer (common to all graphic backends) - YES, make part of surface backends
 Document all existing classes / APIs
@@ -42,6 +42,8 @@ dvhart: tab order code removed (maybe add for libstk 2.0)
 dvhart: list_item user_data removed
 dvhart: widget regions (define in theme, check in handle_event() on clicks)
 dvhart: numeric_spinner added
+dvhart: make all include ifdef defines uniform: ie STK_WIDGET_H or WIDGET_H (atm we use both styles)
+
 
 DOCUMENTATION
 =============

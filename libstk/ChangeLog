@@ -1,3 +1,273 @@
+2003-07-28 11:11  dvhart
+
+	* libstk/: application.cpp, edit_box.cpp, edit_box.h,
+	event_producer_sdl.cpp, font.h, tribal_theme.cpp: changed
+	application to watch for key_down events instead of key_up   (plays
+	nicer with other widgets who use key_down) added selection support,
+	cursor position, and drawing of them to edit_box   still needs
+	support for setting cursor with mouse click
+
+2003-07-27 19:54  dvhart
+
+	* libstk/application.cpp, libstk/edit_box.cpp,
+	libstk/event_producer_sdl.cpp, libstk/event_producer_sdl.h,
+	libstk/key_event.cpp, libstk/key_event.h, libstk/keycode.h,
+	libstk/list.cpp, libstk/numeric_spinner.cpp, libstk/spinner.cpp,
+	test/test_app.cpp: revamped key_event to contain a keycode and a
+	modcode (modifier list), updated event_producer_sdl (still has some
+	issues, see event_producer_sdl.cpp for comments) and dependent
+	files
+
+2003-07-26 09:43  dvhart
+
+	* doc/coding_standards, libstk/application.h, libstk/backend_dfb.h,
+	libstk/color_manager.h, libstk/combo.h, libstk/component.h,
+	libstk/container.h, libstk/drawable.h, libstk/edge.h,
+	libstk/edit_box.cpp, libstk/edit_box.h, libstk/event.h,
+	libstk/event_handler.h, libstk/event_producer.h,
+	libstk/event_producer_elotouch.h, libstk/event_producer_sdl.cpp,
+	libstk/event_producer_sdl.h, libstk/event_system.h,
+	libstk/exceptions.h, libstk/font.h, libstk/font_manager.h,
+	libstk/glyph.h, libstk/graphics_context.h, libstk/image.h,
+	libstk/image_panel.h, libstk/key_event.h, libstk/keycode.h,
+	libstk/label.h, libstk/list.h, libstk/logging.cpp,
+	libstk/logging.h, libstk/mouse_event.h, libstk/point.h,
+	libstk/posix_time.h, libstk/progress.h, libstk/rectangle.h,
+	libstk/scroll_box.h, libstk/scroll_model.h, libstk/sdl_data.h,
+	libstk/spinner.h, libstk/state.h, libstk/stk.h,
+	libstk/surface_dfb.h, libstk/surface_fbdev.h,
+	libstk/surface_sdl.cpp, libstk/surface_sdl.h, libstk/theme.h,
+	libstk/time_value.h, libstk/timer.h, libstk/tribal_theme.cpp,
+	libstk/tribal_theme.h, libstk/viewport.h, libstk/widget.h,
+	test/test_app.cpp: Edit Box signals (still need a better name for
+	on_confirm) Updated use of spaces in the coding standards (Please
+	Read) Added more keycode mappings for event_producer_sdl Updated
+	LOTS of header files and some spacing issues in various files
+
+2003-07-25 09:08  dvhart
+
+	* libstk/: overlay_dfb.h, surface_dfb.cpp: more dfb overlay fixes
+	(and some added whitespace :-) )
+
+2003-07-24 21:32  dvhart
+
+	* libstk/Makefile.am: removed spreadsheet entries from Makefile.am
+	until Marc adds the files to the repository
+
+2003-07-24 18:13  dvhart
+
+	* libstk/overlay_dfb.h: overlay_dfb.h file
+
+2003-07-24 18:12  dvhart
+
+	* libstk/Makefile.am, libstk/overlay.h, libstk/overlay_sdl.h,
+	libstk/stk_c_wrapper.h, libstk/surface_dfb.cpp, test/xine_test.cpp:
+	initial overlay_dfb impl (broken) and xine_test is now unified as
+	well
+
+2003-07-24 01:00  carter
+
+	* libstk/: edit_box.cpp, event_producer_elotouch.cpp: Removed
+	superflous debug output from elotouch backend Added very Basic edit
+	capability to edit_box
+
+2003-07-24 00:57  carter
+
+	* test/: Makefile.am, hello_world_dfb.cpp: Removed Directfb test
+	app
+
+2003-07-23 13:54  dvhart
+
+	* test/: Makefile.am, test_app_dfb.cpp, test_app_fbdev.cpp: removed
+	other test_app files
+
+2003-07-23 09:46  dvhart
+
+	* test/: test_app.cpp, test_app_dfb.cpp: unified test_app.cpp, now
+	accepts a single argument specifying the backend: sdl|dfb|fbdev
+
+2003-07-23 00:29  dvhart
+
+	* configure.in, libstk/Makefile.am, libstk/surface_sdl.cpp,
+	libstk/surface_sdl.h, test/Makefile.am, test/xine_test.cpp: now
+	uses pkg-config for directfb cflags and libs, sdl defaults to full
+	screen
+
+2003-07-22 16:13  dvhart
+
+	* libstk/widget.h: updated commments
+
+2003-07-22 11:28  dvhart
+
+	* Makefile.am, configure.in, test/test_app.cpp,
+	test/test_app_dfb.cpp, test/xine_test.cpp: added --enable-tests to
+	configure, changed test_app so it builds (still segs), change
+	xine_test to use 'auto' for the audio plugin
+
+2003-07-22 09:42  carter
+
+	* libstk/surface_dfb.cpp: Fixed rendering with Alpha channel
+
+2003-07-22 09:06  carter
+
+	* libstk/: image.cpp, image.h: Added PNG image loader and
+	implemented image drawing via an offscreen surface
+
+2003-07-22 09:05  carter
+
+	* libstk/: surface.h, surface_dfb.cpp, surface_dfb.h,
+	surface_impl.h, surface_sdl.cpp, surface_sdl.h: Added generic
+	Offscreen surface factory Partly fixed clip rect and offset
+	handling DFB backend Implemented new image drawing by simple
+	blitting
+
+2003-07-22 09:02  carter
+
+	* test/: parrots.png, test_app_dfb.cpp: Added PNG to the DFB demo
+
+2003-07-22 08:56  carter
+
+	* configure.in, libstk/Makefile.am: Added LIBPNG to the build
+	system
+
+2003-07-21 15:18  dvhart
+
+	* configure.in, libstk/Makefile.am, libstk/button.h,
+	libstk/overlay.h, libstk/overlay_sdl.h, libstk/stk.h,
+	libstk/stk_c_wrapper.cpp, libstk/stk_c_wrapper.h,
+	libstk/stk_types.h, libstk/surface.h, libstk/surface_dfb.cpp,
+	libstk/surface_dfb.h, libstk/surface_fbdev.cpp,
+	libstk/surface_fbdev.h, libstk/surface_impl.h,
+	libstk/surface_sdl.cpp, libstk/surface_sdl.h,
+	libstk/xine_panel.cpp, libstk/xine_panel.h, test/Makefile.am,
+	test/xine_test.cpp: Preliminary overlay and xine support.  Note
+	that you will need the video_out_stk module (not yet in xine CVS)
+	for the xine_test to run and well as a media file named test_movie
+	in the test directory.	Configure now supports --enable-xine as an
+	option.  I also cleaned up some comments, headers, etc.
+
+2003-07-21 09:48  carter
+
+	* libstk/: event_producer_elotouch.cpp, surface_dfb.cpp: bugs fixed
+
+2003-07-20 13:45  carter
+
+	* libstk/: application.cpp, application.h: addded event filtering
+
+2003-07-20 13:03  carter
+
+	* libstk/: surface_sdl.cpp, surface_sdl.h: Adedd "sub surface
+	blitting" in the sdl backend
+
+2003-07-20 08:05  carter
+
+	* libstk/: backend_dfb.h, surface.h, surface_dfb.cpp,
+	surface_dfb.h, surface_impl.h: Added new Subsurface Blitting API to
+	surface.  Implemented blitting and offscreen surface construction
+	in the DFB backend
+
+2003-07-20 08:02  carter
+
+	* libstk/: application.cpp, application.h: Added overlay/"underlay
+	*lol" capability via predraw and postdraw signals
+
+2003-07-15 12:48  dvhart
+
+	* libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
+	libstk/spinner.cpp, libstk/spinner.h, libstk/surface_fbdev.cpp,
+	libstk/surface_fbdev.h, libstk/theme.h, libstk/tribal_theme.cpp,
+	libstk/tribal_theme.h, test/hydra.cpp, test/test_app.cpp,
+	test/test_app_dfb.cpp, test/test_app_fbdev.cpp: updated
+	spinner/numeric_spinner behavior to accomodate the wrap parameter,
+	formatted some files
+
+2003-07-15 11:10  vhmauery
+
+	* test/test_app_fbdev.cpp: fixed fbdev test app for new list items
+
+2003-07-15 10:44  vhmauery
+
+	* configure.in: minor fix to configure.in
+
+2003-07-15 10:39  vhmauery
+
+	* libstk/config.h.in: removed because autogenerated
+
+2003-07-15 10:37  vhmauery
+
+	* configure.in, libstk/Makefile.am, libstk/config.h.in,
+	libstk/logging.h, libstk/surface_fbdev.cpp, libstk/surface_fbdev.h,
+	test/Makefile.am, test/hello_world_fbdev.cpp,
+	test/test_app_fbdev.cpp: added framebuffer surface, fixed
+	configure.in/makefile.am
+
+2003-07-14 23:06  dvhart
+
+	* TODO, libstk/Makefile.am, libstk/component.h,
+	libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
+	libstk/spinner.cpp, libstk/spinner.h, libstk/stk.h,
+	libstk/tribal_theme.cpp, test/test_app.cpp, test/test_app_dfb.cpp:
+	added numeric_spinner, both spinners now use an enum for regions
+	and define it and the region(x,y) method as private members
+
+2003-07-14 15:39  dvhart
+
+	* libstk/drawable.h, libstk/list_item.cpp, libstk/list_item.h,
+	test/hydra.cpp, test/test_app.cpp, test/test_app_dfb.cpp: removed
+	user_data from list_item
+
+2003-07-14 13:56  dvhart
+
+	* TODO, doc/irc_14072003_session.txt: IRC log and annotated TODO
+	file
+
+2003-07-14 11:14  dvhart
+
+	* test/: Makefile.am, dihmen.cpp, hydra.cpp: renamed dihmen test to
+	hydra
+
+2003-07-14 10:25  carter
+
+	* libstk/Makefile.am: resolved various build issues (not all though
+	.)
+
+2003-07-14 10:24  carter
+
+	* libstk/stk.h: removed backend specific include of sdl_data.h from
+	stk.h
+
+2003-07-14 10:23  carter
+
+	* libstk/surface_dfb.cpp: Fixed Antialised(read Alpha channel)
+	Rendering on Directfb.
+
+2003-07-14 10:21  carter
+
+	* libstk/edit_box.h: Added missing redraw call when modifying the
+	Edit box's text
+
+2003-07-14 10:20  carter
+
+	* libstk/: list.cpp, list.h: Added STL Style interface to list
+
+2003-07-14 09:17  carter
+
+	* TODO: Added points for discussion
+
+2003-07-13 22:46  dvhart
+
+	* TODO, libstk/application.cpp, libstk/container.cpp,
+	libstk/container.h, libstk/state.cpp, libstk/state.h: fixed
+	container::focus_(next|prev) to return the first focusable if none
+	are currently focused removed container::get_active_child() as
+	focus_next provides all functionality we need fixed application to
+	focus the first widget of a state on start and on
+	current_state(state::ptr)
+
+2003-07-13 17:25  dvhart
+
+	* ChangeLog, TODO: updated TODO and ChangeLog Files
+
 2003-07-13 17:21  dvhart
 
 	* libstk/application.cpp, libstk/application.h, test/Makefile.am,
