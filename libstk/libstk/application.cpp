@@ -49,13 +49,13 @@ namespace stk
         if (instance_.lock()) throw error_message_exception("application::create() - "
                 "application already instantiated (create can only be called once)");
         application::ptr instance(new application(surface));
-        instance_=instance;
+        instance_ = instance;
         return instance;
     }
 
     application::ptr application::get()
     {
-        application::ptr instance=instance_.lock();
+        application::ptr instance = instance_.lock();
         if (!instance) throw error_message_exception("application::get() - "
                 "application not instantiated (create has not been called)");
         return instance;
