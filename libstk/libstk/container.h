@@ -1,15 +1,14 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: container.h 
  * DESCRIPTION: Libstk composite class of the composite pattern, component
  *              defines the component poriton of the pattern.
  *     AUTHORS: Dirk Hoerner, Marc Straemke, Darren Hart
- *  START DATE: 17/Sep/2002  LAST UPDATE: 13/May/2003
+ *  START DATE: 17/Sep/2002  LAST UPDATE: 13/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_CONTAINER_H
 #define STK_CONTAINER_H
@@ -87,14 +86,7 @@ namespace stk
         virtual widget::ptr widget_at(int x, int y);
         /// Pass mouse events down to widgets.
         virtual void delegate_mouse_event(mouse_event::ptr me);
-        // FIXME :carter: implement all this
-        virtual widget::ptr get_active_child() // called when the tree parser for
-        {
-            return  *children_.begin();
-        }        // widget cycling switches focus
-        // to a container
-        // default behaviour for a container
-        // is to switch into the FIRST child first
+        
         virtual rectangle redraw_rect()
         {
             return redraw_rect_;

@@ -53,8 +53,7 @@ namespace stk
     }
     
     application::application(surface::ptr surface) :
-            surface_(surface), event_system_(event_system::get
-                                                 ()), done_(false)
+            surface_(surface), event_system_(event_system::get()), done_(false)
     {
         cout << "application::application()" << endl;
         // initialize the theme
@@ -82,8 +81,14 @@ namespace stk
         {
             current_state_ = *states_.begin();
             // FIXME: ask current_state_ for its first focusable widget
-            focused_widget_ = (*states_.begin())->get_active_child();
-            focused_widget_.lock()->handle_event(event::create(event::focus));
+            //focused_widget_ = (*states_.begin())->get_active_child();
+            focused_widget_ = (*states_.begin())->focus_next();
+            if (focused_widget_.lock())
+                focused_widget_.lock()->handle_event(event::create(event::focus));
+            else
+                // FIXME: throw something
+                cout << "application::run() - current state has no focusable widgets" << endl;
+                
         }
         
         current_state_.lock()->redraw(surface_->rect());
@@ -279,23 +284,39 @@ namespace stk
     }
 
     // component interface
-    // FIXME
+    // FIXME: this is wrong, what should we do? change to the next state ?
     widget::ptr application::focus_next()
     {
         cout << "application::focus_next()" << endl;
         return current_state_.lock()->focus_first();
     }
 
-    // FIXME
+    // FIXME: this is wrong, what should we do? change to the previous state ?
     widget::ptr application::focus_prev()
     {
         cout << "application::focus_prev()" << endl;
         return current_state_.lock()->focus_last();
     }
+
     bool application::current_state(state::ptr new_cur_state)
     {
-        ///\todo check if this state exists in our list, else through exception, return false,  or add it
+        // FIXME...
+        ///\todo check if this state is null and if it exists in our list, else through exception, return false,  or add it
+        
+        // remove focus from the current widget
+        if (focused_widget_.lock())
+            focused_widget_.lock()->handle_event(event::create(event::un_focus));
+        
         current_state_ = new_cur_state;
+        
+        // focus the first focusable widget of the new current state
+        focused_widget_ = current_state_.lock()->focus_next();
+        if (focused_widget_.lock())
+            focused_widget_.lock()->handle_event(event::create(event::focus));
+        else
+            // FIXME: throw something
+            cout << "application::run() - current state has no focusable widgets" << endl;
+        
         new_cur_state->redraw(new_cur_state->rect());
         return true;
     }

@@ -50,6 +50,8 @@ Software Pointer (common to all graphic backends)
 Finalize font interface / implementation
 Document all existing classes / APIs
 Polish the build environment 
+Add us to freshmeat
+Get libstk license approved by OSI
 
 DOCUMENTATION
 =============

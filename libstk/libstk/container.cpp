@@ -2,7 +2,7 @@
  *    FILENAME: container.cpp
  * DESCRIPTION: Container abstract base class implementation.
  *     AUTHORS: Dirk Hoerner, Marc Straemke, Darren Hart
- *  START DATE: 17/Sep/2002  LAST UPDATE: 14/May/2003
+ *  START DATE: 17/Sep/2002  LAST UPDATE: 13/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -125,14 +125,19 @@ namespace stk
                 // find the next focusable widget
                 while (++iter != children_.end() )
                 {
-                    if ((*iter)->focusable())
-                    {
-                        return *iter;
-                    }
+                    if ((*iter)->focusable()) return *iter;
                 }
                 break;
             }
         }
+        // there isn't a focused widget, so find the first focusable widget
+        iter = children_.begin();
+        while (iter != children_.end() )
+        {
+            if ((*iter)->focusable()) return *iter;
+            iter++;
+        }
+        // no focusable widgets, so return an empty pointer        
         return widget::ptr();
     }
 
@@ -149,14 +154,19 @@ namespace stk
                 // find the previous focusable widget
                 while (iter != children_.begin())
                 {
-                    if ((*--iter)->focusable())
-                    {
-                        return *iter;
-                    }
+                    if ((*--iter)->focusable()) return *iter;
                 }
                 break;
             }
         }
+        // there isn't a focused widget, so find the first focusable widget
+        iter = children_.begin();
+        while (iter != children_.end() )
+        {
+            if ((*iter)->focusable()) return *iter;
+            iter++;
+        }
+        // no focusable widgets, so return an empty pointer        
         return widget::ptr();
     }
 
