@@ -28,6 +28,9 @@ namespace stk
         typedef boost::weak_ptr<edit_box> weak_ptr;
 
     private:
+        /// return the character index under the x, y coordinate
+        int region(int x, int y);
+
         std::wstring text_;
         int selection_start_;
         int selection_end_;

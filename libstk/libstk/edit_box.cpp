@@ -131,13 +131,7 @@ namespace stk
         case event::mouse_down:
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-            //FIXME: we need to get the font from the tribal_theme
-            //we can't just assume that they will always use arial
-            //we can't even assume that they will always have 3 pixels around the boarder
-
-            font::ptr edit_box_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-            int new_cursor_pos = edit_box_font->chars_in_rect(rectangle(3,0,me->x()-x1(),y2()-y1()),text_);
-            selection_start_ = selection_end_ = new_cursor_pos;
+            selection_start_ = selection_end_ = region(me->x(), me->y());
             selection_state_ = true;
             redraw(rect());
             return;
@@ -146,28 +140,22 @@ namespace stk
         case event::mouse_motion:
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
-            INFO("Recieved Mouse Motion event.");
-            if (selection_state_) {
-                font::ptr edit_box_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-                selection_end_ = edit_box_font->chars_in_rect(rectangle(3,0,me->x()-x1(),y2()-y1()),text_);
-                
+            if (selection_state_) 
+            {
+                selection_end_ = region(me->x(), me->y());
+                redraw(rect());
             }
-            redraw(rect());
             return;
             break;
         }
         case event::mouse_up:
         {
-            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
-            INFO("Recieved Mouse Up event.");
-            selection_state_  = false;
+            selection_state_ = false;
             return;
             break;
         }
         case event::mouse_leave:
         {
-            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
-            INFO("Recieved Mouse Leave event.");
             selection_state_ = false;
             return;
             break;

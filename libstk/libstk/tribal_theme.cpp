@@ -546,6 +546,11 @@ namespace stk
         // draw the string text_
         surface->draw_text(interior_rect, text_);
     }
+    int edit_box::region(int x, int y)
+    {
+        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+        return arial_18->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
+    }
 
     void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
     {
