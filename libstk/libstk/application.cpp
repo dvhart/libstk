@@ -369,8 +369,10 @@ namespace stk
     {
         return current_state_.lock();
     }
-    void application::redraw(const rectangle& rect, bool transform)
+    void application::redraw(const rectangle& rect, drawable* source, bool transform)
     {
+        if((source!=current_state_.lock().get()) && source)
+            return;
         INFO("Application redraw");
         redraw_rect+=rect;
     }

@@ -32,7 +32,11 @@ namespace stk
         void active_child(widget::ptr child) throw(error_no_child);
         static switched_panel::ptr create(container::ptr parent, rectangle rect);
 
-        void draw(surface::ptr surface, const rectangle& clip_rect);
+        /********** DRAWABLE INTERFACE **********/
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+        virtual void redraw(const rectangle& rect, drawable* source=NULL, bool transform=false);
+        /********** END DRAWABLE INTERFACE **********/
+        
         /********** CONTAINER INTERFACE **********/
         virtual widget::ptr widget_at(int x, int y);
         virtual widget::ptr delegate_mouse_event(mouse_event::ptr me);

@@ -41,12 +41,14 @@ namespace stk
         { }
         
         /// Redraw the area in rect the next time draw is called.
-        /// \param rect The area to be redrawn
-        /// \param transform The coordinates need to be transformed
         /// See container for specifics regarding behavior.  The default
         /// implementation does nothing as leaf widgets redraw themselves
         /// entirely. 
-        virtual void redraw(const rectangle& rect, bool transform=false)
+        /// \param rect The area to be redrawn
+        /// \param transform The coordinates need to be transformed
+        /// \parma source The source fo the redraw upcall, used for optimization
+        ///        NULL means unknown -> no optimization
+        virtual void redraw(const rectangle& rect, drawable* source=NULL, bool transform=false)
         { }
 
     }; // class drawable

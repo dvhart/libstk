@@ -101,14 +101,13 @@ namespace stk
         std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,rect_,_1));
     }
 
-    void container::redraw(const rectangle& rect, bool transform)
+    void container::redraw(const rectangle& rect, drawable* source, bool transform)
     {
-        INFO("container::redraw rect=" << rect );
         // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
         rectangle redraw_rect = rect;
         if(transform)
             redraw_rect.position(redraw_rect.position()+rect_.position());
-        parent_.lock()->redraw(redraw_rect, true);
+        parent_.lock()->redraw(redraw_rect, this, true);
     }
 
     /// Handle common container events

@@ -29,12 +29,19 @@ namespace stk
     public:
         typedef boost::shared_ptr<surface_dfb> ptr;
         typedef boost::weak_ptr<surface_dfb> weak_ptr;
+
+        int pixels_filled_lowlevel;
+        int pixels_filled_highlevel;
     protected:
         IDirectFBSurface *surface;
         surface_dfb(boost::optional<rectangle> rect, bool primary);
 
         backend_dfb::ptr backend_handle;
-        
+
+        bool locked;
+        DFBSurfacePixelFormat pixel_format;
+        void *screen;
+        int pitch;
     public:
         static surface_dfb::ptr create(const rectangle& rect, bool primary=true); // Create with given screen size
         static surface_dfb::ptr create(); // Create with screen size without switching resolutions, has to be used ONLY for creating the primary surface
@@ -65,8 +72,9 @@ namespace stk
 
         virtual surface::ptr create_surface(const rectangle& rect);
 
-        //virtual void offset(const point& newoffset);
         virtual void clip_rect(const rectangle& clip_rectangle);
+
+        virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode);
         
     };
 } //end namespace stk

@@ -159,7 +159,7 @@ AC_SUBST(prefix)
 
 AM_CONFIG_HEADER(libstk/config.h)
 
-CXXFLAGS="$CXXFLAGS -Wall -W -Wno-switch -pedantic"
+CXXFLAGS="$CXXFLAGS -Wall -W -Wno-switch -pedantic -O3"
 
 AC_OUTPUT([
 Makefile

@@ -39,13 +39,13 @@ public:
     }
 };
 
-/*
+
 template<class F, class V> override_return_t<F, V> 
 override_return(F const &f, V const & v)
 {
     return override_return_t<F, V>(f, v);
 }
-*/
+
 
 template<class R, class F, class L, class V>
 override_return_t<boost::_bi::bind_t<R, F, L>, V>

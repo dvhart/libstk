@@ -50,7 +50,7 @@ namespace stk
         /********** DRAWABLE INTERFACE **********/
         //virtual surface::ptr surface();
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-        virtual void redraw(const rectangle& rect, bool transform=false);
+        virtual void redraw(const rectangle& rect, drawable* source=NULL, bool transform=false);
         /********** END DRAWABLE INTERFACE **********/
 
         /********** COMPONENT INTERFACE **********/
@@ -65,11 +65,9 @@ namespace stk
         /// widget::ptr.
         virtual widget::ptr focus_prev();
         /// Add a child widget to the children vector
-        virtual void add
-            (widget::ptr w);
+        virtual void add(widget::ptr w);
         /// Remove a child widget from the children vector
-        virtual void remove
-            (widget::ptr item);
+        virtual void remove(widget::ptr item);
         /********** END COMPONENT INTERFACE **********/
 
         /********** WIDGET INTERFACE **********/

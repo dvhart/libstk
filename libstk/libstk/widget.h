@@ -68,7 +68,7 @@ namespace stk
 
         /********** DRAWABLE INTERFACE **********/
         virtual surface::ptr surface();
-        virtual void redraw(const rectangle& rect, bool transform=false);
+        virtual void redraw(const rectangle& rect, drawable* source=NULL, bool transform=false);
         /********** END DRAWABLE INTERFACE **********/
 
         /********** COMPONENT INTERFACE **********/

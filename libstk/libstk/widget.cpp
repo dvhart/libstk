@@ -51,7 +51,6 @@ namespace stk
         case event::focus:
             if (focusable_)
             {
-                INFO("Widget focused");
                 focused_ = true;
                 redraw(rect_);
             }
@@ -93,13 +92,10 @@ namespace stk
         return parent_.lock()->surface();
     }
 
-    void widget::redraw(const rectangle& rect, bool transform)
+    void widget::redraw(const rectangle& rect, drawable* source, bool transform)
     {
-        INFO("widget::redraw rect=" << rect << "  transform" << transform);
         rectangle redraw_rect(rect);
-//        if(!transform)
-//            redraw_rect.position(rect.position() - rect_.position());
-        parent_.lock()->redraw(redraw_rect,true);
+        parent_.lock()->redraw(redraw_rect, this, true);
     }
     widget::ptr widget::widget_at(int x, int y)
     {

@@ -19,6 +19,7 @@
 namespace stk
 {
     surface_dfb::surface_dfb(boost::optional<rectangle> rect, bool primary)
+        : pixels_filled_lowlevel(0),pixels_filled_highlevel(0)
     {
         DFBSurfaceDescription dsc;
         memset(&dsc, 0, sizeof(dsc));
@@ -54,6 +55,7 @@ namespace stk
         if (primary)
         {
             surface->GetPixelFormat(surface, &backend_handle->format);
+            pixel_format=backend_handle->format;
             INFO("Pixel format is = " << backend_handle->format);
         }
         
@@ -87,11 +89,14 @@ namespace stk
     {
         x += offset_.x();
         y += offset_.y();
+        
         surface->SetDrawingFlags(surface, DSDRAW_BLEND);
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         // FIXME: sometimes this draws a line from 0,0 to x,y
         // FIXME: how do we get direct pixel access
         surface->DrawLine(surface, x, y, x, y); // hack *ggg*
+        
+        pixels_filled_lowlevel++;
     }
     
     void surface_dfb::put_pixel_aa(int x, int y, double distance, color clr)
@@ -113,6 +118,7 @@ namespace stk
         x += offset_.x();
         y += offset_.y();
         WARN("surface_dfb::get_pixel(x, y)");
+        return 0;
     }
     
     color surface_dfb::gen_color(const std::string &str_color) const
@@ -128,6 +134,9 @@ namespace stk
     
     void surface_dfb::lock()
     {
+        surface->Lock(surface, DSLF_WRITE|DSLF_READ, &screen, &pitch);
+//        INFO("Locked surface! screen pointer @" << screen << " pitch is " << pitch);
+        locked=true;
     }
     
     void surface_dfb::lock(rectangle &rect, int flags, color** buf, int &stride)
@@ -136,6 +145,9 @@ namespace stk
     
     void surface_dfb::unlock()
     {
+        INFO("Unlocked surface!");
+        surface->Unlock(surface);
+        locked=false;
     }
     
     void surface_dfb::update(const rectangle& u_rect)
@@ -179,6 +191,7 @@ namespace stk
             source_rect.h = src_rect.height();
 
             dst->surface->Blit(dst->surface, surface, &source_rect, dst_rect.x1(), dst_rect.y1());
+            pixels_filled_highlevel+=(source_rect.w*source_rect.h);
         }        
     }
     
@@ -188,6 +201,7 @@ namespace stk
         y1 += offset_.y();
         x2 += offset_.x();
         y2 += offset_.y();
+        pixels_filled_highlevel+=((x2-x1)*(y2-y1));
         color clr = gc_->fill_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr & 0xff);
         surface->FillRectangle(surface, x1, y1, x2-x1, y2-y1);
@@ -208,7 +222,10 @@ namespace stk
         color clr = gc_->line_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         surface->DrawLine(surface, x1, y1, (x2-x1), (y2-y1));
-
+        if(x2!=x1)
+            pixels_filled_highlevel+=(x2-x1);
+        else
+            pixels_filled_highlevel+=(y2-y1);
     }
     
     void surface_dfb::draw_rect(const rectangle& rect)
@@ -225,6 +242,7 @@ namespace stk
         color clr = gc_->line_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         surface->DrawRectangle(surface, x1, y1, (x2-x1), (y2-y1));
+        pixels_filled_highlevel+=(x2-x1)*(y2-y1);
     }
     
     void surface_dfb::clip_rect(const rectangle& clip_rectangle)
@@ -241,6 +259,46 @@ namespace stk
             region.y2 = clip_rectangle.y2();
             
             surface->SetClip(surface, &region); 
+        }
+    }
+
+    void surface_dfb::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
+    {
+        
+        // ignore the bounds and stuff for now
+        int x = rect.x1();
+        int y = rect.y1();
+        // get the font from the gc
+        font::ptr fon = gc_->font();
+        if (fon == NULL)
+            throw error_message_exception("draw_text: gc's font is null");
+        // find the number of chars that fit in the rect
+        unsigned int chars_to_draw = fon->chars_in_rect(rect, text);
+        color fill_color = gc_->font_fill_color();
+        // loop through the text and draw each character
+        int fh = fon->height();
+        for (unsigned int i=0; i<chars_to_draw; i++)
+        {
+            // get the glyph
+            glyph::ptr bmp = fon->glyph(text[i]);
+            int w = bmp->width();
+            int by = bmp->bearing_y() >> 6;
+            int bx = bmp->bearing_x() >> 6;
+            
+            boost::shared_array<unsigned char> bits = bmp->bitmap();
+            // draw it
+            for (int dy=0; dy<bmp->height(); dy++)
+            {
+                for (int dx=0; dx<w; dx++)
+                {
+                    // clip to the rect
+                    unsigned char alpha = bits[dy*w + dx];
+                    put_pixel_aa(x+dx+bx, y+dy+fh-by, alpha, fill_color);
+                }
+            }
+            x += (bmp->advance_x() >> 6);
+            if (i<text.length()-1)
+                x += (fon->kerning(text[i], text[i+1]) >> 6);
         }
     }
 }

@@ -74,4 +74,14 @@ namespace stk
         }
     }
 
+    void switched_panel::redraw(const rectangle& rect, drawable* source, bool transform)
+    {
+        if(source!=active_widget.lock().get() && source)
+            return;
+        // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
+        rectangle redraw_rect = rect;
+        if(transform)
+            redraw_rect.position(redraw_rect.position()+rect_.position());
+        parent_.lock()->redraw(redraw_rect, this, true);
+    }
 }
