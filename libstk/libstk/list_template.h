@@ -44,29 +44,33 @@ namespace stk
         virtual void add(boost::shared_ptr<widget> item) { }
         virtual void remove(boost::shared_ptr<widget> item) { }
 
-
     protected:
-        int current_;
-        list_template(const rectangle& rect) : container(rect), scrollable(), current_(0)
+        list_template(const rectangle& rect = rectangle(), bool multiselect = false) : 
+            container(rect), scrollable(), current_(0), multiselect_(multiselect)
         {
             INFO("constructor");
             focusable(true);
             v_scroll_->vis_size(height());
             h_scroll_->vis_size(width());
         }
+        int current_;
+        bool multiselect_;
         std::vector<Titem> items_; // FIXME: use the children vector? (if not we have less casting to do)
 
         // scrolling members
         boost::signals::connection v_scroll_con_;
 
     public:
-        static list_template<Titem>::ptr create(container::ptr parent, const rectangle& rect)
+        static list_template<Titem>::ptr create(container::ptr parent, const rectangle& rect, 
+                bool multiselect = false)
         {
-            list_template<Titem>::ptr new_list_template(new list_template<Titem>(rect));
+            list_template<Titem>::ptr new_list_template(
+                    new list_template<Titem>(rect, multiselect));
             new_list_template->on_resize.connect(boost::function<bool()>(
                         (boost::bind(&scrollable::update_vis_sizes, new_list_template.get(), 
                                      boost::bind(&rectangle::height, new_list_template.get()), 
-                                     boost::bind(&rectangle::width, new_list_template.get())), true)));
+                                     boost::bind(&rectangle::width, new_list_template.get())),
+                         true)));
             new_list_template->parent(parent);
             return new_list_template;
 
@@ -82,10 +86,9 @@ namespace stk
             {
             case event::mouse_down:
             {
-                INFO("list_template mouse down");
                 mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
                 int y = 0;
-                // FIXME: if CNTRL is pressed, don't deselect everything else
+                // FIXME: if CNTRL is pressed && multiselect_, don't deselect everything else
                 select_none();
                 for (current_ = 0; current_ < (int)items_.size(); current_++)
                 {
@@ -105,12 +108,10 @@ namespace stk
             }
             case event::key_down:
             {
-                INFO("list_template key down");
                 key_event::ptr ke = boost::shared_static_cast<key_event>(e);
                 switch ( ke->fn_key() )
                 {
                 case key_downarrow:
-                    INFO("  down arrow");
                     if (current_ < (int)items_.size()-1)
                     {
                         current_++;
@@ -118,7 +119,7 @@ namespace stk
                             v_scroll_->begin(v_scroll_->begin()+items_[current_]->height());
                         on_update_current();
 
-                        if (!(ke->modlist() & mod_control))
+                        if (!(multiselect_ && (ke->modlist() & mod_control)))
                         {
                             select_none();
                             items_[current_]->selected(true);
@@ -145,7 +146,7 @@ namespace stk
                             v_scroll_->begin(items_[current_]->rect().y1());
                         on_update_current();
 
-                        if (!(ke->modlist() & mod_control))
+                        if (!(multiselect_ && (ke->modlist() & mod_control)))
                         {
                             select_none();
                             items_[current_]->selected(true);
@@ -164,7 +165,7 @@ namespace stk
                     break;
                     //return;
                 case key_enter:
-                    if (!(ke->modlist() & mod_control)) select_none();
+                    if (!(multiselect_ && ke->modlist() & mod_control)) select_none();
                     items_[current_]->selected(!items_[current_]->selected());
                     redraw(rect());
                     return;
@@ -360,6 +361,11 @@ namespace stk
             }
             on_update_current();
         }
+
+        /// Return whether or not the list supports multiple selections
+        virtual bool multiselect() { return multiselect_; }
+        /// Set whether or not the list supports multiple selections
+        virtual void multiselect(bool val) { multiselect_ = val; }
 
         // list signals FIXME: what should the signature of the slots be ?
         boost::signal<bool (), combiner::logical_or<bool> > on_update_selection;

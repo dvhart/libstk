@@ -62,6 +62,7 @@ libstk_la_SOURCES =\
 	label.h label.cpp \
 	list.h \
 	list_item.h list_item.cpp \
+	list_item_userdata.h \
 	list_template.h \
 	mouse_event.h mouse_event.cpp \
 	numeric_spinner.h numeric_spinner.cpp \
@@ -107,7 +108,7 @@ library_include_HEADERS= \
 	button.h         label.h             surface.h	\
 	combiners.h      exceptions.h        list.h         list_template.h \
         override_return.h \
-	combo.h          font.h              list_item.h  \
+	combo.h          font.h              list_item.h    list_item_userdata.h \
 	container.h      font_manager.h      mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             component.h    widget.h 	\
 	edge.h           graphics_context.h  point.h        image.h \

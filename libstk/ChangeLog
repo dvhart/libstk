@@ -1,3 +1,96 @@
+2003-11-24 17:41  cslade
+
+	* libstk/timer.h: I add a set repeat function for the timer
+
+2003-11-19 17:31  cslade
+
+	* libstk/: text_area.cpp, text_area.h: I add an option in text area
+	  to make it non editable
+
+2003-11-19 14:32  cslade
+
+	* libstk/list_template.h: Fixed list so that on_update_selection
+	  gets called on a mouse event
+
+2003-11-19 10:19  dvhart
+
+	* libstk/: mouse_event.h, spinner.cpp, widget.cpp: widget now
+	  translates mouse events back to parent coordinates before passing
+	  them up the hierarchy
+
+2003-11-14 12:47  cslade
+
+	* libstk/image.cpp: I fixed resize.
+
+2003-11-14 12:19  cslade
+
+	* libstk/image.cpp: I fixed a bug in image.cpp
+
+2003-11-14 08:21  dvhart
+
+	* libstk/application.cpp: minor updates
+
+2003-11-13 17:01  cslade
+
+	* libstk/label.h: I put a redraw when text_ is set.
+
+2003-11-13 16:31  cslade
+
+	* libstk/list_template.h: I fixed lists so they call
+	  on_update_selection on a down arrow
+
+2003-11-13 08:41  dvhart
+
+	* TODO, libstk/application.cpp, libstk/list_item.cpp,
+	  libstk/list_item.h, libstk/list_template.h,
+	  libstk/tribal_theme.cpp: start of conversion of list to container
+	  and list_item to widget, still needs some work like a default
+	  draw routine and fewer overridden methods in list_template,
+	  coming soon...
+
+2003-11-12 13:41  dvhart
+
+	* TODO, libstk/container.cpp, libstk/list.h,
+	  libstk/list_template.h, libstk/mouse_event.h, libstk/point.h,
+	  libstk/progress.cpp, libstk/progress.h, libstk/spreadsheet.cpp,
+	  libstk/stk_c_wrapper.cpp, libstk/switched_panel.cpp,
+	  libstk/text_area.cpp, libstk/tribal_theme.cpp,
+	  libstk/viewport.cpp, libstk/widget.cpp, libstk/widget.h,
+	  libstk/xine_panel.cpp: widgets now have a rectangle instead of
+	  are a rectangle
+
+2003-11-12 11:26  dvhart
+
+	* libstk/: Makefile.am, list.cpp, list.h, list_item.cpp,
+	  list_item.h, list_template.h: new list implementation with
+	  list_template
+
+2003-11-10 15:11  cslade
+
+	* libstk/surface_impl.h: I made draw image offset to the point
+	  passed in.w
+
+2003-11-07 16:26  cslade
+
+	* libstk/: image.cpp, image_panel.h: I fixed some bugs in image
+	  panel
+
+2003-11-07 08:45  dvhart
+
+	* libstk/: list.cpp, list.h: added current(int index) to list
+
+2003-11-06 15:08  cslade
+
+	* libstk/: image.cpp, image.h: I added scalling to the image class,
+	  you can scale up, down, or up in one direction and down in the
+	  other.
+
+2003-11-06 08:35  dvhart
+
+	* ChangeLog, libstk/Makefile.am: added tribal_theme.h to the list
+	  of installed headers so it can be extended for custom widgets in
+	  applications
+
 2003-11-05 15:49  cslade
 
 	* configure.in, libstk/image.cpp, libstk/image.h, libstk/surface.h,
