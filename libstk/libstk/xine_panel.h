@@ -47,6 +47,13 @@ namespace stk
         xine_video_port_t*  xine_vo_port_;
         xine_audio_port_t*  xine_ao_port_;
         xine_event_queue_t* xine_event_queue_;
+
+        // HACK
+        xine_audio_port_t* ao_ports[2];
+        xine_video_port_t* vo_ports[2];
+        xine_post_t* post;
+        // END HACK
+
         /// the rectangle we return to from fullscreen mode
         rectangle restore_rect_;
         bool fullscreen_;

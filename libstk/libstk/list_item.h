@@ -55,9 +55,9 @@ namespace stk
         void label(const std::wstring& label) { label_ = label; }
         virtual int height(); // implemented by the theme 
         bool selected() const { return selected_; }
-        void selected(bool val) { selected_ = val; }
+        void selected(bool val);
         bool current() const { return current_; }
-        void current(bool val) { current_ = val; }
+        void current(bool val);
         /********** END LIST ITEM INTERFACE **********/
     };
 }

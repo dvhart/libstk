@@ -227,7 +227,6 @@ namespace stk
         }
         virtual widget::ptr delegate_mouse_event(mouse_event::ptr me)
         {
-            INFO("list_template delegate_mouse_event");
             // pass a mouse event to the appropriate widget
             typename std::vector<Titem>::iterator iter = items_.begin();
             for (; iter != items_.end(); iter++)
@@ -236,7 +235,6 @@ namespace stk
                 {
                     mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(), 
                                 me->button(), me->type()));
-                    INFO("found an item, delegating and returning");
                     return (*iter)->delegate_mouse_event(me_to_child);
                 }
             }
@@ -307,11 +305,13 @@ namespace stk
         virtual void select_none()
         {
             for (unsigned int i = 0; i < items_.size(); i++) items_[i]->selected(false);
+            on_update_selection();
         }
 
         virtual void select_all()
         {
             for (unsigned int i = 0; i < items_.size(); i++) items_[i]->selected(true);
+            on_update_selection();
         }
 
         /// returns the list_item at the specified location
@@ -321,6 +321,7 @@ namespace stk
         }
 
         /// Erases the entire content of the list
+        // FIXME: always emmit on_update_(current|selection) ???
         virtual void clear()
         {
             bool sel_change = (selection().size() > 0);
@@ -354,16 +355,17 @@ namespace stk
         /// Sets the current item, or the first on bad index
         virtual void current(int index)
         {
-            if (current_ < items_.size()) items_[current_]->current(false);
+            if (!multiselect_) select_none();
+            if (current_item()) current_item()->current(false);
             if (index >= 0 && index < items_.size())
-            {
                 current_ = index;
-                items_[current_]->current(true);
-            }
             else 
-            {
                 current_ = 0;
-                if (current_item()) current_item()->current(true);
+            if (current_item())
+            {
+                current_item()->current(true);
+                current_item()->selected(true);
+                on_update_selection();
             }
             on_update_current();
         }

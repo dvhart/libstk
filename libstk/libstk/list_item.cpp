@@ -45,4 +45,21 @@ namespace stk
         widget::handle_event(e);
     }
 
+    void list_item::selected(bool val) 
+    { 
+        if (selected_ != val)
+        {
+            selected_ = val; 
+            redraw(rect());
+        }
+    }
+
+    void list_item::current(bool val) 
+    { 
+        if (current_ != val)
+        {
+            current_ = val; 
+            redraw(rect());
+        }
+    }
 }
