@@ -119,7 +119,7 @@ library_include_HEADERS= \
 	overlay.h        overlay_sdl.h       overlay_dfb.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
 	event_producer_elotouch.h            stk_c_wrapper.h \
-	switched_panel.h	edit_box.h   text_area.h\
+	switched_panel.h	edit_box.h   text_area.h read_dir.h\
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)  \
 	$(headers_printing) font_properties.h scrollable.h \
