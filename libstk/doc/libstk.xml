@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!DOCTYPE book
+  PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book>
+<title>Libstk - The Set-top Box Toolkit</title>
+<bookinfo> 
+	<author><firstname>Marc</firstname><surname>Strämke</surname></author>
+	<title>Libstk - The Set-top Box Toolkit</title>
+	<pubdate>25 March 2003</pubdate>
+	<corpauthor>Libstk-Team</corpauthor>
+</bookinfo>
+<chapter>
+	<title>Internals</title>
+	<section>
+		<title>Widget Tree</title>
+		<para>	
+			The single most important part of the library is the widget tree structure.
+		</para>
+		<para>
+			The root of the Tree is the Application Object (stk::application), it contains a list of state which all represents
+			one set of visible widgets at a time, these are contained in the children list of all containers.(state is a container too)</para>
+		<para>
+			All linking in the widget tree is established by using smart pointers, Parents use shared_ptrs to link to their children, which expresses
+			an ownership of the childrens. Children use weak_ptrs to establish a link to their parents, this is used instead of a shared_ptr because
+			a child doesnt/cannot own his own parent in terms of reference counting.
+		</para>
+		<para>
+			<figure>
+				<title>Example of the Widget tree</title>
+				<mediaobject><imageobject>
+				<imagedata fileref="images/widget_tree_example.png"  />
+				</imageobject></mediaobject>
+			</figure>
+		</para>
+		<section>
+			<title>Event handling</title>
+			<para>To be written(Describe dispatching of events with the widget tree)</para>
+		</section>
+		<section>
+			<title>Drawing</title>
+			<para>To be written(Describe drawing process with the widget tree)</para>
+		</section>
+	</section>
+	<section>
+		<title>Fonts</title>
+		<para>
+			Fonts in Libstk are drawn using the Freetype2 Rendering engine, in this engine
+			rendering glyphs is quite expensive, to counter this we are employing a cached glyph system in which
+			we cache the rendered glyphs for one single font and font property set in system memory.
+		</para>
+		<para>
+			For caching there are multiple layers involved. The lowest layer is the <classname>font</classname> class, this class
+			is responsible for Driving the rendering engine, and caching single glyph images. Each instance of the font class is constructed
+			with a set of properties describing all aspects of font rendering, font size, the font name and attributes. (outline only, italic or bold)		
+		</para>
+		<para>
+			The next higher layer is the font manager, this is a singleton object which  manages <emphasis>all</emphasis> instances of
+			the font class, this is done to avoid creating font objects with the same properties multiple times, which would duplicate
+			the caching effort in multiple places and waste memory. The user interacts with the singleton by calling a single function 
+			called get_font which takes a font property set as its sole argument and returns a shared_ptr to the right font class instances
+			with the corresponding property set, it is very important that the user stores this shared_ptr as long as he is using this set
+			of font properties to draw text, when the returned shared_ptr is destroyed (goes out of scope) the associated font objects
+			<emphasis>will</emphasis> be destroyed except when there are multiple users of the same object.
+		</para>
+	</section>
+	<section>
+		<title>Drawing</title>
+		<para>To be written (Should describe surface class et al)</para>
+	</section>
+</chapter>
+<appendix>
+	<title>Coding Standards</title>
+	<section>	
+		<title>Naming</title>
+		<para>
+		</para>
+		<section>
+			<title>Variable Names</title>
+			<para>
+				Variable Names should be descriptive,short and concise, different words have to be seperated by a underscore.
+			</para>		
+			<formalpara>
+				<title>Examples of <emphasis>Good</emphasis> style</title>
+				<para>temp_widget, temporary_widget, big_button .. </para>
+			</formalpara>
+			<formalpara>
+				<title>Examples of <emphasis>Bad</emphasis> style</title>
+				<para>TempWidget,tw,tWidget,wtTemp...</para>
+			</formalpara>
+			<para>
+				Variables in Class scope should have an underscore as their suffix and never be global, global Variables should only be provided by
+				property accessor-methods.
+			</para> 
+		</section>
+	</section>
+	<section>
+		<title>Properties</title>
+		<para>
+			Properties which are contained in the public API of any Library object should 
+			<emphasis>only</emphasis> be accesible trough Accessor Methods.
+		</para>
+		<para>
+			The Property Accessor methods should have the following prototype (T is the Propertie's value, property the propertie's name)
+		</para>
+		<para>Get: T property() const;</para>
+		<para>Set: void property(T);</para>
+		<para>
+			The get Method as shown by the const specification should not have any Side effects on the classes' state. (FIXME:HAVE TO DISCUSS THIS)
+		</para>
+	</section>
+	<section>	
+		<title>Formatting</title>
+		<section>
+			<title>Identation</title>
+			<para>
+				Code should be Indented according to the Ansi Style, Look at the Artistic Style Documentation for a full specifcation of this(astyle.sf.net,FIXME).
+				Code can be automaticly formatted with the <emphasis>astyle --style=ansi</emphasis> command.
+			</para>
+		</section>
+		<section>
+			<title>Spacing</title>
+			<para>
+				Operators should be seperated by spaces. 
+			</para>
+			<para>
+				Good: a = b + 1; 
+			</para>
+			<para>
+				Bad: a=b+1;
+			</para>
+		</section>
+	</section>
+	<section>
+		<title>Common Practises</title>
+		<para>There are some Common practises in the Libstk library that should be followed by contributors.</para>
+		<para>Every class should have 2 typedefs defined. classname::ptr as a boost::shared_ptr&lt;classname&gt; 
+			and classname::weak_ptr as a boost::weak_ptr&lt;classname&gt;. This makes it possible to easily define smart pointers to
+			libstk Objects without polluting the global namespace with type definitions.</para>
+	</section>
+</appendix>
+</book>

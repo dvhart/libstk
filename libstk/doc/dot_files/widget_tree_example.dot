@@ -1,0 +1,13 @@
+digraph widget_tree
+{
+	size="10,8";
+	node [color="lightblue",style=filled];
+	"Application" -> "State1";
+	"Application" -> "State2";
+	"State1" -> "Button1";
+	"State1" -> "Button2";
+	"State1" -> "Scrollbox";
+	"Scrollbox" -> "Listbox2"
+	"State2" -> "Listbox1";
+	"State2" -> "Progress1";
+}
