@@ -1,34 +1,31 @@
-widget destructor should destroy all its children
+MEETING TOPICS
 
-make all widget functions virtual
+- usage of signals (only for the user?)
+- global key bindings (accelerators ?)
+- license - define intent
+- tab stops
+- discuss embedded widgets
+  what types of widgets make sense in embedded devices ?
+	    combo box are very mouse oriented for example, what types of widgets
+	    are IR Remote friendly ?
 
-use set_text to set a message for stk_progress (toggle showing %|msg)
+DOCUMENTATION
+decide on a format
+ie:
+    /// This is a brief description, until the dot.
+    /// This is a detailed description of the entity immmediately
+    /// below these lines of the description
+    class|function { }
+write it!!!!
 
-??Modify stk_font to use 2 font.raw files, one for fill and the other for outline.
-The theme should then have two color also.
+WIDGETS TO WRITE
+edit_box
+text_area
+spinner
+list
+combo
+image
+uberscript_panel (support for HTML, perhaps more strict... XHTML ?)
 
-??add up,down,left,right widget pointers to stk_widget and a default handler 
-of the same arrow keys for better state navigation - better yet, use a STL container... map?
-
-add member variables for all theme items that are copied from the theme on 
-creation but can be set later so items can be unique, regardless of theme.
-
-finish converting from char * to std::string (stk_font and stk_theme)
-
-abstract SDL
-     typedef SDLKey stkkey;
-
-bind default arguments to signals (like the calling widget)
-
-use vector for list_items (array_o_combos) bad
-ie std::vector <stk_list_item> items;
-items.push_back( stk_list_item("balaslfafdf") );
-
-make item class inside list_box
-ie. stk::list_box::item
-
-let buttons have image and label children... or maybe just as members...
-
-remove the border from the image
-add a frame widget... ??
-
+MEDIA WIDGETS
+??
