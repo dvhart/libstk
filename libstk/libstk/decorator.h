@@ -45,12 +45,14 @@ namespace stk
 			/********** PARENT INTERFACE **********/
 			virtual widget::ptr focus_next() { return component_->focus_next(); }
 			virtual widget::ptr focus_prev() { return component_->focus_prev(); }
+			virtual void add(widget::ptr item) { component_->add(item); }
+			virtual void remove(widget::ptr item) { component_->remove(item); }
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
-			rectangle rect() { return component_->rect(); }
-			bool contains(int x, int y) { return component_->contains(x, y); }
-			bool intersects(const rectangle& rect) { return component_->intersects(rect); }
+			//rectangle rect() { return component_->rect(); }
+			//bool contains(int x, int y) { return component_->contains(x, y); }
+			//bool intersects(const rectangle& rect) { return component_->intersects(rect); }
 			virtual bool is_container() { return component_->is_container(); }
 
 			// widget attribute accessor methods

@@ -13,7 +13,7 @@ namespace stk
 		const rectangle& rect, int range)
 	{
 		progress::ptr new_progress(new progress(parent, format_label, rect, range));
-		parent->add_child(new_progress);
+		parent->add(new_progress);
 		return new_progress;
 	}
 

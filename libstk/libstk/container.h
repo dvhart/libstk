@@ -49,8 +49,10 @@ namespace stk
 			/// have no children, or reach the beginning, ask parent_ for the next 
 			/// widget.
 			virtual widget::ptr focus_prev();
-			virtual void add_child(widget::ptr w)
-			{ children_.push_back(w); }
+			/// Add a child widget to the children vector
+			virtual void add(widget::ptr w);
+			/// Remove a child widget from the children vector
+			virtual void remove(widget::ptr item);
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
@@ -58,11 +60,8 @@ namespace stk
 			/********** END WIDGET INTERFACE **********/
 			
 			/********** CONTAINER INTERFACE **********/
-			/// \todo arent these redundant (aren't what redundant ??)
-			/// Add a widget to the children vector
-			void add(widget::ptr item);
-			/// Remove a child widget from the children vector
-			void remove(widget::ptr item);
+			// the container interface really defines the composite methods
+			// that parent (which should be called component) declared
 			
 			/// Returns a widget::ptr to the container's first child that contains
 			/// x,y.  It will call widget_at on a child that is a container.

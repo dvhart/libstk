@@ -29,9 +29,9 @@ namespace stk
 	    pressed_(false), focused_(false), hover_(false), tab_(0), frame_(0)
 	{
 		cout << "widget::widget(container)" << endl;
-		//parent->add_child(widget::ptr(this)); // why is this not being called ?
 	}
 
+	/// fixme: why do we need this one again?
 	widget::widget(parent::ptr parent, const rectangle& rect)
 		: parent_(parent), rect_(rect), focusable_(false), 
 	    pressed_(false), focused_(true), hover_(false), tab_(0)

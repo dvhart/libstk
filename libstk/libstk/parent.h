@@ -10,6 +10,8 @@ namespace stk
 	class widget;
 
 	/// A class declaring the parent interface.
+	/// I think this class is superfluous and its interface should be moved
+	/// down to widget. --dvhart
 	class parent : public event_handler, public drawable
 	{
 		public:
@@ -24,13 +26,20 @@ namespace stk
 		public:
 			virtual ~parent() { };
 			
+			/********** PARENT INTERFACE **********/
 			/// Retrieve the next focusable widget.
 			/// \todo is there a way to use widget::ptr here
 			virtual boost::shared_ptr<widget> focus_next() = 0;
-			
 			/// Retrieve the next focusable widget.
 			virtual boost::shared_ptr<widget> focus_prev() = 0;
-
+			/// Add a child.
+			/// This does nothing by default and is overridden in container.
+			virtual void add(boost::shared_ptr<widget> item) { }
+			/// Remove a child 
+			/// This does nothing by default and is overridden in container.
+			virtual void remove(boost::shared_ptr<widget> item) { }
+			/********** END PARENT INTERFACE **********/
+			
 	}; // class parent
 } // namespace stk
 

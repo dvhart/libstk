@@ -5,20 +5,21 @@
 #include <boost/bind.hpp>
 
 #include "libstk/application.h"
-#include "libstk/state.h"
 #include "libstk/button.h"
-#include "libstk/image_panel.h"
+#include "libstk/event_system.h"
+#include "libstk/event_system_sdl.h"
+#include "libstk/exceptions.h"
 #include "libstk/image.h"
+#include "libstk/image_panel.h"
+#include "libstk/label.h"
 #include "libstk/list.h"
 #include "libstk/list_item.h"
 #include "libstk/progress.h"
-#include "libstk/label.h"
-#include "libstk/event_system.h"
-#include "libstk/event_system_sdl.h"
 #include "libstk/spinner.h"
+#include "libstk/scroll_decorator.h"
+#include "libstk/state.h"
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
-#include "libstk/exceptions.h"
 
 using namespace stk;
 using std::cout;
@@ -85,13 +86,17 @@ int main(int argc, char* argv[])
 			std::wstring(L"Loading - %p %d %f"), rectangle(10, 440, 320, 30), 100);
 		test_progress->percent(0.64);
 	
-		// create an image
-		cout << "test_app - creating an image_panel" << endl;
+		// create an image in a scroll panel
+		cout << "test_app - creating an image_panel in a scroll panel" << endl;
 		label::ptr test_label3 = label::create(test_state, std::wstring(L"Clipped Image"), 
 			rectangle(10, 50, 150, 30));
-		image_panel::ptr test_image_panel = image_panel::create(test_state, 
-				rectangle(10, 90, 350, 200), image::create("parrots.ppm"));
-		
+		/*
+		scroll_decorator::ptr test_scroll = scroll_decorator::create(test_state, 
+				rectangle(10, 90, 350, 200));
+		image_panel::ptr test_image_panel = image_panel::create(test_scroll, 
+				rectangle(10, 90, 400, 400), image::create("parrots.ppm"));
+		*/
+
 		// create a list
 		cout << "test_app - creating a list with items" << endl;
 		list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));

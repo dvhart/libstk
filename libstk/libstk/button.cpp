@@ -18,7 +18,7 @@ namespace stk
 		const rectangle& rect)
 	{
 		button::ptr new_button(new button(parent, label, rect));
-		parent->add_child(new_button);
+		parent->add(new_button);
 		return new_button;
 	}
 

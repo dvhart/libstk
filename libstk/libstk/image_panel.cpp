@@ -7,7 +7,7 @@ namespace stk
 			image::ptr img)
 	{
 		image_panel::ptr new_image_panel(new image_panel(parent, rect, img));
-		parent->add_child(new_image_panel);
+		parent->add(new_image_panel);
 		return new_image_panel;
 	}
 	

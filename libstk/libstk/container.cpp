@@ -20,6 +20,7 @@ namespace stk
 		redraw_rect_ = parent->surface()->rect();
 	}
 	
+	// why do we need this one again ?
 	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : 
 		widget(parent, rect)
 	{
@@ -56,11 +57,11 @@ namespace stk
 		}
 	}
 	
-	void container::add(widget::ptr item)
-	{
-		children_.push_back(item);
+	void container::add(widget::ptr w)
+	{ 
+		children_.push_back(w); 
 	}
-
+	
 	void container::remove(widget::ptr item)
 	{
 		std::vector<boost::shared_ptr<stk::widget> >::iterator iter;
