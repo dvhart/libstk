@@ -35,13 +35,23 @@ using std::endl;
 
 namespace stk
 {
-
+    application::ptr application::instance_;
+    
     application::ptr application::create(surface::ptr surface)
     {
-        application::ptr new_application(new application(surface));
-        return new_application;
+        if (instance_) throw error_message_exception("application::create() - "
+                "application already instantiated (create can only be called once)");
+        instance_.reset(new application(surface));
+        return instance_;
     }
 
+    application::ptr application::get()
+    {
+        if (!instance_) throw error_message_exception("application::get() - "
+                "application not instantiated (create has not been called)");
+        return instance_;
+    }
+    
     application::application(surface::ptr surface) :
             surface_(surface), event_system_(event_system::get
                                                  ()), done_(false)

@@ -35,6 +35,7 @@ namespace stk
         typedef boost::weak_ptr<application> weak_ptr;
 
     private:
+        static application::ptr instance_;
         surface::ptr surface_;
         event_system::ptr event_system_;
         std::list<boost::shared_ptr<state> > states_;
@@ -53,9 +54,13 @@ namespace stk
 
     public:
         /// Constructs a new Application Object
+        /// This should be called only once near the beginning of every Libstk program.
+        /// Throws error_message_exception if called more than once.
         /// \param surface Target surface for drawing
-        /// \param event_system Source for events
         static application::ptr create(surface::ptr surface);
+        /// Return the singleton instance of application.
+        /// Throws error_message_exception if called prior to a call to create.
+        static application::ptr get();
         ~application();
 
         /// Runs The Application, returns when the application is shut down
