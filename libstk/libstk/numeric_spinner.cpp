@@ -51,7 +51,7 @@ namespace stk
                     switch ( ke->key() )
                     {
                         case key_enter:
-                        case up_arrow:
+                        case key_uparrow:
                             value_ = value_+increment_;
                             if (value_ > max_)
                             {	
@@ -63,7 +63,7 @@ namespace stk
                             redraw(rect_);
                             return;
                             break;
-                        case down_arrow:
+                        case key_downarrow:
                             value_ = value_-increment_;
                             if (value_ < min_) 
                             {

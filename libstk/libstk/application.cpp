@@ -221,12 +221,12 @@ namespace stk
             //cout << "application::handle_event() - key pressed: " << ke->key() << endl;
             switch (ke->key())
             {
-            case key_esc:
+            case key_escape:
                 quit();
                 break;
             case key_tab:
-            case right_arrow:
-            case down_arrow:
+            case key_rightarrow:
+            case key_downarrow:
             {
                 cout << "application::handle_event() - next pressed" << endl;
                 component::weak_ptr prev_focused_widget = focused_widget_;
@@ -247,8 +247,8 @@ namespace stk
             case key_enter:
                 cout << "application::handle_event() - enter pressed" << endl;
                 break;
-            case left_arrow:
-            case up_arrow:
+            case key_leftarrow:
+            case key_uparrow:
             {
                 cout << "application::handle_event() - prev pressed" << endl;
                 component::weak_ptr prev_focused_widget = focused_widget_;

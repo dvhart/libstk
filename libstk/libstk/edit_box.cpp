@@ -16,9 +16,6 @@
 #include "libstk/event.h"
 #include "libstk/key_event.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
     edit_box::ptr edit_box::create(container::ptr parent, const std::wstring& text, 
@@ -32,19 +29,16 @@ namespace stk
     edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect)
         :	widget(parent, rect), text_(text)
     {
-        cout << "edit_box::edit_box()" << endl;
         focusable(true);
     }
 
     edit_box::~edit_box()
     {
-        cout << "edit_box::~edit_box()" << endl;
     }
 
     // event handler
     void edit_box::handle_event(event::ptr e)
     {
-        //cout << "edit_box::handle_event()" << endl;
         switch (e->type())
         {
         case event::key_down:
@@ -52,31 +46,33 @@ namespace stk
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
             switch ( ke->key() )
             {
-            case key_enter:
-                cout << "edit_box::handle_event() - emitting signal on_confirm()" << endl;
-                redraw(rect_);
-                on_confirm(text_);
-                return;
-                break;
-            case key_backspace:
-                INFO("Backspace hit in edit_box");
-                if (text_.size() > 0)
-                    text_.resize(text_.size()-1);
+             case key_backspace:
+                if (text_.size() > 0) text_.resize(text_.size()-1);
                 redraw(rect_);
                 on_change(text_);
                 return;
                 break;
+             case key_delete:
+                return;
+                INFO("Delete not implemented");
+                break;
+             case key_enter:
+                redraw(rect_);
+                on_confirm(text_);
+                return;
+                break;
             }
 
-            // FIXME: accept other non alphanumeric keys: []-=\;',./`
-            // FIXME: how do we want to handle key modifiers ?
-            if ( (ke->key() >= key_0 && ke->key() <= key_9) ||
-                (ke->key() >= key_A && ke->key() <= key_Z) ||
-                (ke->key() >= key_a && ke->key() <= key_z) )
+            // handle ascii keys 
+            if (ke->key() > key_backspace && ke->key() < key_delete)
             {
-                INFO("Alphanum key hit in edit_box");
-                // FIXME: replace a selection of text with the current keystroke
-                text_ += (wchar_t)ke->key();
+                INFO("ASCII key received");
+                // FIXME: if text is selected, replace it with the current keystroke character 
+                wchar_t new_char = (wchar_t)ke->key();
+                INFO("Current modifier: " << std::hex << ke->modlist());
+                if ((ke->modlist() & mod_shift) && (ke->key() >= key_a && ke->key() <= key_z)) 
+                    new_char += (wchar_t)('A' - 'a');
+                text_ += new_char;
                 redraw(rect_);
                 on_change(text_);
                 return;

@@ -46,6 +46,7 @@ namespace stk
     private:
         sdl_data::ptr sdl_data_;
         keycode sdl2stk_key(SDLKey sdl_key);
+        modcode sdl2stk_mod(SDLMod sdl_mod);
 
     protected:
         event_producer_sdl();

@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
         button::ptr test_button6 = button::create(test_state, L"F4", rectangle(340, 400, 100, 30));
 
         // HOTKEYS
-        hotkey hotkey_F1(f1);
+        hotkey hotkey_F1(key_f1);
         hotkey_F1.sig.connect(test_button_F1->on_release);
         test_state->on_keyup.connect(boost::ref(hotkey_F1));
         // END HOTKEYS

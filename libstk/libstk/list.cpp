@@ -63,7 +63,7 @@ namespace stk
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
             switch ( ke->key() )
             {
-            case up_arrow:
+            case key_uparrow:
                 if (selected_ > 0)
                 {
                     selected_--;
@@ -74,7 +74,7 @@ namespace stk
                 }
                 return;
                 break;
-            case down_arrow:
+            case key_downarrow:
                 if (selected_ < items_.size() - 1)
                 {
                     selected_++;

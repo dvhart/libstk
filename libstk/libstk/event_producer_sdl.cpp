@@ -2,7 +2,7 @@
  *    FILENAME: event_producer_sdl.cpp 
  * DESCRIPTION: SDL event producer implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 09/Jun/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 27/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -17,10 +17,12 @@
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/sdl_data.h"
+#include "libstk/logging.h"
 
-using std::cout;
-using std::endl;
-
+/* FIXME: SDL reports the non-shifted keysym when shift is held down.  Are we using SDL
+ * wrong or do we need to deal with that here, or possibly in the app ?
+ * i.e. 3 and Shift-3 both return SDLK_3, rather than SDLK_3 and SDLK_HASH respectively.
+ */
 namespace stk
 {
     event_producer_sdl::ptr event_producer_sdl::create()
@@ -33,86 +35,91 @@ namespace stk
 
     event_producer_sdl::event_producer_sdl()
     {
-        cout << "event_producer_sdl::event_producer_sdl()" << endl;
         // make sure SDL has been initialized
-        sdl_data_ = sdl_data::get
-                        (); // reference counting
+        sdl_data_ = sdl_data::get(); // reference counting
         sdl_data_->init();
     }
 
     event_producer_sdl::~event_producer_sdl()
     {
-        cout << "event_producer_sdl::~event_producer_sdl()" << endl;
     }
 
     boost::shared_ptr<stk::event> event_producer_sdl::poll_event()
     {
-        //cout << "event_producer_sdl::poll_event()" << endl;
         // enter the event loop
         SDL_Event new_event;
         event::ptr event_ = event::create(event::none);
         if (SDL_PollEvent(&new_event))
         {
-            //cout << "event_producer_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
             switch(new_event.type)
             {
             case SDL_KEYDOWN:
-                //cout << "SDL_KEYDOWN" << endl;
-                return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), event::key_down));
+            {
+                return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), 
+                            event::key_down, sdl2stk_mod(new_event.key.keysym.mod)));
                 break;
+            }
             case SDL_KEYUP:
-                //cout << "SDL_KEYUP" << endl;
-                return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), event::key_up));
+            {
+                return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym),
+                            event::key_up, sdl2stk_mod(new_event.key.keysym.mod)));
                 break;
+            }
             case SDL_MOUSEBUTTONDOWN:
-                //cout << "SDL_MOUSEBUTTONDOWN" << endl;
                 return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y,
-                                                        new_event.button.button, event::mouse_down));
+                            new_event.button.button, event::mouse_down));
                 break;
             case SDL_MOUSEBUTTONUP:
-                //cout << "SDL_MOUSEBUTTONUP" << endl;
                 return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y,
-                                                        new_event.button.button, event::mouse_up));
+                            new_event.button.button, event::mouse_up));
                 break;
             case SDL_MOUSEMOTION:
-                //cout << "SDL_MOUSEMOTION" << endl;
                 return mouse_event::ptr(new mouse_event(new_event.motion.x, new_event.motion.y,
-                                                        -1, event::mouse_motion));
+                            -1, event::mouse_motion));
                 break;
             case SDL_QUIT:
-                //cout << "SDL_QUIT" << endl;
                 return event::create(event::quit);
                 break;
             default:
                 // throw something
-                cout << "event_producer_sdl::poll_event() - unknown event type" << endl;
+                WARN("unknown event type");
                 return event::create(event::unknown);
             }
         }
         return event_;
     }
-
+    
     keycode event_producer_sdl::sdl2stk_key(SDLKey sdl_key)
     {
+        INFO("Received SDL Key: " << std::hex << sdl_key);
         keycode key;
 
-        // FIXME: handle other keys and the Shift modifier
+        // FIXME: fill in the rest of the keys 
         
         // handle key ranges
+        // a - z
         if (sdl_key >= SDLK_a && sdl_key <= SDLK_z)
         {
             key = (keycode)(key_a + (keycode)(sdl_key - SDLK_a));
             return key;
         }
+        // 0 - 9
         if (sdl_key >= SDLK_0 && sdl_key <= SDLK_9)
         {
             key = (keycode)(key_0 + (keycode)(sdl_key - SDLK_0));
             return key;
         }
+        // keypad 0 - keypad 9
         if (sdl_key >= SDLK_KP0 && sdl_key <= SDLK_KP9)
         {
             // FIXME: use stk keypad codes (don't exist atm)
             key = (keycode)(key_0 + (keycode)(sdl_key - SDLK_KP0));
+            return key;
+        }
+        // f1 - f12
+        if (sdl_key >= SDLK_F1 && sdl_key <= SDLK_F12)
+        {
+            key = (keycode)(key_f1 + (keycode)(sdl_key - SDLK_F1));
             return key;
         }
  
@@ -126,66 +133,51 @@ namespace stk
         case SDLK_TAB:
             key = key_tab;
             break;
-        case SDLK_ESCAPE:
-            key = key_esc;
-            break;
         case SDLK_RETURN:
             key = key_enter;
             break;
+        case SDLK_ESCAPE:
+            key = key_escape;
+            break;
+        case SDLK_SPACE:
+            key = key_space;
+            break;
+
         case SDLK_LEFT:
-            key = left_arrow;
+            key = key_leftarrow;
             break;
         case SDLK_RIGHT:
-            key = right_arrow;
+            key = key_rightarrow;
             break;
         case SDLK_UP:
-            key = up_arrow;
+            key = key_uparrow;
             break;
         case SDLK_DOWN:
-            key = down_arrow;
-            break;
-        case SDLK_F1:
-            key = f1;
-            break;
-        case SDLK_F2:
-            key = f2;
-            break;
-        case SDLK_F3:
-            key = f3;
-            break;
-        case SDLK_F4:
-            key = f4;
-            break;
-        case SDLK_F5:
-            key = f5;
-            break;
-        case SDLK_F6:
-            key = f6;
-            break;
-        case SDLK_F7:
-            key = f7;
-            break;
-        case SDLK_F8:
-            key = f8;
-            break;
-        case SDLK_F9:
-            key = f9;
-            break;
-        case SDLK_F10:
-            key = f10;
-            break;
-        case SDLK_F11:
-            key = f11;
-            break;
-        case SDLK_F12:
-            key = f12;
+            key = key_downarrow;
             break;
         default:
-            cout << "event_producer_sdl::sdl2stk_kay - unknown key" << std::hex << sdl_key << endl;
+            WARN("unknown key: " << std::hex << sdl_key);
             key = key_unknown;
             break;
         }
         return key;
     }
 
+    modcode event_producer_sdl::sdl2stk_mod(SDLMod sdl_mod)
+    {
+        modcode modlist = mod_none;
+        if (sdl_mod & KMOD_NUM)    modlist = (modcode)(modlist | mod_numlock);
+        if (sdl_mod & KMOD_CAPS)   modlist = (modcode)(modlist | mod_capslock);
+        if (sdl_mod & KMOD_MODE)   modlist = (modcode)(modlist | mod_mode);
+        if (sdl_mod & KMOD_LCTRL)  modlist = (modcode)(modlist | mod_leftcontrol);
+        if (sdl_mod & KMOD_RCTRL)  modlist = (modcode)(modlist | mod_rightcontrol);
+        if (sdl_mod & KMOD_RSHIFT) modlist = (modcode)(modlist | mod_rightshift);
+        if (sdl_mod & KMOD_LSHIFT) modlist = (modcode)(modlist | mod_leftshift);
+        if (sdl_mod & KMOD_RALT)   modlist = (modcode)(modlist | mod_rightalt);
+        if (sdl_mod & KMOD_LALT)   modlist = (modcode)(modlist | mod_leftalt);
+        if (sdl_mod & KMOD_RMETA)  modlist = (modcode)(modlist | mod_rightmeta);
+        if (sdl_mod & KMOD_LMETA)  modlist = (modcode)(modlist | mod_leftmeta);
+        return modlist;
+    }
+    
 } // namespace stk

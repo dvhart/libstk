@@ -15,8 +15,8 @@
 
 namespace stk
 {
-    key_event::key_event(keycode key, event_type type) :
-            event(type), keycode_(key)
+    key_event::key_event(keycode key, event_type type, modcode modlist) :
+            event(type), keycode_(key), modlist_(modlist)
     {}
 
     key_event::~key_event()
