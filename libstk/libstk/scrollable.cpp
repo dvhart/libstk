@@ -28,6 +28,7 @@ namespace stk
     
     void scrollable::update_vis_sizes(int height, int width)
     {
+        INFO("scrollable::update_vis_sizes");
         v_scroll_->vis_size(height);
         h_scroll_->vis_size(width);
     }

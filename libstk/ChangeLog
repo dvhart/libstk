@@ -1,3 +1,42 @@
+2003-10-29 10:12  cslade
+
+	* libstk/: edit_box.cpp, edit_box.h, text_area.cpp, text_area.h: I
+	  added the api to edit_box, and added h_scroll to text_area:
+
+2003-10-27 01:42  carter
+
+	* libstk/list.cpp: Fixed the list item position problem when
+	  removing items, current solution is somewhat unoptimal because i
+	  search trough all the items and fix up their position instead of
+	  only the items after the removed one
+
+2003-10-22 01:40  carter
+
+	* libstk/: font.cpp, font.h, glyph.cpp, surface_dfb.cpp,
+	  surface_dfb.h, surface_impl.h: Made Fonts rotatable
+
+2003-10-21 08:59  cslade
+
+	* libstk/text_area.cpp: I just fixed some bugs in text_area
+
+2003-10-19 01:56  dvhart
+
+	* ChangeLog, TODO, libstk/component.h, libstk/container.cpp,
+	  libstk/list.cpp, libstk/list.h, libstk/point.h,
+	  libstk/rectangle.cpp, libstk/rectangle.h, libstk/scroll_bar.cpp,
+	  libstk/scroll_box.cpp, libstk/scroll_box.h,
+	  libstk/scroll_model.cpp, libstk/scroll_model.h,
+	  libstk/scrollable.cpp, libstk/scrollable.h, libstk/surface.h,
+	  libstk/text_area.cpp, libstk/text_area.h, libstk/viewport.cpp,
+	  libstk/viewport.h, libstk/widget.cpp, libstk/widget.h,
+	  test/test_app.cpp, test/test_area.cpp: added scroll policies to
+	  the scroll_box, added a on_resize signal to widget and use it to
+	  update the scroll model size automatically for scrollable(TM)
+	  widgets, added the update_vis_sizes callback to the scrollable
+	  interface to be used to update the scroll model vis sizes of a
+	  scrollable widget when it changes size.  Updated list, viewport,
+	  and text_area to make use of these signals and callbacks.
+
 2003-10-18 02:28  carter
 
 	* libstk/: application.cpp, application.h: Made it possible that

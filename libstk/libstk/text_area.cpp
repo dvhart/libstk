@@ -55,8 +55,7 @@ namespace stk
     {
         if (line_wrap_)
         {
-            int temp = total_lines();
-            v_scroll_->size(MAX(temp*(get_font()->height()+line_spacing()), 
+            v_scroll_->size(MAX(total_lines()*(get_font()->height()+line_spacing()), 
                         v_scroll_->vis_size()));
             h_scroll_->size(h_scroll_->vis_size());
         }
@@ -81,6 +80,7 @@ namespace stk
                             v_scroll_->vis_size()));
             h_scroll_->begin(scr);
         }
+        scroll();
     }
 
     // event handler
@@ -102,7 +102,6 @@ namespace stk
                     text_.erase(sel_min, sel_width);
                     selection_start_ = selection_end_ = sel_min;
                     resize();
-                    scroll();
                     redraw(widget::rect());
                     on_change(text_);
                 }
@@ -112,7 +111,6 @@ namespace stk
                     text_.erase(sel_min, 1);
                     selection_start_ = selection_end_ = sel_min;
                     resize();
-                    scroll();
                     redraw(widget::rect());
                     on_change(text_);
                 }
@@ -125,7 +123,6 @@ namespace stk
                     text_.erase(sel_min, sel_width);
                     selection_start_ = selection_end_ = sel_min;
                     resize();
-                    scroll();
                     redraw(widget::rect());
                     on_change(text_);
                 }
@@ -133,7 +130,6 @@ namespace stk
                 {
                     text_.erase(sel_min, 1);
                     resize();
-                    scroll();
                     redraw(widget::rect());
                     on_change(text_);
                 }
@@ -149,7 +145,6 @@ namespace stk
                 selection_start_ = ++selection_end_;
                 //make the size bigger
                 resize();
-                scroll();
                 redraw(widget::rect());
                 on_change(text_);
                 return;
@@ -213,7 +208,6 @@ namespace stk
                 text_.insert(selection_end_, insert_str);
                 selection_start_ = ++selection_end_;
                 resize();
-                scroll();
                 redraw(widget::rect());
                 on_change(text_);
                 return;

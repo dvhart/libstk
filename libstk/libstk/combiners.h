@@ -30,13 +30,13 @@ namespace stk
             {
                 if (first == last)
                     return false; // no connections, so we didn't handle it
+                bool ret = true;
                 while (first != last)
                 {
-                    if (! *first)
-                        return false; // one failed, so return false
+                    if (! *first) ret = false; // one failed, so return false
                     ++first;
                 }
-                return true; // no connections failed
+                return ret; // no connections failed
             }
         };
 
@@ -50,13 +50,13 @@ namespace stk
             {
                 if (first == last)
                     return false; // no connections, so we didn't handle it
+                bool ret = false;
                 while (first != last)
                 {
-                    if (*first)
-                        return true; // one succeeded, so return true
+                    if (*first) ret = true; // one succeeded, so return true
                     ++first;
                 }
-                return false; // no connections succeeded
+                return ret; // no connections succeeded
             }
         };
 
