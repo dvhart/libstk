@@ -14,7 +14,7 @@
 #ifndef STK_EVENT_HANDLER_H
 #define STK_EVENT_HANDLER_H
 
-#include "libstk/event.h"
+#include <libstk/event.h>
 
 namespace stk
 {

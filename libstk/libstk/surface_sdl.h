@@ -16,12 +16,12 @@
 #include <string>
 #include <vector>
 #include <SDL/SDL.h>
-#include "libstk/surface.h"
-#include "libstk/surface_impl.h"
-#include "libstk/point.h"
-#include "libstk/edge.h"
-#include "libstk/stk.h"
-#include "libstk/sdl_data.h"
+#include <libstk/surface.h>
+#include <libstk/surface_impl.h>
+#include <libstk/point.h>
+#include <libstk/edge.h>
+#include <libstk/stk.h>
+#include <libstk/sdl_data.h>
 
 // this is opposite from the docs, but it works
 #if SDL_BYTEORDER != SDL_BIG_ENDIAN

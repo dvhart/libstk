@@ -16,10 +16,10 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/rectangle.h"
-#include "libstk/container.h"
-#include "libstk/list.h"
-#include "libstk/list_item.h"
+#include <libstk/rectangle.h>
+#include <libstk/container.h>
+#include <libstk/list.h>
+#include <libstk/list_item.h>
 
 namespace stk
 {

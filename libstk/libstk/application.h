@@ -17,11 +17,11 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
-#include "libstk/component.h"
-#include "libstk/surface.h"
-#include "libstk/widget.h"
-#include "libstk/event_system.h"
-#include "libstk/timer.h"
+#include <libstk/component.h>
+#include <libstk/surface.h>
+#include <libstk/widget.h>
+#include <libstk/event_system.h>
+#include <libstk/timer.h>
 
 namespace stk
 {

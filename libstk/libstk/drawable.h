@@ -14,8 +14,8 @@
 #ifndef STK_DRAWABLE_H
 #define STK_DRAWABLE_H
 
-#include "libstk/surface.h"
-#include "libstk/rectangle.h"
+#include <libstk/surface.h>
+#include <libstk/rectangle.h>
 
 namespace stk
 {

@@ -18,13 +18,13 @@
 #include <list>
 #include <iostream>
 #include <cmath>
-#include "libstk/surface.h"
-#include "libstk/rectangle.h"
-#include "libstk/point.h"
-#include "libstk/edge.h"
-#include "libstk/exceptions.h"
-#include "libstk/image.h"
-#include "libstk/stk.h"
+#include <libstk/surface.h>
+#include <libstk/rectangle.h>
+#include <libstk/point.h>
+#include <libstk/edge.h>
+#include <libstk/exceptions.h>
+#include <libstk/image.h>
+#include <libstk/stk.h>
 
 namespace stk
 {

@@ -11,7 +11,7 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
-#include "libstk/surface.h"
+#include <libstk/surface.h>
 
 namespace stk
 {

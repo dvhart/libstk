@@ -23,5 +23,6 @@ CXXFLAGS="$CXXFLAGS"
 AC_OUTPUT([
 Makefile
 libstk/Makefile
+test/Makefile
 libstk.pc
 ])

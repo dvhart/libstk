@@ -17,9 +17,9 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 
-#include "libstk/rectangle.h"
-#include "libstk/widget.h"
-#include "libstk/container.h"
+#include <libstk/rectangle.h>
+#include <libstk/widget.h>
+#include <libstk/container.h>
 
 namespace stk
 {

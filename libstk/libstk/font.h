@@ -18,8 +18,8 @@
 #include <map>
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include "libstk/rectangle.h"
-#include "libstk/glyph.h"
+#include <libstk/rectangle.h>
+#include <libstk/glyph.h>
 
 /*
    we will be caching stk::glyph's 

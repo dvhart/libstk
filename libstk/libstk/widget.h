@@ -18,10 +18,10 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 
-#include "libstk/component.h"
-#include "libstk/keycode.h"
-#include "libstk/combiners.h"
-#include "libstk/mouse_event.h"
+#include <libstk/component.h>
+#include <libstk/keycode.h>
+#include <libstk/combiners.h>
+#include <libstk/mouse_event.h>
 
 namespace stk
 {

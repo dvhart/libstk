@@ -13,8 +13,8 @@
 #ifndef STK_GRAPHICS_CONTEXT_H
 #define STK_GRAPHICS_CONTEXT_H
 
-#include "libstk/stk.h"
-#include "libstk/font.h"
+#include <libstk/stk.h>
+#include <libstk/font.h>
 
 namespace stk
 {

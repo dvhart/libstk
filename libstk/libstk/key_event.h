@@ -15,8 +15,8 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/event.h"
-#include "libstk/keycode.h"
+#include <libstk/event.h>
+#include <libstk/keycode.h>
 
 namespace stk
 {

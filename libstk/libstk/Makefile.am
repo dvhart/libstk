@@ -65,13 +65,7 @@ library_include_HEADERS= \
 	posix_time.h     viewport.h          sdl_data.h
 
 
-bin_PROGRAMS       = test_app surface_bm
-test_app_SOURCES   = test_app.cpp
-surface_bm_SOURCES = surface_bm.cpp
-	
 # FIXME: do the autotools thing for freetype
-test_app_LDADD = $(SDL_LIBS) -lboost_signals -lfreetype -lz libstk.la
-surface_bm_LDADD = $(SDL_LIBS) -lboost_signals -lfreetype -lz libstk.la
 libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@
 
 INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir)

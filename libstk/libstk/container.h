@@ -18,9 +18,9 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/application.h"
-#include "libstk/widget.h"
-#include "libstk/mouse_event.h"
+#include <libstk/application.h>
+#include <libstk/widget.h>
+#include <libstk/mouse_event.h>
 
 namespace stk
 {

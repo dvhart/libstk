@@ -15,8 +15,8 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/container.h"
-#include "libstk/scroll_model.h"
+#include <libstk/container.h>
+#include <libstk/scroll_model.h>
 
 namespace stk
 {

@@ -15,11 +15,11 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/rectangle.h"
-#include "libstk/widget.h"
-#include "libstk/container.h"
-#include "libstk/list_item.h"
-#include "libstk/scroll_model.h"
+#include <libstk/rectangle.h>
+#include <libstk/widget.h>
+#include <libstk/container.h>
+#include <libstk/list_item.h>
+#include <libstk/scroll_model.h>
 
 namespace stk
 {

@@ -15,8 +15,8 @@
 #define STK_COMPONENT_H
 
 #include <boost/shared_ptr.hpp>
-#include "libstk/event_handler.h"
-#include "libstk/drawable.h"
+#include <libstk/event_handler.h>
+#include <libstk/drawable.h>
 
 namespace stk
 {

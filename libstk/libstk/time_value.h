@@ -17,7 +17,7 @@
 #include <boost/weak_ptr.hpp>
 
 /// FIXME: make this configured at compile time
-#include "libstk/posix_time.h"
+#include <libstk/posix_time.h>
 
 namespace stk
 {

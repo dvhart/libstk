@@ -17,7 +17,7 @@
 #include <boost/weak_ptr.hpp>
 #include <string>
 #include <map>
-#include "libstk/surface.h"
+#include <libstk/surface.h>
 
 namespace stk
 {	

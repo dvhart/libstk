@@ -16,10 +16,10 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/rectangle.h"
-#include "libstk/event_handler.h"
-#include "libstk/drawable.h"
-#include "libstk/event.h"
+#include <libstk/rectangle.h>
+#include <libstk/event_handler.h>
+#include <libstk/drawable.h>
+#include <libstk/event.h>
 
 namespace stk
 {

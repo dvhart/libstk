@@ -17,8 +17,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
-#include "libstk/combiners.h"
-#include "libstk/time_value.h"
+#include <libstk/combiners.h>
+#include <libstk/time_value.h>
 
 namespace stk
 {

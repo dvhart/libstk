@@ -1,4 +1,4 @@
-SUBDIRS = libstk
+SUBDIRS = libstk test
 
 DIST_SUBDIRS= libstk
 

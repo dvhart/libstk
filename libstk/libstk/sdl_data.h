@@ -15,7 +15,7 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include "libstk/exceptions.h"
+#include <libstk/exceptions.h>
 
 namespace stk
 {
