@@ -43,14 +43,13 @@ namespace stk
         static xine_panel::ptr create(container::ptr parent, const rectangle& _rect);
         ~xine_panel();
         void open(const std::string& filename);
-        // FIXME: these are only bool to meet signal signature
-        bool play(int position, int millis);
-        bool pause();     
-        bool playpause(); 
-        bool speed(int val);
+        void play(int position, int millis);
+        void pause();     
+        void playpause(); 
+        void speed(int val);
         int speed();
-        bool faster();
-        bool slower();
+        void faster();
+        void slower();
     };
 
 } // namespace stk

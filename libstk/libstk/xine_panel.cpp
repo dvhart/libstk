@@ -67,35 +67,30 @@ namespace stk
         }
     }
 
-    bool xine_panel::play(int position, int millis)
+    void xine_panel::play(int position, int millis)
     {
         if (!xine_play(xine_stream_, position, millis))
         {
             INFO("xine_play failed");
             // throw an exception
         }
-        return true;
     }
 
-    bool xine_panel::pause()
+    void xine_panel::pause()
     {
         if (xine_get_param(xine_stream_, XINE_PARAM_SPEED) != XINE_SPEED_PAUSE)
             xine_set_param(xine_stream_, XINE_PARAM_SPEED, XINE_SPEED_PAUSE);
-
-        return true;
     }
 
-    bool xine_panel::playpause()
+    void xine_panel::playpause()
     {
         if (xine_get_param(xine_stream_, XINE_PARAM_SPEED) != XINE_SPEED_PAUSE)
             xine_set_param(xine_stream_, XINE_PARAM_SPEED, XINE_SPEED_PAUSE);
         else
             xine_set_param(xine_stream_, XINE_PARAM_SPEED, XINE_SPEED_NORMAL);
-
-        return true;
     }
 
-    bool xine_panel::speed(int val)
+    void xine_panel::speed(int val)
     {
         INFO(__FUNCTION__ << " not implemented");
         switch(val)
@@ -111,7 +106,6 @@ namespace stk
             default:
                 INFO("undefined speed parameter: " << val);
         }
-        return true;
     }
 
 /*
@@ -129,7 +123,7 @@ namespace stk
         return xine_get_param(xine_stream_, XINE_PARAM_SPEED);
     }
 
-    bool xine_panel::faster()
+    void xine_panel::faster()
     {
         int speed = xine_get_param(xine_stream_, XINE_PARAM_SPEED) << 1;
         if (speed > XINE_SPEED_FAST_4) 
@@ -137,14 +131,12 @@ namespace stk
         else if (speed == XINE_SPEED_PAUSE) 
             speed = XINE_SPEED_SLOW_4;
         xine_set_param(xine_stream_, XINE_PARAM_SPEED, speed);
-        return true;
     }
 
-    bool xine_panel::slower()
+    void xine_panel::slower()
     {
         int speed = xine_get_param(xine_stream_, XINE_PARAM_SPEED) >> 1;
         xine_set_param(xine_stream_, XINE_PARAM_SPEED, speed);
-        return true;
     }
 
 } 
