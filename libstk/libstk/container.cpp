@@ -54,8 +54,10 @@ namespace stk
     widget::ptr container::delegate_mouse_event(mouse_event::ptr me)
     {
         // pass a mouse event to the first visible modal widget
-        std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (; iter != children_.end(); iter++)
+        // Revere the search order so widgets which overdraw prior widgets
+        // get the event, (Visible widget gets event, not the one first drawn)
+        std::vector<widget::ptr>::reverse_iterator iter = children_.rbegin();
+        for (; iter != children_.rend(); iter++)
         {
             if ((*iter)->visible() && (*iter)->modal())
             {
@@ -64,8 +66,8 @@ namespace stk
         }
 
         // pass a mouse event to the appropriate widget
-        iter = children_.begin();
-        for (; iter != children_.end(); iter++)
+        iter = children_.rbegin();
+        for (; iter != children_.rend(); iter++)
         {
             if (!(*iter)->visible()) continue;
             if ((*iter)->rect().contains(me->x()-rect_.x1(), me->y()-rect_.y1()))
