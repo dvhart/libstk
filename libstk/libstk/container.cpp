@@ -84,7 +84,7 @@ namespace stk
             if ((*iter)->intersects(temp_rect))
             {
                 surface->offset(surface->offset() + (*iter)->rect().p1());
-                (*iter)->draw(surface);
+                (*iter)->draw(surface,clip_rect);
                 surface->offset(surface->offset() - (*iter)->rect().p1());
             }
         }
@@ -92,14 +92,21 @@ namespace stk
 
     void container::redraw(const rectangle& rect)
     {
+        // MSTR: Broken, Rect is in "local" coordinate space, potentially fixed, see below
         redraw_rect_ += rect;
         // augment redraw_rect_ if it intersects any other children_
+/*  MSTR, Why? They will get redrawn with the correct clipping, there is no need
+        to fully redraw them, is there?
+
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (iter; iter != children_.end(); iter++)
         {
             if ((*iter)->intersects(redraw_rect_))
                 redraw_rect_ += (*iter)->rect();
-        }
+                }*/
+        
+        // Move to parents coordinate system
+        redraw_rect_.position(redraw_rect_.position()+rect_.position());
         parent_.lock()->redraw(redraw_rect_);
     }
 

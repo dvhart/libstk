@@ -97,9 +97,9 @@ namespace stk
             rectangle t_rect = current_state_.lock()->redraw_rect();
             if ( !t_rect.empty() )
             {
-                //INFO("applicaiton::run() - redrawing state");
+                INFO("applicaiton::run() - redrawing state\n\tWith Cliprect " << t_rect);
                 on_predraw(t_rect);
-                current_state_.lock()->draw(surface_);
+                current_state_.lock()->draw(surface_,t_rect);
                 on_postdraw(t_rect);
                 surface_->update( t_rect );
             }
