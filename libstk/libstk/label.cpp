@@ -10,20 +10,21 @@
  *************************************************************************************************/
 
 #include <iostream>
-#include "libstk/label.h"
-#include "libstk/widget.h"
+#include <libstk/label.h>
+#include <libstk/widget.h>
 
 namespace stk
 {
 
     label::ptr label::create(container::ptr parent, std::wstring text, const rectangle& rect)
-    {
+    {     
         label::ptr new_label(new label(text, rect));
         new_label->parent(parent);
         return new_label;
     }
 
-    label::label(std::wstring text, const rectangle& rect) : widget(rect), text_(text)
+    label::label(std::wstring text, const rectangle& rect) : widget(rect),text_(text),
+                                                             horizontal_alignment_(ha_left)
     {
         INFO("constructor");
     }
