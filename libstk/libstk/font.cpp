@@ -2,6 +2,7 @@
 #include <string>
 #include "font.h"
 
+using std::wstring;
 using std::string;
 using std::cout;
 using std::endl;
@@ -9,6 +10,7 @@ using std::endl;
 namespace stk
 {
 	FT_Library font::lib_ = NULL;
+	int font::font_count_ = 0;
 
 	font::ptr font::create(const string& fontname, int height, int width)
 	{
@@ -20,53 +22,74 @@ namespace stk
 		: height_(height), width_(width)
 	{
 		int error;
-		if (!lib_)
+		if (font_count_ == 0)
 		{
+			cout << "font::font: initializing FreeType library" << endl;
 			error = FT_Init_FreeType( &lib_ );
-			if ( error ) throw string("font::font: could not initialize Freetype library");
+			if ( error ) throw std::string("font::font: could not initialize Freetype library");
 		}
-		error = FT_New_Face( lib_, (string("/usr/share/libstk/fonts/")+
-									fontname).c_str(), 0, &face_);
+		string filename = string("/usr/share/libstk/fonts/")+fontname;
+		cout << "font::font: opening font file " << filename << endl;
+		error = FT_New_Face( lib_, filename.c_str(), 0, &face_);
 		if (error == FT_Err_Unknown_File_Format)
 		{
-			throw string("font::font: unknown file format");
+			throw std::string("font::font: unknown file format");
 		}
 		else if (error)
 		{
 			cout << "stk::font::font: error: " << error << endl;
-			throw string("font::font: unknown error loading font");
+			throw std::string("font::font: unknown error loading font");
 		}
 
 		error = FT_Set_Pixel_Sizes(
 				face_,		// handle to face object
 				width_,		// char_width in pixels
 				height_);	// char_height in pixels
-		if (error) throw string("font::font: could not set font size");
+		if (error) throw std::string("font::font: could not set font size");
+		
+		// increment library usage counter
+		font_count_++;
 	}
 
 	font::~font()
 	{
 		// free the freetype font data
 		FT_Done_Face(face_);
+		
 		// need to do reference counting for the lib handle
-		FT_Done_FreeType(lib_);
+		if (--font_count_ == 0)
+		{
+			cout << "font::~font: Done with FreeType library" << endl;
+			FT_Done_FreeType(lib_);
+		}
 
 		// free the glyphs
 	}
 
-	const glyph::ptr font::glyph(char c)
+	const glyph::ptr font::glyph(wchar_t c)
 	{
-		unsigned int wc = c;
-		if (glyph_cache_[wc]) 
-			return glyph_cache_[wc];
+		if (glyph_cache_[c])
+		{
+			return glyph_cache_[c];
+		}
 		// create a new one - not found
-		int error = FT_Load_Char(face_, c, FT_LOAD_RENDER);
-		glyph::ptr g = glyph::create(face_->glyph);
-		glyph_cache_[wc] = g;
-		return glyph_cache_[wc];
+		// retrieve glyph index from character code
+		int index = FT_Get_Char_Index(face_, c);
+
+		// load glyph image into the slot (erase previous one)
+		int error = FT_Load_Glyph(face_, index, FT_LOAD_DEFAULT);
+		if (error) throw std::string("font::glyph: could not load glyph");
+
+		// convert to an anti-aliased bitmap
+		error = FT_Render_Glyph(face_->glyph, ft_render_mode_normal);
+		if (error) throw std::string("font::glyph: could not render glyph");
+
+		glyph::ptr g = glyph::create(face_->glyph, index);
+		glyph_cache_[c] = g;
+		return glyph_cache_[c];
 	}
 
-	int font::draw_len(string text)
+	int font::draw_len(const wstring& text, int kerning_mode)
 	{
 		int len = 0;
 		for (int i=0; i<text.length(); i++)
@@ -74,6 +97,18 @@ namespace stk
 			len += glyph(text[i])->width();
 		}
 		return len;
+	}
+
+	int font::kerning(wchar_t left, wchar_t right, int kerning_mode)
+	{
+		FT_Vector kerning;
+		int error = FT_Get_Kerning(face_,	// handle to face object
+								   left,	// left glyph index
+								   right,	// right glyph index
+								   kerning_mode,	// kerning mode
+								   &kerning);	// target vector
+		if (error) return 0;
+		return kerning.x;
 	}
 	
 	

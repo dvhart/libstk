@@ -302,7 +302,7 @@ namespace stk
 	// WRITEME...
 	void surface_sdl::fill_rect(int x1, int y1, int x2, int y2)
 	{
-		Uint32 sdl_color = (Uint32)gc_.fill_color();
+		Uint32 sdl_color = (Uint32)gc_->fill_color();
 		rectangle rect(x1, y1, x2 - x1, y2 - y1);
 		SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
 		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
@@ -310,7 +310,7 @@ namespace stk
 	
 	void surface_sdl::fill_rect(const rectangle &rect)
 	{
-		Uint32 sdl_color = (Uint32)gc_.fill_color();
+		Uint32 sdl_color = (Uint32)gc_->fill_color();
 		SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
 		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
 	}

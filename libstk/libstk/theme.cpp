@@ -29,8 +29,8 @@ namespace stk
 	void theme::draw_state()
 	{
 		cout << "theme::draw_state()" << endl;
-		graphics_context gc;
-		gc.fill_color(surface_->gen_color("0xFFFFFFFF")); 
+		graphics_context::ptr gc = graphics_context::create();
+		gc->fill_color(surface_->gen_color("0xFFFFFFFF")); 
 		surface_->gc(gc);
 		surface_->fill_rect(surface_->rect());		
 	}
@@ -38,48 +38,48 @@ namespace stk
 	void theme::draw_button(rectangle& rect, bool active, bool focused, bool hover)
 	{
 		cout << "theme::draw_button()" << endl;
-		graphics_context gc;
+		graphics_context::ptr gc = graphics_context::create();
 		if (active)
 		{
-			gc.fill_color(surface_->gen_color("0xFF00FFFF")); 
-			gc.line_color(surface_->gen_color("0x0000FFFF")); 
+			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
 		else if(focused)
 		{
-			gc.fill_color(surface_->gen_color("0xFF00FFFF")); 
-			gc.line_color(surface_->gen_color("0x0000FFFF")); 
+			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
 		else if (hover)
 		{
-			gc.fill_color(surface_->gen_color("0xFF00FFFF")); 
-			gc.line_color(surface_->gen_color("0x0000FFFF")); 
+			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
 		else
 		{
-			gc.fill_color(surface_->gen_color("0xFF00FFFF")); 
-			gc.line_color(surface_->gen_color("0x0000FFFF")); 
+			gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+			gc->line_color(surface_->gen_color("0x0000FFFF")); 
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 		}
 	}
 
-	void theme::draw_label(rectangle& rect, std::string text)
+	void theme::draw_label(rectangle& rect, std::wstring text)
 	{
 		cout << "theme::draw_label()" << endl;
-		graphics_context gc;
-		gc.fill_color(surface_->gen_color("0xFF00FFFF")); 
-		gc.line_color(surface_->gen_color("0x0000FFFF")); 
+		graphics_context::ptr gc = graphics_context::create();
+		gc->fill_color(surface_->gen_color("0xFF00FFFF")); 
+		gc->line_color(surface_->gen_color("0x0000FFFF")); 
 		try
 		{
 			stk::font::ptr bob = font::create("Arial.ttf", 25);
-			gc.font(bob);
-			gc.font_fill_color(surface_->gen_color(127, 0, 80, 0xff));
+			gc->font(bob);
+			gc->font_fill_color(surface_->gen_color(127, 0, 80, 0xff));
 			surface_->gc(gc);
 			surface_->draw_rect(rect);
 			surface_->draw_text(rect.x1(), rect.y1(), text);

@@ -135,7 +135,7 @@ namespace stk
 			// member variables common to all surfaces
 			rectangle rect_;      // position on the screen, width and height
 			byte alpha_;          // opacity (255 is opaque)
-			graphics_context gc_; // stores graphics settings used by draw routines
+			graphics_context::ptr gc_; // stores graphics settings used by draw routines
 
 		public:
 			virtual ~surface() { cout << "surface::~surface()" << endl; }
@@ -148,8 +148,8 @@ namespace stk
 			byte alpha() const { return alpha_; }
 			void alpha(byte a) { alpha_ = a; }
 			// FIXME: should we be using smart pointers here with gcs and rects ?
-			graphics_context gc() const { return gc_; }
-			void gc(graphics_context &new_gc) { gc_ = new_gc; }
+			graphics_context::ptr gc() const { return gc_; }
+			void gc(graphics_context::ptr new_gc) { gc_ = new_gc; }
 			void x1(int x) { rect_.x1(x); }
 			void y1(int y) { rect_.y1(y); }
 
@@ -204,7 +204,7 @@ namespace stk
 			virtual void draw_poly(const std::vector<point> points);
 			// define the text interface... should we pass a rect and
 			// clip to that?
-			virtual void draw_text(int x, int y, const std::string &text);
+			virtual void draw_text(int x, int y, const std::wstring &text, int kerning_mode=0);
 
 			// antialiased draw routines
 			virtual void draw_line_aa(int x1, int y1, int x2, int y2);

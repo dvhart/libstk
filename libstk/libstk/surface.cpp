@@ -66,7 +66,7 @@ namespace stk
 		int x = x1;
 		int y = y1;
 
-		color clr = gc_.line_color(); 
+		color clr = gc_->line_color(); 
 		
 		switch(dir)
 		{
@@ -326,7 +326,7 @@ namespace stk
 	
 	void surface::draw_arc(int x1, int y1, int x2, int y2, int quadrant)
 	{ 
-		color clr = gc_.line_color();
+		color clr = gc_->line_color();
 		int a = x2 - x1;
 		int b = y2 - y1;
 		
@@ -445,7 +445,7 @@ namespace stk
 		
 	void surface::draw_rect(int x1, int y1, int x2, int y2)
 	{ 
-		color clr = gc_.line_color();
+		color clr = gc_->line_color();
 		draw_line(x1, y1, x2, y1);
 		draw_line(x2, y1, x2, y2);
 		draw_line(x1, y2, x2, y2);
@@ -454,7 +454,7 @@ namespace stk
 			
 	void surface::circle_points(int x, int y, int dx, int dy)
 	{
-		color clr = gc_.line_color();
+		color clr = gc_->line_color();
 		draw_pixel(x+dx, y+dy, clr);
 		draw_pixel(y+dx, x+dy, clr);
 		draw_pixel(y+dx, -x+dy, clr);
@@ -501,7 +501,7 @@ namespace stk
 		
 	void surface::ellipse_points(int x, int y, int dx, int dy)
 	{
-		color clr = gc_.line_color();
+		color clr = gc_->line_color();
 		draw_pixel(x+dx, y+dy, clr);
 		draw_pixel(x+dx, -y+dy, clr);
 		draw_pixel(-x+dx, -y+dy, clr);
@@ -598,21 +598,30 @@ namespace stk
 				p_iter_b->x(), p_iter_b->y());
 	}
 
-	void surface::draw_text(int x, int y, const std::string &text)
+	void surface::draw_text(int x, int y, const std::wstring &text, int kerning_mode)
 	{
 		cout << "surface::draw_text - begin" << endl;
 
 		// ignore the bounds and stuff for now
 		// FIXME: add bounding boxes later
 		// get the font from the gc
-		font::ptr fon = gc_.font();
-		color fill_color = gc_.font_fill_color();
+		font::ptr fon = gc_->font();
+		if (fon == NULL)
+		{
+			cout << "surface::draw_text: gc's font is null" << endl;
+			return;
+		}
+		color fill_color = gc_->font_fill_color();
 		// loop through the text and draw each character
+		int fh = fon->height();
 		for (int i=0; i<text.length(); i++)
 		{
 			// get the glyph
 			glyph::ptr bmp = fon->glyph(text[i]);
 			int w = bmp->width();
+			int by = bmp->bearing_y() >> 6;
+			int bx = bmp->bearing_x() >> 6;
+			cout << "surface::draw_text - " << (char)text[i] << ", bearingY="<<std::dec<< by << ", bearingX="<<bx<<endl;
 			boost::shared_array<unsigned char> bits = bmp->bitmap();
 			// draw it
 			for (int dy=0; dy<bmp->height(); dy++)
@@ -620,13 +629,12 @@ namespace stk
 				for (int dx=0; dx<w; dx++)
 				{
 					unsigned char nc = bits[dy*w + dx];
-					draw_pixel_aa(x+dx, y+dy, nc, fill_color);
+					draw_pixel_aa(x+dx+bx, y+dy+fh-by, nc, fill_color);
 				}
 			}
-			// FIXME: kerning goes here
 			x += (bmp->advance_x() >> 6);
+			if (i<text.length()-1) x += (fon->kerning(text[i], text[i+1]) >> 6);
 		}
-		
 		
 		cout << "surface::draw_text - end" << endl;
 	}
@@ -634,7 +642,7 @@ namespace stk
 	// antialiased draw routines
 	void surface::draw_line_aa(int x1, int y1, int x2, int y2)
 	{
-		color clr = gc_.line_color();
+		color clr = gc_->line_color();
 		
 		// determine the line direction
 		int dir = direction(x1, y1, x2, y2);

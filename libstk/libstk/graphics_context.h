@@ -8,6 +8,9 @@ namespace stk
 {
 	class graphics_context
 	{
+		public:
+			typedef boost::shared_ptr<graphics_context> graphics_context::ptr;
+
 		private:
 			int line_width_;
 			int line_style_;
@@ -18,7 +21,12 @@ namespace stk
 			color font_fill_color_;
 			color font_outline_color_;
 			// we may need to subclass the gc (gc_sdl, gc_dfb, etc)
+		protected:
+			graphics_context() {}
+			
 		public:
+			static graphics_context::ptr create() { return graphics_context::ptr(new graphics_context()); }
+			virtual ~graphics_context() {}
 			int line_width() const { return line_width_; }
 			void line_width(int val) { line_width_ = val; }
 			int line_style() const { return line_style_; }

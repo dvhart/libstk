@@ -9,14 +9,14 @@ using std::endl;
 namespace stk
 {
 
-	label::ptr label::create(container::ptr parent, std::string text, const rectangle& rect)
+	label::ptr label::create(container::ptr parent, std::wstring text, const rectangle& rect)
 	{
 		label::ptr new_label(new label(parent, text, rect));
 		parent->add_child(new_label);
 		return new_label;
 	}
 
-	label::label(boost::shared_ptr<container> parent, std::string text,
+	label::label(boost::shared_ptr<container> parent, std::wstring text,
 					const rectangle& rect) : widget(parent), text_(text), rect_(rect)
 	{
 		cout << "label::label()" << endl;

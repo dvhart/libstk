@@ -19,18 +19,18 @@ namespace stk
 
 		private:
 			rectangle rect_;
-			std::string text_;
+			std::wstring text_;
 			
 		protected:
-			label(container::ptr parent, std::string text, const rectangle& rect);
+			label(container::ptr parent, std::wstring text, const rectangle& rect);
 			
 		public:
-			static label::ptr create(container::ptr parent, std::string text, 
+			static label::ptr create(container::ptr parent, std::wstring text, 
 					const rectangle& rect);
 			virtual ~label();
 
-			std::string text() const { return text_; }
-			void text(const std::string& t) { text_ = t; }
+			std::wstring text() const { return text_; }
+			void text(const std::wstring& t) { text_ = t; }
 
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
 	};
