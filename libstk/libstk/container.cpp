@@ -10,7 +10,9 @@
  *************************************************************************************************/
 
 #include <iostream>
+#include <algorithm>
 #include <boost/weak_ptr.hpp>
+#include <boost/bind.hpp>
 
 #include "libstk/component.h"
 #include "libstk/widget.h"
@@ -77,6 +79,15 @@ namespace stk
         children_.erase(iter);
     }
 
+    void container::draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child)
+    {
+        if(!child->rect().intersects(clip_rect))
+           return;
+        surface->offset(surface->offset() + child->rect().p1());
+        child->draw(surface,clip_rect);
+        surface->offset(surface->offset() - child->rect().p1());
+    }
+    
     // the routine manages the draw calls of the children, clip rect is in
     // screen space coordinates, redraw_rect is in local coordinates
     void container::draw(surface::ptr surface, const rectangle& clip_rect)
@@ -86,17 +97,8 @@ namespace stk
         // Intersection tests should be in local coordinates
         redraw_rect.position(redraw_rect.position()-surface->offset());
         redraw_rect=redraw_rect.intersection(rect());
-        INFO("container::draw redraw_rect is " << redraw_rect );
-        
-        for (; iter != children_.end(); iter++)
-        {
-            if ((*iter)->intersects(redraw_rect))
-            {
-                surface->offset(surface->offset() + (*iter)->rect().p1());
-                (*iter)->draw(surface,clip_rect);
-                surface->offset(surface->offset() - (*iter)->rect().p1());
-            }
-        }
+                
+        std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,rect_,_1));
     }
 
     void container::redraw(const rectangle& rect, bool transform)

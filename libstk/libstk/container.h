@@ -34,6 +34,11 @@ namespace stk
     protected:
         std::vector<widget::ptr> children_;
         container(component::ptr parent, const rectangle& rect);
+        
+        /// This routine draws the child given in its second parameter
+        /// \param clip_rect The clipping rectangle to use
+        /// \param child The container's child widget to draw
+        void draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child);
 
     public:
         virtual ~container();
