@@ -75,6 +75,7 @@ namespace stk
         virtual void clear();   /// Erases the entire content of the list
         virtual int size();     /// Returns the number of elements in the list
         virtual list_item::ptr current(); /// Returns the current item or a null pointer
+        virtual void current(int index); /// Sets the current item, or the first on bad index
         // list signals FIXME: what should the signature of the slots be ?
         boost::signal<bool (), combiner::logical_or<bool> > on_update_selection;
         boost::signal<bool (), combiner::logical_or<bool> > on_update_current;

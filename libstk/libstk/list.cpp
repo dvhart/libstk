@@ -233,6 +233,22 @@ namespace stk
         return list_item::ptr(); 
     }
 
+    void list::current(int index)
+    {
+        if (current_ < items_.size()) items_[current_]->current(false);
+        if (index >= 0 && index < items_.size())
+        {
+            current_ = index;
+            items_[current_]->current(true);
+        }
+        else 
+        {
+            current_ = 0;
+            if (current()) current()->current(true);
+        }
+        on_update_current();
+    }
+
     void list::v_scroll(scroll_model::ptr model)
     {
         v_scroll_con_.disconnect();
