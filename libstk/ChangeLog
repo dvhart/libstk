@@ -1,3 +1,22 @@
+2004-10-23 10:12  Darren Vincent Hart <dvhart@byu.edu>
+
+	* libstk/: list_item.cpp, list_item.h, list_template.h, widget.cpp:
+	  Fixed the problem where you couldn't tab out of a list once you
+	  were in it.  list_item is no longer a focusable widget (the list
+	  is, and it handles all events).  Widgets no longer "handle"
+	  (un)focus events if they aren't focusable, they pass them up to
+	  the parent instead.  Finally!
+
+2004-10-23 00:41  Darren Vincent Hart <dvhart@byu.edu>
+
+	* libstk/list_item_userdata.h, test/test_app.cpp: fixed ambiguous
+	  names and had to remove the U umlat in test_app.cpp to get it to
+	  compile, character set problem... perhaps a problem on my machine
+
+2004-10-23 00:31  Darren Vincent Hart <dvhart@byu.edu>
+
+	* libstk/font.cpp: included <cmath> not <math>
+
 2004-10-23 00:21  Darren Vincent Hart <dvhart@byu.edu>
 
 	* libstk/list_template.h: added typename keywords to 'disambiguate
