@@ -99,15 +99,11 @@ int main(int argc, char* argv[])
 		// create a list
 		cout << "test_app - creating a list with items" << endl;
 		list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));
-		list_item::ptr test_item_1 = list_item::create(L"Armenia", "armenia");
-		list_item::ptr test_item_2 = list_item::create(L"Germany", "germany");
-		list_item::ptr test_item_3 = list_item::create(L"Japan", "japan");
-		list_item::ptr test_item_4 = list_item::create(L"United States", "united_states");
-		test_list->add_item(test_item_1);
-		test_list->add_item(test_item_2);
-		test_list->add_item(test_item_3);
-		test_list->add_item(test_item_4);
-		
+		list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia", "armenia");
+		list_item::ptr test_item_2 = list_item::create(test_list, L"Germany", "germany");
+		list_item::ptr test_item_3 = list_item::create(test_list, L"Japan", "japan");
+		list_item::ptr test_item_4 = list_item::create(test_list, L"United States", "united_states");
+
 		// run the program
 		retval = test_app->run();
 	}

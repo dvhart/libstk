@@ -55,6 +55,7 @@ namespace stk
 			virtual void draw_label(const rectangle& rect, const std::wstring& text, bool focused);
 			virtual void draw_image_panel(const rectangle& rect, image::ptr img);
 			virtual void draw_list(const rectangle& rect, std::vector<list_item::ptr> items, float selected);
+			virtual void draw_list_item(const rectangle& rect, std::wstring label);
 	};
 }
 

@@ -20,6 +20,10 @@ namespace stk
 			/// Retrieve the surface used in the application
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
 
+			/// draw the current drawable on the passed surface
+			/// fixme: do we need to pass surface if every drawable has a surface() method?
+			virtual void draw(surface::ptr surface) { }
+			
 			/// Redraw the area in rect the next time draw is called.  
 			/// \param rect The area to be redrawn 
 			/// See container for specifics regarding behavior.  The default 

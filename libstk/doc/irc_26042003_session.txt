@@ -1,0 +1,243 @@
+<dvhart> ahhhhhh... intermission...
+<carter__> hi darren
+<carter__> just came back from work
+<dvhart> wazzzah!
+<dvhart> need a few minutes
+<carter__> have to check out your stuff now
+<dvhart> ?
+<dvhart> wait 
+<carter__> yep :9
+<dvhart> about to commit
+<dvhart> building
+<dvhart> ....
+<dvhart> uhgg!
+<dvhart> 3 minutes in the nuker and lunch is still cold!
+<dvhart> ouch
+<dvhart> not all cold  *g*
+<carter__> hmmmm damnit
+<carter__> never say no (james bond) is on tv in 15 minutes :)
+* carter__ thinks he wants to watch it
+<dvhart> lol
+<carter__> aeh
+<carter__> never say never again
+<carter__> is the right original title
+<carter__>  :)
+<dvhart> wanna try and make it fast?
+<carter__> yep :9
+<carter__> ok
+<carter__> what is the most important stuff to discuss?
+<dvhart> 1) license
+<dvhart> 2) new theme approach
+<dvhart> 3) list_items as weak widgets (they need most everything widgets do)
+<dvhart> 4) image formats
+<dvhart> 5) color manager
+<carter__> ok
+<carter__> reading the license
+<dvhart> fixing my latest change so I can commit...
+<dvhart> building
+<dvhart> ...
+* carter__ thinks the license.txt on CVS is exactly what we want
+<carter__> :)
+--- carter__ is now known as carter
+<dvhart> great
+<dvhart> I like it too
+<carter> lets start a vote on the mailinglist for it
+<carter> everyone should agree
+<carter> (they contributed9
+<dvhart> ok will send a note
+<carter> ok
+<carter> hmm 2) New theme approach
+<dvhart> read my mail ?
+<carter> which one
+<dvhart> the one about the new theme apprach
+<carter> libstk list/list_item ?
+<carter> got none
+<dvhart> hmmm
+<carter> the last for i got were
+<carter> meeting
+<carter> license revision
+<carter> list/listitem
+<carter> meeting and updates
+<dvhart> list/listitem
+<dvhart> I have included a basic form of animation in the list draw routine, and
+<dvhart> I think it will work fairly well.  I would like propose a change in the
+<dvhart> way we handle themes however.  Marc and I have discussed how to pass
+<dvhart> arguments to the theme::draw_xxx routines, and have not been able to
+<dvhart> find/agree on a good solution.  Now that I look at it, it seems silly to
+<dvhart> me to have a widget::draw which calls theme::get()->draw_widget.  IMO we
+<dvhart> should axe the theme class entirely and have a file called theme.cc
+<dvhart> which is of this form:
+<dvhart> 
+<dvhart> namespace stk
+<dvhart> {
+<dvhart>         // some static color and style variables here...
+<dvhart> 
+<dvhart>         button::draw(surface::ptr surface)
+<dvhart>         {
+<dvhart>                 ...
+<dvhart>         }
+<dvhart> 
+<dvhart>         list::draw(surface::ptr surface)
+<dvhart>         {
+<dvhart>                 ...
+<dvhart>         }
+<dvhart> 
+<dvhart>         ...
+<dvhart> }
+<dvhart> 
+<dvhart> This will give the draw routines complete access to all widget members,
+<dvhart> simplify the API, and is an all around cleaner solution.  New draw
+<dvhart> routines for new (user defined) widgets are easily defined, and new
+<dvhart> themes are just as easily created, if not easier since the user doesn't
+<dvhart> have to concern themselves with only using what gets passed to the
+<dvhart> theme::draw_xxx routine.
+<carter> wow
+<dvhart> I type fast
+<carter> that seems just too obvious
+<dvhart> *g*
+<carter> -> great solution
+<dvhart> doesn't it though?
+<dvhart> ok good
+<carter> ok
+<dvhart> will implement today
+<carter> has one possible drawback
+<carter> prob is with the dynamic library
+<carter> the widgets
+<carter> reside 
+<carter> in the library
+<carter> and the theme in the user app
+<dvhart> hmmmmm
+<carter> right?
+<dvhart> yeah
+<carter> or do you want to compile it in
+<dvhart> hmmmm
+<carter> if we do it the user provides theme way, we need 2way symbol resolution
+<carter> -> only works reliable on linux :)
+<carter> but it does work
+<carter> if you do it like that
+<carter> the library has unresolved symbols
+<carter> which will be resolved
+<carter> with symbols the user programm exports
+<carter> would even allow changing themes
+<carter> without lib compile
+<carter> ok
+<carter> great solution
+<dvhart> that won't work in non posix systems?
+* carter accepts
+<carter> :)
+<carter> it will work on linux and some others
+<carter> but its non standard
+<carter> but
+<carter> the code is the same
+<carter> you can always compile it in
+<carter> so the solution seems dead right to me
+<dvhart> they usually going to static link i imagine
+<carter> yepÃ¼
+<dvhart> ok we roll with it then
+<dvhart> 3)
+<dvhart> I think I like what I have now (not in cvs yet)
+<dvhart> but I implement drawable and event_handler
+<carter> ok
+<dvhart> not parent
+<carter> lets discuss that
+<carter> tomorrow or something
+<dvhart> ok
+<carter> have to look at it more thorough
+<dvhart> what image formats?
+<carter> PNG
+<dvhart> I did ppm cause its 10 lines of code *g*
+* carter needs nothing else 
+<carter> :)
+<dvhart> should we use libpng ?
+<carter> libpng based
+<carter> at first
+<dvhart> I think we should be very limited
+<carter> later i'll implement an own loader
+<carter> for size
+<carter> 2 weeks remaining
+<carter> or maybe 2
+<carter> 3
+<carter> and i can work 6 hours a day on libstk ;)
+<carter> paid
+<carter> :)
+<dvhart> let gimp/photoshop do the work and keep libstk small
+<dvhart> paid!!
+<dvhart> YEEHAW
+<carter> ok
+<carter> not solely on libstk
+<carter> but on a product which uses it
+<dvhart> still, anything will be awesome
+<carter> yep
+<carter> ok
+<carter> 4)
+<dvhart> last thing and you can watch your tv *g*
+<carter> 5)
+<carter> color manager
+<carter> hmmmmw
+<carter> what do you mean with that
+<carter> like color themes
+<carter> on Ms Windows?
+<dvhart> similar to the font manager
+<carter> button_color text_color like
+<carter> symbolic name resolve?
+<dvhart> it seems silly to call surface::get_color all the time
+<carter> because
+<carter> hmmmmmmmmmm
+<carter> ok
+<carter> right
+<dvhart> maybe as part of surface
+<carter> care to make a prototype implementation?
+<dvhart> sure
+<dvhart> prolly not today though *g*
+<carter> yep :)
+<carter> because it might be possible
+<dvhart> ok great
+<carter> that on some hardware
+<carter> get color is a costly function
+<carter> (paletted mode comes to mind)
+<dvhart> oh, we need to really discuss surfaces and blitting soon
+<dvhart> another day
+<carter> yep
+<carter> put it onto the todo list
+<dvhart> yup will do
+<dvhart> you ahve anything?
+<carter> atm not
+<carter> working on the osd keyboard
+<dvhart> ok, well I will be online for the next hour or so
+<carter> atm
+<carter> but not really intensive
+<carter> ok
+* carter wont be back today i think
+<dvhart> I am looking forward to seeing the osd
+* carter too , LOL
+<dvhart> *g*
+<carter> never worked with a touchscreen only GUI
+<dvhart> me neither
+<dvhart> what does that panel pc cost?
+<carter> but it seems natural
+<carter> in small amounts
+<carter> 3000 Euros
+<dvhart> mc donalds comes to mind
+<dvhart> ouch!
+<carter> but its extremely full blown
+<carter> the Canopen interface alone costs 500 euros :(
+<dvhart> oh
+<dvhart> for license?
+<carter> yep, too
+<dvhart> damn propriety sh....
+<carter> yep
+<carter> contains an 68030 from motorla
+<carter> just for the fieldbus handling :)
+<dvhart> that is why we aren't using can for our research
+<carter> if you do the can in software
+<carter> you get the same for 80 euros
+<carter> Can is absolutely great
+<carter> but we have to get the shit running really fast now :)
+<dvhart> *g*
+<carter> ok
+<dvhart> enjoy bond
+* carter will watch Bond now, James Bond *lol*
+<carter> cya
+<dvhart> *g*
+<dvhart> nite
+<dvhart> saving log...

@@ -238,8 +238,16 @@ namespace stk
 		{
 			cur_rect.y1(rect.y1() + i*25);
 			cur_rect.height(25);
-			surface_->draw_text(cur_rect, items[i]->label());
+			items[i]->rect(cur_rect);
+			items[i]->draw(surface_);
+			//surface_->draw_text(cur_rect, items[i]->label());
 		}
 	}
 	
+	void theme::draw_list_item(const rectangle& rect, std::wstring label)
+	{
+		//cout << "theme::draw_list_item()" << endl;
+		// draw list is responsible for setting the graphics context!!
+		surface_->draw_text(rect, label);
+	}
 }

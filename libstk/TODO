@@ -1,8 +1,6 @@
 MEETING TOPICS
 ==============
-- usage of signals (only for the user?)
-- global key bindings (accelerators ?)
-- license - define intent
+- discuss surfaces: creation, blitting, etc.
 - tab stops
 - discuss embedded widgets
   what types of widgets make sense in embedded devices ?
@@ -13,13 +11,7 @@ MEETING TOPICS
 			number?  some way to register a loader?  or KISS and only support a couple
 			simple formats since the user can always convert, say XPM and PPM for
 			simplicity's sake?
-- should we have a color manager, similar to the font manager ?
-- it is getting to be a hassle to define different parameters for each theme
-      draw routine, perhaps we can just pass the widget itself ?  Marc mentioned
-			a parameter class... but it may just grow to be nearly as big as the widget
-			itself... so why bother...
-- perhaps just define all the widget draw routines in another file, and forget
-      the whole theme class thing.
+- should we have a color manager, similar to the font manager - dvhart to write test impl
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
 
