@@ -33,7 +33,6 @@ namespace stk
     {
         if (size_ != val)
         {
-            INFO("size: " << size_ << " <-- " << val);
             size_ = val;
             begin_ = MAX(0, MIN(begin_, size_-vis_size_));
             on_change();
@@ -49,11 +48,8 @@ namespace stk
     {
         if (begin_ != val)
         {
-            INFO("begin: " << begin_ << " <-- " << val);
             begin_ = MAX(0, MIN(val, size_-vis_size_));
-            INFO("  calling on_change()");
             on_change();
-            INFO("  done");
         }
     }
 
@@ -71,7 +67,6 @@ namespace stk
     {
         if (vis_size_ != val)
         {
-            INFO("vis_size: " << vis_size_ << " <-- " << val);
             vis_size_ = val;
             begin_ = MAX(0, MIN(begin_, size_-vis_size_));
             on_change();

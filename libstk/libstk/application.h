@@ -32,15 +32,16 @@ namespace stk
     public:
         typedef boost::shared_ptr<application> ptr;
         typedef boost::weak_ptr<application> weak_ptr;
+        typedef std::vector<timer::ptr> Ttimers;
+        typedef std::vector<boost::shared_ptr<state> > Tstates;
 
     private:
         static application::weak_ptr instance_;
         surface::ptr surface_;
         event_system::ptr event_system_;
-        std::list<boost::shared_ptr<state> > states_;
-        std::list<boost::shared_ptr<timer> > timers_;
+        Tstates states_;
+        Ttimers timers_;
 
-        // FIXME: what can we do to use state::weak_ptr
         boost::weak_ptr<state> current_state_;  // FIXME: should these be a weak_ptr ?
         widget::weak_ptr focused_widget_;
         widget::weak_ptr hover_widget_;
@@ -72,9 +73,8 @@ namespace stk
 
         /// Adds a new timer to the Application
         void add_timer(timer::ptr timer);
-        ///todo: writeme
-        void del_timer(timer::ptr timer)
-        { }
+        /// Removed the timer
+        void remove_timer(timer::ptr timer);
 
         /// Returns the surface for drawing operations
         virtual surface::ptr surface();

@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <functional>
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -31,6 +33,13 @@
 #include "libstk/state.h"
 #include "libstk/theme.h"
 #include "libstk/logging.h"
+
+// anonymous namespace for functions and functors specific to this file
+namespace 
+{ 
+    /// update a timer and return whether or not it should be removed from the app
+    bool timer_update_predicate(stk::timer::ptr t) { return !t->update(); } 
+}
 
 namespace stk
 {
@@ -158,7 +167,7 @@ namespace stk
                             //        widgets and lists should be containers --dvhart
                             list::ptr focused_list;
                             if ((focused_list = boost::shared_dynamic_cast<list>(focused_widget)) && (focused_list->size() > 0))
-                                (*focused_list)[focused_list->current()]->handle_event(event_);
+                                focused_list->current()->handle_event(event_);
                             else
                                 focused_widget->handle_event(event_);
                         }
@@ -167,15 +176,10 @@ namespace stk
                 event_ = event_system_->poll_event();
             }
 
-            // update all timers
-            std::list<timer::ptr>::iterator t_iter = timers_.begin();
-            for (t_iter; t_iter != timers_.end(); t_iter++)
-            {
-                if (!(*t_iter)->update())
-                {
-                    // FIXME: delete this timer
-                }
-            }
+            // update all timers, and remove those that have expired
+            Ttimers::iterator new_end = remove_if(timers_.begin(), timers_.end(), 
+                    timer_update_predicate);
+            timers_.erase(new_end, timers_.end());
 
             // redraw the necessary widgets / regions
             try
@@ -231,6 +235,10 @@ namespace stk
     void application::quit() { done_ = true; }
     void application::add_state(state::ptr state) { states_.push_back(state); }
     void application::add_timer(timer::ptr timer) { timers_.push_back(timer); }
+    void application::remove_timer(timer::ptr timer)
+    {
+        std::remove(timers_.begin(), timers_.end(), timer);
+    }
 
     // drawable interface
     surface::ptr application::surface() { return surface_; }

@@ -61,6 +61,7 @@ namespace stk
                 y += items_[current_]->height();
                 if (y > me->y()-y1()+v_scroll_->begin()) break;
             }
+            on_update_current();
             if ((unsigned int)current_ < items_.size()) // Crashes otherwise
                 items_[current_]->selected(true);
             redraw(widget::rect());
@@ -87,7 +88,19 @@ namespace stk
                     }
                     on_update_selection();
                 }
-                else current_ = 0;
+                else 
+                {
+                    if (current_ != 0) // superfluous ?
+                    {
+                        current_ = 0;
+                        on_update_current();
+                    }
+                    if (current() && !current()->selected())
+                    {
+                        current()->selected(true);
+                        on_update_selection();
+                    }
+                }
                 redraw(widget::rect());
                 return;
                 break;
@@ -97,13 +110,27 @@ namespace stk
                     current_++;
                     if (items_[current_]->y2() >= v_scroll_->end())
                         v_scroll_->begin(v_scroll_->begin()+items_[current_]->height());
+                    on_update_current();
+
                     if (!(ke->modlist() & mod_control))
                     {
                         select_none();
                         items_[current_]->selected(true);
                     }
                 }
-                else current_ = items_.size()-1;
+                else 
+                {
+                    if (current_ != items_.size()-1) // superfluous ?
+                    {
+                        current_ = items_.size()-1;
+                        on_update_current();
+                    }
+                    if (current() && !current()->selected())
+                    {
+                        current()->selected(true);
+                        on_update_selection();
+                    }
+                }
                 redraw(widget::rect());
                 return;
                 break;
@@ -124,8 +151,9 @@ namespace stk
     int list::add_item(list_item::ptr item)
     {
         items_.push_back(item);
-        // FIXME: we might as well retirn items_.size()-1 (since we always add it to the end)
+        // FIXME: we might as well return items_.size()-1 (since we always add it to the end)
         int index = std::find(items_.begin(), items_.end(), item) - items_.begin();
+        if (index == current_) on_update_current();
 
         // assign the new item a rectangle (this depends on us adding item to the end)
         item->rect(rectangle(0, v_scroll_->size(), width(), item->height()));
@@ -182,18 +210,29 @@ namespace stk
     {
         return items_.at(index);
     }
+    
     void list::clear()
     {
+        bool sel_change = (selection().size() > 0);
         items_.clear();
-        v_scroll_->size(0);
+        if (current_ != 0) on_update_current();
         current_ = 0;
+        if (sel_change) on_update_selection();
+        v_scroll_->size(0);
         redraw(widget::rect());
     }
+    
     int list::size()
     {
         return items_.size();
     }
     
+    list_item::ptr list::current()
+    { 
+        if (current_ < items_.size()) return items_[current_];
+        return list_item::ptr(); 
+    }
+
     void list::v_scroll(scroll_model::ptr model)
     {
         v_scroll_con_.disconnect();
