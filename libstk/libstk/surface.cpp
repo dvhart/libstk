@@ -66,34 +66,36 @@ namespace stk
 		int x = x1;
 		int y = y1;
 
+		color clr = gc_.line_color(); 
+		
 		switch(dir)
 		{
 			case DOT:
 				{
-					draw_pixel(x1, y1);
+					draw_pixel(x1, y1, clr);
 				}
 			case LR:
 				{
 					for (x; x <= x2; x++)
-						draw_pixel(x, y1);
+						draw_pixel(x, y1, clr);
 					break;
 				}
 			case RL:
 				{
 					for (x; x >= x2; x--)
-						draw_pixel(x, y1);
+						draw_pixel(x, y1, clr);
 					break;
 				}
 			case UP:
 				{
 					for (y; y <= y2; y++)
-						draw_pixel(x1, y);
+						draw_pixel(x1, y, clr);
 					break;
 				}
 			case DN:
 				{
 					for (y; y >= y2; y--)
-						draw_pixel(x1, y);
+						draw_pixel(x1, y, clr);
 					break;
 				}
 			case LRU_0:
@@ -104,7 +106,7 @@ namespace stk
 					int delta_e  = 2*dy;
 					int delta_ne = 2*(dy-dx);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (x < x2)
 					{
@@ -119,7 +121,7 @@ namespace stk
 							x++;
 							y++;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 				}
@@ -131,7 +133,7 @@ namespace stk
 					int delta_e  = 2*dx;
 					int delta_ne = 2*(dx-dy);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (y < y2)
 					{
@@ -146,7 +148,7 @@ namespace stk
 							y++;
 							x++;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 				}
@@ -158,7 +160,7 @@ namespace stk
 					int delta_e  = 2*dy;
 					int delta_ne = 2*(dy-dx);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (x < x2)
 					{
@@ -173,7 +175,7 @@ namespace stk
 							x++;
 							y--;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 				}
@@ -185,7 +187,7 @@ namespace stk
 					int delta_e  = 2*dx;
 					int delta_ne = 2*(dx-dy);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (y > y2)
 					{
@@ -200,7 +202,7 @@ namespace stk
 							x++;
 							y--;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 
@@ -213,7 +215,7 @@ namespace stk
 					int delta_e  = 2*dy;
 					int delta_ne = 2*(dy-dx);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (x > x2)
 					{
@@ -228,7 +230,7 @@ namespace stk
 							x--;
 							y++;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 				}
@@ -240,7 +242,7 @@ namespace stk
 					int delta_e  = 2*dx;
 					int delta_ne = 2*(dx-dy);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (x > x2)
 					{
@@ -255,7 +257,7 @@ namespace stk
 							x--;
 							y++;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 				}
@@ -267,7 +269,7 @@ namespace stk
 					int delta_e  = 2*dy;
 					int delta_ne = 2*(dy-dx);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (x > x2)
 					{
@@ -282,7 +284,7 @@ namespace stk
 							x--;
 							y--;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 					break;
 
@@ -296,7 +298,7 @@ namespace stk
 					int delta_e  = 2*dx;
 					int delta_ne = 2*(dx-dy);
 
-					draw_pixel(x, y);
+					draw_pixel(x, y, clr);
 
 					while (x > x2)
 					{
@@ -311,7 +313,7 @@ namespace stk
 							x--;
 							y--;
 						}
-						draw_pixel(x, y);
+						draw_pixel(x, y, clr);
 					}
 
 					break;
@@ -333,14 +335,15 @@ namespace stk
 			
 	void surface::circle_points(int x, int y, int dx, int dy)
 	{
-		draw_pixel(x+dx, y+dy);
-		draw_pixel(y+dx, x+dy);
-		draw_pixel(y+dx, -x+dy);
-		draw_pixel(x+dx, -y+dy);
-		draw_pixel(-x+dx, -y+dy);
-		draw_pixel(-y+dx, -x+dy);
-		draw_pixel(-y+dx, x+dy);
-		draw_pixel(-x+dx, y+dy);
+		color clr = gc_.line_color();
+		draw_pixel(x+dx, y+dy, clr);
+		draw_pixel(y+dx, x+dy, clr);
+		draw_pixel(y+dx, -x+dy, clr);
+		draw_pixel(x+dx, -y+dy, clr);
+		draw_pixel(-x+dx, -y+dy, clr);
+		draw_pixel(-y+dx, -x+dy, clr);
+		draw_pixel(-y+dx, x+dy, clr);
+		draw_pixel(-x+dx, y+dy, clr);
 	}
 
 	void surface::draw_circle(int x, int y, int radius)
@@ -379,10 +382,11 @@ namespace stk
 		
 	void surface::ellipse_points(int x, int y, int dx, int dy)
 	{
-		draw_pixel(x+dx, y+dy);
-		draw_pixel(x+dx, -y+dy);
-		draw_pixel(-x+dx, -y+dy);
-		draw_pixel(-x+dx, y+dy);
+		color clr = gc_.line_color();
+		draw_pixel(x+dx, y+dy, clr);
+		draw_pixel(x+dx, -y+dy, clr);
+		draw_pixel(-x+dx, -y+dy, clr);
+		draw_pixel(-x+dx, y+dy, clr);
 	}
 
 	void surface::draw_ellipse(int x, int y, int a, int b)
@@ -484,6 +488,8 @@ namespace stk
 	// antialiased draw routines
 	void surface::draw_line_aa(int x1, int y1, int x2, int y2)
 	{
+		color clr = gc_.line_color();
+		
 		// determine the line direction
 		int dir = direction(x1, y1, x2, y2);
 		int x = x1;
@@ -494,25 +500,25 @@ namespace stk
 			case LR:
 				{
 					for (x; x <= x2; x++)
-						draw_pixel(x, y1);
+						draw_pixel(x, y1, clr);
 					break;
 				}
 			case RL:
 				{
 					for (x; x >= x2; x--)
-						draw_pixel(x, y1);
+						draw_pixel(x, y1, clr);
 					break;
 				}
 			case UP:
 				{
 					for (y; y <= y2; y++)
-						draw_pixel(x1, y);
+						draw_pixel(x1, y, clr);
 					break;
 				}
 			case DN:
 				{
 					for (y; y >= y2; y--)
-						draw_pixel(x1, y);
+						draw_pixel(x1, y, clr);
 					break;
 				}
 			case LRU_0:
@@ -526,9 +532,9 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x, y+1, two_dx_inv_denom);
-					draw_pixel_aa(x, y-1, two_dx_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 					while (x < x2)
 					{
@@ -545,11 +551,11 @@ namespace stk
 							x++;
 							y++;
 						}
-						draw_pixel_aa(x, y, two_v_dx*inv_denom);
+						draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y+1,
-								two_dx_inv_denom - two_v_dx*inv_denom);
+								two_dx_inv_denom - two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y-1,
-								two_dx_inv_denom + two_v_dx*inv_denom);
+								two_dx_inv_denom + two_v_dx*inv_denom, clr);
 					}
 					break;
 				}
@@ -564,9 +570,9 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x+1, y, two_dy_inv_denom);
-					draw_pixel_aa(x-1, y, two_dy_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 					while (y < y2)
 					{
@@ -583,11 +589,11 @@ namespace stk
 							y++;
 							x++;
 						}
-						draw_pixel_aa(x, y, two_v_dy*inv_denom);
+						draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x+1, y,
-								two_dy_inv_denom - two_v_dy*inv_denom);
+								two_dy_inv_denom - two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x-1, y,
-								two_dy_inv_denom + two_v_dy*inv_denom);
+								two_dy_inv_denom + two_v_dy*inv_denom, clr);
 					}
 					break;
 				}
@@ -602,9 +608,9 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x, y+1, two_dx_inv_denom);
-					draw_pixel_aa(x, y-1, two_dx_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 					while (x < x2)
 					{
@@ -621,11 +627,11 @@ namespace stk
 							x++;
 							y--;
 						}
-						draw_pixel_aa(x, y, two_v_dx*inv_denom);
+						draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y-1,
-								two_dx_inv_denom - two_v_dx*inv_denom);
+								two_dx_inv_denom - two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y+1,
-								two_dx_inv_denom + two_v_dx*inv_denom);
+								two_dx_inv_denom + two_v_dx*inv_denom, clr);
 					}
 
 					break;
@@ -641,9 +647,9 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x+1, y, two_dy_inv_denom);
-					draw_pixel_aa(x-1, y, two_dy_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 					while (y > y2)
 					{
@@ -660,11 +666,11 @@ namespace stk
 							x++;
 							y--;
 						}
-						draw_pixel_aa(x, y, two_v_dy*inv_denom);
+						draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x+1, y,
-								two_dy_inv_denom - two_v_dy*inv_denom);
+								two_dy_inv_denom - two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x-1, y,
-								two_dy_inv_denom + two_v_dy*inv_denom);
+								two_dy_inv_denom + two_v_dy*inv_denom, clr);
 					}
 					break;
 				}
@@ -679,9 +685,9 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x, y+1, two_dx_inv_denom);
-					draw_pixel_aa(x, y-1, two_dx_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 					while (x > x2)
 					{
@@ -698,11 +704,11 @@ namespace stk
 							x--;
 							y++;
 						}
-						draw_pixel_aa(x, y, two_v_dx*inv_denom);
+						draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y+1,
-								two_dx_inv_denom - two_v_dx*inv_denom);
+								two_dx_inv_denom - two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y-1,
-								two_dx_inv_denom + two_v_dx*inv_denom);
+								two_dx_inv_denom + two_v_dx*inv_denom, clr);
 					}
 					break;
 				}
@@ -717,9 +723,9 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x+1, y, two_dy_inv_denom);
-					draw_pixel_aa(x-1, y, two_dy_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 					while (x > x2)
 					{
@@ -736,11 +742,11 @@ namespace stk
 							x--;
 							y++;
 						}
-						draw_pixel_aa(x, y, two_v_dy*inv_denom);
+						draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x+1, y,
-								two_dy_inv_denom + two_v_dy*inv_denom);
+								two_dy_inv_denom + two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x-1, y,
-								two_dy_inv_denom - two_v_dy*inv_denom);
+								two_dy_inv_denom - two_v_dy*inv_denom, clr);
 					}
 					break;
 				}
@@ -755,9 +761,9 @@ namespace stk
 					int two_v_dx = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dx*dx+dy*dy));
 					double two_dx_inv_denom = 2.0*dx*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x, y+1, two_dx_inv_denom);
-					draw_pixel_aa(x, y-1, two_dx_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x, y+1, two_dx_inv_denom, clr);
+					draw_pixel_aa(x, y-1, two_dx_inv_denom, clr);
 
 					while (x > x2)
 					{
@@ -774,11 +780,11 @@ namespace stk
 							x--;
 							y--;
 						}
-						draw_pixel_aa(x, y, two_v_dx*inv_denom);
+						draw_pixel_aa(x, y, two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y+1,
-								two_dx_inv_denom + two_v_dx*inv_denom);
+								two_dx_inv_denom + two_v_dx*inv_denom, clr);
 						draw_pixel_aa(x, y-1,
-								two_dx_inv_denom - two_v_dx*inv_denom);
+								two_dx_inv_denom - two_v_dx*inv_denom, clr);
 					}
 					break;
 
@@ -795,9 +801,9 @@ namespace stk
 					int two_v_dy = 0;
 					double inv_denom = 1.0/(2.0*sqrt(dy*dy+dx*dx));
 					double two_dy_inv_denom = 2.0*dy*inv_denom;
-					draw_pixel_aa(x, y, 0);
-					draw_pixel_aa(x+1, y, two_dy_inv_denom);
-					draw_pixel_aa(x-1, y, two_dy_inv_denom);
+					draw_pixel_aa(x, y, 0, clr);
+					draw_pixel_aa(x+1, y, two_dy_inv_denom, clr);
+					draw_pixel_aa(x-1, y, two_dy_inv_denom, clr);
 
 					while (x > x2)
 					{
@@ -814,11 +820,11 @@ namespace stk
 							x--;
 							y--;
 						}
-						draw_pixel_aa(x, y, two_v_dy*inv_denom);
+						draw_pixel_aa(x, y, two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x+1, y,
-								two_dy_inv_denom + two_v_dy*inv_denom);
+								two_dy_inv_denom + two_v_dy*inv_denom, clr);
 						draw_pixel_aa(x-1, y,
-								two_dy_inv_denom - two_v_dy*inv_denom);
+								two_dy_inv_denom - two_v_dy*inv_denom, clr);
 					}
 					break;
 				}

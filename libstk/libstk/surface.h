@@ -98,6 +98,7 @@ namespace stk
 			graphics_context gc_; // stores graphics settings used by draw routines
 
 		public:
+			surface() { };
 			surface(const rectangle &rect) : rect_(rect) { };
 			virtual ~surface() { };
 
@@ -109,9 +110,9 @@ namespace stk
 			void gc(graphics_context &new_gc) { gc_ = new_gc; }; 		
 
 			// methods which MUST be implemented in derived classes
-			virtual void draw_pixel(int x, int y) = 0;
-			virtual void draw_pixel_aa(int x, int y, double distance) = 0;
-			virtual void get_pixel(int x, int y) = 0;
+			virtual void draw_pixel(int x, int y, color clr) = 0;
+			virtual void draw_pixel_aa(int x, int y, double distance, color clr) = 0;
+			virtual color get_pixel(int x, int y) = 0;
 			// format: "0xRRGGBBAA", 0-255, alpha 255 being opaque
 			virtual color gen_color(const std::string &str_color) = 0;
 			virtual color gen_color(byte r, byte g, byte b, byte a) = 0;
