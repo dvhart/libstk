@@ -4,8 +4,8 @@
 lib_LTLIBRARIES = libstk.la
 
 if DFB
- headers_dfb = backend_dfb.h surface_dfb.h
- sources_dfb = backend_dfb.cpp surface_dfb.cpp
+ headers_dfb = backend_dfb.h surface_dfb.h event_producer_dfb.h
+ sources_dfb = backend_dfb.cpp surface_dfb.cpp event_producer_dfb.cpp
 endif
 
 if SDL
