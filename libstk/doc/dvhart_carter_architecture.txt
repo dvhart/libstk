@@ -1,0 +1,1021 @@
+--- Looking up irc.oftc.net..
+--- Connecting to base.deroo.net (65.242.171.30) port 6667..
+--- Connected. Now logging in..
+--- AUTH :*** Looking up your hostname...
+--- AUTH :*** Checking Ident
+--- AUTH :*** Found your hostname
+--- AUTH :*** No Ident response
+--- Welcome to the OFTC Internet Relay Chat Network dvhart
+--- Your host is peroxide.oftc.net[65.242.171.30/6667], running version hybrid-7+oftc1.1.0
+--- dvhart :*** Your host is peroxide.oftc.net[65.242.171.30/6667], running version hybrid-7+oftc1.1.0
+--- This server was created Mon Sep 9 2002 at 20:39:02 EDT
+--- peroxide.oftc.net hybrid-7+oftc1.1.0 oiwszcerkfydnxbaugl biklmnopstveIha bkloveIh
+--- WALLCHOPS KNOCK VCHANS EXCEPTS INVEX MODES=4 MAXCHANNELS=30 MAXBANS=100 MAXTARGETS=4 NICKLEN=30 TOPICLEN=450 KICKLEN=450 :are supported by this server
+--- CHANTYPES=#& PREFIX=(ohv)@%+ CHANMODES=eIb,k,l,imnpsta NETWORK=OFTC CASEMAPPING=rfc1459 CALLERID :are supported by this server
+--- There are 8 users and 1057 invisible on 22 servers
+--- 20 :IRC Operators online
+--- 320 :channels formed
+--- I have 228 clients and 1 servers
+--- Current local  users: 228  Max: 408
+--- Current global users: 1065  Max: 2051
+--- Highest connection count: 409 (408 clients) (17448 connections received)
+--- - peroxide.oftc.net Message of the Day - 
+--- - Welcome to OFTC - The Open and Free Technology Community.
+--- - 
+--- - The Open and Free Technology Community was founded at the
+--- - end of 2001 by a group of experienced members of the Open
+--- - Source and Free Software communities; it is aimed at
+--- - providing these communities with better communication,
+--- - development, and support infrastructure. Our goal is to
+--- - provide stable services to members of the community in any
+--- - part of the world, while listening closely to their needs
+--- - and desires.
+--- - 
+--- - We are not a general purpose chat platform, but a topical
+--- - network intent on providing the open source and free
+--- - software communities a means to cooperate and communicate.
+--- - As such, illegal and off-topic activity, such as warez
+--- - trading, may result in being barred from access.
+--- - 
+--- - OFTC is still in its Alpha stage of development. If you find
+--- - problems, please report them in channel #oftc, or email
+--- - bugs@oftc.net with detailed information about the bug. We
+--- - apologise profusely for any servers restarting, as well as
+--- - the occasional netsplit.
+--- - 
+--- - If you have other suggestions, questions, or comments, feel
+--- - free to send them to feedback@oftc.net. If you find any
+--- - bugs anywhere, please send en email to
+--- - bugs@oftc.net - thanks.
+--- - 
+--- - Please be aware that OFTC operates an open proxy detection
+--- - system(http://www.blitzed.org/bopm).  Please disregard
+--- - connections from proxy-scan.oftc.net(216.86.139.17) as it
+--- - is the detector in action. If you dislike this, please
+--- - disconnect now.
+--- - 
+--- - Thanks and enjoy your stay,
+--- - 
+--- -  The OFTC team
+--- - 
+--- End of /MOTD command.
+--- dvhart sets mode +i dvhart
+--> You are now talking on #linux-coding
+--- Topic for #linux-coding is Talk about all things coding related. And *maybe* other stuff.
+--- Topic for #linux-coding set by ChanServ!services@services.oftc.net at Sat Feb  8 05:00:08
+<dvhart> lo all
+--> ank (~anand.tiw@beowulf.mcs.sdsmt.edu) has joined #linux-coding
+<carter_> re
+<carter_> hi darren!
+<dvhart> lo marc
+<dvhart> ready
+<carter_> so
+<carter_> lets talk bout the uml :)
+<carter_> yep
+<carter_> :)
+<dvhart> update your cvs
+<carter_> cvs server  is up?
+<dvhart> slightly updated uml
+<carter_> had some access problems last week
+<dvhart> yeah we had power outages
+<dvhart> its up now
+<carter_> ok
+<ank> i m new to uml, i this the right channel to hang around for uml
+<carter_> updating
+<dvhart> well
+<carter_> ank: right channel for a bit talk about coding
+<dvhart> we are goin to be discussing some
+<carter_> but not much at the moment ;)
+<ank> k 
+<carter_> we two are just discussing some GUI Toolkit we are working on
+<carter_> atm
+<dvhart> http://www.dvhart.com/projects.php
+<dvhart> see libstk
+<dvhart> you can get the dia uml form the web cvs browser if you are interested: libstk/doc/uml.dia
+<carter_> damn that connection is slow :)(cvs)
+<dvhart> cable upload
+<dvhart> sucketh
+<dvhart> it'll be nice when I can have my own t1
+<carter_> you get your own T1?
+<carter_> *wow*
+<dvhart> "it'll be nice when..."
+<carter_> these connections are unaffordable here ;)
+<ank> i m interested in somethng like ipc/ distributed ipc, which channel will be good 
+<carter_> dunno ank
+<dvhart> ank no sure either
+<ank> but i will stick here to learn something ;)
+<dvhart> carter_: while you are downloading her are the topic I want to discuss
+<dvhart> 1"list/combo
+<carter_> dvhart: cant get anything trough the ssh pipe atm
+<carter_> something's wrong
+<dvhart> hmm
+* carter_ tries to ssh manually to test
+<dvhart> cvs and ssh work for me
+<dvhart> 1: list/combo parent
+<dvhart> 2: container model (vs QT's)
+<carter_> ok
+* carter_ doesnt know QT very good
+<dvhart> 3: application aware of state (vs QT)
+<carter_> s/good/well
+<carter_> ok ssh works now
+<dvhart> I just read their docs / clas hierarchy and whitepaper this morning in prep
+<carter_> updating
+<carter_> gimme a link to it
+<dvhart> 4: new surface model
+<carter_> hmm weird
+<carter_> ssh manully works
+<carter_> carter@voyager libstk $ cvs update
+<carter_>  
+<carter_> carter@www.dvhart.com's password:
+<carter_>  
+<carter_> hangs there forever
+<dvhart> tp://doc.trolltech.com/3.1/index.html
+<dvhart> http://doc.trolltech.com/3.1/index.html
+<carter_> ok
+<dvhart> see Whitepaper, and All Classes
+<dvhart> and the Tutorials
+<dvhart> but I gleaned what I think we need from them
+<dvhart> 5: event model
+<carter_> ok
+<carter_> updated
+<dvhart> 6: button group and toggle buttons
+<dvhart> any topics you want to add
+<carter_> wait
+<carter_> will look at the uml first (updated version)
+<dvhart> ( with the list we can be sure to cover them all)
+<dvhart> dammit, I didn't finsih the IRC whiteboard!  *g*
+<dvhart> ank: for some background, we are designing a toolkit for set-top boxes.  Designed to be light, powerful, abstracted from the event and graphics system, written in TRUE C++, using boost
+<dvhart> this is version 2
+<carter_> TRUE C++ (the only real language *ggg*)
+<dvhart> (version 1 was a good proof of concept, but not TRUE C++, dvhart had some maturing to do *g*)
+<dvhart> 7: parent type specified in constructor
+<carter_> ok
+<carter_> lets start with 1.
+<dvhart> one sec
+<dvhart> 1: list/combo parent
+<dvhart> 2: container model (vs QT's)
+<dvhart> 3: application aware of state (vs QT)
+<dvhart> 4: new surface model
+<dvhart> 5: event model
+<dvhart> 6: button group and toggle buttons
+<dvhart> 7: parent type specified in constructor
+<dvhart> ok better
+<dvhart> so list combo now have widget as parent
+<dvhart> we will add a add_item()
+<dvhart> change_item, remove_item interface
+<carter_> they have container as a parent
+<carter_> dont they?
+<dvhart> parent or base class do yo you mean?
+<carter_> ah
+<carter_> ok
+<carter_> you mean the  parent in the class hierarchie :)
+* carter_ thought of the parent pointer in the runtime hierarchie
+<dvhart> ah
+<dvhart> right
+<dvhart> ok
+<dvhart> so we don't use the add_child interface, we use add_item
+<carter_> yep
+<carter_> imo
+<dvhart> which we pass ... strings?
+<carter_> we should give them an STL style container interface
+<dvhart> good thought
+<carter_> so we have push_back etc + a simple iterator
+<carter_> in the easiest case
+<dvhart> public list container?
+<carter_> we can just return the STL iterator
+<carter_> for the internal container
+<carter_> hmmm
+<carter_> no
+<carter_> not public
+<carter_> just the same interface as the STL uses
+<carter_> implemented in our code
+<carter_> (pass trough to real STL at first)
+<carter_> hmmmmm
+<carter_> imo the items should be a class
+<carter_> with a virtual draw function
+<dvhart> they could be the label class
+<carter_> so you could implement "owner draw" for the widgets
+<dvhart> then they could have images too
+<carter_> the thing is
+<carter_> does a label widget "fit" into a list?
+* carter_ thinks of list items as much more light weight
+<dvhart> hmm, right
+<dvhart> ok, list_item then
+<dvhart> with an image if they want
+<carter_> imo
+<carter_> list item should be like this
+<carter_> class list_item
+<carter_> {public:
+<carter_> std::string caption;
+* dvhart smacks carter
+<carter_> virtual void draw(/* params have to be defined*/) ; // with a default implementation
+<carter_> }
+<carter_> ;
+<carter_> *ouch*?
+<carter_> :)
+<dvhart> caption private
+<carter_> ok
+<carter_> right
+<carter_> that was pseudo code wasnt it ?: )
+<dvhart> *g*
+<dvhart> yeah agreed, looks good
+<dvhart> next?
+<dvhart> wait, with image support
+<carter_> image support
+<carter_> the user derives a  class from list item:)
+<dvhart> (in the list_item I mean)
+<carter_> and customizes the draw function
+<dvhart> hmmm
+<carter_> if he need image support
+<dvhart> why?
+<dvhart> why not do it like button and label?
+<carter_> ok
+<carter_> you can put that functionality in the base  class
+<carter_> but
+<carter_> if i have a virtual function for drawing anyway
+<carter_> i should use it right? :)
+<dvhart> yeah and you can override default drawing behavior (ie where th eimage goes)
+<carter_> yep
+<carter_> and you can do multi-column combi boxes
+<carter_> if you like to, etc
+<dvhart> yup
+<carter_> so
+<carter_> to make that works
+<carter_> the listbox has to use smart pointers
+<carter_>  to items internally
+<carter_> otherwise we cant put derived items there (they would be aliased to the base class if we pass them around by value)
+<dvhart> std::list<boost:shared_ptr list_item>
+<carter_> yep
+<dvhart> ok
+--- carter_ is now known as carter
+<dvhart> (carter is public now *g*)
+<carter> (did i mention that GNome2.2 roxx? )
+<dvhart> yes it does
+<carter> ok
+<carter> point 2
+<carter> container modell (versus QT)
+<dvhart> ok, so QTs model
+* carter is still not into QT
+<dvhart> they don't have a container
+<dvhart> they have a QObject (like our event_handler really)
+<dvhart> and it define sthe child vector
+<dvhart> any widget can have children
+<dvhart> ... I don't like it
+* carter neither
+<dvhart> like ours?
+<carter> yep
+<dvhart> I had a UI professor say that the UML din't show that a container could have a container
+<carter> for many widgets it simply makes no sense to be containers
+<dvhart> not sure where he got that
+<carter> hmmm?????
+<carter> ok
+<carter> the UML is imperfect
+<dvhart> since our container contains widgets and container inherits widget it can contain other containers, I htought the UML does show that (but this is my first REAL UML dia)
+<carter> there is an relation between the container and the widget missing
+<carter> with an 0:n multiplicity
+<carter>  :)
+<dvhart> hmm want to add that and commit ?
+<dvhart> don't know how that is supposed to look
+* carter is atm not sure about the notation ;)
+<carter> rational rose does that automaticly :)
+<dvhart> ok, I'll  liik into it
+<dvhart> look even
+<carter> yep
+<carter> ok
+<carter> so we both like our modell
+<carter> so we take it :)
+<carter> 3.Application aware of state (in relation to QT's modell)
+<carter> dunno about QT
+<dvhart> so the children_ aggregate connection isn't enough?
+<carter> explain that a bit more
+<carter> the children aggregate connection is missing that there can be more than one children :)
+<carter> otherwise its right
+<dvhart> ok, in QT there is a global.. qApp pointer or something, you never add widgets to the app.
+<dvhart> I am not sure how the app gets to be aware of them to pass events
+<carter> ahh found how to do the multiplicity thing in DIA
+<carter> :)will commit in a few mins ;)
+<dvhart> ok
+* carter hopes he remembers the right notation
+<dvhart> go ahead and take any notes your want on the dia file, I won't touch it until you commit
+<carter> dvhart: Global variables are a cheap hack
+<dvhart> I agree
+<dvhart> just a difference I wanted to explore
+<dvhart> we add states to the app
+<carter> imo that wrong
+<dvhart> they never do
+<carter> do they have "states" in our sense?
+<carter> i think they dont
+<dvhart> I think our model works well for our target applications
+<carter> yep
+<carter> thats what i thought
+<dvhart> (they don't have states)
+<carter> its highly possible
+<carter> that they get their events from the underlying windows system
+<carter> in a different way then we do
+<carter> ya know in Win32 every widget is a window for itself and the system dispatches messages
+<dvhart> does our model make sense with app and widget descending from event_handler?  (QT does something similar, they both derive from QObject)
+<dvhart> ah
+<carter> i think it makes sense
+<carter> for our application
+<dvhart> is event_handler a good name?
+<carter> hmmm
+<carter> thought about that
+<dvhart> maybe just object
+<carter> maybe we should create some naming convention for purely abstract baseclasses(interfaces)
+<dvhart> good thought, what do you suggest?
+<carter> ievent_handler was what i used in DSP/newworlds
+<dvhart> iWidget
+<dvhart> lol
+<dvhart> HA
+<carter> :)))
+<dvhart> great minds..
+<carter> but my taste is a bit different today
+<carter> dunno but i think
+<carter> event_handler is good enough
+<carter> makes it clear what function the object derived has
+<dvhart> I like the interface distinction though
+<dvhart> that way it is clear to the developer what he/she is doing
+<carter> i think we should just document it
+<dvhart> theres a thought
+* carter is strongly against most name prefixing/postfixing
+<dvhart> hmmm
+<dvhart> ok, doxygen it is
+<carter> yep
+<carter> :)
+<dvhart> ok, we stick with our hierarchy
+<carter> yep
+<carter> 4: new surface modell?
+<dvhart> ok
+<dvhart> before we had a fb for every widget and the app
+<dvhart> evil
+<dvhart> now we have one in app
+<carter> fb?
+<carter> framebuffer?
+<dvhart> and pass it as a graphics object to the draw routines
+<dvhart> (yup)
+<carter> imo we should have one surface in each widget
+<carter> but that doesnt mean each surface
+<carter> has its own framebuffer
+* carter thought of surfaces as handles for clipped drrawing to a spezified region of the screen
+<dvhart> (it does in the current surface definition)
+<carter> ok
+<carter> then we have to change that
+<dvhart> currently (the new model)
+<carter> so a surface can possibly be a subsurface of another one
+<carter> that was my plan
+<dvhart> hmmm
+<carter> (directfb and SDL support that on the lower level too)
+<carter> IIRC
+<dvhart> what is wrong with drawing bottom up and passing the graphics object around
+<dvhart> it is fast, light, no blitting, etc
+<carter> ok
+<carter> first thing
+<carter> how do you want to do clipping?
+<dvhart> you set the clip rect in the surface
+<carter> ok
+<dvhart> draw out of it and it gets.. well clipped
+<carter> ok
+<dvhart> *g*
+<carter> then thats ok
+<carter> so
+<carter> who's responsible for setting the clipping rectangle
+<carter> the widget drawing function
+<dvhart> we need to decide
+<carter> or the drawing tree traverser (if we'll have such a thing)
+* dvhart hasn't given much thought to clipping
+<dvhart> the widget maintains relative x,y and its width and height
+<dvhart> (relative to its parent)
+<carter> ok
+<dvhart> at least that is my current thoughts
+<carter> so we only need to clip
+<carter> to the bottom right edge really
+<carter> ok
+<carter> and to zero :)
+<carter> the next thing would be who calls the draw function
+<dvhart> trying to think what we really need clipping for?
+<carter> imo the state or the app should have a drawing function
+<carter> which goes trough the widget hierarchie
+<carter> setups clipping
+<carter> and calls the function
+<carter> dvhart: clipping is imo usefull for example for the listbox
+<carter> so when we scroll it
+<carter> nothing gets drawn out of the area :)
+<dvhart> hmm ok
+<carter> its more of protection of our own dumbness
+<dvhart> so pseudo code coming:
+<carter> that a neccesity
+<dvhart> state::draw()
+<dvhart> for each widget
+<dvhart> set clip
+<dvhart> widget.draw
+<dvhart> end
+<carter> recurse
+<dvhart> yup
+<carter> otherwise its right
+<carter> IMO
+<dvhart> containers call draw on each child
+<carter> so
+<carter> when do we redraw
+<carter> hmmm
+<carter> no dvhart
+<carter> bad plan
+<dvhart> why? it ensures bottom up
+<carter> forces  us to do always full screen redraws
+<carter> ah
+<carter> no
+<carter> right
+<carter> ok
+<carter> if the container does draw on each child its ok
+<carter> :)
+<dvhart> the beauty of only one surface
+<carter> so
+<carter> if one widget gets "invalid"
+<carter> it calls redraw on its parent
+<carter> ?
+<dvhart> ?
+<carter> if for example
+<carter> i set the Caption of a button
+<dvhart> oh yeah, sure
+<carter> it has to be redrawn
+<carter> good
+* dvhart taking a note about that
+<carter> ok
+<carter> thats it mostly about the drawing system
+<dvhart> should that be handled with signals? or just parent_->draw()
+<dvhart> ?
+<dvhart> ah
+<dvhart> no
+<dvhart> can't
+<carter> parent_ draw simply
+<dvhart> draw needs the graphics object
+<dvhart> and the widget doesn't have it
+<carter> hmmmm
+<carter> who has it ?:)
+<dvhart> app
+<carter> hmmmm
+<dvhart> hmmm
+<dvhart> we could send an event
+<carter> hmmm
+<dvhart> redraw and our rect
+<carter> maybe we should make widget aware of app
+<dvhart> eh.. yuk
+<dvhart> I have been trying to avoid that
+<carter> hmmmmmm
+<dvhart> that basicly amount to a global pointer (albeit local to each widget)
+<carter> ok
+<carter> so
+<carter> we could just go the hierarchie upwards
+<carter> till we are at the top
+<carter> when we want to redrwa
+<carter> we then have the surface to draw
+<dvhart> but then everything get redrawn just to change the widget label
+<carter> and we can pass it to our parent
+<carter> no
+<carter> i just go completely up to get the screen
+<dvhart> oh
+<carter> not to redraw from there
+<dvhart> request the surface from the parent
+<dvhart> and on up
+<carter> 3 lines recursive function ;)
+<dvhart> then pass it to the parent
+<carter> we should put that functionality
+<carter> in widget
+<carter> imo
+<dvhart> did I understand you right ^
+<carter> yep
+* dvhart noting
+<carter> hmmm
+<carter> that would be mean
+<carter> hmmmm
+<carter> unclean unclean
+<carter> :)
+<carter> we would have to use RTTI
+<carter> to detect when we reached application
+<dvhart> no
+<carter> or we had to expand event handler
+<dvhart> just call parent->get_surface
+<dvhart> default is to do the same
+<carter> so
+<dvhart> the app returns the surface
+<carter> what do you do in state?
+<dvhart> app is states parent
+<carter> lol
+<carter> but
+<carter> that only w*orks
+<carter> if you
+<carter> put
+<carter> get_surface
+<carter> into event handler
+<carter> because otherwise they havent got a common base class
+<dvhart> damn
+<carter> hmm
+<carter> maybe
+<carter> we should tweak the hierarchie
+<carter> to have a class between event handler and widget/application
+<carter> and then we can put multiple interfaces
+<carter> into that class
+<carter> via multiple inheritance
+<carter> hmmmm
+<carter> wait
+<carter> have to sketch that
+* dvhart pondering
+<carter> wait
+<carter> will commit to cvs
+<dvhart> dia?
+<carter> ignore the naming for now
+<carter> couldnt think of good names :)
+<carter> dia
+<dvhart> ok
+<carter> commited
+<dvhart> got it
+<carter> with that interface
+<carter> your plan would work
+<carter> and the distinction between event handling interface code and the drawing interface code
+<carter> is still intact
+<dvhart> yup
+<carter> but i dont really like it:(
+<dvhart> surface_getter *chuckle*
+<carter> *ggggg*
+<dvhart> yeah, it seems a hack doesn' it
+<carter> i told you i couldnt think of sensible names :)
+<carter> hmmmm
+<carter> it doesnt seems like a hack
+<carter> but i have the fear
+<carter> that we will tend to add hundreds of classes there at the top of the hierarchie :)
+<dvhart> right
+<dvhart> and why parent interface? 
+<carter> couldnt think of a better name
+<dvhart> jsut so app and widget don't have multiple inheritance?
+<carter> its the interface
+<carter> no
+<carter> its the interface
+<carter> all parents support
+<carter> by the parent pointer
+<carter> so i named it parent_interface ;)
+<carter> it contains everything that  can be done
+<carter> by going the hierarchie up with the parent pointer
+<dvhart> I see
+<dvhart> I don't think I like it
+<dvhart> but I don't have a better solution atm
+<carter> imo its not that bad
+<dvhart> hmmm
+<carter> it just opens up the possibility to add too much to the hierarchie ;)
+<dvhart> we could throw event_h surface_g and parent_i into one stk::object class
+<dvhart> and it would still make sense
+<carter> imo
+<carter> that is uncleaner
+<carter> than compositing it via multiple inheritence
+<carter> (the compiler generated code would be the same anyway :))) )
+<dvhart> yours has a nice division of resposibility
+<carter> yep
+<dvhart> hmmm... will think on that some more
+<dvhart> 5?
+<carter> event systemIIRC
+<carter> imo the current one is right
+<carter> app gets an event
+<carter> sends it to current_widget
+<carter> and that one passes it upward the widget hierarchie
+<carter> trough event_handler
+<carter> till its handled
+<dvhart> I like it too
+<dvhart> what event should we have
+<dvhart> key_event
+<dvhart> mouse_event
+<carter> yep
+<dvhart> where do IR and network event come in?
+<carter> hmmmm
+<dvhart> message_event?
+<carter> imo
+<carter> networking should have NOTHING todo
+<carter> with our widget set :)
+<carter> and IR should be translated to keyboard events
+<dvhart> that is what I was thinkg (IR -> key)
+<dvhart> so we add keycodes for NEXT END PREV PLAY etc?
+<carter> yep
+<dvhart> should we define keycodes in an enum or just a buttload of defines?
+<carter> enum
+<dvhart> I haven't given this all much thought
+<carter> we will NEVER use defines
+<carter> either constant integer
+<carter> or enums ;)
+<dvhart> ok
+<dvhart> I started doing that already in surface
+<dvhart> do we subclass mouse event for mouse_motion and mouse_button
+<dvhart> evetns?
+<carter> yep
+<carter> mouse motion is a problem
+<carter> btw
+<dvhart> event, mouse_event, key_event are abstract then?
+<carter> :)
+<carter> if we want to have mouse over effects
+<carter> 2 widgets need to be *evented* *lol*
+<carter> the one which lost the mouse focus
+<carter> and the one wo got it
+<carter> so we need something like mouse_enter
+<carter> mouse_exit
+<dvhart> those are signals
+<carter> yep
+<dvhart> for each widget
+<carter> but they have a fundamental problem
+<carter> we cant only send mouse events
+<carter> to the current widget then
+<carter> which kicks our whole event handling chain ;)
+<dvhart> hmmm
+<carter> at least the one in my mind ;)
+<dvhart> yup yup
+<carter> *damnit :)*
+<carter> ok
+<carter> so
+<dvhart> well, mouse events have been kinda added in last minute
+<carter> we change the wording: :)
+<dvhart> as we won't use them much IMO
+<carter> keyboard events
+<carter> go to the current widget
+<carter> mouse events to the widget, currently under the mouse button
+<dvhart> yup
+<carter> and mouse_pressed events
+<carter> first activate the widget
+<carter> under the current mouse pos
+<carter> and then get send to the active widget
+<carter> ok
+<carter> works out ok ;)
+<dvhart> so too widget pointers
+<dvhart> cur_widget and hover_widget
+<dvhart> or somehting
+<carter> hmmmmmmmmmmmm
+<carter> damnit
+<dvhart> need prev_hover_widget too lol
+<carter> do you think its too slow to go trough the widget hierachie top down
+<carter> each time the mouse moves?
+<carter> current hover widget isnt neccesary to maintain
+<dvhart> QT does I think
+<carter> (redundant state)
+<carter> because by the current mouse position
+<carter> you can always find out which is the "current hover widget"
+<dvhart> state->get_widget_at(x, y)
+<carter> yep
+<carter> but you are right
+<carter> we need a cur_hover_widget
+<carter> and
+<carter> when a mousemove is made
+<carter> and get_widget returns a different one
+<carter> then  on cur_hover_widget( which is then old) the mouse_exit event is send
+<dvhart> <carter> current hover widget isnt neccesary to maintain
+<carter> and on the new one the mouse entry event is send
+<carter> yeahyeah  ;) though about it some more , we do need it
+<dvhart> ok
+<dvhart> I foloow you
+<dvhart> so.. does app or state maintain it
+<dvhart> app I think
+<carter> imo app has to maintain current widget pointers
+<dvhart> then app asks the current state for the new widget at x,y
+<carter> yep
+<carter> so
+<dvhart> sounds clean enough to me
+<carter> how do we update
+<carter> the current keyboard focus
+<carter> and
+<carter> who is responsible
+<carter> for changing it?
+<dvhart> so the container has a set_next_focus()
+<dvhart> ...
+<carter> who calls it?
+<carter> and how does the container
+<carter> tell the state/app that it has changed?
+<dvhart> so a NEXT key event gets sent to the focuses widget (a button)
+<dvhart> it doesn't know what to fo, calls the parent container
+<dvhart> and then... to tell the app
+<dvhart> this was a problem in stk1 also
+<dvhart> hmmm
+<carter> so
+<dvhart> what did we do...
+<carter> we have one more interface
+<carter> in parent :)
+<dvhart> uh oh
+<carter> hmmmm
+<carter> still thinking
+<dvhart> hmm
+<carter> if it isnt cleaner
+<carter> if we just make
+<carter> widget aware of its parent APP
+<dvhart> what about passing events up the hierarchy that app can handle
+<carter> or parent state
+<carter> ok
+<dvhart> like I_WANT_THE_SURFACE
+<carter> yep
+<dvhart> then app calls draw
+<carter> that was the next  thing i thought
+<carter> I WANT THE SURFACE not
+<carter> imo
+<carter> that is very clean with the interface
+<dvhart> lol
+<carter> but we could just let a 
+<carter> CYCLE_WIDGET event
+<carter> or something
+<carter> up
+<dvhart> why not DRAW_ME too
+<carter> to change the currently active widget
+<carter> to the next ONE
+<dvhart> hmm
+<carter> dunno :)
+<dvhart> next one
+* carter liked the idea of drawing with the interface
+<carter> ;)
+<dvhart> how does app know that is?
+<carter> ???
+<dvhart> CYCLE_WIDGET
+<dvhart> app gets it
+<carter> ah
+<carter> you mean
+<carter> what the next widget is
+<dvhart> changes cur_widget to ?? what?
+<carter> :)yeah
+<carter> that is kinda problem :)
+<dvhart> the event could contain a pointer
+<carter> I M O  
+<carter> app should call a function
+<carter> which starts with the parent of the currently active widget
+<carter> and calls something like
+<carter> damn
+<carter> my
+<dvhart> set_next_focus just returns the pointer
+<dvhart> that works
+<carter> >
+<carter> key doesnt work
+<carter> with Xfree 4.3
+<carter> dvhart
+<carter> imo
+<carter> it should start
+<carter> with the parent of the currently active widget
+<carter> and call something like
+<carter> parent-Next(current_widget)
+<carter> which EITHER
+<carter> returns the next one
+<carter> or 
+<carter> some special value
+<carter> for END OF LIST
+<carter> so
+<carter> when it returned the next one
+<carter> we traverse the next one DOWN (if its and container) or just take it as the current one
+<carter> if it returned end of list
+<carter> we go to the parent of parent (upward the hierarchie)
+<carter> and try again to get the next one there
+<carter> next should return the first child if we call it with a null pointer as the current one 
+<carter> IMO
+<dvhart> ok, I think we are on the same page
+<dvhart> what about this
+<dvhart> current widget gets a NEXT keypress
+<dvhart> it doesn't know what to do
+<dvhart> it gets passed up eventually to app
+<dvhart> app says cur_widget = cur_widget->parent->next()
+<carter> dvhart
+<carter> hmm
+<carter> ok continue ;)
+<dvhart> that's it
+<carter> doesnt work
+<dvhart> works clean
+<carter> if we have multiple levels of containers
+<carter> what if the parent reached its end of childs list
+<dvhart> thats ok
+<carter> then we would have to continue
+<dvhart> that is container specific
+<carter> one level higher in the hierarchie
+<carter> ok
+<carter> that is just a matter of where to implement it
+<carter> :)
+<carter> the tricky thing here is the implementation
+<carter> but IMO
+<carter> the app should only respond to events
+<carter> NEXT_WIDGET
+<carter> PREVIOUS_WIDGET
+<carter> and the keypresses get translated
+<carter> either in WIDGET
+<carter> or if there is no special behaviour
+<carter> in all the widgets
+<carter> it gets handled
+<carter> in State
+<carter> so a widget could implement special behaviour
+<carter> to jump out of the current widget, when another key is pressed
+<carter> that makes it possible to trigger the next widget thingie from different sources
+<dvhart> hmm, why translate the key in widget, doesn't it make more sense to only translatethe key in one place (and won't the same key change widgets throught the entire APP) ?
+<carter> no
+<carter> in the Usual case
+<carter> of switching with TAB and arrow left/right
+<carter> it gets translated in STATE or App
+<carter> sorta like a default behaviour
+<carter> but it might get translated earlier
+<dvhart> ok
+<carter> by one of the widgets
+<carter> for special behaviour
+<dvhart> ok, like END in a list
+<dvhart> ?
+<carter> what END in a list?
+<dvhart> you are focused on the 3rd entry in a list, you press END, you are now focused on the last item in the list
+<carter> yep
+<dvhart> ok
+<carter> but
+<carter> a listbox
+<carter> hasnt got to change the current widget for that
+<carter> because its no container
+<carter> remember? :)
+<dvhart> so I am a little fuzzy on how the messaging work, so run me through your idea for the entire process of the END example I mentioned
+<dvhart> oh right
+<dvhart> well
+<carter> the END example
+<dvhart> another exmample then
+<carter> isnt done trough messaging ;)
+<carter> and END
+<carter> of a container
+<carter> is very unintuitive
+<carter> :)
+<dvhart> yup
+<dvhart> ok so I press ->
+<dvhart> what happens
+<carter> the event
+<carter> KEYpressed
+<carter> with keycode==arrrow_right
+<carter> get send to the current widget
+<carter> which either handles it (spreadsheet comes to minD)
+<carter> or just doesnt handle it, so it calls the handle_event method of the parent
+<carter> etc etc etc
+<carter> eventually it gets passed up to app
+<carter> which then decides to handle it like 
+<carter> WIDGET_NEXT
+<carter> (effectively translating it into WIDGET_NEXT)
+<dvhart> by calling cur_widget = cur_widget->parent()->next() ?
+<carter> yep
+<carter> and the container has to make sure
+<dvhart> hmmmm..... I thought that is what I said originally *g*
+<carter> that the next one is returned
+<carter> no
+<carter> imo you said
+<carter> imo
+<carter> you wanted to either only react on the key
+<carter> or send NEXT to the active widget
+<carter> might be that i didnt got your inital suggestion though ;) (getting late *lol*)
+<dvhart> ok, miscommunication, I think we got it
+<dvhart> 6: button group and toggle buttons
+<dvhart> we have toggle_container
+<carter> yep
+<carter> imo
+<dvhart> ie button_group
+<carter> a toggle and radio button grup etc
+<carter> is just a normal container
+<carter> so all "groupable" items in one container are one group
+<carter> implementation might get a bit tricky though ;)
+<carter> or do you want to make special containers?
+<dvhart> the UML has a toggle_container
+<dvhart> so that it can handle a clicked event
+<dvhart> by unsetting the other buttons in the group
+<dvhart> a toggle button knows to tell its parent that it got clicked
+<carter> yep
+<carter> ok
+<carter> right
+<dvhart> the parent may or may not handle it
+<carter> and the client handling is special
+<carter> too
+<carter> you need to make a subclass of widget
+<carter> ah
+<carter> wait
+<carter> imo
+<carter> we have 2 kinds of toggle buttons
+<carter> we have simply Toggle buttons
+<carter> and we have alternative selection buttons
+<carter> simple toggle buttons havent got to be treaten special
+--> gregf (~gregf@d-216-195-154-239.gwi.net) has joined #linux-coding
+<carter> IMO
+<carter> hi gregf
+<dvhart> (so put toggle buttons in container and alternative slection buttons in toggle_ocntainer)
+<gregf> lo
+<dvhart> lo gregf
+<carter> dvhart: 
+<carter> imo
+<carter> toggle container should be called
+<carter> alternative_toggle_container
+<carter> or something
+<carter> and
+<carter> all alternative selectable wigets
+<carter> have to derive from one class between them adn the widget class
+<carter> for the special interface
+<dvhart> we can rename the container
+<carter> and the child list of a alternative_toggle_container has to contain pointers
+<carter> to that special interface class
+<carter> instead of a simple widget
+<dvhart> hmmm
+<dvhart> that complicates things
+<carter> imow
+<dvhart> it means the container derives from widget
+<dvhart> and can't be a parent
+<carter> we shouldnt implement that now
+<carter> and talk about it
+<carter> when the basic framework is in place
+<carter> KISS for now
+<dvhart> hmmm
+<carter> it will get much cleaner
+<carter> when the rest is there
+<carter> IMO ;)
+<dvhart> so we get labels and buttons working
+<carter> thats the most important thing atm!
+<dvhart> ok
+<dvhart> 7: parent type specified in constructor
+<dvhart> to restrict the parent type of specific widgets (ie radio button)
+<carter> boost::weak_pointer«container» 
+<dvhart> we se tthe parent type in the constructor
+<carter> hmmmmm??????
+<dvhart> see the uml
+<carter> how do you mean that?
+<dvhart> all widget derivitives
+<carter> yeah sure?
+<dvhart> require a parent in the constructor
+<carter> yep
+<dvhart> BUT
+<dvhart> we can seay what kind of parent
+<dvhart> as long as it
+<dvhart> derives from widget
+<carter> dvhart so what is the problem?
+<dvhart> nothing
+<carter> each widget can redefine what type of parent it has
+<carter> :)
+<dvhart> asking if you kike it
+<carter> imo there's no need to discuss it :)
+<carter> its ok IMO
+<dvhart> ok
+<dvhart> anything else you want to bring up?
+<carter> atm not
+<carter> but there are many things we changed today :)
+<dvhart> ok thanks for the back board
+<dvhart> I will update the UML
+<carter> maybe my might might change till tomorrow ;)
+<dvhart> and commit it
+<carter> ok
+<carter> mail to the ML when its commmited
+<carter> will look at it then
+<dvhart> ok
+<carter> see if you got everything right ;))
+<dvhart> *g* so how is stunts coming
+<carter> havent done anything on it
+<carter> since 2 weeks
+<carter> :)
+<carter> much work
+<carter> and codec has got some exams
+<carter> no time
+<dvhart> too bad
+<carter> last thing i implemented
+<carter> was a hierarchical state change optimisation algorithm
+<carter> for the rendering
+<carter> :)
+<carter> kinda nice ;)
+<dvhart> ?
+<carter> orders the state changes by the impact
+<carter> in Opengl every state change
+<carter> like gl_enable(gl_light)
+<carter> has a performance impact
+<carter> which varies with the type of change
+<carter> so when you render multiple objects
+<carter> you try to group the similiar state's together
+<carter> to minimize performance loss
+<carter> so i made a  tree which has the expensive state changes
+<carter> in the upper nodes
+<carter> and the inexpensive in the lower nodes
+<carter> and render top down
+<carter> so the inexpensive state changes are done oftne
+<carter> and the expensive ones aehm
+<carter> damn
+<carter> what was the word
+* carter 's english is getting worse ;)
+<carter> aeh
+<carter> negative of often? :)
+<carter> ok
+<dvhart> seldom
+<carter> :)
+<carter> i think you got it
+<carter> ahh right
+<carter> :9
+<dvhart> very cool
+<dvhart> think it'll actually get finished?
+<carter> stunts?
+<carter> dunno:)
+<dvhart> yup
+<carter> we want to get something playable as fast as possible
+<dvhart> I can't wait to see it
+<carter> to maybe get some additional developers on it :)
+<carter> but that will take a few month i think from now
+<carter> cant invest much time in it
+<dvhart> yup
+<carter> (and STK is interesting too ;) )
+<dvhart> I want to help too
+<carter> yep
+<carter> :)
+<dvhart> but I have to finish a couple others first
+<carter> yep
+<dvhart> work, research, stk, you get the idea
+<carter> ok
+<carter> :)))
+* carter is AFI, watching some tv(farscape)
+<dvhart> so, good session!
+<carter> cya later
+<dvhart> thanks
+<carter> nop
+<dvhart> nite carter
+<carter> n8
+* dvhart saves the session to dvhart_carter_architecture.txt

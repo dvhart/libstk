@@ -1,0 +1,26 @@
+1)  API issue: parent interface for parent... not exactly right.
+	move add_child down to container
+2)  event polling vs. carter's callbacks...
+	stick with polling
+3)  gc's in surface as shared_ptr ?
+	yes
+4)  specify parent in constructor OR call add_child... not both
+	move add_child calls to widget constructors
+5)  bool return type for slots OK?  sig_and ok?
+	no, combiners/return types on a per signal basis
+6)  event hierarchy (multiple types per class ok?)
+	fine, ditch quit_event
+	add joystick event
+7)  empty constructors (state->container->widget)
+	need them
+8)  font support
+	font class (file, size, style, fg, bg, outline)
+	cached in bitmap
+	singleton map of fonts
+9)  Rectangle as a position representation
+
+10) Naming of smart ptr Typedefs
+
+11) Weak pointers in public interfaces
+
+12) Focus model / algorithm

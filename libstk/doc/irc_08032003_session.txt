@@ -1,0 +1,1289 @@
+<dvhart> 1)  API issue: parent interface for parent... not exactly right.
+<dvhart> 2)  event polling vs. carter's callbacks...
+<dvhart> 3)  gc's in surface as shared_ptr ?
+<dvhart> 4)  specify parent in constructor OR call add_child... not both
+<dvhart> 5)  bool return type for slots OK?  sig_and ok?
+<dvhart> 6)  event hierarchy (multiple types per class ok?)
+<dvhart> 7)  empty constructors (state->container->widget)
+<dvhart> 8)  font support
+<dvhart> 9)  Rectangle as a position representation
+<dvhart> 10) Naming of smart ptr Typedefs
+<dvhart> 11) Weak pointers in public interfaces
+<carter> :)
+<dvhart> so 1)
+<carter> yep
+<carter> what exactly do you mean?
+<dvhart> the composite model does this sort of thing
+<dvhart> where it defines an interface
+<dvhart> that is not necessarily used by the derived classes
+<dvhart> but having add_child and add_state seems a little sloppy too me
+<dvhart> it could throw an exception and we can document it
+<carter> ???
+* carter still hasnt got it :)
+<carter> what exactly do you mean
+<dvhart> so parent defines add_child
+<dvhart> add_child is non-sensical to applicaiton
+<carter> yep
+<dvhart> application needs add_state
+<carter> so
+<carter> in a "right" OOP fashion
+<carter> application shouldnt be a parent ;)
+<dvhart> but it needs to be state's parent, which is why the whole thing came to be in the first place
+<carter> yep
+<carter> imo
+<carter> either
+<dvhart> it is reasonable in light of the composite design pattern
+<carter> add_child should throw
+<carter> because its not usefull
+<carter> or it should just do nothing
+<carter> we cant let it behave like add_State
+<carter> because we have no guarantee that the passed child is a state
+<dvhart> but you are both happy having a public useless method?
+<carter> IMO the throw solution is the best one
+<carter> imo yes
+<dvhart> we could use add_child and do a dynamic cast
+<carter> ahhh
+<carter> dvhart
+<carter> Much easier
+<carter> !!
+<carter> :)
+<carter> no dvhart
+<carter> that is a very bad hack
+<carter> but
+<dvhart> *g*
+<carter> we can do something better:)
+<carter> we throw an exception
+<carter> when its called
+<carter> and redefine it as a protected function
+<carter> so its only in the interface
+<carter> when you access the application
+<carter> trough a parent pointer
+<carter> but not when you really use the application
+<carter> so the add child function shouldnt ever be called
+<carter> another thing
+<carter> why did we put add_child into parent?
+<dvhart> hmmm... why would it be visible as a parent pointer?
+<carter> as a parent pointer it would be visible
+<dvhart> again, the composite interface
+<carter> ok dvhart
+<carter> but add _child
+<carter> makes no sense in the composite interface
+<carter> IMO
+<dvhart> it IS the composite interface
+<dvhart> container needs it
+<carter> yep
+<carter> but only container
+<dvhart> but we don't want to to test each widget
+<dvhart> so widget gets it
+<carter> no
+<dvhart> yes
+<carter> the only one
+<carter> wo uses add_child
+<carter> is the user prog
+<carter> which always has a container pointer
+<carter> to the container
+<carter> not a widget pointer
+<carter> !
+<carter> -> useless
+<carter> the user doesnt access the container trough a widget pointer
+<dvhart> hmmm...
+<carter> and add_child is only needed by the user
+<dvhart> so get_child is necessary, but not add_child
+<carter> get_child?
+<dvhart> that cleans it up nicely
+<carter> you mean
+<carter> focus next/previous
+<carter> ?
+<dvhart> basicly yeah
+<carter> hmmm
+<carter> damn
+<carter> we should really talk about the details behind focussing
+<carter> we havent specified the algorithm yet
+<dvhart> yup
+<carter> but first we should clear up the rest
+<carter> so
+<carter> imo
+<carter> drop add_child from parent
+<carter> and only add it to container
+<dvhart> but you're right, in our case add_child need only be in the container
+<carter> ok
+<dvhart> (the composite model does use add_child/get_child though on the component level)
+<carter> yep
+<dvhart> ok decision made?
+<carter> but we dont need the composite model :9
+<carter> yep
+<carter> point 2
+<carter> event polling, versus callbacks
+<dvhart> pause
+<carter> i rethought it
+<dvhart> wait
+<carter> we need to use polling
+<dvhart> explainging to vhm...
+<carter> simply drop point 2 
+<carter> your solution is ok
+<dvhart> ok re
+<carter> damnit
+<dvhart> sorry
+<carter> dvhart
+<carter> a prob if iam away for 15 mins?
+<dvhart> nope
+<dvhart> will discuss with vhm
+<dvhart> cya in 15
+<carter> my mother  came to the great conclusion that we should get something to eat now :)
+<carter> cya in 15 :)
+<dvhart> lol
+<dvhart> tell her hello from the uS
+<dvhart> 12) Focus model / algorithm
+<carter> re
+<dvhart> how was dinner
+<carter> good
+<dvhart> scnhitzl ?
+<carter> no :)fish
+<carter> cant translate the exact type too english though ;)
+<dvhart> shark ?
+<carter> rofl
+<carter>  :)
+<carter> but
+<dvhart> j/k
+<vhmauery> jelly fish
+<carter> you won't believe it
+<dvhart> lol
+<carter> we acutally hat sauerkraut with kassler yesterday ;)
+<dvhart> kassler ?
+<carter> s/acutally/actually
+<carter> that is
+<carter> aehm
+<carter> dunno how to translate
+<carter> smoked *lol* meat
+<carter> like you do with fish
+<dvhart> *g*
+<carter> so
+<carter> ok
+<carter> 3)
+<dvhart> ok explain want you meant by callbacks
+<dvhart> 2)
+<carter> no
+<carter> drop the idea
+<carter> was complete shit
+<dvhart> ok
+<carter> i thought about multi threaded event handling
+<carter> but this wont work in any case
+<dvhart> 3)
+<carter> because wehavent got any means of syncro
+<carter> so always polling
+<carter> like now
+<carter> ok
+<carter> 3)(
+<carter> 3) gc's in surface as shared_ptr ?
+<carter> what the frell is a GC?
+<carter> :)
+<dvhart> gc's are graphic contexts
+<carter> ah
+<carter> right
+<carter> now i remember
+<dvhart> they define line color / bg color / etc
+<carter> yep
+<carter> right
+<dvhart> I think it should be a shared_ptr
+<dvhart> the theme will have a vector of shared_ptr gcs
+<dvhart> then it can set them as appropriate when drawing widgets
+<carter> ok
+<carter> right
+<carter> approved
+<carter> but this should be handled transparently
+<dvhart> move 8 to 4
+<dvhart> yes
+<carter> by a method of the surface
+<dvhart> defined int he theme
+<dvhart> so fonts
+<dvhart> vhm..
+<dvhart> (they are related to the gcs/theme so lets do them now)
+<vhmauery> I just started looking into freetype fonts
+<carter> freetype is really simple
+<carter> bigger prob is
+<carter> do you want to provide layouting
+<carter> or just String drawing?
+<vhmauery> it looks like we can make a font class
+<vhmauery> the surface class will have a drawstring function 
+<vhmauery> the gc will contain a pointer to the current font
+<carter> yep
+<carter> that is the easier part
+<carter> there a few tricky things with freetype
+<dvhart> should we cash the font glyphs ?
+<carter> 1. Caching (havent looked into it )
+<vhmauery> the font class will take care of the glyph caching and stuff
+<carter> 2. Layouting when we use Kerning etc
+<dvhart> cache even
+<carter> hmmm
+<carter> ok
+<carter> then it would work out
+<carter> this means though
+<vhmauery> fonts will take care of all the font metrics
+<carter> that a font class
+<carter> is fixed with One size of font
+<dvhart> yes
+<carter> (i mean a font class objecT)
+<dvhart> font new font(file, point, fgcolor, bgcolor)
+<vhmauery> yes
+<carter> hmmm
+<carter> bgcolor
+<carter> next thing
+<dvhart> oh and line width
+<carter> colors contain Alpha?
+<dvhart> yes
+<dvhart> RRGGBBAA
+<carter> ok
+<vhmauery> haven't found that out yet
+<carter> ok
+<carter> next thing
+<carter> who does the font layouting
+<carter> the font class
+<carter> or the user
+<dvhart> vernon does
+<carter> i mean for example to fit a multi paragrap text
+* dvhart chuckles
+<carter> into a Textbox
+<carter> :)
+<vhmauery> the widget
+<vhmauery> ?
+<dvhart> ah newlines, etc
+<dvhart> ?
+<carter> *gggg we could just let someone read all the classic algorithms , me thinks about tex *gggg* *
+<carter> yep
+<carter> vhmauery: the widget is a bad idea
+<vhmauery> ok
+<carter> it might be needed  by multiple widgets
+<carter> and the widget doesnt have enough  knowledge about the font
+<carter> imo
+<carter> we can only do it by including a font drawing routine
+<carter> which draws into a bounding box
+<carter> (do we need texflow around round graphics or other objects?)
+<dvhart> hmmm
+<dvhart> I don't think we want to get that elaborate
+<vhmauery> so does each widget need a textflow?
+<dvhart> if so we would need a layout widget
+<carter> hmmmm
+<carter> yep
+<dvhart> for game mission pages etc
+<carter> later :)
+<carter> first need
+<carter> a font class 
+<dvhart> right
+<carter> with 2 functions
+<carter> draw a string (one line)
+<vhmauery> ok
+<carter> or draw a string into a bounding box
+<dvhart> stretch ?
+<dvhart> or just clipped?
+<carter> throwing an exception when it doesnt fit???, or just return an error value
+<carter> and fit as much as possible?
+<vhmauery> the surface drawstring can use a bounding box
+<carter> imo
+<vhmauery> the palmOS clips
+<carter> the bounding box should create linebreaks in X direction
+<carter> and in Y direction just clip
+<carter> or throw an exception
+<carter> if it cant be fully printed
+<carter> something like this
+<dvhart> ok
+<carter> vhmauery: i dont know palmOS :(
+* dvhart notes carter's ignorance of 1 topic in the log
+<dvhart> (it's a short log)
+<carter> which one?
+<dvhart> palmOS
+<dvhart> ok so cacheing fonts
+<carter> ?
+<carter> ok
+<carter> caching fonts can be handled by the font class
+<dvhart> the font class can load the font file
+<carter> the thing is
+<dvhart> and build a bitmap of glyphs
+<vhmauery> yes
+<carter> ah
+<carter> btw
+<carter> who manages the font class instances?
+<dvhart> theme
+<vhmauery> the theme
+<carter> does the surface have a map or something
+<carter> of all fonts
+<carter> ?
+<carter> hmm
+<carter> ok
+<carter> i mean
+<carter> the user
+<carter> might want to draw fonts too
+<carter> and if he creates new font instances
+<dvhart> too bad
+<carter> we will kill the effiency of the caching
+<carter> what about some global singleton
+<dvhart> he could create a font and pass it to the theme
+<carter> which manages fonts based on properties
+<carter> (name size style)
+<carter> ?
+<carter> so everyone who wants to draw a string requests the font from this object
+<carter> and either a new font object is created
+<carter> or the old (cached) one is returned
+<dvhart> singleton is a good idea
+<carter> trough smart_ptrs
+<carter> negative side is that the lookup
+<carter> has to be fast
+<carter> for starters we can use a simple std::map
+<carter> later we might have to optimize this
+<carter> into some special purpose tree
+<carter> for fast lookups
+<dvhart> so who stores the singletons ?
+<vhmauery> how would the user use their own fonts?  the only way I can think of is if he changes themes at runtime
+<carter> noone stores singletons
+<carter> a singleton is global object
+<dvhart> right
+<dvhart> knew that
+<carter> vhmauery: i think about things like "owner drawn" widgets
+<carter> in other gui toolkits
+<dvhart> so the theme and everyone wlse will access them that way
+<carter> yep
+<vhmauery> oh
+<carter> so we can guarantee
+<carter> that there's only one font object
+<carter> for each set of properties
+<carter> hmmmm
+* carter could create a protoype implementation till tomorrow of this
+<carter> would make things clearer
+<dvhart> I think it sounds good
+<carter> ok
+<carter> we have to decide on the font properties then
+<carter> we have 
+<carter> name, size , color(which is only specific to drawing, not to font glyph rendering itself )
+<carter> and style (italic,bold)
+<vhmauery> outline
+<carter> ?
+<carter> outline?
+<vhmauery> draw the font with only an outline
+<carter> hm
+<carter> ok
+<carter> so this belongs to style
+<vhmauery> yes
+<carter> ok
+<dvhart> or with a solid bg and an outline
+<dvhart> bg is the wrong term
+<dvhart> fill color and outline
+<carter> yep
+<dvhart> and outline width
+<vhmauery> angle (if users want to have something other than horizontal text)
+<vhmauery> oops.  not that
+<vhmauery> in draw string we have that
+--> carter_ (~carter@pD9E0989A.dip.t-dialin.net) has joined #linux-coding
+<carter_> re
+ carter_ 
+<dvhart> re carter_
+<carter_> <carter> got an idea what we need
+<carter_> --- Disconnected (Connection reset by peer).
+<carter_> now
+<dvhart> LOL
+<carter_> :)
+<dvhart> wtf
+* carter_ was disconnected (24h disconnect of my ISP)
+<dvhart> ah
+<-- carter has quit (Killed (NickServ (GHOST command used by carter_)))
+--- carter_ is now known as carter
+<dvhart> that's sick
+<carter> ok
+<carter> i think the font thing is decided isnt it?
+<carter> have to do some prototyping
+<carter> but it should work out like that
+<dvhart> yup
+<carter> sick?
+<dvhart> j/k
+<carter> j/k?
+<dvhart> you were talking to yourself, killing yourself, etc
+<dvhart> just kidding
+<carter> :)
+<carter> ok
+<carter> so
+<dvhart> 4)  specify parent in constructor OR call add_child... not both
+<carter> point 5)
+<carter> ah
+<carter> ok
+<carter> 4
+<carter> :)
+<carter> hmmmmm
+<dvhart> it seems redundant in the test_app doesn't it
+<carter> wait
+<carter> will look
+<dvhart> specify parent and then also call add_child
+<carter> ah
+<carter> you mean
+<dvhart> seems like one or the other would be sufficient
+<carter> automatic adding
+<carter> to the parent
+<carter> hmmmmm
+<carter> dunno really
+<vhmauery> it might make it easier for the user
+<carter> seems redundant
+<carter> yep
+<dvhart> problem
+<dvhart> parent is a shared_ptr<parent>
+<dvhart> not container
+<dvhart> hmmm
+<carter> hmmmmmmmmmmmmmmmmmmmmm
+<dvhart> but the arg passed in will always at least be a container
+<carter> no
+<carter> dvhart
+<carter> wont work
+<carter> or
+<carter> hmmm
+<carter> right
+<carter> state is a container
+<carter> ok
+<carter> would work
+<vhmauery> so maybe only call add child and have that set the parent
+<carter> no
+<carter> imo
+<dvhart> I like it in the constructor better
+<carter> we should modify the constructor parameter
+<carter> to be a shared_ptr<container>
+<dvhart> it is
+<carter> use it for adding
+<dvhart> or derived from that
+<dvhart> but the pointer is stored as a shared_ptr<parent>
+<carter> ?
+<dvhart> see the uml
+<carter> yep
+<carter> but that doesnt hurt
+<dvhart> right
+<carter> as long as the constructor runs
+<dvhart> its good
+<carter> we have it as a container
+<carter> we dont need it later on
+<dvhart> right
+<carter> btw
+<dvhart> exactly
+<carter> it is stored
+<carter> as a weak_ptr<parent>
+<carter> isnt it?
+<dvhart> yes
+<carter> otherwise its broken! :)
+<dvhart> sorry
+<carter> (cyclic)
+<carter> but ok
+<carter> just add_child in constructor
+<carter> should work ok!
+<dvhart> ok decision made ?
+<carter> yep
+<carter> decision made
+<dvhart> chm?
+<dvhart> vhm even?
+<vhmauery> yup
+<carter> 5) return type of slots
+<carter> I M O 
+<carter> it depends
+<carter> :)
+<dvhart> yes it does
+<carter> if for example
+<dvhart> on what is the ? at hand
+<carter> we have a signal
+<carter> f<dvhart> 5) bool return type for slots OK?  sig_and ok?
+<carter> imo
+<carter> some slots might need bool returns
+<carter> some dont
+<carter> for example
+<carter> something like
+<carter> On_key_pressed
+<carter> might return True if it handled the keypress
+<carter> and false
+<carter> if it didnt handle it (pass it up  the event chain)
+<carter> but other's might not need a return value
+<carter> and
+<carter> for cases like keypresses
+<carter> the return values
+<carter> should be OR'ed
+<dvhart> hmmm
+<carter> so we shouldnt make any decision which covers all signals
+<carter> have to document everything very well though
+<dvhart> so you suggest different combiners / return types by signal 
+<carter> yep
+<dvhart> hmmm.... sounds complex... but flexibility is after all why we are using signal/slots in the first place
+<carter> yep
+* carter doesnt think its complex
+<dvhart> ok, lets all think on that one for a bit
+<carter> we simply cant find any practise which will work on ALL possible signals
+* dvhart notes that very little is complex to carter
+<carter> no
+<dvhart> *g*
+<carter> there are many things which are complex to me :9
+<vhmauery> as long as we DO document it, I don't think it will be too bad
+<carter> yep
+<carter> btw
+<carter> i started writing some doxygen comments
+<carter> havent done much yet
+<dvhart> are those the /// ones
+<dvhart> ?
+<carter> but we should continue that 
+<carter> yeü
+<carter> yep
+<carter> commited a doxyfile
+<carter> too
+<dvhart> we should agree on a format
+<dvhart> for documentation
+<carter> imo the 
+<carter> for doxygen
+<carter> the /// style is ok
+<carter> with \ commands
+<carter> like \param
+<carter> for other docus
+* carter votes for Docbook Xml 4.2
+<dvhart> right but the actual content of method descriptions etc
+<dvhart> we want them to by consistent
+<carter> yep
+* vhmauery has no experience with any automatic documentation
+<carter> thats right
+<carter> imo
+<carter> you cant really specify that much
+<dvhart> perhaps someone should document a large file and we can use it for a template
+<carter> they need to be short concise
+<carter> and document everything ;)
+<carter> btw
+<dvhart> surface comes to mind
+<carter> we should always peer review all code we write
+<dvhart> agreed
+<carter> imo surface can only be documented by you darren ;)
+<carter> *gg*
+<dvhart> hmmm
+<dvhart> how about container then ?
+<dvhart> LOL
+<carter> *lol*
+<carter> hmmm
+<dvhart> how do you suggest we go about the peer review?
+<carter> i even have some libstk docbook docs on my harddisk somewhere
+<carter> reviews
+<carter> hmmm
+<carter> maybe once a week
+<carter> everyone looks at the cvs diffs
+<carter> and then we discuss the changes (mailinglist)
+<dvhart> ok
+<carter> ok
+<vhmauery> ok
+<carter> back to signals (BTW)
+<carter> so we decide on specifying the return type parameters etc
+<carter> on a "per signal" basis?
+<dvhart> yes
+<carter> ok
+<dvhart> on document the hell out of it
+<carter> yep
+<carter> sure
+<carter> (if we do the signal thing right, it will be the biggest strength of stk!)
+<carter> gtkmm with sigc++ is crap
+<carter> qt is crap
+<dvhart> lol
+<carter> and wxwindows is crap too :)
+<dvhart> I really like the signal handling so far
+<carter> if you look at it from the signal perspective
+<carter> ;)
+<carter> yep
+* carter too
+<carter> boost::signals is really well designed
+<carter> and we only use gcc3.2 :)
+<dvhart> binding to existing class members with various types combiners is awesome!!
+<carter> (ATM)
+<carter> yep!
+<dvhart> next ?
+<dvhart> 6)  event hierarchy (multiple types per class ok?)
+<carter> event hierarchie
+<carter> dunno what you want to tell me with this question though ;)
+<carter> you mean like
+<dvhart> ok so
+<carter> mouseup mousedown
+<carter> with different classesß
+<carter> ?
+<dvhart> no
+<dvhart> mouse_event has mouse_up | mouse_down types
+<dvhart> similar with key_event
+<dvhart> but I have a quit_event which may be unneccesary since we could use a basic event with type event_quit
+<carter> hmmmmmmm
+<carter> my opinion is
+<carter> that when the event type
+<carter> has asociated data
+<carter> it needs to be an own class
+<carter> otherwise Not
+<vhmauery> that's reasonable
+<dvhart> so two mouse types in a mouse event is fine?
+<vhmauery> it's the same data
+<carter> yep
+<carter> imo its fine
+<dvhart> and I should ditch the quit)event class and use the event with type quit_event instead ?
+<carter> yep
+<dvhart> ok
+<dvhart> what about user events?
+<dvhart> can they extend the types ?
+<carter> hmmmm
+<carter> the thing
+<carter> should there be user events?
+<dvhart> not sure
+<dvhart> maybe not
+<carter> imo not
+<carter> think of events
+<carter> as messages
+<carter> to the current widget
+<vhmauery> if users can make widgets, they might want events to go with them
+<carter> when does the usert want to do this
+<carter> vhmauery: events arent widget specific!
+<vhmauery> they might be
+<carter> example?
+<vhmauery> not sure...
+<vhmauery> maybe not
+<carter> the question is
+<dvhart> a different input device may not map to key_event well
+<carter> who wants to source a custom event
+<dvhart> for example
+<carter> yep dvhart
+<carter> but
+<carter> if it doesnt map
+<carter> the existing widgets
+<carter> cant use it!
+<carter> ok
+<carter> the user can extend it
+<carter> and 
+<carter> more important
+<dvhart> but the custom widgets could
+<carter> the input event provider
+<carter> can extend it
+<carter> dvhart: iam more thinking interms of
+<carter> application::on_unhandled_event
+<carter> or something
+<dvhart> hmmmm
+<dvhart> go on
+<carter> so the user can support custom event sources
+<carter> that will be the next question
+<carter> do we need any support
+<carter> for multiple input drivers
+<carter> lets say SDL for keyboard and mouse
+<carter> and some third party drivers
+<dvhart> like lirc ?
+<carter> for a IR remote
+<carter> yep
+<vhmauery> isn't that part of the event system?
+<carter> yep
+<carter> it normally is
+<carter> the question is
+<carter> if there is some magic new hardware
+<vhmauery> so the events are event_system dependent
+<carter> which doesnt map into the events
+<carter> should the user be able to add it
+<carter> to the event system?
+<dvhart> hmmmm
+<carter> IMO he shouldnt use the event system then
+<carter> anyway
+<carter> because all other users of the event system cant do anything usefull with it
+<carter> and the event system only makes sense when the widgets sitting in the chain can do something with the events
+<dvhart> so he would access it on his own maybe
+<carter> yep
+<dvhart> and call appropriate signals
+<dvhart> hmmm
+<carter> yep
+<dvhart> we need joystick support too
+<carter> that is more appropiate imo
+<carter> joystick is ok
+<carter> will send normal events
+<dvhart> joystick_event
+<carter> the question here is too
+<carter> how should a normal widget
+<carter> respond to an analog joystick event
+<carter> imo
+<carter> this one is only good in the event system
+<carter> because our normal input drivers
+<carter> are usually combined with the ones for joysticks
+<dvhart> I think I follow you
+<dvhart> ok... lets all think on events some
+<dvhart> anything else before we move on
+<dvhart> ?
+<dvhart> 7)  empty constructors (state->container->widget)
+<dvhart> Marc, you said this was BS
+<dvhart> but it compile for me without them
+<dvhart> I think it is because state sets parent on its own
+<dvhart> instead of calling its base to do it
+<dvhart> (because it is setting an application)
+<dvhart> hmmm... that should't matter though... confused...
+<dvhart> looking at code
+<dvhart> ah
+<dvhart> container and widget can't accept an application as a parent because it isn't a container
+<dvhart> so state has to set it itself
+<dvhart> so it must call container and widget widget constructors with no argument
+<dvhart> right? ...
+--- Disconnected ().
+--- Looking up irc.oftc.net..
+--- Connecting to irc.oftc.net (65.242.171.30) port 6667..
+--- Stopped previous connection attempt (pid=17509)
+--- Looking up irc.oftc.net..
+--- Connecting to irc.oftc.net (65.242.171.30) port 6667..
+--- Connected. Now logging in..
+--- AUTH :*** Looking up your hostname...
+--- AUTH :*** Checking Ident
+--- AUTH :*** No Ident response
+--- AUTH :*** Couldn't look up your hostname
+--- Welcome to the OFTC Internet Relay Chat Network dvhart
+--- Your host is quark.oftc.net[195.71.99.213/6667], running version hybrid-7+oftc1.1.0
+--- dvhart :*** Your host is quark.oftc.net[195.71.99.213/6667], running version hybrid-7+oftc1.1.0
+--- This server was created Mon Sep 9 2002 at 18:05:25 CEST
+--- quark.oftc.net hybrid-7+oftc1.1.0 oiwszcerkfydnxbaugl biklmnopstveIha bkloveIh
+--- WALLCHOPS KNOCK VCHANS EXCEPTS INVEX MODES=4 MAXCHANNELS=30 MAXBANS=100 MAXTARGETS=4 NICKLEN=30 TOPICLEN=450 KICKLEN=450 :are supported by this server
+--- CHANTYPES=#& PREFIX=(ohv)@%+ CHANMODES=eIb,k,l,imnpsta NETWORK=OFTC CASEMAPPING=rfc1459 CALLERID :are supported by this server
+--- There are 8 users and 693 invisible on 18 servers
+--- 13 :IRC Operators online
+--- 316 :channels formed
+--- I have 546 clients and 1 servers
+--- Current local  users: 546  Max: 546
+--- Current global users: 701  Max: 1155
+--- Highest connection count: 547 (546 clients) (29877 connections received)
+--- - quark.oftc.net Message of the Day - 
+--- - Welcome to OFTC - The Open and Free Technology Community.
+--- - 
+--- - The Open and Free Technology Community was founded at the
+--- - end of 2001 by a group of experienced members of the Open
+--- - Source and Free Software communities; it is aimed at
+--- - providing these communities with better communication,
+--- - development, and support infrastructure. Our goal is to
+--- - provide stable services to members of the community in any
+--- - part of the world, while listening closely to their needs
+--- - and desires.
+--- - 
+--- - We are not a general purpose chat platform, but a topical
+--- - network intent on providing the open source and free
+--- - software communities a means to cooperate and communicate.
+--- - As such, illegal and off-topic activity, such as warez
+--- - trading, may result in being barred from access.
+--- - 
+--- - OFTC is still in its Alpha stage of development. If you find
+--- - problems, please report them in channel #oftc, or email
+--- - bugs@oftc.net with detailed information about the bug. We
+--- - apologise profusely for any servers restarting, as well as
+--- - the occasional netsplit.
+--- - 
+--- - If you have other suggestions, questions, or comments, feel
+--- - free to send them to feedback@oftc.net. If you find any
+--- - bugs anywhere, please send en email to
+--- - bugs@oftc.net - thanks.
+--- - 
+--- - Please be aware that OFTC operates an open proxy detection
+--- - system(http://www.blitzed.org/bopm).  Please disregard
+--- - connections from proxy-scan.oftc.net(216.86.139.17) as it
+--- - is the detector in action. If you dislike this, please
+--- - disconnect now.
+--- - 
+--- - Thanks and enjoy your stay,
+--- - 
+--- -  The OFTC team
+--- - 
+--- End of /MOTD command.
+--- dvhart sets mode +i dvhart
+ No channel joined. Try /join #<channel>
+--> You are now talking on #linux-coding
+--- Topic for #linux-coding is Talk about all things coding related. And *maybe* other stuff. | libstk test_app finally compiles and runs!!!! | wanna flame molle? ch@fischer-cgd.de | watchfarscape.com
+--- Topic for #linux-coding set by ChanServ!services@services.oftc.net at Fri Mar  7 13:49:30
+--> vhmauery (~vhmauery@12.23.79.15) has joined #linux-coding
+<dvhart> re
+<vhmauery> re
+<dvhart> <dvhart> I think I follow you
+<dvhart> <dvhart> ok... lets all think on events some
+<dvhart> <dvhart> anything else before we move on
+<dvhart> <dvhart> ?
+<dvhart> <dvhart> 7)  empty constructors (state->container->widget)
+<dvhart> <dvhart> Marc, you said this was BS
+<dvhart> <dvhart> but it compile for me without them
+<dvhart> <dvhart> I think it is because state sets parent on its own
+<dvhart> <dvhart> instead of calling its base to do it
+<dvhart> <dvhart> (because it is setting an application)
+<dvhart> <dvhart> hmmm... that should't matter though... confused...
+<dvhart> <dvhart> looking at code
+<dvhart> <dvhart> ah
+<dvhart> <dvhart> container and widget can't accept an application as a parent because it isn't a container
+<dvhart> <dvhart> so state has to set it itself
+<dvhart> <dvhart> so it must call container and widget widget constructors with no argument
+<dvhart> <dvhart> right? ...
+<dvhart> sorry carter we got disconnected or something
+<dvhart> hmmmm
+<-- vhmauery has quit (Quit: [x]chat)
+--> jonez (~jam@pcp01923808pcs.canton01.mi.comcast.net) has joined #linux-coding
+<dvhart> lo jonez
+--> smoser (~smoser@pixpat.austin.ibm.com) has joined #linux-coding
+<dvhart> re smoser
+<jonez> dvhart: 'lo
+<dvhart> how goes the job hunt?
+--> carter (~carter@pD9E0989A.dip.t-dialin.net) has joined #linux-coding
+<jonez> I have a possibility.
+<dvhart> great
+<dvhart> re carter
+<carter> re
+<dvhart> wanna finish now or later ?
+<carter> hmmmmm
+<carter> damnit
+<carter> now i thought
+<carter> how long was i gone?
+<dvhart> ok
+<dvhart> < 10 min
+<carter> what was the last thing i wrote?
+<dvhart> we got kicked off too
+<dvhart> I'll post
+<carter> (and got trough)
+<dvhart> <dvhart> re
+<dvhart> <vhmauery> re
+<dvhart> <dvhart> <dvhart> I think I follow you
+<dvhart> <dvhart> <dvhart> ok... lets all think on events some
+<dvhart> <dvhart> <dvhart> anything else before we move on
+<dvhart> <dvhart> <dvhart> ?
+<dvhart> <dvhart> <dvhart> 7)  empty constructors (state->container->widget)
+<dvhart> <dvhart> <dvhart> Marc, you said this was BS
+<dvhart> <dvhart> <dvhart> but it compile for me without them
+<dvhart> <dvhart> <dvhart> I think it is because state sets parent on its own
+<dvhart> <dvhart> <dvhart> instead of calling its base to do it
+<dvhart> <dvhart> <dvhart> (because it is setting an application)
+<dvhart> <dvhart> <dvhart> hmmm... that should't matter though... confused...
+<dvhart> <dvhart> <dvhart> looking at code
+<dvhart> <dvhart> <dvhart> ah
+<dvhart> <dvhart> <dvhart> container and widget can't accept an application as a parent because it isn't a container
+<dvhart> <dvhart> <dvhart> so state has to set it itself
+<dvhart> <dvhart> <dvhart> so it must call container and widget widget constructors with no argument
+<dvhart> <dvhart> <dvhart> right? ...
+<dvhart> <dvhart> sorry carter we got disconnected or something
+<dvhart> <dvhart> hmmmm
+<dvhart> your last comment:
+<dvhart> <carter> are usually combined with the ones for joysticks
+<carter> hmmm
+<carter> wait
+<carter> will look at it
+<carter> ok
+<carter> events are clear for most things
+<carter> i will rethink the joysticks/ir issue
+<carter> ok
+<carter> so
+<carter> the container and widget defualt constructor
+<carter> wait
+<carter> will look at it
+<dvhart> ok
+<carter> <dvhart> <dvhart> <dvhart> container and widget can't accept an application as a parent because it isn't a container
+<carter> <dvhart> <dvhart> <dvhart> so state has to set it itself
+<carter> that was why
+<carter> we had the parent interface ;)))
+<carter> which throws us back
+<carter> to the add_child problem
+<dvhart> not really
+<dvhart> the problem is widget requires a container as an argument
+<carter> yep
+<carter> but it doesnt really do
+<carter> it really does only need a parent as an argument
+<carter> doesnt it?
+<carter> it only really NEEDs the container
+<dvhart> *need* yes
+<carter> because we changed the add_child thingie
+<dvhart> but we want the API to require a container
+<carter> ahh
+<carter> dvhart
+<dvhart> so things are built right
+<carter>  s i m p  l e solution
+<carter> :)
+<carter> pseudo good :9
+<carter> wait
+<carter> will hack something 
+<carter> class widget {
+<carter> public :
+<carter> damnit
+<carter> anjuta crashed
+<dvhart> lol
+<dvhart> that's why we use vi
+<carter> bah
+<carter> pfui
+<dvhart> *g*
+<carter>   widget(boost::shared_ptr<container> parent);
+<carter>    widget(boost::shared_ptr<parent> parent); // same thing as above without add_childing
+<carter>              // common implementation code should go to some init func
+<carter>  
+<carter> this seems 
+<carter> clean to me :9
+<carter> so they have a common init function
+<carter> which takes a boost::shared_ptr<parent>
+<carter> and an overloaded constructor
+<carter> which does the adding too
+<carter> we could argue if the shared::ptr<parent> constructor should be protected or public though ;)
+--> gregf (~gregf@d-216-195-158-30.gwi.net) has joined #linux-coding
+<carter> hi gregf
+<gregf> lo
+<gregf> whats up?
+<carter> dvhart: what do you think about doing it with this constructor
+<dvhart> protected I think
+<carter> what i want to achieve is
+<carter> that the widget class
+<carter> has to be in a sane state
+<carter> after the constructor has run
+<dvhart> right
+<carter> after ANY constructor has run
+<dvhart> cause the user shouldn't be able to call widget()
+<carter> so we need to create a constructor with the required functionality
+<carter> yep
+<dvhart> what if we just made widget() protected ?
+<carter> so the above solution seems ok
+<dvhart> wouldn't that accomplish the same
+<carter> thats shit dvhart
+<carter> no
+<dvhart> lol
+<dvhart> why
+<carter> because widget() doesnt assign the parent pointer
+<dvhart> how is it effectively different
+<carter> and the parent pointer
+<carter> belongs to widget
+<carter> its a matter of responsability
+<dvhart> but if only state can call it from its constructor, which sets the paretn
+<carter> if widget has the parent pointer, widget has to init it
+<carter> NOT state
+<dvhart> ah
+<dvhart> ok
+<dvhart> then its good so long as the user can call widget ( shared_ptr<parent>)
+<carter> gregf: discussing some design issues :9
+<dvhart> then its good so long as the user can NOT call widget ( shared_ptr<parent>)
+<carter> yep
+<carter> protected
+<carter> !
+<carter> :)
+<dvhart> ok
+<carter> ok
+<carter> decided
+<dvhart> yup
+<carter> *g*
+<carter> so
+<carter> now
+<dvhart> vhm is making lunch for us
+<carter> to 9)
+<dvhart> hungry ?
+<carter> :)))
+<carter> no
+<dvhart> *g*
+<carter> smart ptr typedef names
+<dvhart> yes
+<carter> 1. the upper case naming convention is shit
+<dvhart> agreed
+<carter> 2. all naming convention are simple conventions
+<dvhart> it is java'esq
+<gregf> carter: i see :)
+<carter> not based on real logic :9
+<carter> so
+<gregf> carter: im still flaming molle ;)
+<dvhart> right
+<carter> my *super great über  solution*
+<carter> :)
+<carter> typedef the smart ptr type
+<dvhart> uber
+<carter> into the class 
+<dvhart> love that word
+<carter> hehe
+<carter> no u , this is an Ü
+<carter> mich just means
+<carter> bigger or better or over in german
+<carter> :)
+<dvhart> I know
+<carter> hehe
+<carter> ok
+<carter> so
+<dvhart> but I don't have an A~box
+<carter> *ggg*
+<carter> A"! :)
+<carter> hehe
+<carter> so
+<carter> imo
+<carter> the typedef solution
+<carter> is clean
+<carter> and the user can EASILY
+<carter> get the smart_ptr type
+<carter> for a class
+<carter> without remembering a second name
+<carter> and it doesnt pollute the global namespace
+<dvhart> I don't understand why you typedefed a shared_ptr instead of a second name
+<dvhart> I need an example
+<carter> class test
+<carter> {
+<carter> typedef boost::shared_ptr<test> ptr
+<carter> };
+<carter> test::ptr test_instance(new test());
+<dvhart> instead of Button my_button(new button())
+<carter> button::ptr my_button(new button());
+<dvhart> hmmm
+<carter> -> no second naming convention
+<carter> -> contained inside the class
+<carter> -> easy to remember
+<carter> -> looks clean ;)
+<dvhart> not really, effectively button::ptr is different than button
+<carter> it is
+<carter> ok
+<dvhart> to *most* users it is effectively a different name
+<carter> right 
+<carter> yep
+<carter> but
+<carter> it is easy to learn
+<carter> for the user
+<carter> that when he wants a pointer to the button
+<carter> he uses button::ptr
+<carter> otherwise we owuld need some
+<dvhart> it is more explicit than Button
+<carter> stupid naming convention
+<carter> like Button (which doesnt show its a pointer)
+<dvhart> true
+<carter> or button_ptr (corba style) which looks like shit
+<dvhart> I agree that Button sucks
+<carter> and button_ptr
+<carter> hasnt any advantage
+<carter> over button::ptr
+<carter> and the disadvantage of beeing in the global namespace
+<dvhart> I don't want users EVER to use a button instance though
+<carter> why not?
+<carter> the user might want to!
+<dvhart> it is useless
+* carter wants to explicitly allow this
+<dvhart> they can't pass it to anything
+<carter> for creating widgets on the stack
+<carter> they can!!!
+<carter> they need to create a smart ptr from it
+<carter> with a no op deleter!
+<carter> i can do that in one template function
+<carter> no problem
+<dvhart> again *most* users won't understand this
+<carter> that is what makes our memory management so flexible
+<dvhart> hmmm
+<carter> dvhart:  we are doing something for embedded users
+<carter> who should understand this
+<carter> and the benefit is lesser heap usage
+<dvhart> them even less since they know C
+<dvhart> hmmmm
+<carter> lol
+<carter> :)
+<carter> Documentation(TM) ;)
+* carter will write some doc on this
+<dvhart> I like your solution, but am trying to understand if it will be at least sudo-intuitive to users
+<carter> dunno if i finish this today
+<dvhart> most users do:
+<carter> its late already :)
+<dvhart> button* my_btn = new button(...)
+<carter> dvhart
+<carter> my solution would look like this
+<carter> button test("blah blah blah");
+<carter> my_container.add_child(ptr_to_stack_object(test));
+<carter> (ignore the naming and the wrong syntax <-Pseudo code(TM)-> ;) )
+<dvhart> and then for the pointerwhat does ptr_to_stack do ?
+<carter> it creates a shared_ptr
+<carter> which does nothing
+<carter> when the ref count is zero
+<dvhart> would button::ptr(&test) be wrong ?
+<carter> so that there is no 
+<carter> delete to a stack object
+<carter> yep
+<carter> it would be dead wrong
+<carter> the shared pointer would try to delete the object
+<carter> on the stack
+<dvhart> cause it would try and delete the stack widget
+<dvhart> right
+<carter> -> double deletion
+<carter> but
+<carter> the user cant do this by accident
+<carter> the smart_ptr constructor is explizit
+<carter> button::ptr(&test) <- Cant happen by accident
+<dvhart> ?
+<carter> i mean
+<carter> the user cant accidently
+<carter> create a shared-ptr
+<carter> which would cause an core_dump ;9
+<carter> so we dont need to worry about that mistake
+<carter> and if the user
+<carter> wants to use widgets on the stack
+<carter> he can use the helper function i outlined 15 lines ago
+<dvhart> yup
+<dvhart> hmmmm
+<carter> seems sane to me
+<dvhart> perhaps that is best
+<carter> so
+<carter> the naming
+<dvhart> c++ bigots will like it
+<carter> ::ptr
+<carter> ::weak_ptr ?
+<dvhart> (I like it too)
+<dvhart> NO
+<carter> *ggg*
+<dvhart> users don't know anything about weak_ptrs
+<dvhart> they don't exist
+<carter> no dvhart
+<carter> but we will use the same typedefs
+<carter> in our library
+<carter> so we need them
+<dvhart> ah
+<dvhart> ok
+<carter> in the user API
+<carter> all internal weak ptrs
+<carter> should be given as shared_ptrs
+<dvhart> ok
+<carter> with a possible NULL ptr contained
+<carter> so the user can check this
+<carter> without using make_shared himself
+<carter> -> seems sane to me
+<dvhart> can we make the typedef "private"
+<carter> we could make them private
+<carter> but then all objects
+<carter> in our lib
+<carter> would need to be friends
+<carter> -> shit³
+<carter> simply public
+<carter> is ok
+<carter> imo
+<carter> the user shouldnt be too annoyed by this :)
+<dvhart> what if we just used weak_ptr<widget>
+<carter> tooo much typing
+<dvhart> it sin't too long and we rarely use it after all
+<carter> no dvhart
+<carter> if we typedef
+<carter> the shared ptr
+<carter> we should typedef the weak ptr too
+<carter> and its not much work
+<dvhart> weak_ptr<widget>
+<dvhart> widget::weak_ptr
+<dvhart> looks like the same amount of typing to me
+<carter> (in the end, its your decision)
+* carter thinks the later one is sanerd
+<carter> dont forget
+<carter> boost::weak_ptr<stk::widget> (in the worst case) ;)
+<dvhart> true
+<dvhart> hmmm
+<dvhart> ok
+<dvhart> document the hell out of it
+<carter> he
+<carter> ok
+<carter> :)
+<dvhart> I am all for consistency
+<carter> yep
+<carter> that is why i want to include the weak ptr's there
+<carter> ok
+<carter> so
+<carter> naming
+<dvhart> and not defining the weak_ptr would be inconsistent
+<carter> class::ptr
+<carter> and class::weak_ptr?
+<dvhart> yup
+<carter> ok
+<carter> decided
+<dvhart> yup
+<carter> point 10) is already handled
+<carter> weak _ptr's dont belong
+<carter> into public interfaces
+<dvhart> yup
+<carter> instead we return NULL shared_ptrs
+<carter> needs to be documented
+<carter> where this COULD happen
+<carter> ok
+<carter> so
+<carter> our last point
+<carter> the focus algorithm
+<carter> :)
+<dvhart> wait
+<carter> honestly
+<dvhart> rects
+<carter> ah
+<carter> right
+<carter> :)
+<carter> hmmm
+<carter> imo
+<carter> a rect is the same as x,y,w,h
+<carter> so we should use rect everywhere we have these 4 :)
+<dvhart> what about the API
+<dvhart> sometimes it is a pain to have to create the rect first
+<carter> hmm
+<carter> no
+<carter> rect has an implicit constructor
+<carter>                                 if ((x1 > x1+w) || (y1 > y1+h))
+<carter>                                         throw error_message_exception(
+<carter>                                                         "x1,y1 must be less than x2,y2");
+<carter> btw
+<carter> this should automaticly be handled
+<carter> without an exception
+<carter> IMO
+<dvhart> ok
+<dvhart> implicit constructor?
+<carter> you can write
+<carter> ah
+* carter is a bit dumb today
+<carter> doesnt matter here
+<carter> you can just write
+<dvhart> what does it mean?
+<carter> button::ptr my_button(new button(parent,rect(0,0,20,20)));
+<carter> dvhart: an implicit constructor is one which is called without giving the constructor name implicitly 
+<carter> damn
+<carter> its too late
+<dvhart> ok, yeah, that is about as easy as just passing the x's and y's
+<carter> we should finish this tomorrow
+<carter> yep
+<carter> it is
+<-- gregf has quit (Quit: bbl)
+<carter> we should finisih the rest (focussing tomorrow
+<dvhart> we got a lot done
+<carter> or next weekend
+<dvhart> lets work on the code updates
+<dvhart> and meet next saturday
+<carter> yep
+<carter> when is your server back online
+<dvhart> what do you want to do
+<carter> for CVS?
+<dvhart> dunno
+<dvhart> my connection died at 11:30
+<carter> hmmm
+<dvhart> and hasn't come back up
+* carter will do a prototype of the font handling till next week
+<dvhart> it *should* be back tonight
+<carter> and start documentation
+<carter> doxygen + some docbook
+<dvhart> I htink vhm is doing fonts
+<carter> dunno
+* carter wanted to do the singleton font manager
+<dvhart> ah ok
+<carter> he could do the implementation
+<carter> of the font
+* carter should have the interface for the font class commited till tomorrow evening
+<dvhart> ok, he agrees
+<carter> if the CVS run
+<carter> we can discuss the rest on the ML
+<dvhart> yup
+<dvhart> I will do the constructor changes
+<dvhart> the add_child change
+<carter> yep
+<dvhart> and work on events and combiners
+<carter> yep
+<carter> :)
+<dvhart> and fix events
+<carter> if anything comes up
+<dvhart> we need the theme
+<carter> mail to the list :)
+<dvhart> too
+<carter> hmmm
+<carter> yep
+<dvhart> actual drawing will be importsant here soon
+<carter> havent thought about the theming issue yet
+<carter> yep
+<dvhart> I have given it some, but it can certainly wait until next week
+<carter> ok
+<dvhart> good session!
+<dvhart> thanks!
+<carter> yep
+<carter> nop
+<carter>  :)
+<dvhart> I'll email you as soon as CVS is up
+<carter> ok
+<dvhart> nite then
+<carter> n8!
+<carter> hmm
+<carter> wired
+<carter> i can load dvhart.com in mozilla
+* dvhart saving log
+<dvhart> its up
+<dvhart> sweet
+<carter> dunno :9
+<dvhart> there you go
+<carter> might be some caching
+<dvhart> it is
+<carter> ah
+<carter> no
+<dvhart> I jsut tested
+<carter> i see :)
+<carter> cvs updated
+<carter> hehe
+<carter> kewl
+<carter> -> great :)
