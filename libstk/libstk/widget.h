@@ -36,7 +36,9 @@ namespace stk
 			// widget attributes
 			bool focusable_;
 			int tab_;
-			
+			/// used for animation by the draw routine, or ignored for non-animated widgets
+			int frame_; 			
+
 			// drawing related attributes
 			bool pressed_; // does this belong in button only ?
 			               // it is nice to have it here so that handle_event can handle
@@ -68,6 +70,9 @@ namespace stk
 			rectangle rect() { return rect_; }
 			bool contains(int x, int y) { return rect_.contains(x, y); }
 			bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
+			int width() { return rect_.width(); }
+			int height() { return rect_.height(); }
+			void position(int x, int y) { rect_.position(x, y); }
 			virtual bool is_container() { return false; }
 
 			// widget attribute accessor methods

@@ -14,7 +14,7 @@ namespace stk
 	}
 
 	list::list(container::ptr parent, const rectangle& rect) : widget(parent, rect), 
-		selected_(0), prev_selected_(0), frame_(0)
+		selected_(0), prev_selected_(0)
 	{
 		cout << "list::list()" << endl;
 		focusable(true);

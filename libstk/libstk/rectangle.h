@@ -38,6 +38,7 @@ namespace stk
 			bool empty() const { return (!width() && !height()); }
 			bool contains(int x, int y) const;
 			bool intersects(const rectangle& rect) const;
+			void position(int x, int y);
 
 			// operators
 			const rectangle operator+(const rectangle& rect) const;

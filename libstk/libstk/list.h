@@ -20,7 +20,7 @@ namespace stk
 		private:
 
 		protected:
-			int selected_, prev_selected_, frame_; // frame_ should probably be part of widget
+			int selected_, prev_selected_;
 			list(container::ptr parent, const rectangle& rect);
 			std::vector<list_item::ptr> items_;
 

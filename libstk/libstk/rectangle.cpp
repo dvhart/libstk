@@ -18,7 +18,7 @@ namespace stk
 		// (this assume 0,0 is the upper left corner of the screen (like SDL))
 		if ((p1.x() > p2.x()) || (p1.y() > p2.y()))
 			throw error_message_exception(
-					"p1.x(),p1.y() must be less than p1.x(),p1.y()");
+					"p1.x(),p1.y() must be less than p2.x(),p2.y()");
 	}; 
 
 	// utilities
@@ -36,6 +36,17 @@ namespace stk
 		return ((x_span || x_in) && (y_span || y_in));
 	}
 
+	void rectangle::position(int x, int y)
+	{
+		int old_width = width();
+		int old_height = height();
+
+		p1_.x(x); 
+		p1_.y(y);
+		width(old_width);
+		height(old_height);
+	}
+	
 	// operators
 	const rectangle rectangle::operator+(const rectangle& rect) const
 	{
