@@ -53,4 +53,17 @@ void app::init_video(int width, int height, int bpp, Uint32 sdl_flags)
 void app::run()
 {}
 
+	
+	
+boost::weak_ptr<state> app::current_state()
+{
+	return current_state_;
 }
+void app::current_state(boost::weak_ptr<state> newstate)
+{
+	current_state_=newstate;
+}
+
+}
+
+

@@ -28,7 +28,7 @@ namespace stk
 class app
 {
 private:
-    state *current_state_;
+    boost::weak_ptr<state> current_state_;
 	
 public:
     app();
@@ -43,6 +43,9 @@ public:
 
     /* the main-loop */
     void run();
+	
+	boost::weak_ptr<state> current_state();
+	void current_state(boost::weak_ptr<state> newstate);
 };
 } // namespace stk
 
