@@ -54,72 +54,72 @@ namespace stk
         switch (e->type())
         {
         case event::key_up:
+        {
+            // FIXME: where should default actions be taken care of ?
+            // next and prev are currently in App, so activate (enter) should
+            // probably be with them...
+            key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+            switch ( ke->key() )
             {
-                // FIXME: where should default actions be taken care of ?
-                // next and prev are currently in App, so activate (enter) should
-                // probably be with them...
-                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                switch ( ke->key() )
+            case key_enter:
+                if (pressed_)
                 {
-                case key_enter:
-                    if (pressed_)
-                    {
-                        cout << "button::handle_event() - emitting signal on_click()" << endl;
-                        pressed_ = false;
-                        redraw(rect_);
-                        on_release();
-                    }
-                    return;
-                    break;
-                }
-                break; // key_up
-            }
-        case event::key_down:
-            {
-                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                switch ( ke->key() )
-                {
-                case key_enter:
                     cout << "button::handle_event() - emitting signal on_click()" << endl;
-                    pressed_ = true;
-                    redraw(rect_);
-                    on_press();
-                    return;
-                    break;
-                }
-                break; // key_down
-            }
-            // FIXME: this stuff should be moved to application or state I think
-        case event::mouse_motion:
-            {
-                break; // mouse_motion
-            }
-        case event::mouse_down:
-            {
-                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-                if (!pressed())
-                {
-                    pressed_ = true;
-                    redraw(rect_);
-                    on_press();
-                }
-                return;
-                break; // mouse_down
-            }
-        case event::mouse_up:
-            {
-                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-                if (pressed())
-                {
                     pressed_ = false;
                     redraw(rect_);
                     on_release();
                 }
                 return;
-                break; // mouse_up
+                break;
             }
+            break; // key_up
         }
+        case event::key_down:
+        {
+            key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+            switch ( ke->key() )
+            {
+            case key_enter:
+                cout << "button::handle_event() - emitting signal on_click()" << endl;
+                pressed_ = true;
+                redraw(rect_);
+                on_press();
+                return;
+                break;
+            }
+            break; // key_down
+        }
+        // FIXME: this stuff should be moved to application or state I think
+        case event::mouse_motion:
+        {
+            break; // mouse_motion
+        }
+        case event::mouse_down:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+            if (!pressed())
+            {
+                pressed_ = true;
+                redraw(rect_);
+                on_press();
+            }
+            return;
+            break; // mouse_down
+        }
+        case event::mouse_up:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+            if (pressed())
+            {
+                pressed_ = false;
+                redraw(rect_);
+                on_release();
+            }
+            return;
+            break; // mouse_up
+        }
+        }
+        // if we haven't handled it, try the defaults and possibly pass it up
         widget::handle_event(e);
     }
-
 }

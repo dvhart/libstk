@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: widget.cpp
  * DESCRIPTION: Widget abstract base class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke, Dirk Hoerner
  *  START DATE: 08/Sep/2003  LAST UPDATE: 14/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -41,7 +40,10 @@ namespace stk
         cout << "widget::~widget()" << endl;
     }
 
-    // event_handler interface - default back to parent
+    /// Handle common widget events
+    /// Try to handle the passed event, if there is nothing to do with it pass it up to the parent.
+    /// Every non container should call widget::handle_event(e) from within its handle_event
+    /// routine if it hasn't handled the event on its own.
     void widget::handle_event(event::ptr e)
     {
         //cout << "widget::handle_event()" << endl;
@@ -56,6 +58,7 @@ namespace stk
                 focused_ = true;
                 redraw(rect_);
             }
+            return;
             break;
         case event::un_focus:
             if (focusable_)
@@ -64,20 +67,22 @@ namespace stk
                 pressed_ = false;
                 redraw(rect_);
             }
+            return;
             break;
         case event::mouse_enter:
             hover_ = true;
             redraw(rect_);
+            return;
             break;
         case event::mouse_leave:
             hover_ = false;
             pressed_ = false;
             redraw(rect_);
+            return;
             break;
         case event::key_up:
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            bool ret = on_keyup(ke->key());
-            cout << "widget::handle_event() - on_keyup returned: " << ((ret) ? "true" : "false") << endl;
+            if (on_keyup(ke->key())) return;
             break;
         }
 

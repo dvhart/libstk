@@ -46,8 +46,8 @@ namespace stk
         std::wstring label();
 
         // button signals
-        boost::signal<bool (), combiner::logical_and<bool> > on_press;
-        boost::signal<bool (), combiner::logical_and<bool> > on_release;
+        boost::signal<bool (), combiner::logical_or<bool> > on_press;
+        boost::signal<bool (), combiner::logical_or<bool> > on_release;
 
         // event_handler interface
         virtual void handle_event(event::ptr e);

@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: state.cpp
  * DESCRIPTION: State container implementation.
  *     AUTHORS: Marc Straemke, Darren Hart
- *  START DATE: 29/Nov/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 29/Nov/2003  LAST UPDATE: 25/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <iostream>
 #include <boost/weak_ptr.hpp>
@@ -45,21 +44,10 @@ namespace stk
     void state::handle_event(event::ptr e)
     {
         //cout << "state::handle_event()" << endl;
-        // handle appropriate events here FIXME
-        // ...
+        // handle appropriate events here
+        // WRITEME ...
 
         container::handle_event(e);
-
-        // FIXME: only pass it up if we haven't handled it
-        // if we don't handle it, pass up to the parent
-        // mstr: broken in Boost_1_30_0 and in general! FIXME
-        // FIXME: only run if not handled ???
-        if (!parent_.lock())
-        {
-            // throw something
-            cout << "state::handle_event() - null parent_ pointer" << endl;
-        }
-        parent_.lock()->handle_event(e);
     }
 
     // FIXME: delve into containers too

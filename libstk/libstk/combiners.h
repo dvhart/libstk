@@ -1,15 +1,14 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: combiners.h
  * DESCRIPTION: Signal combiner objects.  They combine the results of all the
  *              slots of a signal in a specific way and return the result.
  *     AUTHORS: Darren Hart
- *  START DATE: 10/Mar/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 10/Mar/2003  LAST UPDATE: 25/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_COMBINERS_H
 #define STK_COMBINERS_H
@@ -30,7 +29,7 @@ namespace stk
             T operator ()(InputIterator first, InputIterator last) const
             {
                 if (first == last)
-                    return true; // no connections, so we didn't fail
+                    return false; // no connections, so we didn't handle it
                 while (first != last)
                 {
                     if (! *first)
@@ -50,7 +49,7 @@ namespace stk
             T operator ()(InputIterator first, InputIterator last) const
             {
                 if (first == last)
-                    return true; // no connections, so we didn't fail
+                    return false; // no connections, so we didn't handle it
                 while (first != last)
                 {
                     if (*first)
@@ -63,23 +62,23 @@ namespace stk
 
         template <typename T>
         struct add
-            {
-                typedef T result_type;
+        {
+            typedef T result_type;
 
-                template <typename InputIterator>
-                T operator ()(InputIterator first, InputIterator last) const
+            template <typename InputIterator>
+            T operator ()(InputIterator first, InputIterator last) const
+            {
+                T sum;
+                if (first == last)
+                    return T(0);
+                while (first != last)
                 {
-                    T sum;
-                    if (first == last)
-                        return T(0);
-                    while (first != last)
-                    {
-                        sum += *first;
-                        ++first;
-                    }
-                    return sum;
+                    sum += *first;
+                    ++first;
                 }
-            };
+                return sum;
+            }
+        };
 
         template <typename T>
         struct subtract
@@ -144,7 +143,7 @@ namespace stk
             }
         };
 
-    }
-}
+    } // namespace combiner
+} // namepsace stk
 
 #endif

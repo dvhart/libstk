@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: spinner.cpp
  * DESCRIPTION: Spinner widget implementation.
  *     AUTHORS: Darren Hart
- *  START DATE: 26/Apr/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 26/Apr/2003  LAST UPDATE: 25/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include "libstk/list.h"
 #include "libstk/spinner.h"
@@ -44,34 +43,34 @@ namespace stk
             switch (e->type())
             {
             case event::key_up:
+            {
+                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+                switch ( ke->key() )
                 {
-                    key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                    switch ( ke->key() )
-                    {
-                    case up_arrow:
-                        --selected_%=items_.size();
-                        redraw(rect_);
-                        return;
-                        break;
-                    case key_enter:
-                    case down_arrow:
-                        ++selected_%=items_.size();
-                        redraw(rect_);
-                        return;
-                        break;
-                    }
-                    break;
-                }
-            case event::mouse_up:
-                {
-                    mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-                    if ((me->y() < (y1()+y2())/2) && arrow_clicked(me->x(),me->y()))
-                        --selected_%=items_.size();
-                    else
-                        ++selected_%=items_.size();
+                case up_arrow:
+                    --selected_%=items_.size();
                     redraw(rect_);
                     return;
+                    break;
+                case key_enter:
+                case down_arrow:
+                    ++selected_%=items_.size();
+                    redraw(rect_);
+                    return;
+                    break;
                 }
+                break;
+            }
+            case event::mouse_up:
+            {
+                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+                if ((me->y() < (y1()+y2())/2) && arrow_clicked(me->x(),me->y()))
+                    --selected_%=items_.size();
+                else
+                    ++selected_%=items_.size();
+                redraw(rect_);
+                return;
+            }
             }
         }
         widget::handle_event(e);

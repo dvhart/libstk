@@ -59,7 +59,7 @@ namespace stk
             interval_ = val;
             counter_ = val;
         }
-        boost::signal<bool (), combiner::logical_and<bool> > on_timer;
+        boost::signal<bool (), combiner::logical_or<bool> > on_timer;
     };
 }
 

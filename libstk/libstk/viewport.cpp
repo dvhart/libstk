@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: viewport.cpp
  * DESCRIPTION: Viewport container implementation.
  *     AUTHORS: Darren Hart, Marc Straemke 
  *  START DATE: 29/Apr/2003  LAST UPDATE: 28/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <iostream>
 #include <boost/bind.hpp>

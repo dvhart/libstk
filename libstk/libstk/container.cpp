@@ -101,24 +101,16 @@ namespace stk
         parent_.lock()->redraw(redraw_rect_);
     }
 
-    // FIXME: decide how event handling gets done
-    // when a widget gets an event, it can:
-    //   handle the event
-    //   ask its base class to handle the event
-    //   pass the event to its parent
-    // should it do all three?
-    // the base class and the widget can't both pass to the parent, or we will
-    //   send the event twice
+    /// Handle common container events
+    /// Try to handle the passed event, if there is nothing to do with it, ask widget to handle it.
+    /// Every container should call container::handle_event(e) from within its handle_event
+    /// routine if it hasn't handled the event on its own.
     void container::handle_event(event::ptr e)
     {
         // handle standard container events
         // ... FIXME: writeme
 
         widget::handle_event(e);
-
-        // FIXME: only pass it up if we haven't handled it
-        // if we don't handle it, give it to the parent
-        parent_.lock()->handle_event(e);
     }
 
     widget::ptr container::focus_next()
