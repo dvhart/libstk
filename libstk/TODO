@@ -21,11 +21,12 @@ ie:
     class|function { }
 write it!!!!
 
-SYSTEM
+OTHER
 ======
 image loader class
 	just png for now but we will want at least jpg as well for user app so
 	loaders should be able to be added.
+Better font loading error messages.
 
 WIDGETS TO WRITE
 ================
