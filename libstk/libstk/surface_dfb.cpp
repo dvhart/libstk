@@ -61,7 +61,7 @@ namespace stk
     }
     surface_dfb::~surface_dfb()
     {
-        INFO("~surface_dfb");
+        INFO("destructor");
         surface->Release(surface);
     }
     surface_dfb::ptr surface_dfb::create()
@@ -82,8 +82,9 @@ namespace stk
     
     void surface_dfb::put_pixel(int x, int y, color clr)
     {
+        x += offset_.x();
+        y += offset_.y();
         surface->SetDrawingFlags(surface, DSDRAW_BLEND);
-        
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         surface->DrawLine(surface, x, y, x, y); // hack *ggg*
     }
@@ -91,7 +92,6 @@ namespace stk
     void surface_dfb::put_pixel_aa(int x, int y, double distance, color clr)
     {
 //      clr &= ~0xff;
-        
         put_pixel(x, y, clr);
     }
     
@@ -99,13 +99,15 @@ namespace stk
     {
         clr &= ~0xff;
         clr |= alpha_a;
-        
         //if(alpha_a>230
         put_pixel(x, y, clr);
     }
     
     color surface_dfb::get_pixel(int x, int y) const
     {
+        x += offset_.x();
+        y += offset_.y();
+        WARN("surface_dfb::get_pixel(x, y)");
     }
     
     color surface_dfb::gen_color(const std::string &str_color) const
@@ -147,15 +149,16 @@ namespace stk
     
 
     // overridden drawing routines
-    void surface_dfb::blit(stk::surface &dst_surface)
+    void surface_dfb::blit(stk::surface& dst_surface)
     {
+        // FIXME: implement me!
+        WARN("surface_dfb::blit(surface) not implemented");
     }
-    void surface_dfb::blit(stk::surface &dst_surface, rectangle src_rect, rectangle dst_rect)
+    void surface_dfb::blit(stk::surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
         surface_dfb* dst = dynamic_cast<surface_dfb*>(&dst_surface);
-        if(dst != NULL)
+        if (dst != NULL)
         {
-            INFO("DFB to DFB blit\n");
             dst_rect.x1(dst_rect.x1()+dst_surface.offset().x());
             dst_rect.y1(dst_rect.y1()+dst_surface.offset().y());
             
@@ -171,6 +174,10 @@ namespace stk
     
     void surface_dfb::fill_rect(int x1, int y1, int x2, int y2)
     {
+        x1 += offset_.x();
+        y1 += offset_.y();
+        x2 += offset_.x();
+        y2 += offset_.y();
         color clr = gc_->fill_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
         surface->FillRectangle(surface, x1, y1, x2-x1, y2-y1);
@@ -182,6 +189,10 @@ namespace stk
     }
     void surface_dfb::draw_line(int x1, int y1, int x2, int y2)
     {
+        x1 += offset_.x();
+        y1 += offset_.y();
+        x2 += offset_.x();
+        y2 += offset_.y();
         color clr = gc_->line_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
         surface->DrawLine(surface, x1, y1, (x2-x1), (y2-y1));
@@ -192,6 +203,10 @@ namespace stk
     }
     void surface_dfb::draw_rect(int x1, int y1, int x2, int y2)
     {
+        x1 += offset_.x();
+        y1 += offset_.y();
+        x2 += offset_.x();
+        y2 += offset_.y();
         color clr = gc_->line_color();
         surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
         surface->DrawRectangle(surface, x1, y1, (x2-x1), (y2-y1));
