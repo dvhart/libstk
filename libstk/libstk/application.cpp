@@ -74,7 +74,7 @@ namespace stk
 			event_ = event_system_->poll_event();
 			while (event_->type() != no_event)
 			{
-				cout << "application::run() - event received of type: " << event_->type() << endl;
+				//cout << "application::run() - event received of type: " << event_->type() << endl;
 
 				// if it's a mouse event, let current_state_ determine who to send it too
 				if (event_->type() == mouse_motion || 

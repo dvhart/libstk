@@ -63,13 +63,11 @@ namespace stk
 			// FIXME: this stuff should be moved to application or state I think
 			case mouse_motion:
 			{
-				cout << "button: just got a mouse_motion event" << endl;
 				//boost::make_shared(parent_)->handle_event(e);
 				break; // mouse_motion
 			}
 			case mouse_down:
 			{
-				cout << "button: just got a mouse_down event" << endl;
 				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
 				if (!active())
 				{
@@ -81,7 +79,6 @@ namespace stk
 			}
 			case mouse_up:
 			{
-				cout << "button: just got a mouse_up event" << endl;
 				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
 				if (active())
 				{
