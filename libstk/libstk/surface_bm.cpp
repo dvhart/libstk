@@ -94,8 +94,12 @@ int main(int argc, char* argv[])
 		}
 	
 		
-		cout << "Virtual Call Duration: " << std::dec << virt_dur << " Avg: " << virt_dur/FRAMES << endl;
-		cout << "Private Call Duration: " << std::dec << priv_dur << " Avg: " << priv_dur/FRAMES << endl;
+		cout << "Virtual Call Duration: " << std::dec << virt_dur 
+			   << " Avg: " << virt_dur/FRAMES 
+				 << " FPS: " << FRAMES/virt_dur << endl;
+		cout << "Private Call Duration: " << std::dec << priv_dur 
+			   << " Avg: " << priv_dur/FRAMES 
+				 << " FPS: " << FRAMES/priv_dur << endl;
 		cout << "Private Calls are " << std::dec << 100.0 * (1 - priv_dur / virt_dur) << "% faster" << endl;
 		
 	}
