@@ -26,8 +26,8 @@ namespace stk
             {
                 if(/*!column->cells.empty() && */ cell != column->cells.end())
                 {
-                    (*cell)->draw(surface,rectangle(current_x_pos+rect_.x1(), 
-                                                    current_y_pos+rect_.y1(), 
+                    (*cell)->draw(surface,rectangle(current_x_pos+rect_.x1(),
+                                                    current_y_pos+rect_.y1(),
                                                     row->width, column->height));
                     cell++;
                 }
@@ -100,6 +100,15 @@ namespace stk
     
     spreadsheet_cell::spreadsheet_cell(spreadsheet::ptr parent) : parent_(parent) , focused_(false)
     {
+    }
+    void spreadsheet_cell::background_color(const boost::optional<stk::color> new_color)
+    {
+        background_color_=new_color;
+    }
+    
+    boost::optional<stk::color> spreadsheet_cell::background_color() const
+    {
+        return background_color_;
     }
     
 

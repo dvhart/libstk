@@ -16,6 +16,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/optional.hpp>
 #include <libstk/widget.h>
 #include <libstk/container.h>
 #include <libstk/scroll_model.h>
@@ -38,12 +39,18 @@ namespace stk
         spreadsheet_cell(boost::shared_ptr<spreadsheet> parent);
         bool focused_;
 
+        boost::optional<stk::color> background_color_;
     public:
         virtual ~spreadsheet_cell() {};
         
         /********** EVENT HANDLER INTERFACE **********/
         virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/
+
+        /// Set the property #background_color_
+        virtual void background_color(const boost::optional<stk::color> new_color);
+        /// Get the property #background_color_
+        virtual boost::optional<stk::color> background_color() const;
 
         virtual void draw(surface::ptr surface, const rectangle& screen_position);
     };

@@ -695,8 +695,11 @@ namespace stk
         }
         else
         {
-            gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_normal_str, surface)));
+            if(background_color())
+                gc->fill_color(boost::get(background_color()));
+            else
+                gc->fill_color(color_manager::get()->get_color(
+                                   color_properties(fill_color_normal_str, surface)));
         }
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
@@ -729,8 +732,11 @@ namespace stk
         }
         else
         {
-            gc->fill_color(color_manager::get()->get_color(
-                        color_properties(fill_color_normal_str, surface)));
+            if(background_color())
+                gc->fill_color(boost::get(background_color()));
+            else
+                gc->fill_color(color_manager::get()->get_color(
+                                   color_properties(fill_color_normal_str, surface)));
         }
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
