@@ -15,7 +15,7 @@
 namespace stk
 {
 
-	scroll_model::scroll_model() : begin_(0),end_(1),size_(1)
+	scroll_model::scroll_model() : begin_(0),vis_size_(1),size_(1)
 	{}
 	
 	int scroll_model::size()
@@ -40,14 +40,13 @@ namespace stk
 		on_change();
 	}
 	
-	int scroll_model::end()
+	int scroll_model::vis_size()
 	{
-		return end_;
+		return vis_size_;
 	}
-	
-	void scroll_model::end(int value)
+	void scroll_model::vis_size(int newsize)
 	{
-		end_=value;
+		vis_size_=newsize;
 		on_change();
 	}
 	

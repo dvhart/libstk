@@ -29,16 +29,16 @@ namespace stk
 			int size_;
 			/// The Begin of the Visible Area
 			int begin_;
-			/// The End of the Visible Area
-			int end_;
+			/// the size of the visible region
+			int vis_size_;
 		public:
 			scroll_model();
 			int size();
 			void size(int newsize);
 			int begin();
 			void begin(int value);
-			int end();
-			void end(int value);
+			int vis_size();
+			void vis_size(int newsize);
 
 			boost::signal<void () > on_change;
 	};
@@ -46,4 +46,3 @@ namespace stk
 } // namespace stk
 
 #endif
-

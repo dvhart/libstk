@@ -365,21 +365,4 @@ namespace stk
 		theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
 	}
 	
-	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
-	{
-		cout << "scroll_decorator::draw()" << endl;
-		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
-		point scroll_offset;
-		scroll_offset.x(h_scroll()->begin());
-		scroll_offset.y(v_scroll()->begin());
-		surface->offset() += scroll_offset;
-		
-		if (children_.size() > 0)
-		{
-			children_[0]->draw(surface, clip_rect.empty() ? rect_ : clip_rect);
-		}
-		
-		surface->offset() -= scroll_offset;
-	}
-	
 }

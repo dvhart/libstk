@@ -52,7 +52,7 @@ struct no_op
 
 bool scroll_slot(stk::scroll_model::ptr target,int increment)
 {
-	std::cout << "Scrolling, old begin=" << target->begin() << " old end=" << target->end() << " size=" << target->size();
+	std::cout << "Scrolling, old begin=" << target->begin() << " visible area=" << target->vis_size() << " size=" << target->size();
 	target->begin(target->begin()+increment);
 	return true;
 }

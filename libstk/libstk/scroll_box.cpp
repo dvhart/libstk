@@ -49,6 +49,9 @@ namespace stk
 		h_scroll_=value;
 		h_scroll_con=value->on_change.connect(boost::bind(&scroll_box::redraw,this));		
 		h_scroll_->size(rect_.width());
+		if (!children_.empty() > 0)
+			h_scroll_->size( children_[0]->width());
+		h_scroll_->vis_size(rect_.width());
 	}
 			
 	scroll_model::ptr scroll_box::v_scroll()
@@ -61,6 +64,9 @@ namespace stk
 		v_scroll_=value;
 		v_scroll_con=value->on_change.connect(boost::bind(&scroll_box::redraw,this));
 		v_scroll_->size(rect_.height());
+		v_scroll_->vis_size(rect_.height());
+		if (!children_.empty() > 0)
+			v_scroll_->size( children_[0]->height());
 	}
 	void scroll_box::redraw()
 	{
@@ -70,6 +76,22 @@ namespace stk
 	{
 		cout << "scroll_box::handle_event()" << endl;	
 		widget::handle_event(e); 
+	}
+	
+	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
+	{
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+		point scroll_offset;
+		scroll_offset.x(h_scroll()->begin());
+		scroll_offset.y(v_scroll()->begin());
+		surface->offset() += scroll_offset;
+		
+		if (children_.size() > 0)
+		{
+			children_[0]->draw(surface, rect_);
+		}
+		
+		surface->offset() -= scroll_offset;
 	}
 
 }
