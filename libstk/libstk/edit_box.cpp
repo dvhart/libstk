@@ -29,9 +29,9 @@ namespace stk
     }
 
     edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect) 
-        : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0)
+        : widget(parent, rect), text_(text), selection_start_(0), selection_end_(0), 
+          pressed_(false)
     {
-        selection_state_ = false;
         INFO("constructor");
         focusable(true);
     }
@@ -132,7 +132,7 @@ namespace stk
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
             selection_start_ = selection_end_ = region(me->x(), me->y());
-            selection_state_ = true;
+            pressed_ = true;
             redraw(rect());
             return;
             break; // mouse_down
@@ -140,7 +140,7 @@ namespace stk
         case event::mouse_motion:
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);            
-            if (selection_state_) 
+            if (pressed_) 
             {
                 selection_end_ = region(me->x(), me->y());
                 redraw(rect());
@@ -150,13 +150,13 @@ namespace stk
         }
         case event::mouse_up:
         {
-            selection_state_ = false;
+            pressed_ = false;
             return;
             break;
         }
         case event::mouse_leave:
         {
-            selection_state_ = false;
+            pressed_ = false;
             return;
             break;
         }

@@ -34,7 +34,7 @@ namespace stk
         std::wstring text_;
         int selection_start_;
         int selection_end_;
-        bool selection_state_;//used to tell if selecting
+        bool pressed_; //used to tell if selecting
 
     protected:
         edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect);
