@@ -32,7 +32,7 @@ namespace stk
 	
 	void state::draw(surface::ptr surface)
 	{
-		//cout << "state::draw()" << endl;
+		cout << "state::draw() - redraw_rect_: " << redraw_rect_ << endl;
 		theme::instance()->draw_state(redraw_rect_);
 		container::draw(surface);
 	}
@@ -68,3 +68,5 @@ namespace stk
 		focused_widget_=value;
 	}
 }
+
+

@@ -1070,7 +1070,7 @@
         <dia:point val="0,28"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-0.05,27.95;22.7468,33.05"/>
+        <dia:rectangle val="-0.05,27.95;22.7468,33.85"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="0,28"/>
@@ -1079,7 +1079,7 @@
         <dia:real val="22.6968"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="5"/>
+        <dia:real val="5.8"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#container#</dia:string>
@@ -1256,6 +1256,48 @@
               </dia:attribute>
               <dia:attribute name="type">
                 <dia:string>#shared_ptr&lt;widget&gt;#</dia:string>
+              </dia:attribute>
+              <dia:attribute name="value">
+                <dia:string/>
+              </dia:attribute>
+              <dia:attribute name="kind">
+                <dia:enum val="0"/>
+              </dia:attribute>
+            </dia:composite>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="umloperation">
+          <dia:attribute name="name">
+            <dia:string>#delegate_mouse_event#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="stereotype">
+            <dia:string/>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string/>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="inheritance_type">
+            <dia:enum val="1"/>
+          </dia:attribute>
+          <dia:attribute name="query">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="parameters">
+            <dia:composite type="umlparameter">
+              <dia:attribute name="name">
+                <dia:string>#me#</dia:string>
+              </dia:attribute>
+              <dia:attribute name="type">
+                <dia:string>#mouse_event::ptr#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string/>
@@ -1581,13 +1623,13 @@
     </dia:object>
     <dia:object type="UML - Generalization" version="0" id="O10">
       <dia:attribute name="obj_pos">
-        <dia:point val="11.3484,33"/>
+        <dia:point val="11.3484,33.8"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="-3.1912,32.95;12.1984,37.05"/>
+        <dia:rectangle val="-3.1912,33.75;12.1984,37.05"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="11.3484,33"/>
+        <dia:point val="11.3484,33.8"/>
         <dia:point val="11.3484,35"/>
         <dia:point val="-3.1412,35"/>
         <dia:point val="-3.1412,37"/>

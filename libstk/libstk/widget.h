@@ -44,21 +44,22 @@ namespace stk
 		public:
 			virtual ~widget();
 
-			virtual rectangle rect() { return rect_; }
-			virtual bool contains(int x, int y) { return rect_.contains(x, y); }
-			virtual bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
+			rectangle rect() { return rect_; }
+			bool contains(int x, int y) { return rect_.contains(x, y); }
+			bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
 
 			// widget attribute accessor methods
+			// FIXME: have the setters return bool ? (ie label would return false for a focus(true) call) ?
 			bool focusable() { return focusable_; }
 			void focusable(bool val) { focusable_ = val; }
 			int tab() { return tab_; }
 			void tab(int val) { tab_ = val; }
 			bool active() { return active_; }
-			void active(bool val) { active_ = val; }
+			void active(bool val) { active_ = val; redraw(true, rect_); }
 			bool focused() { return focused_; }
-			void focused(bool val) { focused_ = val; }
-			bool hover() { return hover_; }
-			void hover(bool val) { hover_ = val; }
+			void focused(bool val) { focused_ = val; redraw(true, rect_); }
+			bool hover() { return hover_; } 
+			void hover(bool val) { hover_ = val; redraw(true, rect_); }
 			
 			// event_handler interface
 			virtual void handle_event(event::ptr e);

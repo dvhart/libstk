@@ -55,7 +55,7 @@ namespace stk
 			inline color get_pixel(int x, int y) const;
 			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
 			{
-				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.w(), rect.h() };
+				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
 				return sdl_rect;
 			}
 

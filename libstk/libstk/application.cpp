@@ -86,12 +86,10 @@ namespace stk
 					if (!hover_ptr->contains(me->x(), me->y()))
 					{
 						cout << "changing hover_widget_" << endl;
-						boost::make_shared(hover_widget_)->hover(false);
-						boost::make_shared(hover_widget_)->redraw(true);
+						hover_ptr->hover(false);
 						hover_widget_ = boost::make_shared(current_state_)->widget_at(me->x(), me->y());	
 						if (!make_shared(hover_widget_)) hover_widget_ = current_state_;
 						boost::make_shared(hover_widget_)->hover(true);
-						boost::make_shared(hover_widget_)->redraw(true);
 					}
 					boost::make_shared(current_state_)->delegate_mouse_event(me);
 				}

@@ -74,7 +74,7 @@ namespace stk
 				if (!active())
 				{
 					active(true);
-					redraw(true);
+					redraw(true, rect_);
 				}
 				on_click();
 				break; // mouse_down
@@ -85,7 +85,7 @@ namespace stk
 				if (active())
 				{
 					active(false);
-					redraw(true);
+					redraw(true, rect_);
 				}
 				break; // mouse_up
 			}

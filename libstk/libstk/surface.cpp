@@ -497,7 +497,8 @@ namespace stk
 
 	void surface::draw_circle(const rectangle &rect)
 	{
-		draw_circle(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, rect.w()/2);
+		draw_circle(rect.x1() + rect.width()/2, 
+				        rect.y1() + rect.height()/2, rect.width()/2);
 	}
 		
 	void surface::ellipse_points(int x, int y, int dx, int dy)
@@ -573,8 +574,8 @@ namespace stk
 	void surface::draw_ellipse(const rectangle &rect)
 	{
 		cout << "surface::draw_ellipse - did I get a and b right?" << endl;
-		draw_ellipse(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, 
-				rect.w()/2, rect.h()/2);
+		draw_ellipse(rect.x1() + rect.width()/2, rect.y1() + rect.height()/2, 
+				rect.width()/2, rect.height()/2);
 	}
 
 	void surface::draw_poly(std::vector<point> points)
@@ -1002,7 +1003,8 @@ namespace stk
 		
 	void surface::draw_circle_aa(const rectangle &rect)
 	{
-		draw_circle_aa(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, rect.w()/2);
+		draw_circle_aa(rect.x1() + rect.width()/2, 
+				           rect.y1() + rect.height()/2, rect.width()/2);
 	}
 	
 	void surface::ellipse_points_aa(int x, int y, int dx, int dy)
@@ -1014,8 +1016,8 @@ namespace stk
 	void surface::draw_ellipse_aa(const rectangle &rect)
 	{
 		cout << "surface::draw_ellipse_aa - did I get a and b right?" << endl;
-		draw_ellipse(rect.x1() + rect.w()/2, rect.y1() + rect.h()/2, 
-				rect.w()/2, rect.h()/2);
+		draw_ellipse(rect.x1() + rect.width()/2, rect.y1() + rect.height()/2, 
+				rect.width()/2, rect.height()/2);
 	}
 		
 	void surface::draw_poly_aa(std::vector<point> points)
@@ -1063,7 +1065,7 @@ namespace stk
 	{
 		typedef std::list<edge> edge_list;
 		// FIXME: this will segfault for poly's outside the surface vertically
-		std::vector<edge_list> edges(rect_.h());
+		std::vector<edge_list> edges(rect_.height());
 		std::list<edge> active_edges;
 
 		// populate the global edge table

@@ -7,6 +7,7 @@ libstk_la_SOURCES =\
 	event_system_dfb.h event_system_dfb.cpp \
 	glyph.h glyph.cpp \
 	font.h font.cpp \
+	rectangle.h rectangle.cpp \
 	surface.h surface.cpp \
 	surface_sdl.h surface_sdl.cpp \
 	surface_dfb.h surface_dfb.cpp \
@@ -36,6 +37,7 @@ test_app_SOURCES  = \
 	event_system_dfb.h event_system_dfb.cpp \
 	glyph.h glyph.cpp \
 	font.h font.cpp \
+	rectangle.h rectangle.cpp \
 	surface.h surface.cpp \
 	surface_sdl.h surface_sdl.cpp \
 	surface_dfb.h surface_dfb.cpp \

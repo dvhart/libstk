@@ -103,12 +103,12 @@ namespace stk
 
 	int font::chars_in_rect(const rectangle& rect, const wstring& text, int kerning_mode)
 	{
-		if (height_ > rect.h()) return 0;
+		if (height_ > rect.height()) return 0;
 		int len = 0, count = 0;
 		while (1)
 		{
 			len += glyph(text[count])->advance_x();
-			if ((len >> 6) > rect.w()) break;
+			if ((len >> 6) > rect.width()) break;
 			if (count < text.length()-1)
 				len += kerning(text[count], text[count+1], kerning_mode);
 			count++;
