@@ -228,6 +228,10 @@ namespace stk
 
     void application::quit() { done_ = true; }
     void application::add_state(state::ptr state) { states_.push_back(state); }
+    void application::remove_state(state::ptr state)
+    {
+        std::remove(states_.begin(), states_.end(), state);
+    }
     void application::add_timer(timer::ptr timer) { timers_.push_back(timer); }
     void application::remove_timer(timer::ptr timer)
     {

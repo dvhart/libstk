@@ -70,6 +70,7 @@ namespace stk
 
         /// Adds a new state to the Application
         void add_state(boost::shared_ptr<state>);
+        void remove_state(boost::shared_ptr<state>);
 
         /// Adds a new timer to the Application
         void add_timer(timer::ptr timer);
