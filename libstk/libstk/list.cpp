@@ -91,9 +91,10 @@ namespace stk
         widget::handle_event(e);
     }
 
-    void list::add_item(list_item::ptr item)
+    int list::add_item(list_item::ptr item)
     {
         items_.push_back(item);
+        int index=std::find(items_.begin(),items_.end(),item)-items_.begin();
         cout << "list::add_item: items_ count=" << items_.size() << endl;
 
         // adjust scroll properties
@@ -101,6 +102,33 @@ namespace stk
         //if (h_scroll()->size() < item->width()) h_scroll()->size(item->width());
         // FIXME: store the item height (25) somewhere, it is also magic in tribal_theme.cpp
         v_scroll_->size(v_scroll_->size() + 25);
+        return index;
     }
-
+    void list::remove_item(int index)
+    {
+        items_.erase(items_.begin()+index);
+        redraw(rect_);
+    }
+    int list::selected()
+    {
+        return selected_;
+    }
+    void list::selected(int index)
+    {
+        selected_=index;
+        redraw(rect_);
+    }
+    list_item::ptr list::operator[](int index)
+    {
+        return items_.at(index);
+    }
+    void list::clear()
+    {
+        items_.clear();
+        redraw(rect_);
+    }
+    int list::size()
+    {
+        return items_.size();
+    }
 }

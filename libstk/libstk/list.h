@@ -63,7 +63,13 @@ namespace stk
 
 
         /********** LIST INTERFACE **********/
-        virtual void add_item(list_item::ptr item);
+        virtual int add_item(list_item::ptr item);  /// Appends a new Item to the listbox, returns the index of the object added
+        virtual void remove_item(int index);  // removes the item at the specified index
+        virtual int selected(); /// returns the index of the selected item
+        virtual void selected(int index); /// sets the index of the selected item
+        virtual list_item::ptr operator[](int index); /// returns the list_item at the specified location
+        virtual void clear();   /// Erases the entire content of the list
+        virtual int size();     /// Returns the number of elements in the list
         /********** END LIST INTERFACE **********/
     };
 }
