@@ -255,7 +255,7 @@ namespace stk
 
     void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        surface->draw_image(0, 0, image_);
+        if (image_) surface->draw_image(0, 0, image_);
     }
 
     void list::draw(surface::ptr surface, const rectangle& clip_rect)

@@ -31,14 +31,12 @@ namespace stk
     private:
 
     protected:
-        image_panel(const rectangle& rect, image::ptr img);
+        image_panel(const rectangle& rect = rectangle(), image::ptr img = image::ptr());
         image::ptr image_;
-        //int width_;
-        //int height_;
 
     public:
-        static image_panel::ptr create(container::ptr parent,
-                                       const rectangle& _rect, image::ptr img);
+        static image_panel::ptr create(container::ptr parent, const rectangle& _rect, 
+                image::ptr img = image::ptr());
         virtual ~image_panel();
 
         /********** EVENT HANDLER INTERFACE **********/
@@ -55,25 +53,12 @@ namespace stk
         /********** END WIDGET INTERFACE **********/
 
         /********** IMAGE_PANEL INTERFACE **********/
-        image::ptr getimage() const
-        {
-            return image_;
-        }
+        image::ptr getimage() const { return image_; }
         void setimage(image::ptr img)
         {
             image_ = img;
             redraw(rect());
         }
-        //FIXME why were these here??
-        //It doesn't seem to be used
-        /*(int width()
-        {
-            return width_;
-        }
-        int height()
-        {
-            return height_;
-        }*/
         /********** END IMAGE_PANEL INTERFACE **********/
     };
 }
