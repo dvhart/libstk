@@ -1215,12 +1215,20 @@ namespace stk
         // non antialiased fill routines
         virtual void fill_rect(int x1, int y1, int x2, int y2)
         {
-            WARN("fill_rect - not implemented");
+	    fill_rect(stk::rectangle(x1,y1,x2-x1,y2-y1));
+//            WARN("fill_rect - not implemented");
         }
 
         virtual void fill_rect(const rectangle &rect)
-        {
-            WARN("fill_rect - not implemented");
+	{
+	    assert(rect.y2()>rect.y1());
+	    assert(rect.x2()>rect.x1());
+	    for(int y=rect.y1();y<rect.y2();y++)
+		for(int x=rect.x1();x<rect.x2();x++)
+		{
+                    static_cast<surface_backend*>(this)->put_pixel(x, y, gc_->fill_color());		    
+		}
+//          WARN("fill_rect - not implemented");
         }
 
         virtual void fill_circle(int x, int y, int radius)

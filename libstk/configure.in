@@ -141,6 +141,16 @@ fi
 AM_CONDITIONAL(LOGGING, test x$enable_logging = xyes)
 
 
+dnl libstk printing support
+AC_ARG_ENABLE(printing,
+	[  --enable-printing	build with Support for embedded Printer output [default=no]],,
+	enable_printing=no)
+if test x$enable_printing == xyes; then
+	AC_MSG_RESULT([ *** Printing support enabled])
+	AC_DEFINE(HAVE_PRINTING,true,[Printing support should be build])
+fi
+AM_CONDITIONAL(PRINTING, test x$enable_logging = xyes)
+
 dnl Build the test apps 
 AC_ARG_ENABLE(tests,
  	[  --enable-tests	builds the tests [default=no]],,

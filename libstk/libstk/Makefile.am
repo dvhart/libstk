@@ -17,6 +17,11 @@ if SDL
 		sdl_data.h sdl_data.cpp 
 endif
 
+if PRINTING
+ headers_printing = surface_bitmap.h
+ sources_printing = surface_bitmap.cpp
+endif
+
 if FBDEV
  headers_fbdev = surface_fbdev.h
  sources_fbdev = surface_fbdev.h surface_fbdev.cpp
@@ -88,7 +93,8 @@ libstk_la_SOURCES =\
 	edit_box.h edit_box.cpp  \
 	text_area.h text_area.cpp \
 	event_producer_elotouch.h event_producer_elotouch.cpp \
-	$(headers_xine) $(sources_xine) 
+	$(headers_xine) $(sources_xine)  \
+	$(sources_printing) $(headers_printing)
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 
@@ -113,7 +119,7 @@ library_include_HEADERS= \
 	event_producer_elotouch.h            stk_c_wrapper.h \
 	switched_panel.h	edit_box.h   text_area.h\
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
-	$(headers_fbdev) $(headers_logging)  $(headers_xine)
+	$(headers_fbdev) $(headers_logging)  $(headers_xine)  $(headers_printing)
 
 libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) $(XINE_LIBS) -version-info @libstk_libtool_version@ 
 

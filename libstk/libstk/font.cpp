@@ -213,7 +213,7 @@ namespace stk
         if (height_ > rect.height())
             return 0;
         int len = 0, count = 0;
-        while (1)
+        while (count < maxcount)
         {
             len += glyph(text[count])->advance_x();
             if ((len >> 6) > rect.width())
