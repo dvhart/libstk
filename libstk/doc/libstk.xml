@@ -6,6 +6,7 @@
 <title>Libstk - The Set-top Box Toolkit</title>
 <bookinfo> 
 	<author><firstname>Marc</firstname><surname>Strämke</surname></author>
+	<author><firstname>Darren</firstname><surname>Hart</surname></author>
 	<title>Libstk - The Set-top Box Toolkit</title>
 	<pubdate>25 March 2003</pubdate>
 	<corpauthor>Libstk-Team</corpauthor>
@@ -39,7 +40,9 @@
 		</section>
 		<section>
 			<title>Drawing</title>
-			<para>To be written(Describe drawing process with the widget tree)</para>
+			<para>
+				Something happens to a widget that causes it to need to be redrawn.  It calls parent_->redraw(rect_), the parent (which is a container) adds the rect to its redraw_rect_ (rectangle + rectangle uses the min and max points to form a new rectangle), and calls parent_->redraw(redraw_rect_) and so on until application is reached.  The next time application starts to draw it calls current_state_->draw().  The state only draws the portion defined by redraw_rect_ (this speeds up redraw time and ensures the background for potentially partially transparent widgets or fonts is drawn), it then calls draw on all its children widgets who intersect the redraw_rect.  Containers only draw the area defined by redraw_rect_, leaf widgets always redraw themselves entirely. 
+			</para>
 		</section>
 	</section>
 	<section>
