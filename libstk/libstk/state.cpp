@@ -24,7 +24,6 @@ namespace stk
 		container(boost::shared_static_cast<stk::parent>(parent), parent->surface()->rect())
 	{
 		cout << "state::state()" << endl;
-		redraw_rect_ = parent->surface()->rect();
 	}
 
 	state::~state()

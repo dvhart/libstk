@@ -15,11 +15,13 @@ namespace stk
 	container::container(boost::shared_ptr<container> parent, const rectangle& rect) : widget(parent, rect)
 	{
 		cout << "container::container(container)" << endl;
+		redraw_rect_ = parent->surface()->rect();
 	}
 	
 	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : widget(parent, rect)
 	{
 		cout << "container::container(parent)" << endl;
+		redraw_rect_ = parent->surface()->rect();
 	}
 
 	container::~container()
