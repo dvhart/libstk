@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
         application::ptr app = application::create(screen);
 
         // create the main state and a label
-        state::ptr test_state = state::create(app);
+        state::ptr test_state = state::create(app, PACKAGE_PIXMAPS_DIR"/tribal_bg.png");
 
         switched_panel::ptr panel = switched_panel::create(test_state, rectangle(260,210,200,30));
         

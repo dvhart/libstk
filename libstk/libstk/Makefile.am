@@ -114,4 +114,7 @@ library_include_HEADERS= \
 
 libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) $(XINE_LIBS) -version-info @libstk_libtool_version@ 
 
-INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) $(XINE_CFLAGS) -I$(top_srcdir) 
+INCLUDES = $(SDL_CFLAGS) $(DIRECTFB_CFLAGS) $(FREETYPE_CFLAGS) $(LIBPNG_CFLAGS) $(XINE_CFLAGS) -I$(top_srcdir) \
+	   -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+	   -DPACKAGE_PIXMAPS_DIR=\""$(datadir)/libstk/pixmaps"\" \
+	   -DPACKAGE_FONTS_DIR=\""$(datadir)/libstk/fonts"\" 

@@ -42,7 +42,7 @@ namespace stk
             if ( error )
                 throw error_message_exception("font::font: could not initialize Freetype library");
         }
-        string filename = string("/usr/share/libstk/fonts/")+fontname;
+        string filename = std::string(PACKAGE_FONTS_DIR"/")+fontname;
         INFO("trying to open font file " << filename);
         error = FT_New_Face( lib_, filename.c_str(), 0, &face_);
         if (error == FT_Err_Unknown_File_Format)

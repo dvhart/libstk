@@ -153,7 +153,7 @@ namespace stk
 
         // prepare the font
 
-        font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+        font::ptr the_font = font_manager::get()->get_font(font_properties("FreeSans.ttf",18));
         gc->font(the_font);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
@@ -213,9 +213,9 @@ namespace stk
                     color_properties(fill_color_normal_str, surface)));
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
-        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
+        font::ptr FreeSans_18 = font_manager::get()->get_font(font_properties("FreeSans.ttf", 18));
 
-        gc->font(arial_18);
+        gc->font(FreeSans_18);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         surface->gc(gc);
@@ -234,16 +234,16 @@ namespace stk
                     color_properties(fill_color_normal_str, surface)));
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
-        font::ptr arial;
+        font::ptr FreeSans;
         if(text_size())
         {
             INFO("Drawing label with textsize=" << *text_size());
-            arial = font_manager::get()->get_font(font_properties("Arial.ttf", *text_size()));
+            FreeSans = font_manager::get()->get_font(font_properties("FreeSans.ttf", *text_size()));
         }
         else
-            arial = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
+            FreeSans = font_manager::get()->get_font(font_properties("FreeSans.ttf", 18));
 
-        gc->font(arial);
+        gc->font(FreeSans);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         surface->gc(gc);
@@ -270,8 +270,8 @@ namespace stk
 
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
-        font::ptr arial_12 = font_manager::get()->get_font(font_properties("Arial.ttf", 12));
-        gc->font(arial_12);
+        font::ptr FreeSans_12 = font_manager::get()->get_font(font_properties("FreeSans.ttf", 12));
+        gc->font(FreeSans_12);
         surface->gc(gc);
 
         // adjust surface offset to the vertical scroll_model
@@ -357,8 +357,8 @@ namespace stk
 
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
-        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-        gc->font(arial_18);
+        font::ptr FreeSans_18 = font_manager::get()->get_font(font_properties("FreeSans.ttf",18));
+        gc->font(FreeSans_18);
         surface->gc(gc);
 
         // fill the spinner box
@@ -431,8 +431,8 @@ namespace stk
 
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
-        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-        gc->font(arial_18);
+        font::ptr FreeSans_18 = font_manager::get()->get_font(font_properties("FreeSans.ttf",18));
+        gc->font(FreeSans_18);
         surface->gc(gc);
 
         // fill the spinner box
@@ -472,8 +472,8 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
-        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-        gc->font(arial_18);
+        font::ptr FreeSans_18 = font_manager::get()->get_font(font_properties("FreeSans.ttf",18));
+        gc->font(FreeSans_18);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
 
@@ -529,8 +529,8 @@ namespace stk
         int sel_min = MIN(selection_start_, selection_end_);
         std::wstring presel_str = text_.substr(0, sel_min);
         std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
-        int sel_x = interior_rect.x1() + arial_18->draw_len(presel_str);
-        int sel_width = arial_18->draw_len(sel_str);
+        int sel_x = interior_rect.x1() + FreeSans_18->draw_len(presel_str);
+        int sel_width = FreeSans_18->draw_len(sel_str);
         int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
 
         // draw the selection
@@ -556,8 +556,8 @@ namespace stk
     }
     int edit_box::region(int x, int y)
     {
-        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-        return arial_18->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
+        font::ptr FreeSans_18 = font_manager::get()->get_font(font_properties("FreeSans.ttf",18));
+        return FreeSans_18->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
     }
 
     void text_area::draw(surface::ptr surface, const rectangle& clip_rect)
@@ -569,8 +569,8 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
-        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
-        gc->font(arial_14);
+        font::ptr FreeSans_14 = font_manager::get()->get_font(font_properties("FreeSans.ttf",14));
+        gc->font(FreeSans_14);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
 
@@ -635,10 +635,10 @@ namespace stk
         int sel_max = MAX(selection_start_, selection_end_);
         int line_num = 0;
         while (cont) {
-            line_rect = rectangle(3, ypos, width()-6, arial_14->height()+3);
+            line_rect = rectangle(3, ypos, width()-6, FreeSans_14->height()+3);
             //parse out the next line
             nline_width = rest_of_text.find(L'\n');
-            line_width = arial_14->chars_in_rect(line_rect, rest_of_text);
+            line_width = FreeSans_14->chars_in_rect(line_rect, rest_of_text);
             if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
@@ -660,7 +660,7 @@ namespace stk
                 if (selection_start_ >= num_chars && selection_start_ <= (num_chars+(int)line_str.length()))
                 {//cursor is on this line
                     int chars_before_cursor = selection_start_ - num_chars;
-                    int cursor_x = arial_14->draw_len(line_str.substr(0,chars_before_cursor));
+                    int cursor_x = FreeSans_14->draw_len(line_str.substr(0,chars_before_cursor));
                     //draw cursor
 
                         
@@ -686,31 +686,31 @@ namespace stk
                     int sel_start = sel_min - num_chars;
                     int sel_end = sel_max - num_chars;
                     
-                    int start_x = arial_14->draw_len( line_str.substr(0, sel_start) );
-                    int end_x = arial_14->draw_len( line_str.substr(0, sel_end) );
-                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
+                    int start_x = FreeSans_14->draw_len( line_str.substr(0, sel_start) );
+                    int end_x = FreeSans_14->draw_len( line_str.substr(0, sel_end) );
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, FreeSans_14->height()+3);
                     surface->fill_rect(sel_rect);
                     line_ = line_num;
                 } else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) ) 
                 {//selection starts on this line
                     int sel_start = sel_min - num_chars;
-                    int start_x = arial_14->draw_len ( line_str.substr(0, sel_start) );
-                    int end_x = arial_14->draw_len (line_str);//to end of text
-                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
+                    int start_x = FreeSans_14->draw_len ( line_str.substr(0, sel_start) );
+                    int end_x = FreeSans_14->draw_len (line_str);//to end of text
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, FreeSans_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ == sel_min) line_ = line_num;//alway use selection_end_ to determine current line
                 } else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
                 {//selection ends of this line
                     int sel_end = sel_max - num_chars;
                     
-                    int end_x = arial_14->draw_len ( line_str.substr(0, sel_end) );
-                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
+                    int end_x = FreeSans_14->draw_len ( line_str.substr(0, sel_end) );
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, FreeSans_14->height()+3);
                     surface->fill_rect(sel_rect);
                     if (selection_end_ ==  sel_max) line_ = line_num;
                 } else if ( sel_min < num_chars  && sel_max > num_chars+(int)line_str.length() )
                 {//selection covers line
-                    int end_x = arial_14->draw_len(line_str);
-                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
+                    int end_x = FreeSans_14->draw_len(line_str);
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, FreeSans_14->height()+3);
                     surface->fill_rect(sel_rect);
                 }
             }
@@ -718,10 +718,10 @@ namespace stk
             //draw line
             surface->draw_text(line_rect, line_str );
             //move to next line
-            ypos += arial_14->height()+3;
+            ypos += FreeSans_14->height()+3;
             line_num++;
             //decide if you need to stop, past end of rectangle
-            if (ypos+arial_14->height()+3 >= interior_rect.y2())
+            if (ypos+FreeSans_14->height()+3 >= interior_rect.y2())
                 cont = false;
             //out of text
             if (rest_of_text.length() == 0)
@@ -732,9 +732,9 @@ namespace stk
     int text_area::region(int x, int y)
     {//finds where in the text the x,y is
         //create font
-        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        font::ptr FreeSans_14 = font_manager::get()->get_font(font_properties("FreeSans.ttf",14));
         //pass through text to find the position
-        int ypos = (y1()+ 3) + (arial_14->height() + 3);//the start of y plus a line
+        int ypos = (y1()+ 3) + (FreeSans_14->height() + 3);//the start of y plus a line
         bool cont = true;
         std::wstring line_str;
         std::wstring rest_of_text = text_;
@@ -744,7 +744,7 @@ namespace stk
         {
             //parse out the next line
             nline_width = rest_of_text.find('\n');
-            line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
+            line_width = FreeSans_14->chars_in_rect(rectangle(3, 0, x2()-x1(), FreeSans_14->height()+6), rest_of_text);
             if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
@@ -760,11 +760,11 @@ namespace stk
             }
             //if is on this line
             if (y <= ypos) {
-                return num_chars + arial_14->chars_in_rect(rectangle(3, 0, x-x1(), arial_14->height()+6), line_str);
+                return num_chars + FreeSans_14->chars_in_rect(rectangle(3, 0, x-x1(), FreeSans_14->height()+6), line_str);
             }
             num_chars+=line_str.length()+new_line;
             //move to next line
-            ypos += arial_14->height()+3;
+            ypos += FreeSans_14->height()+3;
             //no more text
             if (rest_of_text.length() == 0)
                 cont = false;
@@ -774,7 +774,7 @@ namespace stk
     }
     int text_area::line_start_position(int line)
     {
-        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        font::ptr FreeSans_14 = font_manager::get()->get_font(font_properties("FreeSans.ttf",14));
         //pass through text to find the position
         bool cont = true;
         std::wstring line_str;
@@ -786,7 +786,7 @@ namespace stk
         {
             //parse out the next line
             nline_width = rest_of_text.find(L'\n');
-            line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
+            line_width = FreeSans_14->chars_in_rect(rectangle(3, 0, x2()-x1(), FreeSans_14->height()+6), rest_of_text);
             if (nline_width != -1 && (nline_width <= line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
@@ -816,7 +816,7 @@ namespace stk
     }
     int text_area::chars_in_line(int line)
     {
-        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        font::ptr FreeSans_14 = font_manager::get()->get_font(font_properties("FreeSans.ttf",14));
         //pass through text to find the position
         bool cont = true;
         std::wstring line_str;
@@ -828,7 +828,7 @@ namespace stk
         {
             //parse out the next line
             nline_width = rest_of_text.find(L'\n');
-            line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
+            line_width = FreeSans_14->chars_in_rect(rectangle(3, 0, x2()-x1(), FreeSans_14->height()+6), rest_of_text);
             if (nline_width != -1 && (nline_width < line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
@@ -899,7 +899,7 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
-        font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf", 10));
+        font::ptr the_font = font_manager::get()->get_font(font_properties("FreeSans.ttf", 10));
         
         gc->font(the_font);
         
