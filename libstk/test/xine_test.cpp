@@ -94,11 +94,10 @@ int main(int argc, char* argv[])
         xine_panel::ptr xp = xine_panel::create(main_state, rectangle(50, 50, 540, 380));
         xp->open(filename);
 
-        /* testing multiple panels
-        xine_panel::ptr xp2 = xine_panel::create(main_state, rectangle(0, 0, 50, 50));
-        xp2->open(filename);
-        xp2->play(0, 0);
-        */
+        // testing multiple panels
+        //xine_panel::ptr xp2 = xine_panel::create(main_state, rectangle(0, 0, 50, 50));
+        //xp2->open(filename);
+        //xp2->play(0, 0);
 
         // buttons
         button::ptr prev_button = button::create(main_state, std::wstring(L"|<"), 

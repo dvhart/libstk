@@ -16,8 +16,6 @@
 
 namespace stk
 {
-    xine_t* xine_panel::xine_ = NULL;
-
     xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect, 
             const std::string& config)
     {
@@ -27,19 +25,15 @@ namespace stk
     }
   
     xine_panel::xine_panel(container::ptr parent, const rectangle& rect, 
-            const std::string& config) : widget(parent, rect)
+            const std::string& config) : widget(parent, rect), fullscreen_(false)
     {
         INFO("constructor");
         focusable_ = true;
         
-        // initialize the xine engine on the first xine_panel constructed
-        if (!xine_)
-        {
-            INFO("initializing the xine engine");
-            xine_ = xine_new();
-            xine_config_load(xine_, config.c_str());
-            xine_init(xine_);
-        }
+        INFO("initializing the xine engine");
+        xine_ = xine_new();
+        xine_config_load(xine_, config.c_str());
+        xine_init(xine_);
 
         INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
         xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
@@ -158,6 +152,12 @@ namespace stk
                 xine_event.stream = xine_stream_;
                 gettimeofday(&xine_event.tv, NULL);
                 xine_event_send(xine_stream_, &xine_event);
+                return;
+                break;
+            }
+            case key_backspace: // FIXME: use F, or something else...
+            {
+                toggle_fullscreen();
                 return;
                 break;
             }
@@ -286,6 +286,26 @@ namespace stk
         xine_set_param(xine_stream_, XINE_PARAM_SPEED, speed);
     }
 
+    void xine_panel::toggle_fullscreen()
+    {
+        if (fullscreen_)
+        {
+            p1_ = restore_rect_.p1();
+            p2_ = restore_rect_.p2();
+            redraw(surface()->rect()); 
+        }
+        else
+        {
+            restore_rect_.p1(p1());
+            restore_rect_.p2(p2());
+            rectangle surface_rect = surface()->rect();
+            p1_ = surface_rect.p1();
+            p2_ = surface_rect.p2();
+        }
+        fullscreen_ = !fullscreen_;
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+    }
 } 
 
 

@@ -37,13 +37,16 @@ namespace stk
         static void event_listener_wrapper(void *user_data, const xine_event_t* xine_event);
         /// the actual event listener, called by xine_event_listener_wrapper
         void event_listener(const xine_event_t* xine_event);
-        /// every xine_panel shares a xine backend
-        static xine_t*            xine_;
-        /// each xine panel has its own stream, event handler, audio, and video ports
-        xine_video_port_t* xine_vo_port_;
-        xine_audio_port_t* xine_ao_port_;
+        /// the xine backend, one per xine_panel so they can play at different speeds (ie pause)
+        xine_t*             xine_;
+        /// each xine panel has one stream, and therefore one audio and video port, and event queue
         xine_stream_t*      xine_stream_;
+        xine_video_port_t*  xine_vo_port_;
+        xine_audio_port_t*  xine_ao_port_;
         xine_event_queue_t* xine_event_queue_;
+        /// the rectangle we return to from fullscreen mode
+        rectangle restore_rect_;
+        bool fullscreen_;
 
     public:
         static xine_panel::ptr create(container::ptr parent, const rectangle& _rect, 
@@ -63,6 +66,7 @@ namespace stk
         int speed();
         void faster();
         void slower();
+        void toggle_fullscreen();
         /********** END XINE PANEL INTERFACE **********/
     };
 
