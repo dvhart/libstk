@@ -50,6 +50,7 @@
 #include <libstk/label.h>
 #include <libstk/list.h>
 #include <libstk/list_item.h>
+#include <libstk/list_item_userdata.h>
 #include <libstk/mouse_event.h>
 #include <libstk/numeric_spinner.h>
 #include <libstk/overlay.h>
