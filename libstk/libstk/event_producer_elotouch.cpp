@@ -47,11 +47,11 @@ namespace
 
         newtio.c_lflag = 0;//ICANON;
          
-        /* 
-           initialize all control characters 
-           default values can be found in /usr/include/termios.h, and are given
-           in the comments, but we don't need them here
-        */
+         
+        // initialize all control characters 
+        // default values can be found in /usr/include/termios.h, and are given
+        // in the comments, but we don't need them here
+        
         newtio.c_cc[VINTR]    = 0;     /* Ctrl-c */ 
         newtio.c_cc[VQUIT]    = 0;     /* Ctrl-\ */
         newtio.c_cc[VERASE]   = 0;     /* del */
@@ -70,9 +70,8 @@ namespace
         newtio.c_cc[VLNEXT]   = 0;     /* Ctrl-v */
         newtio.c_cc[VEOL2]    = 0;     /* '\0' */
         
-        /* 
-           now clean the modem line and activate the settings for the port
-        */
+        
+        // now clean the serial line and activate the settings for the port
         tcflush(fd, TCIFLUSH);
         tcsetattr(fd,TCSANOW,&newtio);
     }
@@ -120,8 +119,12 @@ namespace stk
     }
 
     event_producer_elotouch::event_producer_elotouch(std::string devname)
-        : just_untouched(false)
+        : just_untouched(false), raw_mode_(false)
     {
+        calib_b=-3670;
+        calib_a=1.0/(400-3670);
+        calib_d=-500;
+        calib_c=1.0/(3540-500);
         fd = open(devname.c_str(),O_RDWR | O_NOCTTY  | O_NDELAY);
         if(fd <0)
             ERROR("Couldnt open elotouch Device " << devname);
@@ -150,8 +153,19 @@ namespace stk
     
     }
 
-    void elo_scale_xy(int &x,int &y)
+    void event_producer_elotouch::elo_scale_xy(int &x,int &y) const
     {
+        INFO("Scaling (" << x << ";" << y << ") to");
+        x=(calib_a*(x+calib_b))*800;
+        y=(calib_c*(y+calib_d))*600;
+        INFO("(" << x << ";" << y << ")");
+/*        
+
+        b=-3670;
+        a=1/(400-3670);
+        d=-3540;
+        c=1/(500-3540);
+
         int x_org=x;
         int y_org=y;
         int width=ELO_MAX_X - ELO_MIN_X;
@@ -159,7 +173,7 @@ namespace stk
 
         x=-0.236809f*x +884;    // Calibrated with ADS-TEC display
         y=0.190707f*y -91.4806f;// Calibrated
-
+*/
         /*
         x=800*(x_org-ELO_MIN_X) / width;
         y=600*(y_org-ELO_MIN_Y) / height;*/
@@ -200,7 +214,8 @@ namespace stk
                 int y=*(short*)&(message[5]);
                 int prescalex=x;
                 int prescaley=y;
-                elo_scale_xy(x,y);
+                if(raw_mode_==false)
+                    elo_scale_xy(x,y);
                 //WARN ("Touch message received type=" << (unsigned int)message[2]);
                 
                 if(message[2]==1) //TOUCH
@@ -223,4 +238,31 @@ namespace stk
         return event_;
     }
 
+    void event_producer_elotouch::set_calib(const float a, const float b, const float c, const float d)
+    {
+        calib_a=a;
+        calib_b=b;
+        calib_c=c;
+        calib_d=d;
+    }
+    
+    void event_producer_elotouch::get_calib(float &a,float &b, float &c, float &d) const 
+    {
+        a=calib_a;
+        b=calib_b;
+        c=calib_c;
+        d=calib_d;
+    }
+    
+    void event_producer_elotouch::raw_mode(bool newval)
+    {
+        raw_mode_=newval;
+    }
+    
+    bool event_producer_elotouch::raw_mode() const
+    {
+        return raw_mode_;
+    }
+
+    
 } // namespace stk
