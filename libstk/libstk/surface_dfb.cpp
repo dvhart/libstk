@@ -190,6 +190,8 @@ namespace stk
             source_rect.w = src_rect.width();
             source_rect.h = src_rect.height();
 
+            dst->surface->SetBlittingFlags(dst->surface, DSBLIT_BLEND_ALPHACHANNEL);
+
             dst->surface->Blit(dst->surface, surface, &source_rect, dst_rect.x1(), dst_rect.y1());
             pixels_filled_highlevel+=(source_rect.w*source_rect.h);
         }        
@@ -274,7 +276,7 @@ namespace stk
         }
     }
 
-    void surface_dfb::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
+/*    void surface_dfb::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
     {
         
         // ignore the bounds and stuff for now
@@ -312,5 +314,5 @@ namespace stk
             if (i<text.length()-1)
                 x += (fon->kerning(text[i], text[i+1]) >> 6);
         }
-    }
+        }*/
 }

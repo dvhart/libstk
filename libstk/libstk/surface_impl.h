@@ -26,6 +26,7 @@
 #include <libstk/image.h>
 #include <libstk/stk_types.h>
 #include <libstk/logging.h>
+#include "math.h"
 
 namespace stk
 {
@@ -763,24 +764,27 @@ namespace stk
         virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
         {
             // ignore the bounds and stuff for now
-            int x = rect.x1();
-            int y = rect.y1();
+            int x = rect.x1() << 6; // 1/64 pixel
+            int y = rect.y1() << 6; // 1/64 pixel
             // get the font from the gc
             font::ptr fon = gc_->font();
             if (fon == NULL)
                 throw error_message_exception("draw_text: gc's font is null");
             // find the number of chars that fit in the rect
+            // FIXME: With kerning this really doesnt work well
             int chars_to_draw = fon->chars_in_rect(rect, text);
             color fill_color = gc_->font_fill_color();
             // loop through the text and draw each character
-            int fh = fon->height();
+            int fh = fon->height() << 6;
             for (int i = 0; i < chars_to_draw; i++)
             {
                 // get the glyph
                 glyph::ptr bmp = fon->glyph(text[i]);
                 int w = bmp->width();
-                int by = bmp->bearing_y() >> 6;
-                int bx = bmp->bearing_x() >> 6;
+                int by = bmp->bearing_y();//*sin(fon->rotation())+bmp->bearing_x()*sin(fon->rotation());
+                int bx = bmp->bearing_x();//*cos(fon->rotation())+bmp->bearing_y()*cos(fon->rotation());
+                
+                INFO("Drawing glyph \"" << (char)text[i] <<"\" , by=" << by << " bx=" << bx);
                 boost::shared_array<unsigned char> bits = bmp->bitmap();
                 // draw it
                 for (int dy = 0; dy < bmp->height(); dy++)
@@ -789,13 +793,20 @@ namespace stk
                     {
                         // clip to the rect
                         unsigned char nc = bits[dy*w + dx];
-                        static_cast<surface_backend*>(this)->put_pixel_aa(x+dx+bx, y+dy+fh-by, nc,
-                                fill_color);
+                        static_cast<surface_backend*>(this)->put_pixel_aa(((x + bx) >> 6)+dx,
+                                                                          ((y + fh - by) >> 6) + dy,
+                                                                          nc, fill_color);
                     }
                 }
-                x += (bmp->advance_x() >> 6);
+                x += bmp->advance_x();
+                y -= bmp->advance_y(); // -= because the screen is y0=top and the bitmap is y0=bottom (cartesian)
+
                 if (i < (int)text.length()-1)
-                    x += (fon->kerning(text[i], text[i+1]) >> 6);
+                {
+                    point kerning=fon->kerning(text[i], text[i+1]);
+                    x += kerning.x();
+                    y -= kerning.y();
+                }  
             }
         }
 

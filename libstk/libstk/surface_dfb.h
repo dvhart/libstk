@@ -74,7 +74,7 @@ namespace stk
 
         virtual void clip_rect(const rectangle& clip_rectangle);
 
-        virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode);
+//        virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode);
         
     };
 } //end namespace stk

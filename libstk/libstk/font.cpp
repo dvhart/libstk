@@ -37,7 +37,7 @@ namespace stk
     }
 
     font::font(const font_properties& prop)
-            : height_(prop.height)
+        : height_(prop.height), rotation_(prop.rotation) 
     {
         INFO("constructor: " << prop.fontname << ": " << prop.height << " pt, style " << (int)prop.style);
         int error;
@@ -95,6 +95,11 @@ namespace stk
                     height_); // char_height in pixels
         if (error)
             throw error_message_exception("font::font: could not set font size");
+
+        transformation_matrix.xx=cos(rotation_)*0x10000;
+        transformation_matrix.xy=-sin(rotation_)*0x10000;
+        transformation_matrix.yx=sin(rotation_)*0x10000;
+        transformation_matrix.yy=cos(rotation_)*0x10000;
 
         // increment library usage counter
         font_count_++;
@@ -181,6 +186,12 @@ namespace stk
         // retrieve glyph index from character code
         int index = FT_Get_Char_Index(face_, c);
 
+        // Set transformation matrix (Only rotational atm)
+/*        FT_Vector     pen;                 // untransformed origin
+        pen.x=0;
+        pen.y=0;*/
+        FT_Set_Transform(face_, &transformation_matrix, NULL);
+
         // load glyph image into the slot (erase previous one)
         int error = FT_Load_Glyph(face_, index, FT_LOAD_DEFAULT);
         if (error)
@@ -191,11 +202,15 @@ namespace stk
         if (error)
             throw error_message_exception("font::glyph: could not render glyph");
 
+        // Have to fix up Metrics, they dont get transformed!
+        face_->glyph->metrics.horiBearingX=face_->glyph->bitmap_left << 6;
+        face_->glyph->metrics.horiBearingY=face_->glyph->bitmap_top << 6;
+        
         glyph::ptr g = glyph::create(face_->glyph, index);
         glyph_cache_[c] = g;
         return glyph_cache_[c];
     }
-
+    //  Should return a vector/point
     int font::draw_len(const wstring& text, int kerning_mode)
     {
         unsigned int len = 0;
@@ -203,7 +218,7 @@ namespace stk
         {
             len += glyph(text[i])->advance_x();
             if (i < text.length()-1)
-                len += kerning(text[i], text[i+1], kerning_mode);
+                len += kerning(text[i], text[i+1], kerning_mode).x();
         }
         return len >> 6;
     }
@@ -219,8 +234,8 @@ namespace stk
             len += glyph(text[count])->advance_x();
             if ((len >> 6) > rect.width())
                 break;
-            if (count < maxcount-1)
-                len += kerning(text[count], text[count+1], kerning_mode);
+            if (count < maxcount-1) // FIXME, Kerning is 2d!!!
+                len += kerning(text[count], text[count+1], kerning_mode).x();
             count++;
         }
         if (count > maxcount)
@@ -228,7 +243,7 @@ namespace stk
         return count;
     }
 
-    int font::kerning(wchar_t left, wchar_t right, int kerning_mode)
+    point font::kerning(wchar_t left, wchar_t right, int kerning_mode)
     {
         FT_Vector kerning;
         int error = FT_Get_Kerning(face_, // handle to face object
@@ -238,7 +253,7 @@ namespace stk
                                    &kerning); // target vector
         if (error)
             return 0;
-        return kerning.x;
+        return point(kerning.x,kerning.y);
     }
 
 

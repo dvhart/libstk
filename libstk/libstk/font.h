@@ -38,6 +38,8 @@ namespace stk
         static int font_count_;
         FT_Face face_;
         int height_;
+        float rotation_;
+        FT_Matrix transformation_matrix;
         std::map<wchar_t, stk::glyph::ptr> glyph_cache_;
 
         font();
@@ -52,8 +54,9 @@ namespace stk
         const stk::glyph::ptr glyph(wchar_t c);
         int draw_len(const std::wstring& text, int kerning_mode = 0);
         int chars_in_rect(const rectangle& rect, const std::wstring& text, int kerning_mode = 0);
-        int kerning(wchar_t left, wchar_t right, int kerning_mode = 0);
+        point kerning(wchar_t left, wchar_t right, int kerning_mode = 0);
         int height() const { return height_; }
+        float rotation() const { return rotation_; }
     }
     ; //class font
 

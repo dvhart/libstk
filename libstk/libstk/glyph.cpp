@@ -26,6 +26,7 @@ namespace stk
         advance_y_ = g->advance.y;
         bearing_x_ = g->metrics.horiBearingX;
         bearing_y_ = g->metrics.horiBearingY;
+                
         FT_Bitmap b = g->bitmap;
         height_ = b.rows;
         width_ = b.width;
