@@ -22,8 +22,7 @@ namespace stk
                            scroll_model::ptr v_scroll)
     {
         list::ptr new_list(new list(parent, rect, v_scroll));
-        parent->add
-        (new_list);
+        parent->add(new_list);
         return new_list;
     }
 
@@ -122,13 +121,13 @@ namespace stk
 
         // FIXME: the rect_.y1() should be removed from the item's y1 position, allowing
         //        the surface offset to handle that (children x,y relative to parent)
-        item->rect(rectangle(0, v_scroll_->size(), 
-                    rect_.width(), item->height()));
+        item->rect(rectangle(0, v_scroll_->size(), rect_.width(), item->height()));
         
         // adjust scroll properties
         // FIXME: add width to the list_item API
         //if (h_scroll()->size() < item->width()) h_scroll()->size(item->width());
         v_scroll_->size(v_scroll_->size()+item->height());
+        redraw(rect_);
         return index;
     }
     void list::remove_item(int index)
