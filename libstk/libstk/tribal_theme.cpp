@@ -391,11 +391,9 @@ namespace stk
 
     void scroll_bar::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        INFO("scoll_bar::draw()");
         // translate model coordinates into scroll_bar coords
         rectangle outline_rect = rect(); outline_rect.position(0, 0);
         rectangle vis_rect = outline_rect; 
-        INFO("  model begin: " << model_->begin() << ", vis_size" << model_->vis_size());
 
         int min_start = 3;
         int max_end   = MAX(width(), height())-3;
@@ -403,33 +401,32 @@ namespace stk
         int start = MAX(max_size*model_->begin()/model_->size()+2, 2);
         int end = MIN(max_size*model_->begin()/model_->size()+2+max_size*model_->vis_size()/model_->size(), max_end);
 
-        if (start > max_end || end < min_start) return;
-
-        if (width() > height())
-        { // horizontal scrollbar
-            vis_rect.y1(vis_rect.y1()+2);
-            vis_rect.y2(vis_rect.y2()-2);
-            vis_rect.x1(start);
-            vis_rect.x2(end);
-        }
-        else
-        { // vertical scrollbar
-            vis_rect.x1(vis_rect.x1()+2);
-            vis_rect.x2(vis_rect.x2()-2);
-            vis_rect.y1(start);
-            vis_rect.y2(end);
-        }
-
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_focused_str, surface)));
         gc->fill_color(color_manager::get()->get_color(
                     color_properties(fill_color_normal_str, surface)));
         surface->gc(gc);
-        INFO("  drawing outline: " << outline_rect);
         surface->draw_rect(outline_rect);
-        INFO("  drawing bar: " << vis_rect);
-        surface->fill_rect(vis_rect);
+
+        if (start <= max_end && end >= min_start && end >= start)
+        {
+            if (width() > height())
+            { // horizontal scrollbar
+                vis_rect.y1(vis_rect.y1()+2);
+                vis_rect.y2(vis_rect.y2()-2);
+                vis_rect.x1(start);
+                vis_rect.x2(end);
+            }
+            else
+            { // vertical scrollbar
+                vis_rect.x1(vis_rect.x1()+2);
+                vis_rect.x2(vis_rect.x2()-2);
+                vis_rect.y1(start);
+                vis_rect.y2(end);
+            }
+            surface->fill_rect(vis_rect);
+        }
     }
     
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
@@ -439,7 +436,7 @@ namespace stk
         rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
         graphics_context::ptr gc = graphics_context::create();
 
-        if(focused_)
+        if (focused_)
         {
             gc->fill_color(color_manager::get()->get_color(
                         color_properties(fill_color_focused_str, surface)));
