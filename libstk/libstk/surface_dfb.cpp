@@ -1,7 +1,7 @@
 /******************************************************************************
  *    FILENAME: surface_dfb.cpp
  * DESCRIPTION: Direct FB surface implementation.
- *     AUTHORS: Darren Hart 
+ *     AUTHORS: Marc Strämke
  *  START DATE: 03/Mar/2003  LAST UPDATE: 14/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
@@ -144,8 +144,8 @@ namespace stk
             source_rect.y=src_rect.y1();
             source_rect.w=src_rect.width();
             source_rect.h=src_rect.height();
-            
-            surface->Blit(surface,dst->surface,&source_rect,dst_rect.x1(),dst_rect.x2());
+
+            dst->surface->Blit(dst->surface,surface,&source_rect,dst_rect.x1(),dst_rect.y1());
         }        
     }
     
@@ -154,9 +154,6 @@ namespace stk
         color clr = gc_->fill_color();
         surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,0xff);
         surface->FillRectangle(surface,x1,y1,x2-x1,y2-y1);
-        
-            
-        std::cerr << "Fillrect" << std::endl;
     }
     
     void surface_dfb::fill_rect(const rectangle& rect)

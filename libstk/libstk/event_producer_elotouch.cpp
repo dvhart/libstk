@@ -99,8 +99,6 @@ namespace
         buf[7]=0;
         buf[8]=0;
         buf[9]=0;
-
-
         write(fd,buf,10);
     }
 
