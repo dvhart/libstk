@@ -28,8 +28,8 @@ namespace stk
 			
 			/// format_label defines the string displayed in the progress box
 			/// \param %p percentage to two decimal places, i.e. 67.23%
-			/// \param %r position in range, as an integer, i.e. 24
-			/// \param %d percentage as a decimal to 4 digits, i.e. 0.6723%
+			/// \param %d position in range, as an integer, i.e. 24
+			/// \param %f percentage as a decimal to 4 digits, i.e. 0.6723%
 			std::wstring format_label_;
 			std::wstring label_;
 			int range_;

@@ -59,8 +59,8 @@ namespace stk
 	void progress::build_label()
 	{
 		// %p, percent_*100 to two decimal places, followed by %
-		// %r, position
-		// %d, percent_ to four decimal places
+		// %d, position
+		// %f, percent_ to four decimal places
 
 		std::wstringstream num_stream;
 		label_ = format_label_;
@@ -86,9 +86,9 @@ namespace stk
 		int index;
 		while ((index = label_.find(L"%p")) >= 0)
 			label_.replace(index, 2, percent_str);
-		while ((index = label_.find(L"%r")) >= 0)
-			label_.replace(index, 2, position_str);
 		while ((index = label_.find(L"%d")) >= 0)
+			label_.replace(index, 2, position_str);
+		while ((index = label_.find(L"%f")) >= 0)
 			label_.replace(index, 2, decimal_str);
 	}
 	

@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 		// create a progress bar
 		cout << "test_app - creating a progress bar" << endl;
 		progress::ptr test_progress = progress::create(test_state, 
-			std::wstring(L"Loading - %p %r %d"), rectangle(10, 440, 320, 30), 100);
+			std::wstring(L"Loading - %p %d %f"), rectangle(10, 440, 320, 30), 100);
 		test_progress->percent(0.64);
 	
 		// create an image

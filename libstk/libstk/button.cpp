@@ -55,9 +55,12 @@ namespace stk
 				switch ( ke->key() )
 				{
 					case key_enter:
-						cout << "button::handle_event() - emitting signal on_click()" << endl;
-						active(false);
-						on_click();
+						if (active_)
+						{
+							cout << "button::handle_event() - emitting signal on_click()" << endl;
+							active(false);
+							on_click();
+						}
 						break;
 					default:
 						//mstr: broken in boost_1_30_0 FIXME
