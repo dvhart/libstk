@@ -9,6 +9,7 @@ namespace stk
 {
 	class widget;
 
+	/// A class declaring the parent interface.
 	class parent : public event_handler, public drawable
 	{
 		public:
@@ -22,9 +23,14 @@ namespace stk
 			
 		public:
 			virtual ~parent() { };
-			// FIXME: is there a way to use widget::ptr here ???
+			
+			/// Retrieve the next focusable widget.
+			/// \todo is there a way to use widget::ptr here
 			virtual boost::shared_ptr<widget> focus_next() = 0;
+			
+			/// Retrieve the next focusable widget.
 			virtual boost::shared_ptr<widget> focus_prev() = 0;
+
 	}; // class parent
 } // namespace stk
 

@@ -17,7 +17,6 @@ struct font_properties
 	int height;			
 	font_properties(std::string name, int height): fontname(name),height(height) {}
 	
-
 	bool operator<(const font_properties& rhs) const;
 };
 
@@ -40,9 +39,9 @@ private:
 
 	font_manager();
 public:
-/// Get a font with the provided Properties
+	/// Get a font with the provided Properties
 	font::ptr get_font(font_properties properties);
-/// Get the font manager instance-> only way of accessing the singleton
+	/// Get the font manager instance-> only way of accessing the singleton
 	static font_manager* get();
 	~font_manager();
 };

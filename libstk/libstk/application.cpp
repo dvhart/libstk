@@ -212,16 +212,12 @@ namespace stk
 		cout << "application::focus_next()" << endl;
 		return current_state_.lock()->focus_first(); 
 	}
+
 	// FIXME
 	widget::ptr application::focus_prev()
 	{ 
 		cout << "application::focus_prev()" << endl;
 		return current_state_.lock()->focus_last(); 
-	}
-
-	state::weak_ptr application::current_state()
-	{
-		return current_state_;
 	}
 }
 

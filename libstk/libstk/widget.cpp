@@ -69,7 +69,6 @@ namespace stk
 	void widget::redraw(const rectangle& rect)
 	{
 		//cout << "widget::redraw() - rectangle: " << rect << endl;
-		redraw_rect_ += rect;
 		parent_.lock()->redraw(rect);
 	}
 	

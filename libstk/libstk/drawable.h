@@ -6,22 +6,26 @@
 
 namespace stk
 {
+	/// An abstract class defining the drawable interface.
 	class drawable
 	{
 		private:
 			
 		protected:
-			// FIXME: only container needs this
-			rectangle redraw_rect_; 
 			
 		public:
 			drawable() { }
 			virtual ~drawable() { };
-			virtual boost::shared_ptr<stk::surface> surface() = 0;
-			virtual void redraw(const rectangle& rect) { }
 
-			// FIXME these are only needed in container, should we provide them both ???
-			virtual rectangle redraw_rect() { return redraw_rect_; } 
+			/// Retrieve the surface used in the application
+			virtual boost::shared_ptr<stk::surface> surface() = 0;
+
+			/// Redraw the area in rect the next time draw is called.  
+			/// \param rect The area to be redrawn 
+			/// See container for specifics regarding behavior.  The default 
+			/// implementation does nothing as leaf widgets redraw themselves 
+			/// entirely.
+			virtual void redraw(const rectangle& rect) { }
 			
 	}; // class drawable
 } // namespace stk

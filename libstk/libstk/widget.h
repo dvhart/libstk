@@ -45,37 +45,56 @@ namespace stk
 		public:
 			virtual ~widget();
 
+			/********** EVENT HANDLER INTERFACE **********/
+			virtual void handle_event(event::ptr e);
+			/********** END EVENT HANDLER INTERFACE **********/
+
+			/********** DRAWABLE INTERFACE **********/
+			virtual surface::ptr surface(); 
+			virtual void draw(surface::ptr surface);
+			virtual void redraw(const rectangle& rect);
+			/********** END DRAWABLE INTERFACE **********/
+			
+			/********** PARENT INTERFACE **********/
+			/// Pass call along to parent
+			virtual widget::ptr focus_next();
+			/// Pass call along to parent
+			virtual widget::ptr focus_prev();
+			/********** END PARENT INTERFACE **********/
+			
+			/********** WIDGET INTERFACE **********/
 			rectangle rect() { return rect_; }
 			bool contains(int x, int y) { return rect_.contains(x, y); }
 			bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
+			virtual bool is_container() { return false; }
 
 			// widget attribute accessor methods
 			// FIXME: have the setters return bool ? 
 			// (ie label would return false for a focus(true) call) ?
+			/// Return a bool indicating if the widget is focusable
 			bool focusable() { return focusable_; }
+			/// Set the focusable property of the widget
 			void focusable(bool val) { focusable_ = val; }
+			/// Return the tab index of the widget
+			/// \todo this is currently not implemented
 			int tab() { return tab_; }
+			/// Set the tab index of the widget
+			/// \todo this is currently not implemented
 			void tab(int val) { tab_ = val; }
+			/// Return the active property of the widget
 			bool active() { return active_; }
+			/// Set the active property of the widget
 			void active(bool val) { active_ = val; redraw(rect_); }
+			/// Return the focused property of the widget
 			bool focused() { return focused_; }
+			/// Set the focused property of the widget
+			/// \todo should this return bool, indicating failure to set (ie an unfocsable widget ?)
 			void focused(bool val);
+			/// Return the hover property of the widget
 			bool hover() { return hover_; } 
+			/// Set the hover property of the widget
 			void hover(bool val) { hover_ = val; redraw(rect_); }
-			
-			// event_handler interface
-			virtual void handle_event(event::ptr e);
 
-			// drawable interface
-			virtual surface::ptr surface(); 
-			virtual void draw(surface::ptr surface);
-			virtual void redraw(const rectangle& rect);
-
-			// parent interface
-			virtual widget::ptr focus_next();
-			virtual boost::shared_ptr<widget> focus_prev();
-		
-			//boost::signal<bool (), combiner::logical_and<bool> > on_activate;
 			boost::signal<bool (), combiner::logical_and<bool> > on_activate;
 			boost::signal<bool (), combiner::logical_and<bool> > on_focus;
 			boost::signal<bool (), combiner::logical_and<bool> > on_unfocus;
@@ -83,6 +102,7 @@ namespace stk
 			boost::signal<bool (), combiner::logical_and<bool> > on_mouse_leave;
 			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keydown;
 			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keyup;
+			/********** END WIDGET INTERFACE **********/
 
 			/*
 			//some cool things we can do with boost::signals

@@ -23,6 +23,7 @@ namespace stk
 			std::vector<widget::ptr> children_;
 			container(container::ptr parent, const rectangle& rect);
 			container(parent::ptr parent, const rectangle& rect);
+			rectangle redraw_rect_; 
 			
 		public:
 			~container();
@@ -34,8 +35,6 @@ namespace stk
 			/********** DRAWABLE INTERFACE **********/
 			//virtual surface::ptr surface(); 
 			virtual void draw(surface::ptr surface);
-			// FIXME: perhaps ALL our classes should use the same construction, ie rectangle::create
-			// and we should always pass object::ptr's, consistency is appreciated in an API --dvhart
 			virtual void redraw(const rectangle& rect);
 			/********** END DRAWABLE INTERFACE **********/
 
@@ -53,23 +52,31 @@ namespace stk
 			{ children_.push_back(w); }
 			/********** END PARENT INTERFACE **********/
 			
+			/********** WIDGET INTERFACE **********/
+			virtual bool is_container() { return true; }
+			/********** END WIDGET INTERFACE **********/
+			
 			/********** CONTAINER INTERFACE **********/
-			/// \todo arent these redundant
+			/// \todo arent these redundant (aren't what redundant ??)
+			/// Add a widget to the children vector
 			void add(widget::ptr item);
+			/// Remove a child widget from the children vector
 			void remove(widget::ptr item);
-			// widget_at returns a widget::ptr to the container's child that contains
-			// x,y.  It will call widget_at on a child that is a container to find
+			
+			/// Returns a widget::ptr to the container's first child that contains
+			/// x,y.  It will call widget_at on a child that is a container.
 			virtual widget::ptr widget_at(int x, int y);
+			
+			/// Pass mouse events down to widgets.
 			virtual void delegate_mouse_event(mouse_event::ptr me);
-			virtual widget::ptr first_child();
-			virtual widget::ptr last_child();
-			virtual bool is_container() { return true; } // FIXME: shouldn't this be in widget too
+			
 			// FIXME :carter: implement all this
 			virtual widget::ptr get_active_child() // called when the tree parser for
 			{ return  *children_.begin(); }        // widget cycling switches focus 
 																						 // to a container
 			                                       // default behaviour for a container
 			                                       // is to switch into the FIRST child first 
+			virtual rectangle redraw_rect() { return redraw_rect_; } 
 			/********** END CONTAINER INTERFACE **********/
 	};
 
