@@ -18,15 +18,19 @@
 #include <sstream>
 #include <boost/smart_ptr.hpp>
 #include <list>
+#include <vector>
 
 namespace stk
 {
-    enum EN_LOG_LEVEL
+    typedef enum
     {
         LL_Info,
         LL_Warning,
-        LL_Error
-    };
+        LL_Error,
+        LL_None,
+        // need to know the length of the enum
+        LL_LENGTH
+    } log_level;
 
     class logger;
     class logger
@@ -51,13 +55,17 @@ namespace stk
         static boost::shared_ptr<logger> instance_;
         typedef std::list<target_info> Ttargets;
         Ttargets targets;
+
+        std::vector<std::string> severity_names_;
+
     public:
         static boost::shared_ptr<logger> get();
         logger();
         ~logger();
-        void add_target(std::ostream* target, int min_level);
+        void add_target(std::ostream* target, log_level min_level);
         void remove_target(std::ostream* target);
-        void log(const std::string& filename, int line, const std::string& message, int severity);
+        void log(const std::string& filename, int line, const std::string& message,
+                log_level severity);
     };
 
 }

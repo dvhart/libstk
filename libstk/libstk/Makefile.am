@@ -45,6 +45,8 @@ libstk_la_SOURCES =\
 	event.h \
 	event_handler.h \
 	exceptions.h \
+	font_properties.h font_properties.cpp \
+	read_dir.h read_dir.cpp \
 	font.h font.cpp \
 	font_manager.h font_manager.cpp \
 	glyph.h glyph.cpp \

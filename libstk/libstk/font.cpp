@@ -11,26 +11,33 @@
 
 #include <iostream>
 #include <string>
-#include "libstk/font.h"
-#include "libstk/exceptions.h"
-#include "libstk/logging.h"
+#include <libstk/font.h>
+#include <libstk/read_dir.h>
+#include <libstk/exceptions.h>
+#include <libstk/logging.h>
 
 using std::wstring;
 using std::string;
+using std::vector;
 
 namespace stk
 {
     FT_Library font::lib_ = NULL;
     int font::font_count_ = 0;
 
-    font::ptr font::create(const string& fontname, int height, int width)
+    font::ptr font::create(const font_properties& prop)
     {
-        font::ptr new_font(new font(fontname, height, width));
+        font::ptr new_font(new font(prop));
         return new_font;
     }
 
-    font::font(const string& fontname, int height, int width)
-            : height_(height), width_(width)
+    font::font()
+    {
+        throw error_message_exception("font::font: bad call to empty constructor");
+    }
+
+    font::font(const font_properties& prop)
+            : height_(prop.height)
     {
         INFO("constructor");
         int error;
@@ -40,24 +47,51 @@ namespace stk
             INFO("initializing FreeType library");
             error = FT_Init_FreeType( &lib_ );
             if ( error )
+            {
+                ERROR("could not initialized freetype library");
                 throw error_message_exception("font::font: could not initialize Freetype library");
+            }
         }
-        string filename = std::string(PACKAGE_FONTS_DIR"/")+fontname;
-        INFO("trying to open font file " << filename);
-        error = FT_New_Face( lib_, filename.c_str(), 0, &face_);
-        if (error == FT_Err_Unknown_File_Format)
+
+        // look for the right family, right style
+        face_ = find_font(prop);
+        if (face_ == NULL)
         {
-            throw error_message_exception("font::font: unknown file format: " + fontname);
+            // look for the right family, no style
+            font_properties replacement_font = prop;
+            if (prop.style != font_properties::plain)
+            {
+                INFO("falling back to " << prop.fontname << " plain");
+                replacement_font.style = font_properties::plain;
+                face_ = find_font(replacement_font);
+                if (face_ == NULL)
+                {
+                    // or look for vera, right style
+                    INFO("falling back to vera style " << prop.style);
+                    replacement_font.fontname = "vera";
+                    replacement_font.style = prop.style;
+                    face_ = find_font(replacement_font);
+                }
+            }
+            else
+            {
+                // or look for vera plain
+                INFO("falling back to vera plain");
+                replacement_font.fontname = "vera";
+                face_ = find_font(replacement_font);
+            }
         }
-        else if (error)
+        
+        // could not find after second try, throw something
+        if (face_ == NULL)
         {
-            ERROR("Unable to load font, does " << filename << " exist?");
-            throw error_message_exception("font::font: unknown error loading font: " + fontname);
+            ERROR("could not find appropriate face/style");
+            throw error_message_exception("font::font: could not find appropriate face");
         }
 
         error = FT_Set_Pixel_Sizes(
                     face_,    // handle to face object
-                    width_,   // char_width in pixels
+                    0,        // char_width in pixels (height if 0)
                     height_); // char_height in pixels
         if (error)
             throw error_message_exception("font::font: could not set font size");
@@ -82,6 +116,58 @@ namespace stk
         // free the glyphs
         // WRITEME... (when we actually cache them of course :-) )
         INFO("destructor complete");
+    }
+
+    FT_Face font::find_font(const font_properties& prop)
+    {
+        string fontdir = PACKAGE_FONTS_DIR"/";
+        vector<dir_entry::ptr> selected_files = read_dir(fontdir, prop.fontname);
+
+        int error;
+        FT_Face face = NULL;
+        bool found_font = false;
+        vector<dir_entry::ptr>::iterator dir_iter = selected_files.begin();
+        for (; dir_iter != selected_files.end(); dir_iter++)
+        {
+            string filename = fontdir + (*dir_iter)->filename();
+            int face_style;
+
+            error = FT_New_Face( lib_, filename.c_str(), 0, &face);
+            if (error == FT_Err_Unknown_File_Format)
+            {
+                ERROR("unknown file format: " << filename); 
+                throw error_message_exception("font::font: unknown file format: " + filename);
+            }
+            else if (error)
+            {
+                ERROR("Unable to load font, does " << filename << " exist?");
+                throw error_message_exception("font::font: unknown error loading font: " + filename);
+            }
+
+            // from font_properties, 
+            // style = ((bold)?(1<<1):0) | ((italic)?(1<<0):0);
+            face_style = 
+                ((face->style_flags & FT_STYLE_FLAG_BOLD) ? 
+                 font_properties::bold : font_properties::plain) |
+                ((face->style_flags & FT_STYLE_FLAG_ITALIC) ?
+                 font_properties::italic : font_properties::plain);
+
+            INFO(filename << ": face 0: size " << prop.height << ", style " << face_style);
+
+            if (face_style == prop.style)
+            {
+                found_font = true;
+                break;
+            }
+            else
+            {
+                FT_Done_Face(face);
+                face = NULL;
+            }
+
+            if (found_font) break;
+        }
+        return face;
     }
 
     const glyph::ptr font::glyph(wchar_t c)

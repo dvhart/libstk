@@ -1,7 +1,7 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: Implementation of font manager classes.
- *     AUTHORS: Marc Strämke, Darren Hart
+ *     AUTHORS: Marc Strämke, Darren Hart, Vernon Mauery
  *  START DATE: 2003/May/13
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
@@ -18,16 +18,6 @@ namespace stk
 
     font_manager::ptr font_manager::instance_;
 
-
-    bool font_properties::operator<(const font_properties& rhs) const
-    {
-        // check the high order
-        if (fontname < rhs.fontname) return true;
-        // check the low order
-        if (fontname == rhs.fontname) return (height < rhs.height);
-        return false;
-    }
-    
     font_manager::ptr font_manager::get()
     {
         if (!instance_) instance_.reset(new font_manager());
@@ -49,7 +39,7 @@ namespace stk
         Tfonts::iterator font_iter = fonts.find(properties);
         if (font_iter == fonts.end())
         {
-            font::ptr newfont(new font(properties.fontname,properties.height,0));
+            font::ptr newfont = font::create(properties);
             fonts[properties] = newfont;
             return newfont;
         }
@@ -60,7 +50,7 @@ namespace stk
             {
                 return font_ptr;
             }
-            font::ptr newfont(new font(properties.fontname, properties.height,0));
+            font::ptr newfont = font::create(properties);
             fonts[properties] = newfont;
             return newfont;
         }

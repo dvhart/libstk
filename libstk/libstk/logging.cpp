@@ -26,6 +26,11 @@ namespace stk
     
     logger::logger()
     {
+        severity_names_.resize(LL_LENGTH);
+        severity_names_[LL_Info] = "Info";
+        severity_names_[LL_Warning] = "Warning";
+        severity_names_[LL_Error] = "Error";
+        severity_names_[LL_None] = "None";
     }
 
     logger::~logger()
@@ -33,7 +38,7 @@ namespace stk
         log(__FILE__, __LINE__, "destructor", LL_Info);
     }
     
-    void logger::add_target(std::ostream* target, int min_level)
+    void logger::add_target(std::ostream* target, log_level min_level)
     {
         target_info temp;
         temp.outstream = target;
@@ -48,17 +53,12 @@ namespace stk
     }
     
     void logger::log(const std::string& filename, int line, const std::string& message, 
-            int severity)
+            log_level severity)
     {
-        std::vector<std::string> severity_names;
-        severity_names.push_back("Info");
-        severity_names.push_back("Warning");
-        severity_names.push_back("Error");
-
-        for(Ttargets::iterator iter=targets.begin();iter!=targets.end();iter++)
+        for (Ttargets::iterator iter=targets.begin();iter!=targets.end();iter++)
         {
             if(severity >= iter->min_level)
-                *iter->outstream << severity_names[severity] << "! " << filename << ":" << line 
+                *iter->outstream << severity_names_[severity] << "! " << filename << ":" << line 
                                  << " \t" << message << std::endl;
         }
         

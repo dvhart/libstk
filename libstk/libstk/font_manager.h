@@ -17,21 +17,10 @@
 #include <string>
 #include <map>
 #include <libstk/font.h>
+#include <libstk/font_properties.h>
 
 namespace stk
 {
-
-    /// \todo This should be in font.h and be done by the font class
-    struct font_properties
-    {
-        std::string fontname;
-        int height;
-        font_properties(std::string name, int height): fontname(name),height(height)
-        {}
-
-        bool operator<(const font_properties& rhs) const;
-    };
-
 
     /// \brief Class for manaing Font Instances
     /// This class manages all creation and retrieveal of font class instances

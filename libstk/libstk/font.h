@@ -19,6 +19,7 @@
 #include <boost/shared_ptr.hpp>
 #include <libstk/rectangle.h>
 #include <libstk/glyph.h>
+#include <libstk/font_properties.h>
 
 /*
    we will be caching stk::glyph's 
@@ -31,26 +32,28 @@ namespace stk
     public:
         typedef boost::shared_ptr<stk::font> ptr;
         typedef boost::weak_ptr<stk::font> weak_ptr;
-    private:
 
     protected:
         static FT_Library lib_;
         static int font_count_;
         FT_Face face_;
-        int height_, width_;
+        int height_;
         std::map<wchar_t, stk::glyph::ptr> glyph_cache_;
 
+        font();
+        font(const font_properties& prop);
+        // finds a face from a list of fonts and properties
+        FT_Face find_font(const font_properties& prop);
+
     public:
-        static font::ptr create(const std::string& fontname, int height, int width=0);
-        // FIXME: this *should* be protected, but font_manager needs to call it (atm)
-        font(const std::string& fontname, int height, int width);
         virtual ~font();
+        static font::ptr create(const font_properties& prop);
+
         const stk::glyph::ptr glyph(wchar_t c);
         int draw_len(const std::wstring& text, int kerning_mode = 0);
         int chars_in_rect(const rectangle& rect, const std::wstring& text, int kerning_mode = 0);
         int kerning(wchar_t left, wchar_t right, int kerning_mode = 0);
         int height() const { return height_; }
-        int width() const { return width_; }
     }
     ; //class font
 
