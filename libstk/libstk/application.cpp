@@ -243,6 +243,9 @@ namespace stk
 						focused_widget_.lock()->handle_event(event::create(event::focus));
 						break;
 					}
+					default:
+						cout << "application::handle_event() - unhandled key event" << endl;
+						break;
 				}
 				break;
 			}
@@ -255,7 +258,8 @@ namespace stk
 			case event::quit:
 				quit();
 				break;
-			//default:
+			default:
+				break;
 				//cout << "application::handle_event - unknown event" << endl;
 		}
 	}
