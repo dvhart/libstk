@@ -46,7 +46,7 @@ namespace stk
 {
     class overlay;
     
-    class surface_sdl : public stk::surface_impl<surface_sdl>
+    class surface_sdl : public surface_impl<surface_sdl>
     {
     public:
         typedef boost::shared_ptr<surface_sdl> ptr;
@@ -76,11 +76,12 @@ namespace stk
         }
             
         // methods which MUST be implemented in derived classes
+        // FIXME: make these 4 protected!
         inline void put_pixel(int x, int y, color clr);
         inline void put_pixel_aa(int x, int y, double distance, color clr);
         inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
         inline color get_pixel(int x, int y) const;
-        virtual color gen_color(const std::string &str_color) const; // using default
+
         virtual color gen_color(byte r, byte g, byte b, byte a) const;
         virtual void lock();
         virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
@@ -90,13 +91,54 @@ namespace stk
         virtual surface::ptr create_surface(const rectangle& rect);
 
         // overridden drawing routines
-        // FIXME: make the blit accept "const rectangle&"s
+        virtual color read_pixel(int x, int y);
         virtual void clip_rect(const rectangle& clip_rectangle);
+        // FIXME: make the blit accept "const rectangle&"s
         virtual void blit(surface &dst_surface);
 	virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect);
+        // non antialiased draw routines
+        virtual void draw_pixel(int x, int y, color clr);
+        virtual void draw_line(int x1, int y1, int x2, int y2);
+        virtual void draw_arc(const rectangle& rect, int quadrant);
+        virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant);
+        //virtual void draw_rect(const rectangle &rect);
+        virtual void draw_rect(int x1, int y1, int x2, int y2);
+        virtual void draw_circle(int x, int y, int radius);
+        virtual void draw_circle(const rectangle &rect);
+        virtual void draw_ellipse(int x, int y, int a, int b);
+        virtual void draw_ellipse(const rectangle &rect);
+        virtual void draw_poly(std::vector<point> points);
+        virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode);
+        virtual void draw_image(int x, int y, image::ptr img);
+        // antialiased draw routines
+        virtual void draw_pixel_aa(int x, int y, double distance, color clr);
+        virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
+        virtual void draw_line_aa(int x1, int y1, int x2, int y2);
+        virtual void draw_arc_aa(const rectangle &rect, int quadrant);
+        virtual void draw_arc_aa(int x1, int y1, int x2, int y2, int quadrant);
+        virtual void draw_rect_aa(const rectangle &rect);
+        virtual void draw_rect_aa(int x1, int y1, int x2, int y2);
+        virtual void draw_circle_aa(int x, int y, int radius);
+        virtual void draw_circle_aa(const rectangle &rect);
+        virtual void draw_ellipse_aa(int x, int y, int a, int b);
+        virtual void draw_ellipse_aa(const rectangle &rect);
+        virtual void draw_poly_aa(std::vector<point> points);
+        // non antialiased fill routines
         virtual void fill_rect(int x1, int y1, int x2, int y2);
         virtual void fill_rect(const rectangle& rect);
-
+        virtual void fill_circle(int x, int y, int radius);
+        virtual void fill_circle(const rectangle &rect);
+        virtual void fill_ellipse(int x, int y, int a, int b);
+        virtual void fill_ellipse(const rectangle &rect);
+        virtual void fill_poly(std::vector<point> points);
+        // antialiased fill routines
+        virtual void fill_rect_aa(int x1, int y1, int x2, int y2);
+        virtual void fill_rect_aa(const rectangle &rect);
+        virtual void fill_circle_aa(int x, int y, int radius);
+        virtual void fill_circle_aa(const rectangle &rect);
+        virtual void fill_ellipse_aa(int x, int y, int a, int b);
+        virtual void fill_ellipse_aa(const rectangle &rect);
+        virtual void fill_poly_aa(std::vector<point> points);
     };
 } //end namespace stk
 

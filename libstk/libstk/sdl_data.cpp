@@ -29,14 +29,12 @@ namespace stk
 
     sdl_data::sdl_data() : first_init_(true)
     {
-        mutex_ = SDL_CreateMutex();
     }
 
     sdl_data::~sdl_data()
     {
         INFO("sdl_data::~sdl_data()");
         INFO("use_count: " << instance_.use_count());
-        SDL_DestroyMutex(mutex_);
         SDL_Quit();
     }
 

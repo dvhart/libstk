@@ -14,10 +14,10 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 #include <libstk/exceptions.h>
 
-#define SDL_MUTEX_LOCK sdl_data::get()->lock_mutex();
-#define SDL_MUTEX_UNLOCK sdl_data::get()->unlock_mutex();
+#define SDL_MUTEX_LOCK boost::recursive_mutex::scoped_lock scoped_lock(sdl_data::get()->mutex);;
 
 namespace stk
 {
@@ -33,7 +33,6 @@ namespace stk
         /// Singleton instance
         static sdl_data::ptr instance_;
         /// A mutex used to prevent threads for accessing surface data concurrently
-        SDL_mutex* mutex_; // really an ugly hack, but SDL isn't meant to be a production surface
         sdl_data();
 
     public:
@@ -44,20 +43,7 @@ namespace stk
         void init();
         /// Return true if SDL_Init has been called, false otherwise
         bool first_init() const { return first_init_; }
-        int lock_mutex()
-        {
-            int ret;
-            if ((ret = SDL_mutexP(mutex_)) == -1)
-                throw error_message_exception("sdl_data::lock_mutex() - SDL_mutexP() failed");
-            return ret;
-        }
-        int unlock_mutex()
-        {
-            int ret;
-            if ((ret = SDL_mutexV(mutex_)) == -1)
-                throw error_message_exception("sdl_data::unlock_mutex() - SDL_mutexV() failed");
-            return ret;
-        }
+        boost::recursive_mutex mutex;
     };
 }
 

@@ -16,6 +16,7 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 #include <libstk/rectangle.h>
 #include <libstk/surface.h>
 #include <libstk/stk_types.h>
@@ -70,7 +71,6 @@ namespace stk
             SDL_MUTEX_LOCK;
             SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
             SDL_DisplayYUVOverlay(overlay_impl_, &sdl_rect);
-            SDL_MUTEX_UNLOCK;
         }
     };
 

@@ -14,6 +14,7 @@
 #include <list>
 #include <iostream>
 #include <SDL/SDL.h>
+#include <boost/thread/recursive_mutex.hpp>
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
 #include "libstk/stk.h"
@@ -77,147 +78,8 @@ namespace stk
             SDL_FreeSurface(sdl_surface_);
     }
 
-    surface::ptr surface_sdl::create_surface(const rectangle& rect)
-    {
-        return surface_sdl::create(rect);
-    }
-
-    void surface_sdl::clip_rect(const rectangle& clip_rectangle)
-    {
-        surface::clip_rect(clip_rectangle);
-        SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rectangle);
-        SDL_SetClipRect(sdl_surface_, &sdl_rect);
-    }
-    
-    // FIXME: this should just be surface_impl default
-    color surface_sdl::gen_color(const std::string& str_color) const
-    {
-        unsigned int int_color = strtoll(str_color.c_str(), NULL, 16);
-        byte r = (int_color & 0xFF000000) >> 24;
-        byte g = (int_color & 0x00FF0000) >> 16;
-        byte b = (int_color & 0x0000FF00) >> 8;
-        byte a = (int_color & 0x000000FF) >> 0;
-        return gen_color(r, g, b, a);
-    }
-    
-    color surface_sdl::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
-    {
-        Uint32 sdl_color = SDL_MapRGBA(sdl_surface_->format, r, g, b, a);
-        return (color)sdl_color;
-    }
-
-    void surface_sdl::lock()
-    {
-        if (SDL_LockSurface(sdl_surface_))
-            throw error_message_exception("surface_sdl::lock() failed - " + 
-                    std::string(SDL_GetError()));
-    }
-    
-    void surface_sdl::lock(rectangle &rect, int flags, color** buf, int& stride)
-    {
-        // FIXME: what shall we do with flags (i.e. read and write)
-        SDL_LockSurface(sdl_surface_);
-        switch (sdl_surface_->format->BytesPerPixel)
-        {
-        case 1:                                       
-        case 2:                                      
-        case 3:                                     
-        {
-            // FIXME: provide a means to use non 32 bit surfaces
-            //        perhaps set a format variable
-            // create a virtual framebuffer for the region requested
-            WARN("surface_sdl::lock - non 32 bit surface, unable to set buf");
-            break;
-        }
-        case 4:                                       // Probably 32-bpp
-            *buf = (color*)sdl_surface_->pixels + rect.y1()*sdl_surface_->pitch/4 + rect.x1();
-            break;
-        }
-        stride = sdl_surface_->pitch;
-    }
-
-    void surface_sdl::unlock()
-    {
-        SDL_UnlockSurface(sdl_surface_);
-    }
-
-    void surface_sdl::update(const rectangle& u_rect)
-    {
-        if (u_rect.empty())
-        {
-            //INFO("surface_sdl::update() - updating entire screen");
-            SDL_Flip(sdl_surface_); // note: this is hw accelerated if supported,
-            // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
-            // would it be faster to call SDL_Flip regardless of u_rect
-            // if we have accelerated hw ?
-        }
-        else
-        {
-            //INFO("surface_sdl::update() - updating the rect: " << u_rect);
-            SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
-        }
-    }
-
-    overlay::ptr surface_sdl::create_overlay(int width, int height, int format)
-    {
-        return overlay_sdl::create(width, height, format, sdl_surface_);
-    }
-    
-
-    // optimized pixel routines
-    void surface_sdl::blit(surface& dst_surface)
-    {
-        // blit the local surface to the destination surface
-        surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
-        if (dst_surface_ptr != NULL)
-        {
-            SDL_Rect dst_sdl_rect = rect_to_sdl_rect(rect_);
-
-            if (SDL_BlitSurface(sdl_surface_, NULL,
-                                dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
-            {
-                throw error_message_exception("widget: Failed to blit sdl_surface_ to dst_surface: "
-                        + std::string(SDL_GetError()));
-            }
-        }
-        else
-        {
-            throw error_message_exception("surface_sdl::blit - "
-                                          "unable to cast dst_surface to surface_sdl\n"
-                                          "Can only blit an sdl_surface to another sdl_surface");
-        }
-    }
-
-    void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
-    {
-        INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
-        sdl_data::get()->lock_mutex();
-        // blit the local surface to the destination surface
-        surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
-        if (dst_surface_ptr != NULL)
-        {
-	    SDL_Rect src_sdl_rect = rect_to_sdl_rect(src_rect);
-	    SDL_Rect dst_sdl_rect = rect_to_sdl_rect(dst_rect);
-	    
-	    if (SDL_BlitSurface(sdl_surface_, &src_sdl_rect,
-                        dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
-            {
-                throw error_message_exception("widget: Failed to blit sdl_surface_ to dst_surface_: " 
-                        + std::string(SDL_GetError()));
-            }
-        }
-        else
-        {
-            throw error_message_exception("surface_sdl::blit - "
-                                          "unable to cast dst_surface to surface_sdl\n"
-                                          "Can only blit an sdl_surface to another sdl_surface");
-        }
-    }
-
     void surface_sdl::put_pixel(int x, int y, color clr)
     {
-        SDL_MUTEX_LOCK;
-
         x += offset_.x();
         y += offset_.y();
 
@@ -278,14 +140,58 @@ namespace stk
         }
         break;
         }
+    }
 
-        SDL_MUTEX_UNLOCK;
+    void surface_sdl::put_pixel_aa(int x, int y, double distance, color clr)
+    {
+        Uint32 color_a = (Uint32)clr;
+
+        Uint8 red_a, green_a, blue_a, alpha_a;
+        SDL_GetRGB(color_a, sdl_surface_->format, &red_a, &green_a, &blue_a);
+        alpha_a = filter_aa((fabs(distance)));
+
+        Uint8 red_b, green_b, blue_b, alpha_b;
+        Uint32 color_b = get_pixel(x, y);
+        SDL_GetRGBA(color_b, sdl_surface_->format, &red_b, &green_b, &blue_b, &alpha_b);
+
+        Uint8 red_o, green_o, blue_o, alpha_o;
+        alpha_o = composite_alpha(alpha_a, alpha_b);
+        float alpha_a_f = alpha_a / 255.0;
+        float alpha_b_f = alpha_b / 255.0;
+        float alpha_o_f = alpha_o / 255.0;
+
+        red_o   = composite_a_over_b(red_a, red_b, alpha_a_f, alpha_b_f, alpha_o_f);
+        green_o = composite_a_over_b(green_a, green_b, alpha_a_f, alpha_b_f, alpha_o_f);
+        blue_o  = composite_a_over_b(blue_a, blue_b, alpha_a_f, alpha_b_f, alpha_o_f);
+
+        put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
+    }
+
+    void surface_sdl::put_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
+    {
+        Uint32 color_a = (Uint32)clr;
+        Uint8 red_a, green_a, blue_a;
+        SDL_GetRGB(color_a, sdl_surface_->format, &red_a, &green_a, &blue_a);
+
+        Uint8 red_b, green_b, blue_b, alpha_b;
+        Uint32 color_b = get_pixel(x, y);
+        SDL_GetRGBA(color_b, sdl_surface_->format, &red_b, &green_b, &blue_b, &alpha_b);
+
+        Uint8 red_o, green_o, blue_o, alpha_o;
+        alpha_o = composite_alpha(alpha_a, alpha_b);
+        float alpha_a_f = alpha_a / 255.0;
+        float alpha_b_f = alpha_b / 255.0;
+        float alpha_o_f = alpha_o / 255.0;
+
+        red_o   = composite_a_over_b(red_a, red_b, alpha_a_f, alpha_b_f, alpha_o_f);
+        green_o = composite_a_over_b(green_a, green_b, alpha_a_f, alpha_b_f, alpha_o_f);
+        blue_o  = composite_a_over_b(blue_a, blue_b, alpha_a_f, alpha_b_f, alpha_o_f);
+
+        put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
     }
 
     color surface_sdl::get_pixel(int x, int y) const
     {
-        SDL_MUTEX_LOCK;
-
         x += offset_.x();
         y += offset_.y();
         // DELETEME check for out of bounds
@@ -343,62 +249,254 @@ namespace stk
         break;
         }
 
-        SDL_MUTEX_UNLOCK;
-
         return (color)sdl_color; // should never happen
     }
 
-    void surface_sdl::put_pixel_aa(int x, int y, double distance, color clr)
+    color surface_sdl::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
     {
-        Uint32 color_a = (Uint32)clr;
-
-        Uint8 red_a, green_a, blue_a, alpha_a;
-        SDL_GetRGB(color_a, sdl_surface_->format, &red_a, &green_a, &blue_a);
-        alpha_a = filter_aa((fabs(distance)));
-
-        Uint8 red_b, green_b, blue_b, alpha_b;
-        Uint32 color_b = get_pixel(x, y);
-        SDL_GetRGBA(color_b, sdl_surface_->format, &red_b, &green_b, &blue_b, &alpha_b);
-
-        Uint8 red_o, green_o, blue_o, alpha_o;
-        alpha_o = composite_alpha(alpha_a, alpha_b);
-        float alpha_a_f = alpha_a / 255.0;
-        float alpha_b_f = alpha_b / 255.0;
-        float alpha_o_f = alpha_o / 255.0;
-
-        red_o   = composite_a_over_b(red_a, red_b, alpha_a_f, alpha_b_f, alpha_o_f);
-        green_o = composite_a_over_b(green_a, green_b, alpha_a_f, alpha_b_f, alpha_o_f);
-        blue_o  = composite_a_over_b(blue_a, blue_b, alpha_a_f, alpha_b_f, alpha_o_f);
-
-        put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
+        Uint32 sdl_color = SDL_MapRGBA(sdl_surface_->format, r, g, b, a);
+        return (color)sdl_color;
     }
 
-    void surface_sdl::put_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
+    void surface_sdl::lock()
     {
-        Uint32 color_a = (Uint32)clr;
-        Uint8 red_a, green_a, blue_a;
-        SDL_GetRGB(color_a, sdl_surface_->format, &red_a, &green_a, &blue_a);
+        if (SDL_LockSurface(sdl_surface_))
+            throw error_message_exception("surface_sdl::lock() failed - " + 
+                    std::string(SDL_GetError()));
+    }
+    
+    void surface_sdl::lock(rectangle &rect, int flags, color** buf, int& stride)
+    {
+        // FIXME: what shall we do with flags (i.e. read and write)
+        SDL_LockSurface(sdl_surface_);
+        switch (sdl_surface_->format->BytesPerPixel)
+        {
+        case 1:                                       
+        case 2:                                      
+        case 3:                                     
+        {
+            // FIXME: provide a means to use non 32 bit surfaces
+            //        perhaps set a format variable
+            // create a virtual framebuffer for the region requested
+            WARN("surface_sdl::lock - non 32 bit surface, unable to set buf");
+            break;
+        }
+        case 4:                                       // Probably 32-bpp
+            *buf = (color*)sdl_surface_->pixels + rect.y1()*sdl_surface_->pitch/4 + rect.x1();
+            break;
+        }
+        stride = sdl_surface_->pitch;
+    }
 
-        Uint8 red_b, green_b, blue_b, alpha_b;
-        Uint32 color_b = get_pixel(x, y);
-        SDL_GetRGBA(color_b, sdl_surface_->format, &red_b, &green_b, &blue_b, &alpha_b);
+    void surface_sdl::unlock()
+    {
+        SDL_UnlockSurface(sdl_surface_);
+    }
 
-        Uint8 red_o, green_o, blue_o, alpha_o;
-        alpha_o = composite_alpha(alpha_a, alpha_b);
-        float alpha_a_f = alpha_a / 255.0;
-        float alpha_b_f = alpha_b / 255.0;
-        float alpha_o_f = alpha_o / 255.0;
+    void surface_sdl::update(const rectangle& u_rect)
+    {
+        SDL_MUTEX_LOCK;
+        
+        if (u_rect.empty())
+        {
+            //INFO("surface_sdl::update() - updating entire screen");
+            SDL_Flip(sdl_surface_); // note: this is hw accelerated if supported,
+            // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
+            // would it be faster to call SDL_Flip regardless of u_rect
+            // if we have accelerated hw ?
+        }
+        else
+        {
+            //INFO("surface_sdl::update() - updating the rect: " << u_rect);
+            SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
+        }
+    }
 
-        red_o   = composite_a_over_b(red_a, red_b, alpha_a_f, alpha_b_f, alpha_o_f);
-        green_o = composite_a_over_b(green_a, green_b, alpha_a_f, alpha_b_f, alpha_o_f);
-        blue_o  = composite_a_over_b(blue_a, blue_b, alpha_a_f, alpha_b_f, alpha_o_f);
-
-        put_pixel(x, y, gen_color(red_o, green_o, blue_o, alpha_o));
+    overlay::ptr surface_sdl::create_overlay(int width, int height, int format)
+    {
+        return overlay_sdl::create(width, height, format, sdl_surface_);
+    }
+    
+    surface::ptr surface_sdl::create_surface(const rectangle& rect)
+    {
+        return surface_sdl::create(rect);
     }
 
     // overridden drawing routines
+    color surface_sdl::read_pixel(int x, int y)
+    {
+    }
+    void surface_sdl::clip_rect(const rectangle& clip_rectangle)
+    {
+        surface::clip_rect(clip_rectangle);
+        SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rectangle);
+        SDL_SetClipRect(sdl_surface_, &sdl_rect);
+    }
+    
+    void surface_sdl::blit(surface& dst_surface)
+    {
+        SDL_MUTEX_LOCK;
+        
+        // blit the local surface to the destination surface
+        surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
+        if (dst_surface_ptr != NULL)
+        {
+            SDL_Rect dst_sdl_rect = rect_to_sdl_rect(rect_);
+
+            if (SDL_BlitSurface(sdl_surface_, NULL,
+                                dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
+            {
+                throw error_message_exception("widget: Failed to blit sdl_surface_ to dst_surface: "
+                        + std::string(SDL_GetError()));
+            }
+        }
+        else
+        {
+            throw error_message_exception("surface_sdl::blit - "
+                                          "unable to cast dst_surface to surface_sdl\n"
+                                          "Can only blit an sdl_surface to another sdl_surface");
+        }
+    }
+
+    void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
+    {
+        SDL_MUTEX_LOCK;
+        
+        INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
+        // blit the local surface to the destination surface
+        surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
+        if (dst_surface_ptr != NULL)
+        {
+	    SDL_Rect src_sdl_rect = rect_to_sdl_rect(src_rect);
+	    SDL_Rect dst_sdl_rect = rect_to_sdl_rect(dst_rect);
+	    
+	    if (SDL_BlitSurface(sdl_surface_, &src_sdl_rect,
+                        dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
+            {
+                throw error_message_exception("widget: Failed to blit sdl_surface_ to dst_surface_: " 
+                        + std::string(SDL_GetError()));
+            }
+        }
+        else
+        {
+            throw error_message_exception("surface_sdl::blit - "
+                    "unable to cast dst_surface to surface_sdl\n"
+                    "Can only blit an sdl_surface to another sdl_surface");
+        }
+    }
+
+    // non antialiased draw routines
+    void surface_sdl::draw_pixel(int x, int y, color clr)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_pixel(x, y, clr);
+    }
+    void surface_sdl::draw_line(int x1, int y1, int x2, int y2)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_line(x1, y1, x2, y2);
+    }
+    void surface_sdl::draw_arc(const rectangle& rect, int quadrant)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_arc(int x1, int y1, int x2, int y2, int quadrant)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    //void surface_sdl::draw_rect(const rectangle &rect) { }
+    void surface_sdl::draw_rect(int x1, int y1, int x2, int y2)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_rect(x1, y1, x2, y2);
+    }
+    void surface_sdl::draw_circle(int x, int y, int radius)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_circle(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_ellipse(int x, int y, int a, int b)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_ellipse(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_poly(std::vector<point> points)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_poly(points);
+    }
+    void surface_sdl::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_text(rect, text, kerning_mode);
+    }
+    void surface_sdl::draw_image(int x, int y, image::ptr img)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_image(x, y, img);
+    }
+    // antialiased draw routines
+    void surface_sdl::draw_pixel_aa(int x, int y, double distance, color clr)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_line_aa(int x1, int y1, int x2, int y2)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_line_aa(x1, y1, x2, y2);
+    }
+    void surface_sdl::draw_arc_aa(const rectangle &rect, int quadrant)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_arc_aa(int x1, int y1, int x2, int y2, int quadrant)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_rect_aa(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_rect_aa(int x1, int y1, int x2, int y2)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_circle_aa(int x, int y, int radius)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_circle_aa(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_ellipse_aa(int x, int y, int a, int b)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    } 
+    void surface_sdl::draw_ellipse_aa(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::draw_poly_aa(std::vector<point> points)
+    {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::draw_poly_aa(points);
+    }
+    
+    // non antialiased fill routines
     void surface_sdl::fill_rect(int x1, int y1, int x2, int y2)
     {
+        SDL_MUTEX_LOCK;
         x1 += offset_.x();
         y1 += offset_.y();
         x2 += offset_.x();
@@ -410,11 +508,61 @@ namespace stk
 
     void surface_sdl::fill_rect(const rectangle& rect)
     {
+        SDL_MUTEX_LOCK;
         rectangle t_rect = rect;
         t_rect.position(t_rect.p1() + offset_);
         Uint32 sdl_color = (Uint32)gc_->fill_color();
         SDL_Rect sdl_rect = rect_to_sdl_rect(t_rect);
         SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
+    }
+
+    void surface_sdl::fill_circle(int x, int y, int radius)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_circle(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_ellipse(int x, int y, int a, int b)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_ellipse(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_poly(std::vector<point> points)
+    {
+    }
+    // antialiased fill routines
+    void surface_sdl::fill_rect_aa(int x1, int y1, int x2, int y2)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_rect_aa(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_circle_aa(int x, int y, int radius)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_circle_aa(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_ellipse_aa(int x, int y, int a, int b)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_ellipse_aa(const rectangle &rect)
+    {
+        INFO(__FUNCTION__ << " not implemented");
+    }
+    void surface_sdl::fill_poly_aa(std::vector<point> points)
+    {
+        INFO(__FUNCTION__ << " not implemented");
     }
 
 
