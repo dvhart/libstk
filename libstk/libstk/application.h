@@ -15,6 +15,7 @@
 #include <list>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 
 #include <libstk/component.h>
 #include <libstk/surface.h>
@@ -103,6 +104,9 @@ namespace stk
         boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_postdraw;
         // Triggered before STK receives an event, return true if event was handled in the signal handler
         boost::signal<bool (event::ptr), combiner::logical_or<bool> > on_event;
+
+        // Mutex to lock the mainloop in a multi threaded environment
+        boost::mutex mainloop_mutex;
     }; // class application
 } // namespace stk
 

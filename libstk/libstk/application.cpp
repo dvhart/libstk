@@ -101,6 +101,7 @@ namespace stk
         event::ptr event_;
         while (!done_)
         {
+            boost::mutex::scoped_lock lock(mainloop_mutex);
             // handle all available events before redrawing
             event_ = event_system_->poll_event();
             while (event_->type() != event::none)
@@ -226,8 +227,11 @@ namespace stk
                 ERROR("Unknown exception while redrawing");
             } 
 
+            lock.unlock();
             // FIXME: should we try and get 60 fps by using a timer around the above routines
             // and sleeping the difference?
+            // Carter: Nonsense, only REAL vsync would make sense to avoid tearing
+            
             usleep(1000); // 1 ms
         }
         INFO("Done");
