@@ -13,6 +13,7 @@ namespace stk
 			typedef boost::shared_ptr<event> ptr;
 			typedef boost::weak_ptr<event> weak_ptr;
 
+			/// fixme: should this be static ?
 			enum event_type
 			{
 				key_down,

@@ -12,55 +12,103 @@
 #include "libstk/scroll_box.h"
 #include "libstk/spinner.h"
 #include "libstk/state.h"
-
+#include "libstk/theme.h"
+#include "libstk/tribal_theme.h"
 
 // all draw routines go here with the exception of container as it isn't 
 // themeable and only draws its children
 
 namespace stk
 {
-	// some tribal colors for this theme
-	const std::string outline_color_normal_str  = "0xFFFFFFFF";
-	const std::string outline_color_focused_str = "0xFFFFFFFF";
-	const std::string outline_color_hover_str   = "0xFFFF00FF";
-	const std::string outline_color_pressed_str = "0xFFFF00FF";
+	// define the theme create constructor here (we need the user_theme header - tribal_theme.h)
+	theme::ptr theme::create(surface::ptr surface)
+	{
+		instance_ = theme::ptr(new theme(surface));
+		user_theme_ = boost::shared_ptr<user_theme>(new user_theme(surface));
+		return instance_;
+	}
 
-	const std::string fill_state_color_str      = "0x0C2C4CFF";
-	const std::string fill_color_normal_str     = "0x185899FF";
-	const std::string fill_color_focused_str    = "0x2893FFFF";
-	const std::string fill_color_hover_str      = "0x185899FF";
-	const std::string fill_color_pressed_str    = "0x2893FFFF";
+
+	// define tribal user theme
+	// FIXME: don't use surface, use the color manager to get colors (outside the constructor)
+	user_theme::user_theme(surface::ptr surface)
+	{
+		cout << "user_theme::user_theme()" << endl;
+		// prepare our colors
+		outline_color_normal_  = surface->gen_color(outline_color_normal_str);
+		outline_color_focused_ = surface->gen_color(outline_color_focused_str);
+		outline_color_hover_   = surface->gen_color(outline_color_hover_str);
+		outline_color_pressed_ = surface->gen_color(outline_color_pressed_str);
+
+		fill_state_color_      = surface->gen_color(fill_state_color_str);
+		fill_color_normal_     = surface->gen_color(fill_color_normal_str);
+		fill_color_focused_    = surface->gen_color(fill_color_focused_str);
+		fill_color_hover_      = surface->gen_color(fill_color_hover_str);
+		fill_color_pressed_    = surface->gen_color(fill_color_pressed_str);
+
+		font_color_normal_     = surface->gen_color(font_color_normal_str);
+		font_color_focused_    = surface->gen_color(font_color_focused_str);
+		font_color_hover_      = surface->gen_color(font_color_hover_str);
+		font_color_pressed_    = surface->gen_color(font_color_pressed_str);
+	}
 	
-	const std::string font_color_normal_str     = "0xFFFFFFFF";
-	const std::string font_color_focused_str    = "0xFFFFFFFF";
-	const std::string font_color_hover_str      = "0xFFFF00FF";
-	const std::string font_color_pressed_str    = "0xFFFF00FF";
-
-	// fixme:: we need a clean way to do colors now that we are not a class!!
-	// prepare our colors
-	/*
-	const color outline_color_normal_  = surface->gen_color(outline_color_normal_str_);
-	const color outline_color_focused_ = surface->gen_color(outline_color_focused_str_);
-	const color outline_color_hover_   = surface->gen_color(outline_color_hover_str_);
-	const color outline_color_pressed_ = surface->gen_color(outline_color_pressed_str_);
-
-	const color fill_state_color_      = surface->gen_color(fill_state_color_str_);
-	const color fill_color_normal_     = surface->gen_color(fill_color_normal_str_);
-	const color fill_color_focused_    = surface->gen_color(fill_color_focused_str_);
-	const color fill_color_hover_      = surface->gen_color(fill_color_hover_str_);
-	const color fill_color_pressed_    = surface->gen_color(fill_color_pressed_str_);
-
-	const color font_color_normal_     = surface->gen_color(font_color_normal_str_);
-	const color font_color_focused_    = surface->gen_color(font_color_focused_str_);
-	const color font_color_hover_      = surface->gen_color(font_color_hover_str_);
-	const color font_color_pressed_    = surface->gen_color(font_color_pressed_str_);
-	*/
+	user_theme::~user_theme()
+	{
+	}
 	
+	void user_theme::draw_arrow(int x, int y, int dir, surface::ptr surface)
+	{
+		switch (dir)
+		{
+			case 3:
+			{
+				std::vector<point> arrow_points;
+				arrow_points.push_back(point(x, y));
+				arrow_points.push_back(point(x + 5, y + 5));
+				arrow_points.push_back(point(x, y + 10));
+				surface->fill_poly_aa(arrow_points);
+				break;
+			}
+			case 6:
+			{
+				std::vector<point> arrow_points;
+				arrow_points.push_back(point(x, y));
+				arrow_points.push_back(point(x + 10, y));
+				arrow_points.push_back(point(x + 5, y + 5));
+				surface->fill_poly_aa(arrow_points);
+				break;
+			}
+			case 9:
+			{
+				std::vector<point> arrow_points;
+				arrow_points.push_back(point(x + 5, y));
+				arrow_points.push_back(point(x, y + 5));
+				arrow_points.push_back(point(x + 5, y + 10));
+				surface->fill_poly_aa(arrow_points);
+				break;
+			}
+			case 12:
+			{
+				std::vector<point> arrow_points;
+				arrow_points.push_back(point(x, y + 5));
+				arrow_points.push_back(point(x + 10, y + 5));
+				arrow_points.push_back(point(x + 5, y));
+				surface->fill_poly_aa(arrow_points);
+				break;
+			}
+
+			default:
+				throw error_message_exception("user_theme::draw_arrow - invalid direction, use 3, 6, 9 or 12");
+		}
+	}
+	// end tribal user theme
+	
+	// define the various widget draw routines
 	void state::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "state::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(surface->gen_color("0x0C2C4CFF")); 
+		gc->fill_color(theme::user()->fill_state_color()); 
 		surface->gc(gc);
 		surface->fill_rect(rect_);	
 		container::draw(surface); // this will draw all the children - document this for theme howto
@@ -82,36 +130,36 @@ namespace stk
 		
 		if (pressed_)
 		{
-			gc->fill_color(surface->gen_color(fill_color_pressed_str)); 
-			gc->line_color(surface->gen_color(outline_color_pressed_str)); 
-			gc->font_fill_color(surface->gen_color(font_color_pressed_str));
+			gc->fill_color(theme::user()->fill_color_pressed()); 
+			gc->line_color(theme::user()->outline_color_pressed()); 
+			gc->font_fill_color(theme::user()->font_color_pressed());
 		}
 		else if(focused_)
 		{
-			gc->fill_color(surface->gen_color(fill_color_focused_str));
+			gc->fill_color(theme::user()->fill_color_focused());
 			if (hover_)
 			{
-				gc->line_color(surface->gen_color(outline_color_hover_str)); 
-				gc->font_fill_color(surface->gen_color(font_color_hover_str));
+				gc->line_color(theme::user()->outline_color_hover()); 
+				gc->font_fill_color(theme::user()->font_color_hover());
 			}
 			else 
 			{
-				gc->line_color(surface->gen_color(outline_color_focused_str));
-				gc->font_fill_color(surface->gen_color(font_color_focused_str));
+				gc->line_color(theme::user()->outline_color_focused());
+				gc->font_fill_color(theme::user()->font_color_focused());
 			}
 		}
 		else
 		{
-			gc->fill_color(surface->gen_color(fill_color_normal_str));
+			gc->fill_color(theme::user()->fill_color_normal());
 			if (hover_) 
 			{
-				gc->line_color(surface->gen_color(outline_color_hover_str)); 
-				gc->font_fill_color(surface->gen_color(font_color_hover_str));
+				gc->line_color(theme::user()->outline_color_hover()); 
+				gc->font_fill_color(theme::user()->font_color_hover());
 			}
 			else 
 			{
-				gc->line_color(surface->gen_color(outline_color_normal_str));
-				gc->font_fill_color(surface->gen_color(font_color_normal_str));
+				gc->line_color(theme::user()->outline_color_normal());
+				gc->font_fill_color(theme::user()->font_color_normal());
 			}
 		}
 		
@@ -128,11 +176,11 @@ namespace stk
 	{
 		//cout << "progress::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(surface->gen_color(fill_color_normal_str)); 
-		gc->line_color(surface->gen_color(outline_color_normal_str));
+		gc->fill_color(theme::user()->fill_color_normal()); 
+		gc->line_color(theme::user()->outline_color_normal());
 		stk::font::ptr bob = font::create("Arial.ttf", 18);
 		gc->font(bob);
-		gc->font_fill_color(surface->gen_color(font_color_normal_str));
+		gc->font_fill_color(theme::user()->font_color_normal());
 		surface->gc(gc);
 		rectangle progress_rect(rect_.x1()+2, rect_.y1()+2, rect_.width()-4, rect_.height()-4);
 		progress_rect.width((int)(progress_rect.width()*percent()));
@@ -145,13 +193,13 @@ namespace stk
 	{
 		//cout << "label::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(surface->gen_color(fill_color_normal_str));
-		gc->line_color(surface->gen_color(outline_color_normal_str));
+		gc->fill_color(theme::user()->fill_color_normal());
+		gc->line_color(theme::user()->outline_color_normal());
 		try
 		{
 			stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
 			gc->font(arial_18);
-			gc->font_fill_color(surface->gen_color(font_color_normal_str));
+			gc->font_fill_color(theme::user()->font_color_normal());
 			surface->gc(gc);
 			surface->draw_text(rect_, text_);
 		}
@@ -165,7 +213,7 @@ namespace stk
 	{
 		//cout << "image_panel::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->line_color(surface->gen_color(outline_color_focused_str)); 
+		gc->line_color(theme::user()->outline_color_focused()); 
 		surface->gc(gc);
 		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		//surface->draw_rect(rect_);
@@ -198,12 +246,12 @@ namespace stk
 		}
 		
 		graphics_context::ptr gc = graphics_context::create();
-		gc->line_color(surface->gen_color(outline_color_normal_str));
+		gc->line_color(theme::user()->outline_color_normal());
 		if (focused_)
-			gc->fill_color(surface->gen_color(fill_color_focused_str));
+			gc->fill_color(theme::user()->fill_color_focused());
 		else
-			gc->fill_color(surface->gen_color(fill_color_normal_str));
-		gc->font_fill_color(surface->gen_color(font_color_normal_str));
+			gc->fill_color(theme::user()->fill_color_normal());
+		gc->font_fill_color(theme::user()->font_color_normal());
 		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
 		gc->font(arial_18);
 		surface->gc(gc);
@@ -248,34 +296,34 @@ namespace stk
 
 		if(focused_)
 		{
-			gc->fill_color(surface->gen_color(fill_color_focused_str));
+			gc->fill_color(theme::user()->fill_color_focused());
 			if (hover_)
 			{
-				gc->line_color(surface->gen_color(outline_color_hover_str)); 
-				gc->font_fill_color(surface->gen_color(font_color_hover_str));
+				gc->line_color(theme::user()->outline_color_hover()); 
+				gc->font_fill_color(theme::user()->font_color_hover());
 			}
 			else 
 			{
-				gc->line_color(surface->gen_color(outline_color_focused_str));
-				gc->font_fill_color(surface->gen_color(font_color_focused_str));
+				gc->line_color(theme::user()->outline_color_focused());
+				gc->font_fill_color(theme::user()->font_color_focused());
 			}
 		}
 		else
 		{
-			gc->fill_color(surface->gen_color(fill_color_normal_str));
+			gc->fill_color(theme::user()->fill_color_normal());
 			if (hover_) 
 			{
-				gc->line_color(surface->gen_color(outline_color_hover_str)); 
-				gc->font_fill_color(surface->gen_color(font_color_hover_str));
+				gc->line_color(theme::user()->outline_color_hover()); 
+				gc->font_fill_color(theme::user()->font_color_hover());
 			}
 			else 
 			{
-				gc->line_color(surface->gen_color(outline_color_normal_str));
-				gc->font_fill_color(surface->gen_color(font_color_normal_str));
+				gc->line_color(theme::user()->outline_color_normal());
+				gc->font_fill_color(theme::user()->font_color_normal());
 			}
 		}
 
-		gc->font_fill_color(surface->gen_color(font_color_normal_str));
+		gc->font_fill_color(theme::user()->font_color_normal());
 		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
 		gc->font(arial_18);
 		surface->gc(gc);
@@ -293,19 +341,9 @@ namespace stk
 		items_[selected_]->rect(interior_rect);
 		items_[selected_]->draw(surface);
 
-		// draw the up arrows
-		std::vector<point> arrow_points;
-		arrow_points.push_back(point(x2() - 15, y1() + 10));
-		arrow_points.push_back(point(x2() - 5, y1() + 10));
-		arrow_points.push_back(point(x2() - 10, y1() + 5));
-		surface->fill_poly_aa(arrow_points);
-		// draw the down arrow
-		arrow_points.clear();
-		arrow_points.push_back(point(x2() - 15, y2() - 10));
-		arrow_points.push_back(point(x2() - 5, y2() - 10));
-		arrow_points.push_back(point(x2() - 10, y2() - 5));
-		surface->fill_poly_aa(arrow_points);
-
+		// draw the arrows
+		theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface);
+		theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
 	}
 	
 	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
@@ -333,10 +371,10 @@ namespace stk
 		graphics_context::ptr gc = graphics_context::create();
 		// fixme: this isn't detecting focus
 		if (focused())
-			gc->fill_color(surface->gen_color(fill_color_focused_str));
+			gc->fill_color(theme::user()->fill_color_focused());
 		else
-			gc->fill_color(surface->gen_color(fill_color_normal_str));
-		gc->line_color(surface->gen_color(outline_color_normal_str));
+			gc->fill_color(theme::user()->fill_color_normal());
+		gc->line_color(theme::user()->outline_color_normal());
 		surface->gc(gc);
 		surface->draw_rect(rect_);
 

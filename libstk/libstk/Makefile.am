@@ -5,6 +5,7 @@ libstk_la_SOURCES =\
 	event_system.h \
 	event_system_sdl.h event_system_sdl.cpp \
 	event_system_dfb.h event_system_dfb.cpp \
+	exceptions.h \
 	glyph.h glyph.cpp \
 	font.h font.cpp \
 	rectangle.h rectangle.cpp \
@@ -31,9 +32,9 @@ libstk_la_SOURCES =\
 	label.h label.cpp \
 	scroll_box.h scroll_box.cpp \
 	spinner.h spinner.cpp \
-	tribal_theme.cpp \
 	font_mngr.h font_mngr.cpp\
-	exceptions.h 
+	theme.h theme.cpp \
+	tribal_theme.h tribal_theme.cpp 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
@@ -47,7 +48,7 @@ library_include_HEADERS= \
 	drawable.h       glyph.h             component.h       widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
-	image_panel.h       
+	image_panel.h    theme.h
 
 
 bin_PROGRAMS      = test_app

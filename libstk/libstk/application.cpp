@@ -17,6 +17,7 @@
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/state.h"
+#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;
@@ -34,6 +35,8 @@ namespace stk
 		surface_(surface), event_system_(event_system), done_(false)
 	{
 		cout << "application::application()" << endl;
+		// initialize the theme
+		theme::create(surface);
 	}
 
 	application::~application()

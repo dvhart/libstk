@@ -5,7 +5,7 @@ namespace stk
 {
 
 
-font_manager::ptr font_manager::instance;
+font_manager::ptr font_manager::instance_;
 	
 	
 bool font_properties::operator<(const font_properties& rhs) const
@@ -14,10 +14,10 @@ bool font_properties::operator<(const font_properties& rhs) const
 }
 font_manager* font_manager::get()
 {
-	if(instance)
-		return instance.get();
-	instance.reset(new font_manager());
-	return instance.get();
+	if(instance_)
+		return instance_.get();
+	instance_.reset(new font_manager());
+	return instance_.get();
 }
 font_manager::font_manager()
 {

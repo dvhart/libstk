@@ -41,6 +41,7 @@ namespace stk
 							redraw(rect_);
 							return;
 							break;
+						case key_enter:
 						case down_arrow:
 							++selected_%=items_.size();
 							redraw(rect_);
