@@ -8,21 +8,23 @@ else
  tests_xine =
 endif
 if SDL
- tests_sdl  = hello_world test_app hydra $(tests_xine)
+ tests_sdl  = test_app hello_world hydra $(tests_xine)
 else 
  tests_sdl  =
 endif
 if DFB
- tests_dfb  = hello_world_dfb test_app_dfb
+ tests_dfb  = test_app hello_world_dfb
  dfb_cflags = $(DIRECTFB_CFLAGS)
 else
  tests_dfb  = 
 endif
 if FBDEV
- tests_fbdev  = hello_world_fbdev test_app_fbdev
+ tests_fbdev  = test_app hello_world_fbdev
 else
  tests_fbdev  = 
 endif
+
+
 
 library_includedir  = $(includedir)/libstk-$(VERSION)/libstk
 # FIXME: do the autotools thing for freetype
@@ -40,12 +42,10 @@ hello_world_fbdev_SOURCES = hello_world_fbdev.cpp
 	
 # FIXME: fix the way we link to the library here
 hello_world_LDADD       = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
-test_app_LDADD          = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
+test_app_LDADD          = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la $(DIRECTFB_LIBS)
 hydra_LDADD             = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 xine_test_LDADD         = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la 
 xine_test_LDFLAGS       = `xine-config --libs`
-test_app_dfb_LDADD      = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la $(DIRECTFB_LIBS)
 hello_world_dfb_LDADD   = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la $(DIRECTFB_LIBS)
 hello_world_fbdev_LDADD = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
-test_app_fbdev_LDADD    = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 
