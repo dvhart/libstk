@@ -65,22 +65,21 @@ namespace stk
             DFBCHECK(dfb_->GetDisplayLayer(dfb_, 0, &layer_));
             DFBCHECK(layer_->SetCooperativeLevel(layer_, DLSCL_ADMINISTRATIVE));
                 
-            DFBCHECK(layer_->SetCooperativeLevel(layer_, DLSCL_ADMINISTRATIVE));
             DFBSurfaceDescription s_dsc;
-            DFBDisplayLayerConfig l_dsc;
+            //DFBDisplayLayerConfig l_dsc;
             switch(format_) {
                 case STK_FORMAT_YV12:
                     s_dsc.pixelformat = DSPF_YV12;
-                    l_dsc.pixelformat = DSPF_YV12;
+                    //l_dsc.pixelformat = DSPF_YV12;
                     break;
                 case STK_FORMAT_YUY2:
                     s_dsc.pixelformat = DSPF_YUY2;
-                    l_dsc.pixelformat = DSPF_YUY2;
+                    //l_dsc.pixelformat = DSPF_YUY2;
                     break;
                 default:
                     ERROR("Error unknown image format (" << format << "), assuming YV12");
                     s_dsc.pixelformat = DSPF_YV12;
-                    l_dsc.pixelformat = DSPF_YV12;
+                    //l_dsc.pixelformat = DSPF_YV12;
             }
 
             s_dsc.flags = (DFBSurfaceDescriptionFlags)(DSDESC_CAPS | DSDESC_PIXELFORMAT | 
@@ -88,22 +87,27 @@ namespace stk
             s_dsc.caps =(DFBSurfaceCapabilities)(0);
             s_dsc.width = width;
             s_dsc.height = height;
+            cout << "CREATE YUV SURFACE" << endl;    
             DFBCHECK(dfb_->CreateSurface(dfb_, &s_dsc, &surface_));
 
+            /*
             l_dsc.flags = (DFBDisplayLayerConfigFlags)(DLCONF_WIDTH | DLCONF_HEIGHT | 
                     DLCONF_PIXELFORMAT | DLCONF_OPTIONS);
             l_dsc.width = width;
             l_dsc.height = height;
             l_dsc.options = (DFBDisplayLayerOptions)(0);
+            */
 
+            cout << "TESTING OVERLAY CONFIGURATION" << endl;
+            /*
             DFBDisplayLayerConfigFlags failed;
             int ret = layer_->TestConfiguration(layer_, &l_dsc, &failed );
             if (ret == DFB_UNSUPPORTED) {
-                // FIXME: throw some kind of nasty exception here!
-                ERROR("Error: Unsupported operation");
-                return;
+                throw error_message_exception("TestConfiguration failed while creating DFB Overlay");
             }
+            cout << "SETTING LAYER CONFIGURATION" << endl;    
             DFBCHECK(layer_->SetConfiguration(layer_, &l_dsc));
+            */
         }
 
     public:
@@ -204,9 +208,10 @@ namespace stk
 
         virtual void display(const rectangle& rect)
         {
-            IDirectFBSurface *temp_surface;
-            DFBCHECK(layer_->GetSurface(layer_, &temp_surface));
-            DFBCHECK(surface_->Blit(temp_surface, surface_, NULL, rect.x1(), rect.y1()));
+            cout << "DISPLAY" << endl;
+            IDirectFBSurface *screen;
+            DFBCHECK(layer_->GetSurface(layer_, &screen));
+            DFBCHECK(screen->Blit(screen, surface_, NULL, rect.x1(), rect.y1()));
             //DFBCHECK(surface_->Flip(surface_, NULL, (DFBSurfaceFlipFlags)(0)));
         }
     };
