@@ -57,6 +57,7 @@ namespace stk
             SDL_MUTEX_LOCK;
             SDL_FreeYUVOverlay(overlay_impl_);
             SDL_MUTEX_UNLOCK;
+            INFO("destructor - done");
         }
 
         // inline property methods

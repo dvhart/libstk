@@ -23,8 +23,7 @@ namespace stk
     theme::~theme()
     {}
 
-    theme::ptr theme::get
-        ()
+    theme::ptr theme::get()
     {
         if (!instance_)
             throw error_message_exception("theme::get() - instance_ null, call create() first");
