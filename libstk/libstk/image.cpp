@@ -18,8 +18,11 @@
 #endif
 
 #ifdef HAVE_LIBJPEG
-#include <jpeglib.h>
-#include <setjmp.h>
+extern "C"
+{
+# include <jpeglib.h>
+# include <setjmp.h>
+}
 #endif
 
 #include <iostream>
