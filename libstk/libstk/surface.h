@@ -83,8 +83,13 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<surface> ptr;
 			typedef boost::weak_ptr<surface> weak_ptr;
+	
+		private:
 			
 		protected:
+			surface() { cout << "surface::surface()" << endl; }
+			surface(const rectangle &rect) : rect_(rect) { cout << "surface::surface(rectangle)" << endl; }
+
 			/* direction() returns one of the direction constants defined above.  
 			 * Line drawing routines use it to determine which of the twelve 
 			 * directions to use when drawing the line.  This is needed for both
@@ -133,8 +138,6 @@ namespace stk
 			graphics_context gc_; // stores graphics settings used by draw routines
 
 		public:
-			surface() { cout << "surface::surface()" << endl; }
-			surface(const rectangle &rect) : rect_(rect) { cout << "surface::surface(rectangle)" << endl; }
 			virtual ~surface() { cout << "surface::~surface()" << endl; }
 
 			// inline property methods

@@ -19,9 +19,11 @@ namespace stk
 		private:
 			
 		protected:
+			button(container::ptr parent, std::string label, 
+					int x, int y, int width, int height);
 			
 		public:
-			button(container::ptr parent, std::string label, 
+			static button::ptr create(container::ptr parent, std::string label, 
 					int x, int y, int width, int height);
 			~button();
 

@@ -34,9 +34,10 @@ namespace stk
 			keycode sdl2stk_key(SDLKey sdl_key);
 
 		protected:
+			event_system_sdl();
 			
 		public:
-			event_system_sdl();
+			static event_system_sdl::ptr create();
 			virtual ~event_system_sdl();
 			virtual boost::shared_ptr<stk::event> poll_event();
 	};

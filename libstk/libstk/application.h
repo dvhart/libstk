@@ -33,12 +33,14 @@ namespace stk
 			bool done_;
 			
 		protected:
+			application(surface::ptr surface, 
+			            event_system::ptr event_system);
 			
 		public:
 			/// Constructs a new Application Object
 			/// \param surface Target surface for drawing 
 			/// \param event_system Source for events
-			application(surface::ptr surface, 
+			static application::ptr create(surface::ptr surface, 
 			            event_system::ptr event_system);
 			~application();
 

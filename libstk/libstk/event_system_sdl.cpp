@@ -9,6 +9,12 @@ using std::endl;
 
 namespace stk
 {
+	event_system_sdl::ptr event_system_sdl::create()
+	{
+		event_system_sdl::ptr new_event_system_sdl(new event_system_sdl());
+		return new_event_system_sdl;
+	}
+	
 	event_system_sdl::event_system_sdl()
 	{
 		cout << "event_system_sdl::event_system_sdl()" << endl;

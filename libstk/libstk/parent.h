@@ -18,9 +18,9 @@ namespace stk
 		private:
 			
 		protected:
+			parent() { };
 			
 		public:
-			parent() { };
 			virtual ~parent() { };
 			virtual boost::shared_ptr<widget> focus_next() = 0;
 			virtual boost::shared_ptr<widget> focus_prev() = 0;

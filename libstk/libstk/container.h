@@ -20,10 +20,10 @@ namespace stk
 			std::vector<widget::ptr> children_;
 			
 		protected:
+			container(container::ptr parent);
 			container(parent::ptr parent);
 			
 		public:
-			container(container::ptr parent);
 			~container();
 			virtual bool is_container() { return true; }
 			// FIXME :carter: implement all this

@@ -14,6 +14,14 @@ using std::endl;
 
 namespace stk
 {
+
+	button::ptr button::create(container::ptr parent, std::string label, int x, int y, int w, int h)
+	{
+		button::ptr new_button(new button(parent, label, x, y, w, h));
+		parent->add_child(new_button);
+		return new_button;
+	}
+
 	button::button(boost::shared_ptr<container> parent, std::string label,
 					int x, int y, int width, int height) : widget(parent)
 	{

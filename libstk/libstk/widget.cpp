@@ -27,7 +27,7 @@ namespace stk
 	{
 		cout << "widget::widget(container)" << endl;
 		cout << "widget::widget(container) - parent pointer is " << std::hex << parent.get() << endl;
-		parent->add_child(boost::shared_ptr<widget>(this));
+		//parent->add_child(boost::shared_ptr<widget>(this));
 	}
 
 	widget::widget(boost::shared_ptr<parent> parent) : parent_(parent)

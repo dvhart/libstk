@@ -8,6 +8,7 @@
 
 #include "parent.h"
 #include "keycode.h"
+#include "combiners.h"
 
 namespace stk
 {
@@ -24,6 +25,7 @@ namespace stk
 		private:
 
 		protected:
+			widget(boost::shared_ptr<container> parent);
 			widget(boost::shared_ptr<parent> parent);
 			boost::weak_ptr<parent> parent_;
 			int x_;
@@ -32,7 +34,6 @@ namespace stk
 			int height_;
 			
 		public:
-			widget(boost::shared_ptr<container> parent);
 			virtual ~widget();
 
 			void draw(boost::shared_ptr<stk::surface> surface);
@@ -47,22 +48,28 @@ namespace stk
 			virtual boost::shared_ptr<widget> focus_next();
 			virtual boost::shared_ptr<widget> focus_prev();
 			
-			boost::signal<bool ()> on_focus;
-			boost::signal<bool ()> on_unfocus;
-			boost::signal<bool ()> on_mouse_enter;
-			boost::signal<bool ()> on_mouse_leave;
-			boost::signal<bool (stk::keycode)> on_keydown;
-			boost::signal<bool (stk::keycode)> on_keyup;
+			boost::signal<bool (), combiner::logical_and<bool> > on_focus;
+			boost::signal<bool (), combiner::logical_and<bool> > on_unfocus;
+			boost::signal<bool (), combiner::logical_and<bool> > on_mouse_enter;
+			boost::signal<bool (), combiner::logical_and<bool> > on_mouse_leave;
+			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keydown;
+			boost::signal<bool (stk::keycode), combiner::logical_and<bool> > on_keyup;
 
 			/*
 				 The signals currently all return void, however, it may be useful
 				 to define an AND combiner functor and have all slots return bool.  
 				 Then if any of the slots fail, the signal returns false, otherwise
 				 it returns true.  We might do something like:
-
-				 struct sig_and 
+				 
+				 see combiners.h
+				 
+				 template <typename T>
+				 struct logical_and 
 				 { 
-				   bool operator ()(InputIterator first, InputIterator last) const
+					 typedef T return_type;
+
+					 template <typename InputIterator>
+				   T operator ()(InputIterator first, InputIterator last) const
 				   {
 				     if (first == last) return true; // no connections, so we didn't fail
 				     while (first != last)
@@ -72,7 +79,7 @@ namespace stk
 				     }
 				     return true; // no connections failed
 				   }
-				 }
+				 };
 
 				 boost::signal<bool (), sig_and> sig;
 

@@ -18,6 +18,14 @@ using std::cerr;
 
 namespace stk
 {
+
+	surface_sdl::ptr surface_sdl::create(const rectangle& rect)
+	{
+		surface_sdl::ptr new_surface_sdl(new surface_sdl(rect));
+		return new_surface_sdl;
+	}
+	
+	/*
 	surface_sdl::surface_sdl(SDL_Surface &new_surface)
 	{
 		cout << "surface_sdl::surface_sdl()" << endl;
@@ -26,7 +34,8 @@ namespace stk
 		rect_.w(sdl_surface_->w);
 		rect_.h(sdl_surface_->h);
 	}
-
+	*/
+	
 	surface_sdl::surface_sdl(const rectangle &rect) : surface(rect)
 	{
 		cout << "surface_sdl::surface_sdl()" << endl;	

@@ -11,16 +11,19 @@ using std::endl;
 
 namespace stk
 {
+	
+	state::ptr state::create(application::ptr parent)
+	{
+		state::ptr new_state(new state(parent));
+		parent->add_state(new_state);
+		return new_state;
+	}
 
 	state::state(boost::shared_ptr<application> parent) : 
 		container(boost::shared_static_cast<stk::parent>(parent))
 	{
 		cout << "state::state()" << endl;
 		cout << "state::state() - parent pointer is " << std::hex << parent.get() << endl;
-		state::ptr this_state(this);
-		cout << "***this_state.use_count() = " << this_state.use_count() << endl;
-		cout << "***this_state points to: " << std::hex << this_state.get() << endl;
-		parent->add_state(this_state);
 	}
 
 	state::~state()

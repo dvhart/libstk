@@ -23,6 +23,12 @@ using std::endl;
 namespace stk
 {
 
+	application::ptr application::create(surface::ptr surface, event_system::ptr event_system)
+	{
+		application::ptr new_application(new application(surface, event_system));
+		return new_application;
+	}
+	
 	application::application(surface::ptr surface, event_system::ptr event_system) :
 		surface_(surface), event_system_(event_system), done_(false)
 	{
@@ -80,9 +86,7 @@ namespace stk
 	void application::add_state(state::ptr state)
 	{
 		cout << "application::add_state()" << endl;
-		cout << "\tstate.use_count() = " << state.use_count() << endl;
 		states_.push_back(state);
-		cout << "\tstate.use_count() = " << state.use_count() << endl;
 	}
 
 	// drawable interface

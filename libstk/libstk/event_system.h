@@ -15,9 +15,9 @@ namespace stk
 		private:
 		
 		protected:
+			event_system() { };
 			
 		public:
-			event_system() { };
 			virtual ~event_system() { };
 			virtual event::ptr poll_event() = 0;
 	};

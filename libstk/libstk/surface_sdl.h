@@ -57,9 +57,13 @@ namespace stk
 				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.w(), rect.h() };
 				return sdl_rect;
 			}
+
+		protected:
+			//surface_sdl(SDL_Surface& new_surface);
+			surface_sdl(const rectangle& rect);
+			
 		public:
-			surface_sdl(SDL_Surface &new_surface);
-			surface_sdl(const rectangle &rect);
+			static surface_sdl::ptr create(const rectangle& rect);
 			~surface_sdl();
 
 			SDL_Surface *sdl_surface() const { return sdl_surface_; };
@@ -85,7 +89,7 @@ namespace stk
 			// optimized fill routines
 			// WRITEME...
 			virtual void fill_rect(int x1, int y1, int x2, int y2);
-			virtual void fill_rect(const rectangle &rect);
+			virtual void fill_rect(const rectangle& rect);
 
 			// optimized aa fill routines
 			// WRITEME...

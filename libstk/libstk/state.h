@@ -14,14 +14,16 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<state> ptr;
 			typedef boost::weak_ptr<state> weak_ptr;
+			
 		private:
 
 		protected:
+			state(application::ptr parent);
 			boost::weak_ptr<widget> focused_widget_;
 			
 		public:
-			state(application::ptr parent);
 			virtual ~state();
+			static state::ptr create(application::ptr parent);
 			widget::weak_ptr focused_widget();
 			void focused_widget(widget::weak_ptr value);
 
