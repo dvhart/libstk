@@ -49,12 +49,12 @@ namespace stk
 		// if we don't handle it, pass up to the parent
 		// mstr: broken in Boost_1_30_0 and in general! FIXME
 		// FIXME: only run if not handled ???
-		if (!boost::make_shared(parent_))
+		if (!parent_.lock())
 		{ 
 			// throw something
 			cout << "state::handle_event() - null parent_ pointer" << endl;
 		}
-		make_shared(parent_)->handle_event(e); 
+		parent_.lock()->handle_event(e); 
 	}
 
 	boost::weak_ptr<widget> state::focused_widget()

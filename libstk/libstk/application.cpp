@@ -46,6 +46,7 @@ namespace stk
 		cout << "application::run()" << endl;
 		int retval = 0;
 	
+		// set the current state and focused_widget_
 		if (states_.size() == 0) 
 		{
 			// FIXME: throw something
@@ -56,19 +57,18 @@ namespace stk
 		{
 			current_state_ = *states_.begin();
 			// FIXME: ask current_state_ for its first focusable widget
-			current_widget_ = (*states_.begin())->get_active_child();
-			//hover_widget_ = current_widget_;
+			focused_widget_ = (*states_.begin())->get_active_child();
+			focused_widget_.lock()->focused(true);
 		}
 		
-		// FIXME: we have to do something about all these make_shared calls!!!
-		event::ptr event_(new event(no_event));
+		// FIXME: we have to do something about all these .lock() calls!!!
+		event::ptr event_(new event(no_event)); // should we use create here ?
 		while (!done_)
 		{
-			// FIXME: I don't think we want to do this 30 times a second
-			if (true /*make_shared(current_state_)->redraw()*/)
+			if ( true ) //current_state_.lock()->redraw() )
 			{
-				make_shared(current_state_)->draw(surface_);
-				surface_->flip();
+				current_state_.lock()->draw(surface_);
+				surface_->flip(); // FIXME: provide an update_rect(const rectangle& rect) for performance (use flip if hw accelerated ?)
 			}
 			
 			// handle all available events before redrawing
@@ -78,31 +78,47 @@ namespace stk
 				//cout << "application::run() - event received of type: " << event_->type() << endl;
 
 				// if it's a mouse event, let current_state_ determine who to send it too
-				if (event_->type() == mouse_motion || 
+				if (event_->type() == mouse_motion ||
 						event_->type() == mouse_down ||
 						event_->type() == mouse_up)
 				{
 					mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
-					widget::ptr hover_ptr = boost::make_shared(hover_widget_);
+					
+					// update hover_widget as necessary
+					widget::ptr hover_ptr = hover_widget_.lock();
 					if (!hover_ptr || !hover_ptr->contains(me->x(), me->y()))
 					{
-						// NOTE: only leag widgets can be hover widgets!!!
-						cout << "changing hover_widget_" << endl;
-						if (hover_ptr) {
+						// NOTE: only leaf widgets can be hover widgets!!!
+						//cout << "changing hover_widget_" << endl;
+						if (hover_ptr) 
+						{
 							hover_ptr->hover(false);
 							hover_ptr->active(false);
 						}
-						hover_ptr = boost::make_shared(current_state_)->widget_at(me->x(), me->y());	
+						hover_ptr = current_state_.lock()->widget_at(me->x(), me->y());
 						if (hover_ptr) hover_ptr->hover(true);
 						hover_widget_ = hover_ptr;
 					}
-					boost::make_shared(current_state_)->delegate_mouse_event(me);
+
+					// FIXME: do some error checking on the widget pointers
+					// update focused widget as necessary
+					if (event_->type() == mouse_down && hover_widget_.lock() != focused_widget_.lock())
+					{
+						// FIXME: the container with the previous focused_widget is now out of sync
+						// with the system!!!!!
+						focused_widget_.lock()->focused(false);
+						focused_widget_ = hover_widget_;
+						focused_widget_.lock()->focused(true);
+					}
+					
+					current_state_.lock()->delegate_mouse_event(me);
 				}
 				else
 				{
-					widget::ptr ptr=make_shared(current_widget_);
+					cout << "application::run() - passing event to focused_widget_" << endl;
+					widget::ptr ptr = focused_widget_.lock();
 					if (!ptr)
-						cout << "application::run() - no current widget" << endl;
+						cout << "application::run() - no current widget, pass to state ???" << endl;
 					else
 						ptr->handle_event(event_);
 				}
@@ -140,19 +156,38 @@ namespace stk
 		switch(e->type())
 		{
 			case key_down:
-			{		
+				break;
+			case key_up:
+			{
 				// FIXME :Carter: shouldnt this be a polymorphic cast?
 				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+				//cout << "application::handle_event() - key pressed: " << ke->key() << endl;
 				switch ( ke->key() )
 				{
 					case key_esc:
 						quit();
 						break;
+					case key_tab:
+					case right_arrow:
+					case down_arrow:
+						cout << "application::handle_event() - next pressed" << endl;
+						cout << "\tfocused_widget_: " << focused_widget_.lock().get() << endl;
+						focused_widget_ = focused_widget_.lock()->focus_next();
+						focused_widget_.lock()->focused(true);
+						break;
+					case key_enter:
+						cout << "application::handle_event() - enter pressed" << endl;
+						break;
+					case left_arrow:
+					case up_arrow:
+						cout << "application::handle_event() - prev pressed" << endl;
+						cout << "\tfocused_widget_: " << focused_widget_.lock().get() << endl;
+						focused_widget_ = focused_widget_.lock()->focus_prev();
+						focused_widget_.lock()->focused(true);
+						break;
 				}
 				break;
 			}
-			case key_up:
-				break;
 			case mouse_down:
 				break;
 			case mouse_up:
@@ -162,8 +197,8 @@ namespace stk
 			case event_quit:
 				quit();
 				break;
-			default:
-				cout << "application::handle_event - unknown event" << endl;
+			//default:
+				//cout << "application::handle_event - unknown event" << endl;
 		}
 	}
 	
@@ -171,11 +206,13 @@ namespace stk
 	// FIXME
 	widget::ptr application::focus_next()
 	{ 
+		cout << "application::focus_next()" << endl;
 		return widget::ptr((widget *)((*states_.begin()).get()));
 	}
 	// FIXME
 	widget::ptr application::focus_prev()
 	{ 
+		cout << "application::focus_prev()" << endl;
 		return widget::ptr((widget *)((*states_.begin()).get()));
 	}
 

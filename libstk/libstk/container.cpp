@@ -12,13 +12,15 @@ using std::endl;
 namespace stk
 {
 
-	container::container(boost::shared_ptr<container> parent, const rectangle& rect) : widget(parent, rect)
+	container::container(boost::shared_ptr<container> parent, const rectangle& rect) : 
+		widget(parent, rect), current_child_(-1)
 	{
 		cout << "container::container(container)" << endl;
 		redraw_rect_ = parent->surface()->rect();
 	}
 	
-	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : widget(parent, rect)
+	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : 
+		widget(parent, rect), current_child_(-1)
 	{
 		cout << "container::container(parent)" << endl;
 		redraw_rect_ = parent->surface()->rect();
@@ -83,16 +85,59 @@ namespace stk
 		{
 			if ((*iter)->intersects(redraw_rect_)) redraw_rect_ += (*iter)->rect();
 		}
-		make_shared(parent_)->redraw(redraw_rect_);
+		parent_.lock()->redraw(redraw_rect_);
 	}
 	
+	// FIXME: decide how event handling gets done
+	// when a widget gets an event, it can:
+	//   handle the event
+	//   ask its base class to handle the event
+	//   pass the event to its parent
+	// should it do all three?
+	// the base class and the widget can't both pass to the parent, or we will 
+	//   send the event twice
 	void container::handle_event(event::ptr e)
 	{
 		// handle standard container events
 		// ... FIXME: writeme
 
 		// if we don't handle it, give it to the parent
-		boost::make_shared(parent_)->handle_event(e);
+		//parent_.lock()->handle_event(e);
+	}
+
+	widget::ptr container::focus_next()
+	{
+		if (children_.size() == 0) return parent_.lock()->focus_next();
+		if (current_child_ == -1) current_child_ = 0;
+		else
+		{
+			children_[current_child_]->focused(false);
+			if (++current_child_ == children_.size())
+			{
+				current_child_ = -1;
+				return parent_.lock()->focus_next();
+			}
+		}
+		cout << "container::focus_next() - returning: " << current_child_ << endl;
+		children_[current_child_]->focused(true);
+		return children_[current_child_];
+	}
+	
+	widget::ptr container::focus_prev()
+	{
+		if (children_.size() == 0) return parent_.lock()->focus_prev();
+		if (current_child_ == -1) current_child_ = children_.size() - 1;
+		else
+		{
+			children_[current_child_]->focused(false);
+			if (--current_child_ == -1)
+			{
+				return parent_.lock()->focus_prev();
+			}
+		}
+		cout << "container::focus_prev() - returning: " << current_child_ << endl;
+		children_[current_child_]->focused(true);
+		return children_[current_child_];
 	}
 
 }

@@ -29,7 +29,7 @@ namespace stk
 			
 			// FIXME: what can we do to use state::weak_ptr
 			boost::weak_ptr<state> current_state_;  // FIXME: should this be a weak_ptr ?
-			widget::weak_ptr current_widget_;
+			widget::weak_ptr focused_widget_;
 			widget::weak_ptr hover_widget_; 
 			
 			bool done_;
@@ -67,7 +67,7 @@ namespace stk
 			// do we want to make these available?
 			// or should they be strictly internal to application ? 
 			boost::weak_ptr<state> current_state();
-			widget::weak_ptr current_widget();
+			widget::weak_ptr focused_widget();
 			widget::weak_ptr hover_widget();
 			
 	}; // class application

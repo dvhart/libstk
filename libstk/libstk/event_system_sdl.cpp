@@ -83,6 +83,21 @@ namespace stk
 			case SDLK_RETURN:
 				key = key_enter;
 				break;
+			case SDLK_TAB:
+				key = key_tab;
+				break;
+			case SDLK_LEFT:
+				key = left_arrow;
+				break;
+			case SDLK_RIGHT:
+				key = right_arrow;
+				break;
+			case SDLK_UP:
+				key = up_arrow;
+				break;
+			case SDLK_DOWN:
+				key = down_arrow;
+				break;
 			default:
 				key = key_unknown;
 				break;

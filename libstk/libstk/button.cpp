@@ -47,6 +47,9 @@ namespace stk
 		{
 			case key_up:
 			{
+				// FIXME: where should default actions be taken care of ?
+				// next and prev are currently in App, so activate (enter) should
+				// probably be with them...
 				key_event::ptr ke = boost::shared_static_cast<key_event>(e);
 				switch ( ke->key() )
 				{
@@ -57,7 +60,8 @@ namespace stk
 						break;
 					default:
 						//mstr: broken in boost_1_30_0 FIXME
-						boost::make_shared(parent_)->handle_event(e);
+						cout << "button::handle_event() - handing key_up event up to state";
+						parent_.lock()->handle_event(e);
 				}
 				break; // key_up
 			}

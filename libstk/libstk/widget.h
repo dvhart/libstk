@@ -69,7 +69,7 @@ namespace stk
 			// drawable interface
 			virtual surface::ptr surface(); 
 			virtual void draw(surface::ptr surface);
-			virtual void redraw(const rectangle& rect=rectangle(0,0,0,0));
+			virtual void redraw(const rectangle& rect);
 
 			// parent interface
 			virtual widget::ptr focus_next();

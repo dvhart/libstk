@@ -33,7 +33,7 @@ namespace stk
 			// drawable interface
 			//virtual surface::ptr surface(); 
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
-			//virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
+			//virtual void redraw(bool val, const rectangle& rect);
 	};
 }
 

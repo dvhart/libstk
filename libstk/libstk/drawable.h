@@ -17,7 +17,8 @@ namespace stk
 			drawable() { }
 			virtual ~drawable() { };\
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
-			virtual void redraw(const rectangle& rect=rectangle(0,0,0,0)) { }
+			virtual void redraw(const rectangle& rect) { }
+			virtual bool redraw() { return redraw_rect_.empty(); } // container again...
 			
 	}; // class drawable
 } // namespace stk
