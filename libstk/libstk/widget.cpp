@@ -5,10 +5,10 @@
 #include <iostream>
 #include <string>
 
-#include "libstk/parent.h"
 #include "libstk/application.h"
-#include "libstk/widget.h"
+#include "libstk/component.h"
 #include "libstk/container.h"
+#include "libstk/widget.h"
 
 using std::cout;
 using std::endl;
@@ -16,7 +16,7 @@ using std::endl;
 namespace stk
 {
 
-	widget::widget(parent::ptr parent, const rectangle& rect)
+	widget::widget(component::ptr parent, const rectangle& rect)
 		: parent_(parent), rect_(rect), focusable_(false), 
 	    pressed_(false), focused_(false), hover_(false), tab_(0), frame_(0)
 	{

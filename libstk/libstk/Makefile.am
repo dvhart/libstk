@@ -16,7 +16,7 @@ libstk_la_SOURCES =\
 	key_event.h key_event.cpp \
 	event_handler.h \
 	drawable.h \
-	parent.h \
+	component.h \
 	application.h	application.cpp \
 	widget.h widget.cpp \
 	container.h container.cpp \
@@ -44,7 +44,7 @@ library_include_HEADERS= \
 	combiners.h      exceptions.h        list.h         surface_dfb.h \
 	combo.h          font.h              list_item.h    surface_sdl.h \
 	container.h      font_mngr.h         mouse_event.h  rectangle.h \
-	drawable.h       glyph.h             parent.h       widget.h 	\
+	drawable.h       glyph.h             component.h       widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
 	image_panel.h       

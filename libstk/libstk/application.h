@@ -5,7 +5,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
-#include "libstk/parent.h"
+#include "libstk/component.h"
 #include "libstk/surface.h"
 #include "libstk/widget.h"
 #include "libstk/event_system.h"
@@ -15,7 +15,7 @@ namespace stk
 	class state;
 
 	/// Application class, Runs the Mainloop, dispatches events, etc.
-	class application : public parent
+	class application : public component
 	{
 		public:
 			typedef boost::shared_ptr<application> ptr;

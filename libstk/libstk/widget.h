@@ -6,7 +6,7 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 
-#include "libstk/parent.h"
+#include "libstk/component.h"
 #include "libstk/keycode.h"
 #include "libstk/combiners.h"
 #include "libstk/mouse_event.h"
@@ -17,7 +17,7 @@ namespace stk
 	class container;
 	class state;
 	
-	class widget : public parent
+	class widget : public component
 	{
 		public:
 			typedef boost::shared_ptr<widget> ptr; 
@@ -26,8 +26,8 @@ namespace stk
 		private:
 
 		protected:
-			widget(parent::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
-			parent::weak_ptr parent_;
+			widget(component::ptr parent, const rectangle& rect=rectangle(0,0,0,0));
+			component::weak_ptr parent_;
 			
 			rectangle rect_;
 			
@@ -57,14 +57,14 @@ namespace stk
 			virtual void redraw(const rectangle& rect);
 			/********** END DRAWABLE INTERFACE **********/
 			
-			/********** PARENT INTERFACE **********/
+			/********** COMPONENT INTERFACE **********/
 			/// Return the parent pointer.
-			virtual parent::ptr get_parent() { return parent_.lock(); }
+			virtual component::ptr parent() { return parent_.lock(); }
 			/// Pass call along to parent
 			//virtual widget::ptr focus_next();
 			/// Pass call along to parent
 			//virtual widget::ptr focus_prev();
-			/********** END PARENT INTERFACE **********/
+			/********** END COMPONENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
 			virtual bool is_container() { return false; }

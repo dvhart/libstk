@@ -175,12 +175,12 @@ namespace stk
 					case down_arrow:
 					{
 						cout << "application::handle_event() - next pressed" << endl;
-						parent::weak_ptr prev_focused_widget = focused_widget_;
+						component::weak_ptr prev_focused_widget = focused_widget_;
 						focused_widget_ = prev_focused_widget.lock()->focus_next();
-						parent::weak_ptr temp_widget = prev_focused_widget;
+						component::weak_ptr temp_widget = prev_focused_widget;
 						while (!focused_widget_.lock())
 						{
-							temp_widget = temp_widget.lock()->get_parent();
+							temp_widget = temp_widget.lock()->parent();
 							if (!temp_widget.lock())
 								throw error_message_exception("application::handle_event() - unable to find next focusable widget");
 							focused_widget_ = temp_widget.lock()->focus_next();
@@ -196,12 +196,12 @@ namespace stk
 					case up_arrow:
 					{
 						cout << "application::handle_event() - prev pressed" << endl;
-						parent::weak_ptr prev_focused_widget = focused_widget_;
+						component::weak_ptr prev_focused_widget = focused_widget_;
 						focused_widget_ = focused_widget_.lock()->focus_prev();
-						parent::weak_ptr temp_widget = prev_focused_widget;
+						component::weak_ptr temp_widget = prev_focused_widget;
 						while (!focused_widget_.lock())
 						{
-							temp_widget = temp_widget.lock()->get_parent();
+							temp_widget = temp_widget.lock()->parent();
 							if (!temp_widget.lock())
 								throw error_message_exception("application::handle_event() - unable to find previous focusable widget");
 							focused_widget_ = temp_widget.lock()->focus_prev();
@@ -227,7 +227,7 @@ namespace stk
 		}
 	}
 	
-	// parent interface
+	// component interface
 	// FIXME
 	widget::ptr application::focus_next()
 	{ 

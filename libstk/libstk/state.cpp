@@ -20,7 +20,7 @@ namespace stk
 	}
 
 	state::state(boost::shared_ptr<application> parent) : 
-		container(boost::shared_static_cast<stk::parent>(parent), parent->surface()->rect())
+		container(boost::shared_static_cast<component>(parent), parent->surface()->rect())
 	{
 		cout << "state::state()" << endl;
 		focusable_ = false;

@@ -1,5 +1,5 @@
-#ifndef STK_PARENT_H
-#define STK_PARENT_H
+#ifndef STK_COMPONENT_H
+#define STK_COMPONENT_H
 
 #include <boost/shared_ptr.hpp>
 #include "libstk/event_handler.h"
@@ -12,25 +12,24 @@ namespace stk
 	/// A class declaring the parent interface.
 	/// I think this class is superfluous and its interface should be moved
 	/// down to widget. --dvhart
-	class parent : public event_handler, public drawable
+	class component : public event_handler, public drawable
 	{
 		public:
-			typedef boost::shared_ptr<parent> ptr;
-			typedef boost::weak_ptr<parent> weak_ptr;
+			typedef boost::shared_ptr<component> ptr;
+			typedef boost::weak_ptr<component> weak_ptr;
 
 		private:
 			
 		protected:
-			parent() { };
+			component() { };
 			
 		public:
-			virtual ~parent() { };
+			virtual ~component() { };
 			
 			/********** PARENT INTERFACE **********/
 			/// Return the parent, widgets all return a valid pointer.
 			/// Return an empty pointer here as not all derived classes have parents. 
-			/// FIXME: the parent class should really be called component, then rename this
-			virtual parent::ptr get_parent() { return parent::ptr(); }
+			virtual component::ptr parent() { return component::ptr(); }
 			/// Retrieve the next focusable widget.
 			/// Implemented by container, here we just return an empty pointer.
 			virtual boost::shared_ptr<widget> focus_next() { return boost::shared_ptr<widget>(); }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <boost/weak_ptr.hpp>
 
+#include "libstk/component.h"
 #include "libstk/widget.h"
 #include "libstk/container.h"
 #include "libstk/exceptions.h"
@@ -11,7 +12,7 @@ using std::endl;
 
 namespace stk
 {
-	container::container(boost::shared_ptr<parent> parent, const rectangle& rect) : 
+	container::container(component::ptr parent, const rectangle& rect) : 
 		widget(parent, rect)
 	{
 		cout << "container::container(parent)" << endl;

@@ -21,7 +21,7 @@ namespace stk
 			
 		protected:
 			std::vector<widget::ptr> children_;
-			container(parent::ptr parent, const rectangle& rect);
+			container(component::ptr parent, const rectangle& rect);
 			rectangle redraw_rect_; 
 			
 		public:
