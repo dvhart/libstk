@@ -5,6 +5,7 @@
 #include "state.h"
 #include "container.h"
 #include "application.h"
+#include "theme.h"
 
 using std::cout;
 using std::endl;
@@ -30,6 +31,12 @@ namespace stk
 	{
 	}
 	
+	void state::draw(boost::shared_ptr<stk::surface> surface)
+	{
+		cout << "state::draw()" << endl;
+		theme::instance()->draw_state();
+		container::draw(surface);
+	}
 	// event_handler interface - default back to parent
 	// FIXME: this is currently exactly like widget::handle_event()
 	void state::handle_event(boost::shared_ptr<stk::event> e)

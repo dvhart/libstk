@@ -11,6 +11,7 @@
 #include "event_system_sdl.h"
 #include "surface.h"
 #include "surface_sdl.h"
+#include "theme.h"
 
 using namespace stk;
 using std::cout;
@@ -28,8 +29,11 @@ int main(int argc, char* argv[])
 		
 	// create the surface
 	cout << "test_app - creating surface" << endl;
-	//surface::ptr test_surface(new surface_sdl(rectangle(0, 0, 640, 480)));
 	surface::ptr test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
+	
+	// create the theme
+	cout << "test_app - creating singleton theme" << endl;
+	theme::create(test_surface);
 	
 	// create the event system
 	cout << "test_app - creating event system" << endl;
@@ -47,7 +51,7 @@ int main(int argc, char* argv[])
 	
 	// create a button and bind it to application::quit()
 	cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
-	button::ptr test_button = button::create(test_state, "Test Button", 120, 10, 100, 30);
+	button::ptr test_button = button::create(test_state, "Test Button", rectangle(120, 10, 100, 30));
 	test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
 
 	// check use count prior to run

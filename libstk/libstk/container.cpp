@@ -24,6 +24,16 @@ namespace stk
 	container::~container()
 	{}
 
+	void container::draw(boost::shared_ptr<stk::surface> surface)
+	{
+		cout << "container::draw()" << endl;
+		std::vector<boost::shared_ptr<stk::widget> >::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
+		{
+			(*iter)->draw(surface);
+		}
+	}
+	
 	void container::add(boost::shared_ptr<widget> item)
 	{
 		children_.push_back(item);

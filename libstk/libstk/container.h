@@ -25,7 +25,10 @@ namespace stk
 			
 		public:
 			~container();
-			virtual bool is_container() { return true; }
+
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			
+			//virtual bool is_container() { return true; }
 			// FIXME :carter: implement all this
 			virtual widget::weak_ptr get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 

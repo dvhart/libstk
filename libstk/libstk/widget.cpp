@@ -40,6 +40,11 @@ namespace stk
 	{
 	}
 
+	void widget::draw(boost::shared_ptr<stk::surface> surface)
+	{
+		cout << "widget::draw()" << endl;
+	}
+	
 	// event_handler interface - default back to parent
 	void widget::handle_event(boost::shared_ptr<stk::event> e)
 	{

@@ -28,15 +28,11 @@ namespace stk
 			widget(boost::shared_ptr<container> parent);
 			widget(boost::shared_ptr<parent> parent);
 			boost::weak_ptr<parent> parent_;
-			int x_;
-			int y_;
-			int width_;
-			int height_;
 			
 		public:
 			virtual ~widget();
 
-			void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
 			
 			// event_handler interface
 			virtual void handle_event(boost::shared_ptr<stk::event> e);

@@ -62,6 +62,10 @@ namespace stk
 		event::ptr event_(new event(no_event));
 		while (!done_)
 		{
+			// FIXME: I don't think we want to do this 30 times a second
+			make_shared(current_state_)->draw(surface_);
+			surface_->flip();
+			
 			event_ = event_system_->poll_event();
 			if (event_->type() != no_event)
 			{

@@ -24,6 +24,7 @@ namespace stk
 		public:
 			virtual ~state();
 			static state::ptr create(application::ptr parent);
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
 			widget::weak_ptr focused_widget();
 			void focused_widget(widget::weak_ptr value);
 

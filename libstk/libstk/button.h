@@ -17,15 +17,17 @@ namespace stk
 			typedef boost::weak_ptr<button> weak_ptr;
 
 		private:
+			rectangle rect_;
 			
 		protected:
-			button(container::ptr parent, std::string label, 
-					int x, int y, int width, int height);
+			button(container::ptr parent, std::string label, const rectangle& rect);
 			
 		public:
 			static button::ptr create(container::ptr parent, std::string label, 
-					int x, int y, int width, int height);
-			~button();
+					const rectangle& _rect);
+			virtual ~button();
+
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
 
 			// button signals
 			boost::signal<bool ()> on_click;

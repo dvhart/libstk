@@ -7,7 +7,7 @@
 #include "key_event.h"
 #include "mouse_event.h"
 #include "keycode.h"
-
+#include "theme.h"
 
 using std::cout;
 using std::endl;
@@ -15,15 +15,15 @@ using std::endl;
 namespace stk
 {
 
-	button::ptr button::create(container::ptr parent, std::string label, int x, int y, int w, int h)
+	button::ptr button::create(container::ptr parent, std::string label, const rectangle& rect)
 	{
-		button::ptr new_button(new button(parent, label, x, y, w, h));
+		button::ptr new_button(new button(parent, label, rect));
 		parent->add_child(new_button);
 		return new_button;
 	}
 
 	button::button(boost::shared_ptr<container> parent, std::string label,
-					int x, int y, int width, int height) : widget(parent)
+					const rectangle& rect) : widget(parent), rect_(rect)
 	{
 		cout << "button::button()" << endl;
 	}
@@ -32,6 +32,12 @@ namespace stk
 	{
 	}
 
+	void button::draw(boost::shared_ptr<stk::surface> surface)
+	{
+		cout << "button::draw()" << endl;
+		theme::instance()->draw_button(rect_);
+	}
+			
 	// event_handler interface
 	void button::handle_event(boost::shared_ptr<stk::event> e)
 	{

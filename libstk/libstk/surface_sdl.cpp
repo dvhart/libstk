@@ -25,7 +25,6 @@ namespace stk
 		return new_surface_sdl;
 	}
 	
-	/*
 	surface_sdl::surface_sdl(SDL_Surface &new_surface)
 	{
 		cout << "surface_sdl::surface_sdl()" << endl;
@@ -34,7 +33,6 @@ namespace stk
 		rect_.w(sdl_surface_->w);
 		rect_.h(sdl_surface_->h);
 	}
-	*/
 	
 	surface_sdl::surface_sdl(const rectangle &rect) : surface(rect)
 	{

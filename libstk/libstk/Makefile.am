@@ -24,6 +24,7 @@ libstk_la_SOURCES =\
 	button.h button.cpp \
 	image.h image.cpp \
 	label.h label.cpp \
+	theme.h theme.cpp \
 	exceptions.h 
 	
 bin_PROGRAMS      = test_app
@@ -50,6 +51,7 @@ test_app_SOURCES  = \
 	button.h button.cpp \
 	image.h image.cpp \
 	label.h label.cpp \
+	theme.h theme.cpp \
 	exceptions.h \
 	test_app.cpp
 	

@@ -59,7 +59,7 @@ namespace stk
 			}
 
 		protected:
-			//surface_sdl(SDL_Surface& new_surface);
+			surface_sdl(SDL_Surface& new_surface);
 			surface_sdl(const rectangle& rect);
 			
 		public:
