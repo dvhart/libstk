@@ -1,2 +1,0 @@
-#!/bin/sh
-emacs src/*.h data/themes/mahanna.theme src/*.cpp &
