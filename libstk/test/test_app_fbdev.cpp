@@ -2,7 +2,7 @@
  *    FILENAME: test_app.cpp
  * DESCRIPTION: An example application using Libstk.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 13/Jul/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 14/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -127,29 +127,33 @@ int main(int argc, char* argv[])
         // create a list
         cout << "test_app - creating a list with items" << endl;
         list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));
-        list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia", "armenia");
-        list_item::ptr test_item_2 = list_item::create(test_list, L"Canada", "canada");
-        list_item::ptr test_item_3 = list_item::create(test_list, L"China", "china");
-        list_item::ptr test_item_4 = list_item::create(test_list, L"Germany", "germany");
-        list_item::ptr test_item_5 = list_item::create(test_list, L"Great Britain", 
-                "great_britain");
-        list_item::ptr test_item_6 = list_item::create(test_list, L"Guatemala", "guatemala");
-        list_item::ptr test_item_7 = list_item::create(test_list, L"Honduras", "honduras");
-        list_item::ptr test_item_8 = list_item::create(test_list, L"Japan", "japan");
-        list_item::ptr test_item_9 = list_item::create(test_list, L"Nicaragua", "nicaragua");
-        list_item::ptr test_item_10 = list_item::create(test_list, L"United States", 
-                "united_states");
-        list_item::ptr test_item_11 = list_item::create(test_list, L"Uruguay", "uruguay");
+        list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia");
+        list_item::ptr test_item_2 = list_item::create(test_list, L"Canada");
+        list_item::ptr test_item_3 = list_item::create(test_list, L"China");
+        list_item::ptr test_item_4 = list_item::create(test_list, L"Germany");
+        list_item::ptr test_item_5 = list_item::create(test_list, L"Great Britain");
+        list_item::ptr test_item_6 = list_item::create(test_list, L"Guatemala");
+        list_item::ptr test_item_7 = list_item::create(test_list, L"Honduras");
+        list_item::ptr test_item_8 = list_item::create(test_list, L"Japan");
+        list_item::ptr test_item_9 = list_item::create(test_list, L"Nicaragua");
+        list_item::ptr test_item_10 = list_item::create(test_list, L"United States");
+        list_item::ptr test_item_11 = list_item::create(test_list, L"Uruguay");
 
 		/*
         // create a spinner
         cout << "test_app - creating a spinner with items" << endl;
         spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30));
-        list_item::ptr test_item_20 = list_item::create(test_spinner, L"Apple", "apple");
-        list_item::ptr test_item_21 = list_item::create(test_spinner, L"Banana", "banana");
-        list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange", "orange");
-        list_item::ptr test_item_23 = list_item::create(test_spinner, L"Plum", "plum");
-*/
+        list_item::ptr test_item_20 = list_item::create(test_spinner, L"Apple");
+        list_item::ptr test_item_21 = list_item::create(test_spinner, L"Banana");
+        list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange");
+        list_item::ptr test_item_23 = list_item::create(test_spinner, L"Plum");
+
+        // create a numeric_spinner
+        cout << "test_app - creating a spinner with items" << endl;
+        numeric_spinner::ptr test_numeric_spinner = numeric_spinner::create(test_state, 
+                rectangle(530, 130, 100, 30), 0.0, 10.0, .2, 2);
+		*/
+
         // add a timer (no_op)
         cout << "test_app - creating no_op timer" << endl;
         timer::ptr test_timer = timer::create(5000, true); // every 5 seconds
@@ -157,10 +161,10 @@ int main(int argc, char* argv[])
         test_timer->on_timer.connect(no_op_);
         test_app->add_timer(test_timer);
 
-				// create an edit_box
-				cout << "test_app - creating edit_box" << endl;
-				edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", rectangle(340, 440, 260, 30));
-				test_edit->on_release.connect(&print_edit_box_text);
+        // create an edit_box
+        cout << "test_app - creating edit_box" << endl;
+        edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", rectangle(340, 440, 260, 30));
+        test_edit->on_release.connect(&print_edit_box_text);
 
         // run the program
         retval = test_app->run();
