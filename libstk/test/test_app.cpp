@@ -2,7 +2,7 @@
  *    FILENAME: test_app.cpp
  * DESCRIPTION: An example application using Libstk.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 09/Jun/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 13/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -31,7 +31,7 @@ struct no_op
     }
 };
 
-bool scroll_slot(stk::scroll_model::ptr target,int increment)
+bool scroll_slot(scroll_model::ptr target, int increment)
 {
     std::cout << "Scrolling, old begin=" << target->begin() << " visible area=" 
         << target->vis_size() << " size=" << target->size();
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
                                   rectangle(120, 10, 100, 30));
         // NOTE: we must use test_app.get() here or we inadvertantly create a circular shared_ptr reference
         // and application (and therefore nothing else) won't get destroyed when we exit()!!!
-        test_button->on_release.connect( boost::bind(&stk::application::quit, test_app.get()) );
+        test_button->on_release.connect( boost::bind(&application::quit, test_app.get()) );
         button::ptr test_button2 = button::create(test_state, L"No-Op",
                                    rectangle(240, 10, 100, 30));
 
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
         scroll_left->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), -10));
         button::ptr scroll_right=button::create(test_state,L"Scroll+", rectangle(200, 300, 90, 40));
         scroll_right->on_release.connect(boost::bind(&scroll_slot, test_viewport->h_scroll(), 10));
-        //void scroll(stk::scroll_model::ptr target,int increment)
+        //void scroll(scroll_model::ptr target,int increment)
 
         // create a list
         cout << "test_app - creating a list with items" << endl;

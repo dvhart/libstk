@@ -2,7 +2,7 @@
  *    FILENAME: application.h
  * DESCRIPTION: Libstk application, handles events, timers, and widget drawing.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 23/Feb/2003  LAST UPDATE: 09/Jun/2003
+ *  START DATE: 23/Feb/2003  LAST UPDATE: 13/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -85,7 +85,7 @@ namespace stk
         virtual widget::ptr focus_next();
         virtual widget::ptr focus_prev();
 
-        void current_state(boost::shared_ptr<stk::state> new_cur_state);
+        bool current_state(boost::shared_ptr<stk::state> new_cur_state);
         boost::shared_ptr<stk::state> current_state() const;
 
     }

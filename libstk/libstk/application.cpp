@@ -2,7 +2,7 @@
  *    FILENAME: application.cpp
  * DESCRIPTION: Application class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 13/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -292,10 +292,12 @@ namespace stk
         cout << "application::focus_prev()" << endl;
         return current_state_.lock()->focus_last();
     }
-    void application::current_state(state::ptr new_cur_state)
+    bool application::current_state(state::ptr new_cur_state)
     {
+        ///\todo check if this state exists in our list, else through exception, return false,  or add it
         current_state_ = new_cur_state;
         new_cur_state->redraw(new_cur_state->rect());
+        return true;
     }
 
     state::ptr application::current_state() const
