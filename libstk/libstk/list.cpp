@@ -144,10 +144,11 @@ namespace stk
         {
             items_.erase(items_.begin()+index);
 
-            // adjust the rectangles of all the rects after index
-            v_scroll_->size(item->rect().y2());
-            for (int i = index; i < items_.size(); i++)
+            // Regenerate Item positionen
+            v_scroll_->size(0);
+            for (int i = 0; i < items_.size(); i++)
             {
+                list_item::ptr item = items_.at(i);
                 item->rect(rectangle(0, v_scroll_->size(), width(), items_[i]->height()));
                 v_scroll_->size(v_scroll_->size()+items_[i]->height());
             }
