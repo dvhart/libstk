@@ -7,7 +7,6 @@ surface::lock - do we return a format, or always 32 bit RGBA.  If always rgba,
 
 TASKS (Some duplicated items here and below)
 ============================================
-Axe pointless bool returns in API and create a bind_return syntax
 Spinner - (AUTOCOMPLETE, NO EDIT)
 Template list_item for users to derive from
 Purge all magic numbers
@@ -30,7 +29,6 @@ IR support (IRDA / generic serial / lirc) ?
 Document all existing classes / APIs
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion
-Video Panel - more discussion needed
 
 COMPLETED TASKS
 ===============
@@ -47,6 +45,8 @@ dvhart: Added libstk to freshmeat
 dvhart: Converted all output to new logger
 carter: Image (png loader, own surface, blit)
 dvhart: added multiselect to list
+dvhart: added override_return for bool(void) signals (still need support for one argument signals)
+dvhart: added xine_panel (some memory management work still needed)
 
 DOCUMENTATION
 =============

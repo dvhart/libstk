@@ -1,3 +1,330 @@
+2003-09-08 04:49  carter
+
+	* libstk/: application.cpp, container.cpp: Added Additional Debug
+	output for Tracing Redrawing Problems.	Fixed Redrawing Problems
+	affecting the redraw Performance.
+
+2003-09-08 04:48  carter
+
+	* libstk/: surface_fbdev.cpp, surface_impl.h: Fixed surface FBdev
+	(No offscreen surfaces/Blitting yet) Customised Debug output for
+	tracing redrawing problems
+
+2003-09-08 04:45  carter
+
+	* libstk/: spreadsheet.cpp, spreadsheet.h, tribal_theme.cpp: Added
+	preliminary Spreadsheet Widget and Fixed drawing code of state in
+	the tribal theme
+
+2003-09-08 04:43  carter
+
+	* libstk/: rectangle.cpp, rectangle.h: Documented all member
+	functions of Rectangle.  Added Intersection member Function.
+
+2003-09-08 01:33  carter
+
+	* libstk/Makefile.am: Compile the C wrapper only if XINE is
+	configured
+
+2003-09-08 01:15  carter
+
+	* libstk/stk.h: Fixed a bug introduced by darren (Always including
+	XINE even if it is not configured in!)
+
+2003-09-07 09:47  carter
+
+	* libstk/surface_fbdev.cpp: Initial Fixes in the behaviour of
+	surface_fbdev
+
+2003-09-07 09:43  carter
+
+	* doc/: Doxyfile, doxygen_dummies.h: Slightly Improved Doxygen's
+	Output by including Dummy Templates for Common STL vector templates
+
+2003-09-06 23:18  dvhart
+
+	* libstk/xine_panel.cpp: implemented more xine_panel methods
+
+2003-09-06 18:46  dvhart
+
+	* configure.in, libstk/Makefile.am, libstk/xine_panel.cpp,
+	libstk/xine_panel.h, test/xine_test.cpp: new xine configuration
+	setup, update xine_panel API, xine code moved from xine_test to the
+	xine_panel widget, xine_test now has some media controls
+
+2003-09-06 11:07  dvhart
+
+	* libstk/: overlay.h, overlay_sdl.h, sdl_data.h, surface_impl.h,
+	surface_sdl.cpp: added SDL_MUTEX_LOCK/UNLOCK and lock/unlock
+	wrappers to surface_sdl and overlay_sdl, removed the lock/unlock
+	wrappers from surface_impl
+
+2003-09-05 12:26  dvhart
+
+	* README: updated readme
+
+2003-09-04 22:59  dvhart
+
+	* libstk/: overlay_sdl.h, sdl_data.cpp, sdl_data.h, surface_impl.h,
+	surface_sdl.cpp, surface_sdl.h: using boost recursive scoped lock
+	for sdl mutex now, still buggy, not complete
+
+2003-09-03 03:06  carter
+
+	* libstk/surface_dfb.cpp: Fixed Transparency Issues
+
+2003-09-03 03:05  carter
+
+	* libstk/event_producer_elotouch.cpp: Changed the Default
+	Calibration Values to fit my Screen ;)
+
+2003-08-23 10:36  dvhart
+
+	* TODO, libstk/overlay.h, libstk/overlay_sdl.h,
+	libstk/posix_time.cpp, libstk/sdl_data.cpp, libstk/sdl_data.h,
+	libstk/surface_dfb.cpp, libstk/surface_sdl.cpp,
+	libstk/time_value.h, libstk/timer.cpp, test/Makefile.am,
+	test/hello_world.cpp, test/test_app.cpp, test/timer_test.cpp,
+	test/xine_test.cpp: ugly hack to allow stable xine movies with SDL
+	in X, added timer_test, fixed timer subtraction bug (sometimes the
+	cur time_value is less than the prev one)
+
+2003-08-09 11:13  dvhart
+
+	* TODO, libstk/list.cpp, libstk/list.h, libstk/spinner.cpp,
+	libstk/spinner.h, libstk/tribal_theme.cpp: Fixed a buf in list
+	where the display wasn't updated on up/down arrow if 0 was   the
+	current index lists may now have multiple selections, and
+	selection() returns a vector of   list_items (the list::selected
+	methods have been removed from list, but   added to spinner for
+	now)
+
+2003-08-09 07:49  dvhart
+
+	* TODO, libstk/Makefile.am, libstk/application.cpp,
+	libstk/color_manager.cpp, libstk/container.cpp,
+	libstk/edit_box.cpp, libstk/event_producer_elotouch.cpp,
+	libstk/event_system.cpp, libstk/image.cpp, libstk/label.cpp,
+	libstk/logging.cpp, libstk/mouse_event.cpp, libstk/overlay.h,
+	libstk/overlay_dfb.h, libstk/overlay_sdl.h, libstk/state.cpp,
+	libstk/stk_c_wrapper.cpp, libstk/surface.h, libstk/surface_dfb.cpp,
+	libstk/surface_dfb.h, libstk/surface_fbdev.cpp,
+	libstk/surface_fbdev.h, libstk/surface_impl.h,
+	libstk/surface_sdl.cpp, libstk/surface_sdl.h, libstk/widget.cpp,
+	test/hydra.cpp, test/test_app.cpp, test/xine_test.cpp: Converted
+	all output to new logger, Added lock(void) to the surfaces, Removed
+	the ugly hack in surface_sdl that locked the surface on every call
+	to,   put_pixel and get_pixel Fixed focus_next problem in
+	container, container::focused() now returns true   if the container
+	itself is focused (as of course it should :-) ),
+
+2003-08-08 13:31  dvhart
+
+	* libstk/: surface_dfb.cpp, surface_sdl.cpp, tribal_theme.cpp:
+	fixed directfb surface drawing problems
+
+2003-08-08 11:51  dvhart
+
+	* libstk/: surface_dfb.cpp, surface_sdl.cpp: partial fix of
+	directfb offset, the list int test_app and image blit is still
+	wrong
+
+2003-08-07 17:39  dvhart
+
+	* TODO, libstk/surface_sdl.cpp: TODO update, primitive locking in
+	surface_sdl
+
+2003-08-07 16:35  dvhart
+
+	* TODO, libstk/surface.h, libstk/surface_sdl.cpp,
+	libstk/surface_sdl.h: sdl surface clipping now sets the
+	SDL_ClipRect so blitting is also clipped
+
+2003-08-07 15:26  dvhart
+
+	* libstk/: container.cpp, image.cpp, list.cpp, rectangle.cpp,
+	rectangle.h, surface.h, surface_impl.h, surface_sdl.cpp,
+	tribal_theme.cpp: SDL image blits work (with ugly locking hack
+	still in get/put pixel), widgets are now created relative to their
+	parent\!, container sets the offset before drawing each child so
+	*::draw routines don't have to
+
+2003-08-07 12:30  dvhart
+
+	* libstk/image.cpp, libstk/image.h, libstk/image_panel.cpp,
+	libstk/sdl_data.cpp, libstk/surface_impl.h, libstk/surface_sdl.cpp,
+	libstk/surface_sdl.h, test/test_app.cpp: start of fixing the sdl
+	surface, draw_image now has an ugly red square for testing, will go
+	away soon
+
+2003-08-07 08:02  dvhart
+
+	* TODO: updated TODO
+
+2003-08-06 14:23  dvhart
+
+	* source_header.txt, libstk/aa_filter.h, libstk/application.cpp,
+	libstk/application.h, libstk/backend_dfb.cpp, libstk/backend_dfb.h,
+	libstk/button.cpp, libstk/button.h, libstk/color_manager.cpp,
+	libstk/color_manager.h, libstk/combiners.h, libstk/combo.cpp,
+	libstk/combo.h, libstk/component.h, libstk/container.cpp,
+	libstk/container.h, libstk/drawable.h, libstk/edge.h,
+	libstk/edit_box.cpp, libstk/edit_box.h, libstk/event.h,
+	libstk/event_handler.h, libstk/event_producer.h,
+	libstk/event_producer_elotouch.cpp,
+	libstk/event_producer_elotouch.h, libstk/event_producer_sdl.cpp,
+	libstk/event_producer_sdl.h, libstk/event_system.cpp,
+	libstk/event_system.h, libstk/exceptions.h, libstk/font.cpp,
+	libstk/font.h, libstk/font_manager.cpp, libstk/font_manager.h,
+	libstk/glyph.cpp, libstk/glyph.h, libstk/graphics_context.h,
+	libstk/hotkey.h, libstk/image.cpp, libstk/image.h,
+	libstk/image_panel.cpp, libstk/image_panel.h, libstk/key_event.cpp,
+	libstk/key_event.h, libstk/keycode.h, libstk/label.cpp,
+	libstk/label.h, libstk/list.cpp, libstk/list.h,
+	libstk/list_item.cpp, libstk/list_item.h, libstk/logging.cpp,
+	libstk/logging.h, libstk/mouse_event.cpp, libstk/mouse_event.h,
+	libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
+	libstk/overlay.h, libstk/overlay_dfb.h, libstk/overlay_sdl.h,
+	libstk/point.h, libstk/posix_time.cpp, libstk/posix_time.h,
+	libstk/progress.cpp, libstk/progress.h, libstk/rectangle.cpp,
+	libstk/rectangle.h, libstk/scroll_box.cpp, libstk/scroll_box.h,
+	libstk/scroll_model.cpp, libstk/scroll_model.h,
+	libstk/sdl_data.cpp, libstk/sdl_data.h, libstk/spinner.cpp,
+	libstk/spinner.h, libstk/state.cpp, libstk/state.h, libstk/stk.h,
+	libstk/stk_types.h, libstk/surface.h, libstk/surface_dfb.cpp,
+	libstk/surface_dfb.h, libstk/surface_fbdev.cpp,
+	libstk/surface_fbdev.h, libstk/surface_impl.h,
+	libstk/surface_sdl.cpp, libstk/surface_sdl.h, libstk/theme.cpp,
+	libstk/theme.h, libstk/time_value.h, libstk/timer.cpp,
+	libstk/timer.h, libstk/tribal_theme.cpp, libstk/tribal_theme.h,
+	libstk/viewport.cpp, libstk/viewport.h, libstk/widget.cpp,
+	libstk/widget.h, libstk/xine_panel.cpp, libstk/xine_panel.h,
+	test/hello_world.cpp, test/hydra.cpp, test/surface_bm.cpp,
+	test/test_app.cpp, test/xine_test.cpp: updated header files,
+	changed german names to use international characters, now all use
+	cvs keywords, all are now in the 100 char width format
+
+2003-08-06 13:31  dvhart
+
+	* libstk/: aa_filter.h, application.cpp, application.h,
+	backend_dfb.cpp, backend_dfb.h, button.cpp, button.h,
+	color_manager.cpp, color_manager.h, combiners.h, combo.cpp,
+	combo.h, component.h, container.cpp, container.h, drawable.h,
+	edge.h, edit_box.cpp, edit_box.h, event.h, event_handler.h,
+	event_producer.h, event_producer_elotouch.cpp,
+	event_producer_elotouch.h, event_producer_sdl.cpp,
+	event_producer_sdl.h, event_system.cpp, event_system.h,
+	exceptions.h, font.cpp, font.h, font_manager.cpp, font_manager.h,
+	glyph.cpp, glyph.h, graphics_context.h, hotkey.h, image.cpp,
+	image.h, image_panel.cpp, image_panel.h, key_event.cpp,
+	key_event.h, keycode.h, label.cpp, label.h, list.cpp, list.h,
+	list_item.cpp, list_item.h, logging.cpp, logging.h,
+	mouse_event.cpp, mouse_event.h, numeric_spinner.cpp,
+	numeric_spinner.h, overlay.h, overlay_dfb.h, overlay_sdl.h,
+	point.h, posix_time.cpp, posix_time.h, progress.cpp, progress.h,
+	rectangle.cpp, rectangle.h, scroll_box.cpp, scroll_box.h,
+	scroll_model.cpp, scroll_model.h, sdl_data.cpp, sdl_data.h,
+	spinner.cpp, spinner.h, state.cpp, state.h, stk.h, stk_types.h,
+	surface.h, surface_dfb.cpp, surface_dfb.h, surface_fbdev.cpp,
+	surface_fbdev.h, surface_impl.h, surface_sdl.cpp, surface_sdl.h,
+	theme.cpp, theme.h, time_value.h, timer.cpp, timer.h,
+	tribal_theme.cpp, tribal_theme.h, viewport.cpp, viewport.h,
+	widget.cpp, widget.h, xine_panel.cpp, xine_panel.h: new headers in
+	all sources using cvs keywords
+
+2003-08-06 13:29  dvhart
+
+	* libstk/widget.h: new header test... again
+
+2003-08-06 13:24  dvhart
+
+	* libstk/widget.h: testing new cvs keyword headers
+
+2003-08-06 10:47  dvhart
+
+	* TODO, libstk/button.h, libstk/component.h, libstk/container.h,
+	libstk/image_panel.h, libstk/list.cpp, libstk/list.h,
+	libstk/list_item.cpp, libstk/list_item.h, libstk/progress.h,
+	libstk/spinner.h, libstk/tribal_theme.cpp, libstk/viewport.h:
+	rename PARENT INTERFACE to COMPONENT INTERFACE in remaining header
+	files removed fixed height from list_item, affects list, list_item,
+	theme surface_dfb has some problems with offset now
+
+2003-08-05 13:06  dvhart
+
+	* README, autogen.sh, libstk/font.cpp, libstk/logging.cpp,
+	libstk/logging.h, libstk/surface_sdl.cpp, test/hello_world.cpp:
+	updated readme and included libtoolize in the autogen script
+
+2003-08-02 12:30  dvhart
+
+	* libstk/tribal_theme.cpp: theme updates
+
+2003-08-02 11:32  dvhart
+
+	* libstk/: button.cpp, edit_box.cpp, event_producer_sdl.cpp,
+	font_manager.cpp, hotkey.h, image_panel.cpp, list.cpp,
+	list_item.cpp, numeric_spinner.cpp, progress.cpp, sdl_data.cpp,
+	spinner.cpp, surface.h, tribal_theme.cpp, viewport.cpp, widget.cpp,
+	widget.h: sdl event producer now uses unicode (only works for
+	keydown events though), converted many cout lines to INFO
+
+2003-08-01 19:10  dvhart
+
+	* test/: hello_world.cpp, test_app.cpp: usage msg update to test
+	apps
+
+2003-08-01 19:02  dvhart
+
+	* configure.in: backend added to surface backend config --enable
+	command comments
+
+2003-08-01 18:40  dvhart
+
+	* test/: hello_world.cpp, test_app.cpp: directfb configure fixes
+
+2003-08-01 17:00  dvhart
+
+	* libstk/font.cpp, test/hydra.cpp: font msg typo and a catch(...)
+	block in hydra
+
+2003-08-01 16:48  dvhart
+
+	* test/: hello_world.cpp, hydra.cpp: fixed an output msg in
+	hello_world and added cout default logging to hydra
+
+2003-08-01 16:39  dvhart
+
+	* configure.in: use the pkg-config macros in configure.in
+
+2003-08-01 15:42  dvhart
+
+	* Makefile.am, configure.in, libstk/Makefile.am: updated
+	configure.in to test for the presence of the boost headers and libs
+
+2003-07-31 22:45  dvhart
+
+	* configure.in, libstk_old.tar.gz, libstk/Makefile.am,
+	test/Makefile.am: freetype and libpng configuration through
+	pkg-config
+
+2003-07-31 00:37  dvhart
+
+	* TODO, libstk.pws, libstk/application.cpp, libstk/button.cpp,
+	libstk/edit_box.cpp, libstk/event_producer_sdl.cpp,
+	libstk/event_producer_sdl.h, libstk/key_event.cpp,
+	libstk/key_event.h, libstk/list.cpp, libstk/numeric_spinner.cpp,
+	libstk/overlay_sdl.h, libstk/sdl_data.cpp, libstk/spinner.cpp,
+	libstk/surface_fbdev.cpp, libstk/surface_fbdev.h,
+	libstk/surface_sdl.cpp, libstk/surface_sdl.h, libstk/widget.cpp,
+	test/Makefile.am, test/hello_world.cpp, test/hello_world_fbdev.cpp,
+	test/test_app.cpp, test/xine_test.cpp: move toward new key_event
+	using character()
+
+2003-07-28 11:15  dvhart
+
+	* ChangeLog, TODO: changelog and todo update
+
 2003-07-28 11:11  dvhart
 
 	* libstk/: application.cpp, edit_box.cpp, edit_box.h,
