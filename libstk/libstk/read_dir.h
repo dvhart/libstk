@@ -38,10 +38,6 @@ namespace stk
             long inode() const { return dir_entry_.d_ino; }
             unsigned char type() const { return dir_entry_.d_type; }
             std::string filename() const { return std::string(dir_entry_.d_name); }
-            bool operator < (const dir_entry& rhs) const
-            {
-                return filename() < rhs.filename();
-            }
 
         protected:
             dir_entry(dirent *d)
@@ -50,6 +46,14 @@ namespace stk
             }
 
             dirent dir_entry_;
+    };
+    
+    struct dir_entry_lt
+    {
+        bool operator () (const dir_entry::ptr lhs, const dir_entry::ptr rhs) const
+        {
+            return lhs->filename() < rhs->filename();
+        }
     };
 
     std::vector<dir_entry::ptr> read_dir(const std::string& dirname, const std::string& select="");

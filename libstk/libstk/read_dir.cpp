@@ -15,6 +15,7 @@
 namespace stk
 {
 
+
     std::vector<dir_entry::ptr> read_dir(const std::string& dirname, const std::string& select)
     {
         DIR * fontdir;
@@ -42,7 +43,8 @@ namespace stk
                 selected_files.push_back(*dir_iter);
         }
 
-        sort(selected_files.begin(), selected_files.end());
+        dir_entry_lt lt;
+        sort(selected_files.begin(), selected_files.end(), lt);
 
         return selected_files;
     }
