@@ -62,7 +62,7 @@ namespace stk
 
     void viewport::redraw()
     {
-        container::redraw(rect());
+        container::redraw(widget::rect());
     }
 
     void viewport::handle_event(event::ptr e)
@@ -77,7 +77,7 @@ namespace stk
         rectangle rect;
 
         // Fixme, this should really be using for each shouldnt it?
-        for(unsigned int i = 0; i < children_.size(); i++)
+        for (unsigned int i = 0; i < children_.size(); i++)
             rect += children_[i]->rect();
 
         h_scroll()->size(rect.x2());

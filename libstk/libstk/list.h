@@ -46,6 +46,16 @@ namespace stk
         static list::ptr create(container::ptr parent, const rectangle& rect);
         virtual ~list();
 
+        /********** RECTANGLE INTERFACE **********/
+        // FIXME: every scrollable widget has to do this... is there another way?
+        virtual void rect(const rectangle& rect) 
+        {
+            widget::rect(rect);
+            h_scroll_->vis_size(width());
+            v_scroll_->vis_size(height());
+        }
+        /********** END RECTANGLE INTERFACE **********/
+
         /********** EVENT HANDLER INTERFACE **********/
         virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/

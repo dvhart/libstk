@@ -166,7 +166,7 @@ namespace stk
             gc->line_color(color_manager::get()->get_color(
                         color_properties(outline_color_pressed_str, surface)));
         }
-        else if(focused_)
+        else if (focused_)
         {
             gc->fill_color(color_manager::get()->get_color(
                         color_properties(fill_color_focused_str, surface)));
@@ -299,7 +299,7 @@ namespace stk
         surface->offset(surface->offset() + point(0, v_scroll_->begin()));
 
         // outline the list box
-        rectangle outline_rect = rect(); outline_rect.position(0, 0);
+        rectangle outline_rect = widget::rect(); outline_rect.position(0, 0);
         surface->draw_rect(outline_rect);
     }
 
@@ -456,7 +456,7 @@ namespace stk
     {
         rectangle interior_rect(3, 3, width()-6, height()-6);
         rectangle outline_rect(1, 1, width()-2, height()-2);
-        rectangle pressed_rect = rect(); pressed_rect.position(0, 0);
+        rectangle pressed_rect = widget::rect(); pressed_rect.position(0, 0);
         graphics_context::ptr gc = graphics_context::create();
 
         if (focused_)

@@ -58,7 +58,7 @@ namespace stk
             }
             if ((unsigned int)current_ < items_.size()) // Crashes otherwise
                 items_[current_]->selected(true);
-            redraw(rect());
+            redraw(widget::rect());
             return;
             break;
         }
@@ -83,7 +83,7 @@ namespace stk
                     on_update_selection();
                 }
                 else current_ = 0;
-                redraw(rect());
+                redraw(widget::rect());
                 return;
                 break;
             case key_downarrow:
@@ -99,13 +99,13 @@ namespace stk
                     }
                 }
                 else current_ = items_.size()-1;
-                redraw(rect());
+                redraw(widget::rect());
                 return;
                 break;
             case key_enter:
                 if (!(ke->modlist() & mod_control)) select_none();
                 items_[current_]->selected(!items_[current_]->selected());
-                redraw(rect());
+                redraw(widget::rect());
                 return;
                 break;
             default:
@@ -119,23 +119,36 @@ namespace stk
     int list::add_item(list_item::ptr item)
     {
         items_.push_back(item);
+        // FIXME: we might as well retirn items_.size()-1 (since we always add it to the end)
         int index = std::find(items_.begin(), items_.end(), item) - items_.begin();
 
-        // FIXME: the y1() should be removed from the item's y1 position, allowing
-        //        the surface offset to handle that (children x,y relative to parent)
+        // assign the new item a rectangle (this depends on us adding item to the end)
         item->rect(rectangle(0, v_scroll_->size(), width(), item->height()));
         
         // adjust scroll properties
-        //  FIXME: implement horiz scrolling for lists
-        //if (h_scroll_->size() < item->width()) h_scroll_->size(item->width());
+        if (h_scroll_->size() < item->width()) h_scroll_->size(item->width());
         v_scroll_->size(v_scroll_->size()+item->height());
-        redraw(rect());
+        redraw(widget::rect());
         return index;
     }
     void list::remove_item(int index)
     {
-        items_.erase(items_.begin()+index);
-        redraw(rect());
+        list_item::ptr item = items_.at(index);
+        
+        if (item)
+        {
+            items_.erase(items_.begin()+index);
+
+            // adjust the rectangles of all the rects after index
+            v_scroll_->size(item->rect().y2());
+            for (int i = index; i < items_.size(); i++)
+            {
+                item->rect(rectangle(0, v_scroll_->size(), width(), items_[i]->height()));
+                v_scroll_->size(v_scroll_->size()+items_[i]->height());
+            }
+
+            redraw(widget::rect());
+        }
     }
 
     std::vector<list_item::ptr> list::selection()
@@ -166,18 +179,18 @@ namespace stk
     void list::clear()
     {
         items_.clear();
-        redraw(rect());
+        redraw(widget::rect());
     }
     int list::size()
     {
         return items_.size();
     }
     
-    void list::v_scroll(scroll_model::ptr value)
+    void list::v_scroll(scroll_model::ptr model)
     {
         v_scroll_con_.disconnect();
-        v_scroll_ = value;
-//        v_scroll_con_=value->on_change.connect(boost::bind(&widget::redraw,(widget*)this,rect(),NULL,false));
+        v_scroll_ = model;
+        //v_scroll_con_ = model->on_change.connect(boost::bind(&widget::redraw, (widget*)this, widget::rect(), NULL, false));
         v_scroll_->size(height());
         v_scroll_->vis_size(height());
     }

@@ -44,6 +44,16 @@ namespace stk
         static viewport::ptr create(container::ptr parent, const rectangle& rect);
         virtual ~viewport();
 
+        /********** RECTANGLE INTERFACE **********/
+        // FIXME: every scrollable widget has to do this... is there another way?
+        virtual void rect(const rectangle& rect) 
+        {
+            widget::rect(rect);
+            h_scroll_->vis_size(width());
+            v_scroll_->vis_size(height());
+        }
+        /********** END RECTANGLE INTERFACE **********/
+
         /********** DRAWABLE INTERFACE **********/
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
         /********** END DRAWABLE INTERFACE **********/

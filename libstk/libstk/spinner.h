@@ -66,7 +66,7 @@ namespace stk
         ///\todo perhaps this belongs in list ?
         boost::signal<bool (), combiner::logical_or<bool> > on_change;
         bool wrap() const { return wrap_; }
-        void wrap(bool val) { wrap_ = val; redraw(rect()); }
+        void wrap(bool val) { wrap_ = val; redraw(widget::rect()); }
 
         virtual unsigned int selected(); /// returns the index of the current_ item
         virtual void selected(unsigned int index); /// sets the index of the current_ item

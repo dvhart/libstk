@@ -175,8 +175,8 @@ int main(int argc, char* argv[])
         // create a list
         INFO("app - creating a list with items");
         scroll_box::ptr list_scroll_box = scroll_box::create(test_state, 
-                rectangle(370, 90, 150, 200), true, true);
-        list::ptr test_list = list::create(list_scroll_box, rectangle());
+                rectangle(370, 90, 150, 200), true, false);
+        list::ptr test_list = list::create(list_scroll_box, rectangle()/*0, 0, 130, 180)*/);
         list_item::ptr test_item_1 = list_item::create(test_list, L"Armenia");
         list_item::ptr test_item_2 = list_item::create(test_list, L"Canada");
         list_item::ptr test_item_3 = list_item::create(test_list, L"China");
