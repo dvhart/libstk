@@ -14,13 +14,12 @@ pixmapsdir = $(datadir)/libstk/pixmaps
 pixmaps_DATA = pixmaps/tribal_bg.png
 
 fontsdir = $(datadir)/libstk/fonts
-fonts_DATA = fonts/FreeSans.ttf            fonts/FreeSerifBold.ttf \
-             fonts/FreeMono.ttf            fonts/FreeSansBold.ttf \
-             fonts/FreeSerifBoldItalic.ttf fonts/FreeMonoBold.ttf \
-             fonts/FreeSansBoldOblique.ttf fonts/FreeSerifItalic.ttf \
-             fonts/FreeMonoBoldOblique.ttf fonts/FreeSansOblique.ttf \
-             fonts/FreeMonoOblique.ttf     fonts/FreeSerif.ttf \
-             fonts/copyright               fonts/GPL
+fonts_DATA = fonts/VeraIt.ttf     fonts/VeraMono.ttf \
+             fonts/Vera.ttf       fonts/VeraMoBI.ttf \
+	     fonts/VeraSe.ttf     fonts/VeraBI.ttf \
+             fonts/VeraMoBd.ttf   fonts/VeraSeBd.ttf \
+             fonts/VeraBd.ttf     fonts/VeraMoIt.ttf \
+             fonts/copyright
 
 EXTRA_DIST=autogen.sh $(pixmaps_DATA) $(fonts_DATA)
 
