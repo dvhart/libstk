@@ -119,9 +119,21 @@ namespace stk
 		}
 	}
 
-	void surface_sdl::flip()
+	void surface_sdl::update(const rectangle& u_rect)
 	{
-		SDL_Flip(sdl_surface_);
+		if (u_rect.empty())
+		{
+			//cout << "surface_sdl::update() - updating entire screen" << endl;
+			SDL_Flip(sdl_surface_); // FIXME: this is hw accelerated if supported, 
+			                        // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
+															// would it be faster to call SDL_Flip regardless of u_rect
+															// if we have accelerated hw ?
+		}
+		else
+		{
+			//cout << "surface_sdl::update() - updating the rect: " << u_rect << endl;
+			SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
+		}
 	}
 	
 	// optimized pixel routines

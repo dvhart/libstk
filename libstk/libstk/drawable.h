@@ -11,14 +11,17 @@ namespace stk
 		private:
 			
 		protected:
-			rectangle redraw_rect_; // only containers really need it...
+			// FIXME: only container needs this
+			rectangle redraw_rect_; 
 			
 		public:
 			drawable() { }
-			virtual ~drawable() { };\
+			virtual ~drawable() { };
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
 			virtual void redraw(const rectangle& rect) { }
-			virtual bool redraw() { return redraw_rect_.empty(); } // container again...
+
+			// FIXME these are only needed in container, should we provide them both ???
+			virtual rectangle redraw_rect() { return redraw_rect_; } 
 			
 	}; // class drawable
 } // namespace stk

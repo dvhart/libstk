@@ -65,10 +65,11 @@ namespace stk
 		event::ptr event_(new event(no_event)); // should we use create here ?
 		while (!done_)
 		{
-			if ( true ) //current_state_.lock()->redraw() )
+			rectangle t_rect = current_state_.lock()->redraw_rect();
+			if ( !t_rect.empty() ) 
 			{
 				current_state_.lock()->draw(surface_);
-				surface_->flip(); // FIXME: provide an update_rect(const rectangle& rect) for performance (use flip if hw accelerated ?)
+				surface_->update( t_rect );
 			}
 			
 			// handle all available events before redrawing
@@ -207,13 +208,13 @@ namespace stk
 	widget::ptr application::focus_next()
 	{ 
 		cout << "application::focus_next()" << endl;
-		return widget::ptr((widget *)((*states_.begin()).get()));
+		return *states_.begin();
 	}
 	// FIXME
 	widget::ptr application::focus_prev()
 	{ 
 		cout << "application::focus_prev()" << endl;
-		return widget::ptr((widget *)((*states_.begin()).get()));
+		return *states_.begin();
 	}
 
 	state::weak_ptr application::current_state()

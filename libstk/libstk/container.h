@@ -38,7 +38,6 @@ namespace stk
 			// FIXME: perhaps ALL our classes should use the same construction, ie rectangle::create
 			// and we should always pass object::ptr's, consistency is appreciated in an API --dvhart
 			virtual void redraw(const rectangle& rect);
-			virtual bool redraw() { return redraw_rect_.empty(); } // FIXME: why doesn't state get this from drawable ?
 			/********** END DRAWABLE INTERFACE **********/
 
 			/********** PARENT INTERFACE **********/

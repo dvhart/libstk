@@ -107,6 +107,7 @@ namespace stk
 
 	widget::ptr container::focus_next()
 	{
+		cout << "container::focus_next()" << endl;
 		if (children_.size() == 0) return parent_.lock()->focus_next();
 		if (current_child_ == -1) current_child_ = 0;
 		else
@@ -118,7 +119,7 @@ namespace stk
 				return parent_.lock()->focus_next();
 			}
 		}
-		cout << "container::focus_next() - returning: " << current_child_ << endl;
+		cout << "\treturning: " << current_child_ << endl;
 		children_[current_child_]->focused(true);
 		return children_[current_child_];
 	}

@@ -80,7 +80,7 @@ namespace stk
 			virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
 			virtual void unlock();
 			virtual void blit(surface &dst_surface);
-			virtual void flip();
+			virtual void update(const rectangle& u_rect=rectangle());
 			
 			// optimized drawing routines
 			// WRITEME...
