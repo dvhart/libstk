@@ -73,11 +73,12 @@ namespace stk
 		redraw_rect_ = rectangle();
 	}
 
-	void container::redraw(bool val, const rectangle& rect=rectangle(0,0,0,0))
+	void container::redraw(bool val, const rectangle& rect)
 	{
 		redraw_ = val;
 		redraw_rect_ += rect;
 		// augment redraw_rect_ if it intersects any other children_
+		std::vector<widget::ptr>::iterator iter = children_.begin();
 		for (iter; iter != children_.end(); iter++)
 		{
 			if ((*iter)->intersects(redraw_rect_)) redraw_rect_ += (*iter)->rect();
