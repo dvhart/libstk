@@ -32,7 +32,7 @@
 namespace stk
 {
 
-widget::widget(boost::weak_ptr<state> state,boost::weak_ptr<container> parent):parent_state_(state),parent_(parent)
+widget::widget(boost::weak_ptr<container> parent):parent_(parent)
 {
 }
 	

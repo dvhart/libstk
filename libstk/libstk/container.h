@@ -19,7 +19,7 @@ public:
 	virtual bool is_container() { return true;} 
 	virtual boost::weak_ptr<widget> get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *childs_.begin(); }// default behaviour for a container is to switch into the FIRST child first 
-    container(boost::weak_ptr<state> state,boost::weak_ptr<container> parent);
+    container(boost::weak_ptr<container> parent);
     ~container();
 
     void add(Twidget_ptr item);

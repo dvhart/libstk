@@ -35,7 +35,7 @@ class widget
 {
 public:
 	virtual bool is_container() { return false;} 
-	widget(boost::weak_ptr<state> state,boost::weak_ptr<container> parent);
+	widget(boost::weak_ptr<container> parent);
 	~widget();
 
     /* DEMO , not really implemented (CHANGE TO BOOST::SIGNALS!)
@@ -46,7 +46,6 @@ public:
     SigC::Signal2<bool, widget&, SDLKey> on_keypress;  // bool sig(widget&, SDLKey)
 	*/
 protected:
-    boost::weak_ptr<state> parent_state_;
     boost::weak_ptr<container> parent_;
 };
 

@@ -5,7 +5,7 @@ namespace stk
 {
 	
 
-container::container(boost::weak_ptr<state> state,boost::weak_ptr<container> parent) : widget(state,parent)
+container::container(boost::weak_ptr<container> parent) : widget(parent)
 {}
 
 container::~container()
