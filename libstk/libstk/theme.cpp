@@ -36,7 +36,8 @@ namespace stk
 		surface_->fill_rect(rect);	
 	}
 	
-	void theme::draw_button(rectangle& rect, bool active, bool focused, bool hover)
+	void theme::draw_button(const rectangle& rect, const std::wstring& label,
+		bool active, bool focused, bool hover)
 	{
 		//cout << "theme::draw_button()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
@@ -72,9 +73,16 @@ namespace stk
 			surface_->fill_rect(rect);
 			surface_->draw_rect(rect);
 		}
+		
+		// draw the label for all states
+		stk::font::ptr the_font = font::create("Arial.ttf", 25);
+		gc->font(the_font);
+		gc->font_fill_color(surface_->gen_color(127, 0, 80, 0xff));
+		surface_->gc(gc);
+		surface_->draw_text(rect, label);
 	}
 
-	void theme::draw_label(rectangle& rect, std::wstring text)
+	void theme::draw_label(const rectangle& rect, const std::wstring& text)
 	{
 		//cout << "theme::draw_label()" << endl;
 		graphics_context::ptr gc = graphics_context::create();

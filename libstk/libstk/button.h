@@ -19,10 +19,11 @@ namespace stk
 		private:
 			
 		protected:
-			button(container::ptr parent, std::string label, const rectangle& rect);
+			button(container::ptr parent, std::wstring label, const rectangle& rect);
+			std::wstring label_;
 			
 		public:
-			static button::ptr create(container::ptr parent, std::string label, 
+			static button::ptr create(container::ptr parent, const std::wstring label, 
 					const rectangle& _rect);
 			virtual ~button();
 

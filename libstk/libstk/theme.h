@@ -26,8 +26,9 @@ namespace stk
 			virtual ~theme();
 			static stk::theme::ptr instance();
 			virtual void draw_state(const rectangle& rect);
-			virtual void draw_button(rectangle& rect, bool active, bool focused, bool hover);
-			virtual void draw_label(rectangle& rect, std::wstring text);
+			virtual void draw_button(const rectangle& rect, const std::wstring& label, 
+				bool active, bool focused, bool hover);
+			virtual void draw_label(const rectangle& rect, const std::wstring& text);
 	};
 }
 

@@ -63,10 +63,15 @@ int main(int argc, char* argv[])
 	
 	// create a button and bind it to application::quit()
 	cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
-	button::ptr test_button = button::create(test_state, "Test Button", rectangle(140, 10, 100, 30));
-	button::ptr test_button2 = button::create(test_state, "Test Button", rectangle(250, 10, 100, 30));
-	label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"), rectangle(10, 10, 120, 30));
-	label::ptr test_label2 = label::create(test_state, std::wstring(L"WAW.T.T,!!/..\\i!~lI112340!@$#!@#$)(*&"), rectangle(10, 80, 320, 30));
+	button::ptr test_button = button::create(test_state, L"Quit", 
+		rectangle(140, 10, 100, 30));
+	button::ptr test_button2 = button::create(test_state, L"No-Op", 
+		rectangle(250, 10, 100, 30));
+	label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"), 
+		rectangle(10, 10, 120, 30));
+	label::ptr test_label2 = label::create(test_state, 
+		std::wstring(L"WAW.T.T,!!/..\\i!~lI112340!@$#!@#$)(*&"), 
+			rectangle(10, 80, 320, 30));
 	
 	test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
 	test_button2->on_click.connect( no_op() );

@@ -169,12 +169,12 @@ namespace stk
 	// FIXME
 	widget::ptr application::focus_next()
 	{ 
-		return boost::shared_ptr<widget>((widget *)((*states_.begin()).get()));
+		return widget::ptr((widget *)((*states_.begin()).get()));
 	}
 	// FIXME
 	widget::ptr application::focus_prev()
 	{ 
-		return boost::shared_ptr<widget>((widget *)((*states_.begin()).get()));
+		return widget::ptr((widget *)((*states_.begin()).get()));
 	}
 
 	state::weak_ptr application::current_state()
