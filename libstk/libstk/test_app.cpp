@@ -18,11 +18,11 @@ void main(int argc, char* argv[])
 
 	// create the main state
 	State test_state(new state(test_app));
-	Label test_label(new label(test_state), "Test Label", 10, 10, 100, 30);
-	Button test_button(new button(test_state), "Test Button", 120, 10, 100, 30);
+	Label test_label(new label(test_state, "Test Label", 10, 10, 100, 30));
+	Button test_button(new button(test_state, "Test Button", 120, 10, 100, 30));
 	// bind button click to quit
 	// do we need to dereference test_app ?
-	test_button->on_click.connect(boost::bind(&stk::app::quit, test_app); 
+	test_button->on_click.connect(boost::bind(&stk::application::quit, test_app)); 
 
 	// run the program
 	return test_app->run();
