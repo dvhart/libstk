@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
         cout << "creating the xine video port" << endl;
         vo_port = xine_open_video_driver(xine, "stk", XINE_VISUAL_TYPE_FB, (void *)xp.get());
         cout << "creating the xine audio port" << endl;
-        ao_port = xine_open_audio_driver(xine , "esd", NULL);
+        ao_port = xine_open_audio_driver(xine , "auto", NULL);
 
         cout << "creating the xine stream" << endl;
         stream = xine_stream_new(xine, ao_port, vo_port);
