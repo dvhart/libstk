@@ -9,6 +9,8 @@
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
+#ifndef OVERRIDE_RETURN_H
+#define OVERRIDE_RETURN-H
 
 template<class F, class V> 
 class override_return_t
@@ -57,3 +59,4 @@ operator,(boost::_bi::bind_t<R, F, L> const & f, V const & v)
 
 // end override return syntax
 
+#endif
