@@ -10,4 +10,151 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
+#include "surface_dfb.h"
+#include "backend_dfb.h"
+#include "logging.h"
+#include <iostream>
 
+namespace stk
+{
+    surface_dfb::surface_dfb(boost::optional<rectangle> rect,bool primary)
+    {
+        DFBSurfaceDescription dsc;
+        memset(&dsc,0,sizeof(dsc));
+
+        bool rect_specified=rect;
+        
+        dsc.flags = DSDESC_CAPS;
+        
+        dsc.caps = primary?DSCAPS_PRIMARY:(DFBSurfaceCapabilities)0;
+
+        if(rect_specified)
+        {
+            dsc.flags = (DFBSurfaceDescriptionFlags)( dsc.flags | DSDESC_WIDTH | DSDESC_HEIGHT);
+            dsc.width=(*rect).width();
+            dsc.height=(*rect).height();
+        }
+        
+        
+        backend_handle=backend_dfb::get();
+        IDirectFB* dfb=backend_handle->get_interface();
+        
+        dfb->CreateSurface(dfb,&dsc,&surface);
+        rect_=*rect;
+        
+        INFO("surface create");
+    }
+    surface_dfb::~surface_dfb()
+    {
+        INFO("~surface_dfb");
+        surface->Release(surface);
+    }
+    surface_dfb::ptr surface_dfb::create()
+    {
+        surface_dfb::ptr res(new surface_dfb(boost::optional<rectangle>(),true));
+        return res;
+    }
+    surface_dfb::ptr surface_dfb::create(const rectangle& rect, bool primary)
+    {
+        surface_dfb::ptr res(new surface_dfb(boost::optional<rectangle>(rect),primary));
+        return res;
+    }
+    
+    void surface_dfb::put_pixel(int x, int y, color clr)
+    {
+//        std::cerr << "H";
+        surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,clr&0xff);
+        surface->DrawLine(surface,x,y,x,y); // hack *ggg*
+    }
+    
+    void surface_dfb::put_pixel_aa(int x, int y, double distance, color clr)
+    {
+//        clr&=~0xff;
+        
+        put_pixel(x,y,clr);
+    }
+    
+    void surface_dfb::put_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
+    {
+        clr &=~0xff;
+        clr|=alpha_a;
+        if(alpha_a>230)
+            put_pixel(x,y,clr);
+    }
+    
+    color surface_dfb::get_pixel(int x, int y) const
+    {
+    }
+    
+    color surface_dfb::gen_color(const std::string &str_color) const
+    {
+        byte r, g, b, a;
+        unsigned long int_color = strtoll(str_color.c_str(), NULL, 16);
+        return int_color;
+    }
+    
+    color surface_dfb::gen_color(byte r, byte g, byte b, byte a) const
+    {
+        return r << 24 | g << 16 | b << 8 | 0xff /*a*/;
+    }
+    
+    void surface_dfb::lock(rectangle &rect, int flags, color** buf, int &stride)
+    {
+    }
+    
+    void surface_dfb::unlock()
+    {
+    }
+    
+    void surface_dfb::update(const rectangle& u_rect)
+    {
+        DFBRegion region;
+        region.x1=u_rect.x1();
+        region.y1=u_rect.y1();
+        region.x2=u_rect.x2();
+        region.y2=u_rect.y2();
+        
+        surface->Flip(surface,&region,DSFLIP_BLIT);
+        
+    }
+    
+
+    // overridden drawing routines
+    void surface_dfb::blit(stk::surface &dst_surface)
+    {
+    }
+    
+    void surface_dfb::fill_rect(int x1, int y1, int x2, int y2)
+    {
+        color clr = gc_->fill_color();
+        surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,0xff);
+        surface->FillRectangle(surface,x1,y1,x2-x1,y2-y1);
+        
+            
+        std::cerr << "Fillrect" << std::endl;
+    }
+    
+    void surface_dfb::fill_rect(const rectangle& rect)
+    {
+        fill_rect(rect.x1(),rect.y1(),rect.x2(),rect.y2());
+    }
+    void surface_dfb::draw_line(int x1, int y1, int x2, int y2)
+    {
+        color clr = gc_->line_color();
+        surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,0xff);
+        surface->DrawLine(surface,x1,y1,x2-x1,y2-y1);
+        
+    }
+    void surface_dfb::draw_rect(const rectangle& rect)
+    {
+        draw_rect(rect.x1(),rect.y1(),rect.x2(),rect.y2());
+    }
+    void surface_dfb::draw_rect(int x1, int y1, int x2, int y2)
+    {
+        color clr = gc_->line_color();
+        surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,0xff);
+        surface->DrawRectangle(surface,x1,y1,x2-x1,y2-y1);
+        
+    }
+    
+}
