@@ -48,6 +48,7 @@ dvhart: added override_return for bool(void) signals (still need support for one
 dvhart: added xine_panel (some memory management work still needed)
 cslade: added a text area, and another test app (test_area) to test the text_area
 dvhart: scroll_box added
+cslade: added jpeg support to images, you need libjpeg62-dev
 
 DOCUMENTATION
 =============

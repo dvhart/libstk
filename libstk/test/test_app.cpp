@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
                 rectangle(10, 90, 350, 200), scroll_box::automatic, scroll_box::automatic);
         image_panel::ptr test_image_panel = image_panel::create(test_scroll_box, 
                 rectangle(0, 0, 384, 256), image::create(test_scroll_box->surface(), 
-                    "parrots.png"));
+                    "parrotsg.jpg"));
         
         button::ptr scroll_left = button::create(test_state,L"Scroll-", 
 			rectangle(100, 300, 90, 40));

@@ -16,9 +16,85 @@
 #include <boost/weak_ptr.hpp>
 #include <libstk/rectangle.h>
 #include <libstk/surface.h>
+#include <libstk/exceptions.h>
+
+
 
 namespace stk
 {
+    
+   
+    class image_exception: exception
+    {
+    private:
+        std::string message_;
+        /*image_exception()
+        { } // what is this for ?*/
+    public:
+        image_exception()
+        {}
+        image_exception(const std::string& message)
+        {
+            message_ = message;
+        }
+        virtual ~image_exception()
+        { }
+        virtual std::string what() const
+        {
+            return message_;
+        }
+        void message(const std::string& message)
+        {
+            message_=message;
+        }
+    };
+
+    class image_file_exception : image_exception
+    {
+    private:
+        std::string message_;
+        image_file_exception()
+        { } // what is this for ?
+    public:
+        image_file_exception(const std::string& message)
+        {
+            message_ = message;
+        }
+        virtual ~image_file_exception()
+        { }
+        virtual std::string what() const
+        {
+            return message_;
+        }
+        void message(const std::string& message)
+        {
+            message_=message;
+        }
+    };
+
+    class image_read_exception : image_exception
+    {
+    private:
+        std::string message_;
+        image_read_exception()
+        { } // what is this for ?
+    public:
+        image_read_exception(const std::string& message)
+        {
+            message_ = message;
+        }
+        virtual ~image_read_exception()
+        { }
+        virtual std::string what() const
+        {
+            return message_;
+        }
+        void message(const std::string& message)
+        {
+            message_=message;
+        }
+    };
+    
     class image
     {
     public:
@@ -42,6 +118,7 @@ namespace stk
         /********** IMAGE INTERFACE **********/
         void load_ppmx(const std::string filename);
         void load_png(const std::string filename);
+        void load_jpeg(const std::string filename);
         
         //color pixel(int x, int y) const; // \FIXME Needed anymore if we are using offscreen surfaces?
         //void pixel(int x, int y, color new_color); // \FIXME Needed anymore if we are using offscreen surfaces?
