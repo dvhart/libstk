@@ -76,7 +76,10 @@ namespace stk
     {
         std::vector<boost::shared_ptr<stk::widget> >::iterator iter;
         iter = std::find(children_.begin(), children_.end(), item);
-        children_.erase(iter);
+        if(iter!=children_.end())
+            children_.erase(iter);
+        else
+            WARN("Cannot remove item from container, it is not a child!");
     }
 
     void container::draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child)
