@@ -62,6 +62,7 @@ namespace stk
     void progress::label(const std::wstring& label) 
     { 
         format_label_ = label; 
+        build_label();
         redraw(rect());
     }
 
