@@ -417,16 +417,20 @@ namespace stk
     int text_area::region(int x, int y)
     {
         rectangle text_rect = text_rectangle();
-        if (x-x1() < text_rect.x1() || x-x1() > text_rect.x2() ||
-                y-y1() < text_rect.y1() || y-y1() > text_rect.y2())//clicked outside of text area
+        if (x-rect_.x1() < text_rect.x1() || x-rect_.x1() > text_rect.x2() ||
+                y-rect_.y1() < text_rect.y1() || y-rect_.y1() > text_rect.y2())
+        {
+            //clicked outside of text area
             return selection_end_; //make it be the last position
+        }
         //map coordinates
         int adjusted_y = v_scroll_->begin()+y;
         int adjusted_x = h_scroll_->begin()+x;
 
         font::ptr font = get_font();
         // pass through text to find the position
-        int ypos = (y1()+text_rect.y1()) + (font->height()+line_spacing()); // the start of y plus a line
+        // the start of y plus a line
+        int ypos = (rect_.y1()+text_rect.y1()) + (font->height()+line_spacing()); 
         std::wstring line_str;
         //intialize next_line
         rest_of_text_ = text_;
@@ -438,8 +442,8 @@ namespace stk
             // if is on this line
             if (adjusted_y <= ypos) 
             {
-                return num_chars + font->chars_in_rect(rectangle(text_rect.x1(), 0, adjusted_x-x1()-text_rect.x1(), 
-                            font->height()+6), line_str);
+                return num_chars + font->chars_in_rect(rectangle(text_rect.x1(), 0, 
+                            adjusted_x-rect_.x1()-text_rect.x1(), font->height()+6), line_str);
             }
             num_chars+=line_str.length()+new_line_;
             // move to next line
@@ -531,7 +535,7 @@ namespace stk
                     return point(xpos,ypos);
                 }
             }
-            num_chars+=line_str.length()+new_line_;
+            num_chars += line_str.length()+new_line_;
             line_num++;
         }
         //if at very end of the text
@@ -593,14 +597,14 @@ namespace stk
     {
         v_scroll_con_.disconnect();
         v_scroll_ = model;
-        v_scroll_ -> size(height());
+        v_scroll_->size(height());
         resize();
     }
     void text_area::h_scroll(scroll_model::ptr model)
     {
         h_scroll_con_.disconnect();
         h_scroll_ = model;
-        h_scroll_ -> size(height());
+        h_scroll_->size(height());
         resize();
     }
 }

@@ -69,18 +69,23 @@ unsigned char* stk_overlay_pixels(overlay_t* overlay, int index)
 // xine_panel methods
 int stk_xine_panel_x(xine_panel_t* xine_panel)
 {
-    return reinterpret_cast<stk::xine_panel*>(xine_panel)->x1();
+    INFO("stk_xine_panel_x returning: " <<  reinterpret_cast<stk::xine_panel*>(xine_panel)->rect().x1());
+
+    return reinterpret_cast<stk::xine_panel*>(xine_panel)->rect().x1();
 }
 int stk_xine_panel_y(xine_panel_t* xine_panel)
 {
-    return reinterpret_cast<stk::xine_panel*>(xine_panel)->y1();
+    INFO("stk_xine_panel_y returning: " <<  reinterpret_cast<stk::xine_panel*>(xine_panel)->rect().y1());
+    return reinterpret_cast<stk::xine_panel*>(xine_panel)->rect().y1();
 }
 int stk_xine_panel_width(xine_panel_t* xine_panel)
 {
+    INFO("stk_xine_panel_width returning: " <<  reinterpret_cast<stk::xine_panel*>(xine_panel)->width());
     return reinterpret_cast<stk::xine_panel*>(xine_panel)->width();
 }
 int stk_xine_panel_height(xine_panel_t* xine_panel)
 {
+    INFO("stk_xine_panel_height returning: " <<  reinterpret_cast<stk::xine_panel*>(xine_panel)->height());
     return reinterpret_cast<stk::xine_panel*>(xine_panel)->height();
 }
 surface_t* stk_xine_panel_surface(xine_panel_t* xine_panel)

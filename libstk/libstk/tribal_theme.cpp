@@ -383,9 +383,9 @@ namespace stk
     }
     int numeric_spinner::region(int x, int y)
     {
-        if (x > x2()-15)
+        if (x > rect_.x2()-15)
         {
-            if (y > y1()+(height()/2)) return DOWN_ARROW;
+            if (y > rect_.y1()+(height()/2)) return DOWN_ARROW;
             else return UP_ARROW;
         }
         return LABEL;
@@ -513,9 +513,9 @@ namespace stk
     }
     int spinner::region(int x, int y)
     {
-        if (x > x2()-15)
+        if (x > rect_.x2()-15)
         {
-            if (y > y1()+(height()/2)) return DOWN_ARROW;
+            if (y > rect_.y1()+(height()/2)) return DOWN_ARROW;
             else return UP_ARROW;
         }
         return LABEL;
@@ -616,7 +616,7 @@ namespace stk
     int edit_box::region(int x, int y)
     {
         font::ptr Vera_18 = font_manager::get()->get_font(font_properties("Vera",18));
-        return Vera_18->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
+        return Vera_18->chars_in_rect(rectangle(3, 0, x-rect_.x1(), height()), text_);
     }
 
     void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)

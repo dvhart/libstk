@@ -292,19 +292,18 @@ namespace stk
     {
         if (fullscreen_)
         {
-            p1_ = restore_rect_.p1();
-            p2_ = restore_rect_.p2();
+            INFO("restore from fullscreen");
+            rect(restore_rect_);
             redraw(surface()->rect()); 
         }
         else
         {
-            restore_rect_.p1(p1());
-            restore_rect_.p2(p2());
-            rectangle surface_rect = surface()->rect();
-            p1_ = surface_rect.p1();
-            p2_ = surface_rect.p2();
+            INFO("going full screen");
+            restore_rect_ = rect_;
+            rect(surface()->rect());
         }
         fullscreen_ = !fullscreen_;
+        INFO("sending gui drawable changed");
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
     }

@@ -1,3 +1,5 @@
+consider using point for x,y in mouse event, then rewrite clumsy position().x() code in container
+
 MEETING TOPICS
 ==============
 surface::lock - do we return a format, or always 32 bit RGBA.  If always rgba,

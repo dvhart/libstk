@@ -41,7 +41,7 @@ namespace stk
         widget::ptr active_widget_ptr = active_widget.lock();
         if (active_widget_ptr)
         {
-            return active_widget_ptr->widget_at(x-x1(), y-y1());
+            return active_widget_ptr->widget_at(x-rect_.x1(), y-rect_.y1());
         }
         return widget::ptr();
     } 
@@ -50,7 +50,7 @@ namespace stk
         widget::ptr active_widget_ptr = active_widget.lock();
         if (active_widget_ptr)
         {
-            mouse_event::ptr me_to_child(new mouse_event(me->x()-x1(), me->y()-y1(),
+            mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(),
                         me->button(), me->type()));
             return active_widget_ptr->delegate_mouse_event(me_to_child);
         }
@@ -67,9 +67,9 @@ namespace stk
             redraw_rect.position(redraw_rect.position()-position());
             redraw_rect = redraw_rect.intersection(rect());
             
-            surface->offset(surface->offset() + active_widget_ptr->p1());
+            surface->offset(surface->offset() + active_widget_ptr->position());
             active_widget_ptr->draw(surface, clip_rect);
-            surface->offset(surface->offset() - active_widget_ptr->p1());
+            surface->offset(surface->offset() - active_widget_ptr->position());
         }
     }
 

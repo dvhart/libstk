@@ -45,16 +45,16 @@ namespace stk
         redraw(rect());
     }
 
-    void progress::position(int val)
+    void progress::fill(int val)
     {
-        position_ = MAX(0, MIN(range_, val));
+        fill_ = MAX(0, MIN(range_, val));
         build_label();
         redraw(rect());
     }
 
     void progress::percent(float val)
     {
-        position_ = MAX(0, (int)(range_*MIN(1.0, val)));
+        fill_ = MAX(0, (int)(range_*MIN(1.0, val)));
         build_label();
         redraw(rect());
     }
@@ -62,7 +62,7 @@ namespace stk
     void progress::build_label()
     {
         // %p, percent_*100 to two decimal places, followed by %
-        // %d, position
+        // %d, fill
         // %f, percent_ to four decimal places
 
         std::wstringstream num_stream;
@@ -82,17 +82,17 @@ namespace stk
         num_stream << percent();
         std::wstring decimal_str = num_stream.str();
 
-        // get the position string
+        // get the fill string
         num_stream.str(L"");
         num_stream.unsetf(std::ios::showpoint);
-        num_stream << position_;
-        std::wstring position_str = num_stream.str();
+        num_stream << fill_;
+        std::wstring fill_str = num_stream.str();
 
         int index;
         while ((index = label_.find(L"%p")) >= 0)
             label_.replace(index, 2, percent_str);
         while ((index = label_.find(L"%d")) >= 0)
-            label_.replace(index, 2, position_str);
+            label_.replace(index, 2, fill_str);
         while ((index = label_.find(L"%f")) >= 0)
             label_.replace(index, 2, decimal_str);
     }

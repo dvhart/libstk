@@ -86,7 +86,7 @@ namespace stk
                         for (current_ = 0; current_ < (int)items_.size(); current_++)
                         {
                             y += items_[current_]->height();
-                            if (y > me->y()-y1()+v_scroll_->begin()) break;
+                            if (y > me->y()-rect_.y1()+v_scroll_->begin()) break;
                         }
                         on_update_current();
                         if ((unsigned int)current_ < items_.size()) // Crashes otherwise

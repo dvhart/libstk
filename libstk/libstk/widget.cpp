@@ -26,11 +26,9 @@
 namespace stk
 {
 
-    widget::widget(const rectangle& rect) : 
-        focusable_(false), frame_(0), pressed_(false), focused_(false), hover_(false)
+    widget::widget(const rectangle& rect) : rect_(rect), focusable_(false), frame_(0), 
+    pressed_(false), focused_(false), hover_(false)
     {
-        // FIXME: this is an ugly kludge
-        p1_ = rect.p1(); p2_ = rect.p2();
         INFO("constructor");
     }
 
@@ -42,61 +40,9 @@ namespace stk
     // wrap the rectangle interface, emitting on_resize as appropriate
     void widget::rect(const rectangle& rect) 
     { 
-        INFO("widget::rect(): " << (rectangle)*this << " <-- " << rect);
-        if (*this != rect)
+        if (rect_ != rect)
         {
-            INFO("  setting rect");
-            rectangle::p1(rect.p1()); 
-            rectangle::p2(rect.p2());
-            INFO("  emitting on_resize()");
-            on_resize();
-        }
-    }
-    void widget::p1(const point&  p)
-    {
-        if (p1_ != p)
-        {
-            rectangle::p1(p);
-            on_resize();
-        }
-    }
-    void widget::p2(const point&  p)
-    {
-        if (p2_ != p)
-        {
-            rectangle::p2(p);
-            on_resize();
-        }
-    }
-    void widget::x1(int val)
-    {
-        if (x1() != val)
-        {
-            rectangle::x1(val);
-            on_resize();
-        }
-    }
-    void widget::y1(int val)
-    {
-        if (y1() != val)
-        {
-            rectangle::y1(val);
-            on_resize();
-        }
-    }
-    void widget::x2(int val)
-    {
-        if (x2() != val)
-        {
-            rectangle::x2(val);
-            on_resize();
-        }
-    }
-    void widget::y2(int val)
-    {
-        if (y2() != val)
-        {
-            rectangle::y2(val);
+            rect_ = rect;
             on_resize();
         }
     }
@@ -104,7 +50,7 @@ namespace stk
     {
         if (width() != val)
         {
-            rectangle::width(val);
+            rect_.width(val);
             on_resize();
         }
     }
@@ -112,19 +58,15 @@ namespace stk
     {
         if (height() != val)
         {
-            rectangle::height(val);
+            rect_.height(val);
             on_resize();
         }
     }
-    void widget::position(int x, int y)
-    {
-        position(point(x, y));
-    }
     void widget::position(const point& p)
     {
-        if (p1_ != p)
+        if (rect_.p1() != p)
         {
-            rectangle::position(p);
+            rect_.position(p);
             on_resize();
         }
     }
@@ -199,7 +141,7 @@ namespace stk
 
     widget::ptr widget::widget_at(int x, int y)
     {
-        if (contains(x, y))
+        if (rect_.contains(x, y))
             return shared_from_this();
         else 
             return widget::ptr();

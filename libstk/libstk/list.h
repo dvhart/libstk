@@ -36,8 +36,8 @@ namespace stk
                 list::ptr new_list(new list(rect));
                 new_list->on_resize.connect(boost::function<bool()>(
                             (boost::bind(&scrollable::update_vis_sizes, new_list.get(), 
-                                         boost::bind(&rectangle::height, new_list.get()), 
-                                         boost::bind(&rectangle::width, new_list.get())), true)));
+                                         boost::bind(&widget::height, new_list.get()), 
+                                         boost::bind(&widget::width, new_list.get())), true)));
                 new_list->parent(parent);
                 return new_list;
             }

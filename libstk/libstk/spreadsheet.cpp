@@ -26,7 +26,8 @@ namespace stk
             {
                 if(/*!column->cells.empty() && */ cell != column->cells.end())
                 {
-                    (*cell)->draw(surface,rectangle(current_x_pos+x1(), current_y_pos+y1(), 
+                    (*cell)->draw(surface,rectangle(current_x_pos+rect_.x1(), 
+                                                    current_y_pos+rect_.y1(), 
                                                     row->width, column->height));
                     cell++;
                 }
@@ -50,7 +51,7 @@ namespace stk
             mouse_event::ptr me = boost::dynamic_pointer_cast<mouse_event>(e);
             if (!me)
                 ERROR("Invalid event received in spreadsheet");        
-            int xpos = x1();
+            int xpos = rect_.x1();
             row_iterator row;
             for (row = rows_begin(); row != rows_end(); row++)
             {
@@ -58,7 +59,7 @@ namespace stk
                     break;
                 xpos += row->width;
             }
-            int ypos = y1();
+            int ypos = rect_.y1();
             column_iterator col;
             for (col = columns_begin(); col != columns_end(); col++)
             {

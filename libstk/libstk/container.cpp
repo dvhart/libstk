@@ -36,11 +36,11 @@ namespace stk
     widget::ptr container::widget_at(int x, int y)
     {
         // if we don't contain this point, return a null pointer
-        if (!contains(x, y)) return widget::ptr();
+        if (!rect().contains(x, y)) return widget::ptr();
 
         // convert to local coordinates
-        x -= x1();
-        y -= y1();
+        x -= rect_.x1();
+        y -= rect_.y1();
 
         // cycle through the widgets, and return the first that doesn't return a null pointer
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -57,9 +57,9 @@ namespace stk
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (; iter != children_.end(); iter++)
         {
-            if ((*iter)->contains(me->x()-x1(), me->y()-y1()))
+            if ((*iter)->rect().contains(me->x()-rect_.x1(), me->y()-rect_.y1()))
             {
-                mouse_event::ptr me_to_child(new mouse_event(me->x()-x1(), me->y()-y1(), 
+                mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(), 
                             me->button(), me->type()));
                 return (*iter)->delegate_mouse_event(me_to_child);
             }
@@ -84,10 +84,10 @@ namespace stk
 
     void container::draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child)
     {
-        if (!child->intersects(clip_rect)) return;
+        if (!child->rect().intersects(clip_rect)) return;
 
         // calculate the child redraw rect
-        rectangle redraw_rect = child->intersection(clip_rect);
+        rectangle redraw_rect = child->rect().intersection(clip_rect);
         redraw_rect.position(redraw_rect.position()-child->position());         
 
         // draw the child only if necessary

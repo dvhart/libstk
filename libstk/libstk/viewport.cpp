@@ -24,8 +24,8 @@ namespace stk
         viewport::ptr new_viewport(new viewport(rect));
         new_viewport->on_resize.connect(boost::function<bool()>(
                 (boost::bind(&scrollable::update_vis_sizes, new_viewport.get(), 
-                    boost::bind(&rectangle::height, new_viewport.get()), 
-                    boost::bind(&rectangle::width, new_viewport.get())), true)));
+                    boost::bind(&widget::height, new_viewport.get()), 
+                    boost::bind(&widget::width, new_viewport.get())), true)));
         new_viewport->parent(parent);
         return new_viewport;
     }

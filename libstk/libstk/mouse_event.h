@@ -30,18 +30,9 @@ namespace stk
     public:
         mouse_event(int x=-1, int y=-1, int button=-1, event_type type=mouse_up);
         virtual ~mouse_event();
-        int x()
-        {
-            return x_;
-        }
-        int y()
-        {
-            return y_;
-        }
-        int button()
-        {
-            return button_;
-        }
+        int x() { return x_; }
+        int y() { return y_; }
+        int button() { return button_; }
 
     }
     ; //class mouse_event

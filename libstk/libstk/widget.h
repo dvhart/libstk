@@ -29,8 +29,7 @@ namespace stk
     class container;
     class state;
 
-    class widget : public rectangle, public component, 
-    public boost::enable_shared_from_this<widget>
+    class widget : public component, public boost::enable_shared_from_this<widget>
     {
     public:
         typedef boost::shared_ptr<widget> ptr;
@@ -41,6 +40,7 @@ namespace stk
     protected:
         widget(const rectangle& rect=rectangle(0,0,0,0));
         component::weak_ptr parent_;
+        rectangle rect_;
 
         // widget attributes
         // FIXME: add visible_
@@ -60,29 +60,14 @@ namespace stk
         virtual ~widget();
 
         /********** RECTANGLE INTERFACE **********/
-        /// Get the rectangular region ocupied by the drawable
-        virtual rectangle rect() { return rectangle(p1_, p2_); }
-        // FIXME: why do we have to do this?
-        using rectangle::p1;
-        using rectangle::p2;
-        using rectangle::x1;
-        using rectangle::x2;
-        using rectangle::y1;
-        using rectangle::y2;
-        using rectangle::width;
-        using rectangle::height;
-        using rectangle::position;
-        /// Set the position and size of the drawable
+        /// Get the rectangular region ocupied by the widget
+        virtual rectangle rect() { return rect_; }
         virtual void rect(const rectangle& rect);
-        virtual void p1(const point&  p);
-        virtual void p2(const point&  p);
-        virtual void x1(int val);
-        virtual void y1(int val);
-        virtual void x2(int val);
-        virtual void y2(int val);
         virtual void width(int val);
+        virtual int width() { return rect_.width(); }
         virtual void height(int val);
-        virtual void position(int x, int y);
+        virtual int height() { return rect_.height(); }
+        virtual point position() { return rect_.p1(); }
         virtual void position(const point& p);
         /********** END RECTANGLE INTERFACE **********/
 

@@ -33,17 +33,17 @@ namespace stk
     protected:
         progress(const std::wstring& format_label, const rectangle& rect, int range);
 
-        /// rebuild the label to be displayed based on the current position and range
+        /// rebuild the label to be displayed based on the current fill and range
         void build_label();
 
         /// format_label defines the string displayed in the progress box
         /// \param %p percentage to two decimal places, i.e. 67.23%
-        /// \param %d position in range, as an integer, i.e. 24
+        /// \param %d fill in range, as an integer, i.e. 24
         /// \param %f percentage as a decimal to 4 digits, i.e. 0.6723%
         std::wstring format_label_;
         std::wstring label_;
         int range_;
-        int position_;
+        int fill_;
 
     public:
         static progress::ptr create(container::ptr parent, const std::wstring& format_label,
@@ -65,19 +65,13 @@ namespace stk
         /********** END WIDGET INTERFACE **********/
 
         /********** PROGRESS INTERFACE **********/
-        int range()
-        {
-            return range_;
-        }
+        int range() { return range_; }
         void range(int val);
-        int position()
-        {
-            return position_;
-        }
-        void position(int val);
+        int fill() { return fill_; }
+        void fill(int val);
         float percent()
         {
-            return (float)position_/(float)range_;
+            return (float)fill_/(float)range_;
         }
         void percent(float val);
         /********** END PROGRESS INTERFACE **********/
