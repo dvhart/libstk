@@ -29,13 +29,15 @@ image loader class
 Better font loading error messages.
 list::create(boost::shared_ptr< list > parent, std::wstring label, std::string data)
     we are mixing std::string and std::wstring here
+convert color_manager to a singleton like font_manager and event_system
 
 WIDGETS TO WRITE
 ================
-edit_box - Dirk
-text_area
-list - Darren
 combo
+edit_box - Dirk
+list - Darren
+scroll_bar - Marc
+text_area
 uberscript_panel (support for HTML, perhaps more strict... XHTML ?)
 OSD keyboard - Marc
 
@@ -44,5 +46,3 @@ MEDIA WIDGETS
 ??
 
 
-Carter:
-Touchscreen Support ( On screen keyboard etc)

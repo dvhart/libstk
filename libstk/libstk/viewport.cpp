@@ -79,7 +79,7 @@ namespace stk
     }
     void viewport::handle_event(event::ptr e)
     {
-        cout << "viewport::handle_event()" << endl;
+        //cout << "viewport::handle_event()" << endl;
         widget::handle_event(e);
     }
 

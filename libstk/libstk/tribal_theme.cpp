@@ -1,4 +1,4 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: tribal_theme.cpp
  * DESCRIPTION: Default theme for Libstk.  Contains the user_theme class and 
  *              all themeable widget drawing routines.
@@ -6,10 +6,9 @@
  *  START DATE: 27/Apr/2003  LAST UPDATE: 13/May/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include "libstk/color_manager.h"
 #include "libstk/graphics_context.h"
@@ -111,7 +110,7 @@ namespace stk
             }
 
         default:
-            throw error_message_exception("user_theme::draw_arrow - invalid direction, use 3, 6, 9 or 12");
+            throw error_message_exception("user_theme::draw_arrow - invalid direction");
         }
     }
     // end tribal user theme
@@ -140,43 +139,54 @@ namespace stk
 
         // prepare the font
 
-        font::ptr the_font = font_manager::get
-                                 ()->get_font(font_properties("Arial.ttf",18));
-        //stk::font::ptr the_font = font::create("Arial.ttf", 18);
+        font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
         gc->font(the_font);
 
         if (pressed_)
         {
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_pressed_str, surface)));
-            gc->line_color(color_manager::get_color(color_properties(outline_color_pressed_str, surface)));
-            gc->font_fill_color(color_manager::get_color(color_properties(font_color_pressed_str, surface)));
+            gc->fill_color(color_manager::get_color(
+                        color_properties(fill_color_pressed_str, surface)));
+            gc->line_color(color_manager::get_color(
+                        color_properties(outline_color_pressed_str, surface)));
+            gc->font_fill_color(color_manager::get_color(
+                        color_properties(font_color_pressed_str, surface)));
         }
         else if(focused_)
         {
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
+            gc->fill_color(color_manager::get_color(
+                    color_properties(fill_color_focused_str, surface)));
             if (hover_)
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_focused_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_focused_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_focused_str, surface)));
             }
         }
         else
         {
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
+            gc->fill_color(color_manager::get_color(
+                        color_properties(fill_color_normal_str, surface)));
             if (hover_)
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_normal_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_normal_str, surface)));
             }
         }
 
@@ -196,10 +206,13 @@ namespace stk
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
-        gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
-        stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
+        gc->line_color(color_manager::get_color(
+                    color_properties(outline_color_normal_str, surface)));
+        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
+        
         gc->font(arial_18);
-        gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
+        gc->font_fill_color(color_manager::get_color(
+                    color_properties(font_color_normal_str, surface)));
         surface->gc(gc);
         rectangle progress_rect(rect_.x1()+2, rect_.y1()+2, rect_.width()-4, rect_.height()-4);
         progress_rect.width((int)(progress_rect.width()*percent()));
@@ -214,12 +227,14 @@ namespace stk
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
-        gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
+        gc->line_color(color_manager::get_color(
+                    color_properties(outline_color_normal_str, surface)));
         try
         {
-            stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
+            font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
             gc->font(arial_18);
-            gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
+            gc->font_fill_color(color_manager::get_color(
+                        color_properties(font_color_normal_str, surface)));
             surface->gc(gc);
             surface->draw_text(rect_, text_);
         }
@@ -234,7 +249,8 @@ namespace stk
         //cout << "image_panel::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
-        gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
+        gc->line_color(color_manager::get_color(
+                    color_properties(outline_color_focused_str, surface)));
         surface->gc(gc);
         //surface->draw_rect(rect_);
         //surface->draw_image(rect_.x1()+10, rect_.y1()+10, image_);
@@ -267,13 +283,17 @@ namespace stk
         }
 
         graphics_context::ptr gc = graphics_context::create();
-        gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
+        gc->line_color(color_manager::get_color(
+                    color_properties(outline_color_normal_str, surface)));
         if (focused_)
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
+            gc->fill_color(color_manager::get_color(
+                        color_properties(fill_color_focused_str, surface)));
         else
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
-        gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
-        stk::font::ptr arial_12 = font::create("Arial.ttf", 12);
+            gc->fill_color(color_manager::get_color(
+                        color_properties(fill_color_normal_str, surface)));
+        gc->font_fill_color(color_manager::get_color(
+                    color_properties(font_color_normal_str, surface)));
+        font::ptr arial_12 = font_manager::get()->get_font(font_properties("Arial.ttf", 12));
         gc->font(arial_12);
         surface->gc(gc);
 
@@ -282,7 +302,8 @@ namespace stk
 
         // adjust the list items using the vertical scroll_model
         surface->offset(surface->offset() - point(0,v_scroll_->begin()));
-        //cout << "\tSurface offset: " << surface->offset().x() << "," << surface->offset().y() << endl;
+        //cout << "\tSurface offset: " << surface->offset().x()
+        //     << "," << surface->offset().y() << endl;
 
         // draw the highlighted selection
         rectangle cur_rect;
@@ -326,35 +347,46 @@ namespace stk
 
         if(focused_)
         {
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
+            gc->fill_color(color_manager::get_color(
+                        color_properties(fill_color_focused_str, surface)));
             if (hover_)
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_focused_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_focused_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_focused_str, surface)));
             }
         }
         else
         {
-            gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
+            gc->fill_color(color_manager::get_color(
+                        color_properties(fill_color_normal_str, surface)));
             if (hover_)
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
-                gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
-                gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
+                gc->line_color(color_manager::get_color(
+                            color_properties(outline_color_normal_str, surface)));
+                gc->font_fill_color(color_manager::get_color(
+                            color_properties(font_color_normal_str, surface)));
             }
         }
 
-        gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
-        stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
+        gc->font_fill_color(color_manager::get_color(
+                    color_properties(font_color_normal_str, surface)));
+        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
         gc->font(arial_18);
         surface->gc(gc);
 

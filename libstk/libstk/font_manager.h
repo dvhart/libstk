@@ -34,7 +34,6 @@ namespace stk
     };
 
 
-
     /// \brief Class for manaing Font Instances
     /// This class manages all creation and retrieveal of font class instances
     /// It does not hold a reference to the contained font, the user has to keep a reference
@@ -44,6 +43,7 @@ namespace stk
     public:
         typedef boost::shared_ptr<font_manager> ptr;
         typedef boost::weak_ptr<font_manager> weak_ptr;
+        
     private:
         /// fixme: make this a static class or use the namespace idiom, there is no
         /// need for it to be singleton (see color_manager)
@@ -54,16 +54,13 @@ namespace stk
         /// how about Tfont_map and font_map_ ? --dvhart
         typedef std::map<font_properties,font::ptr> Tfonts;
         Tfonts fonts;
-
         font_manager();
+        
     public:
         /// Get a font with the provided Properties
-        /// FIXME: shouldn't font properties be a const reference ? --dvhart
-        font::ptr get_font(font_properties properties);
+        font::ptr get_font(const font_properties& properties);
         /// Get the font manager instance-> only way of accessing the singleton
-        /// FIXME: why are we returning a pointer and not a shared_ptr ? --dvhart
-        static font_manager* get
-            ();
+        static font_manager::ptr get();
         ~font_manager();
     };
 

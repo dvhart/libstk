@@ -25,16 +25,14 @@ namespace stk
 {
     event_system::ptr event_system::instance_;
 
-    event_system::ptr event_system::get
-        ()
+    event_system::ptr event_system::get()
     {
-        if (!instance_)
-            instance_.reset(new event_system());
+        if (!instance_) instance_.reset(new event_system());
         return instance_;
     }
 
     event_system::event_system()
-{}
+    {}
 
     event_system::~event_system()
     {}

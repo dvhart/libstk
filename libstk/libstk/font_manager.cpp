@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: font_manager.cpp
  * DESCRIPTION: Implementation of font manager classes.
  *     AUTHORS: Marc Straemke, Darren Hart
- *  START DATE: 13/May/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 13/May/2003  LAST UPDATE: 25/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include "libstk/font_manager.h"
 
@@ -16,60 +15,59 @@
 namespace stk
 {
 
-
     font_manager::ptr font_manager::instance_;
 
 
     bool font_properties::operator<(const font_properties& rhs) const
     {
-        return (height < rhs.height) && (fontname < rhs.fontname);
+        // check the high order
+        if (fontname < rhs.fontname) return true;
+        // check the low order
+        if (fontname == rhs.fontname) return (height < rhs.height);
+        return false;
     }
-    font_manager* font_manager::get
-        ()
+    
+    font_manager::ptr font_manager::get()
     {
-        if(instance_)
-            return instance_.get();
-        instance_.reset(new font_manager());
-        return instance_.get();
+        if (!instance_) instance_.reset(new font_manager());
+        return instance_;
     }
+    
     font_manager::font_manager()
     {
         std::cout << "Font manager constructed\n";
     }
+    
     font_manager::~font_manager()
     {
         std::cout << "Font manager destructed\n";
     }
 
-    //std::map<font_properties,font::weak_ptr> fonts;
-
-    font::ptr font_manager::get_font(font_properties properties)
+    font::ptr font_manager::get_font(const font_properties& properties)
     {
-        //std::cout << "get font called...\t";
-        Tfonts::iterator font_iter=fonts.find(properties);
-        if(font_iter==fonts.end())
+        //std::cout << "getting font " << properties.fontname << " " << properties.height << " ";
+        Tfonts::iterator font_iter = fonts.find(properties);
+        if (font_iter == fonts.end())
         {
-            //std::cout << "not font description yet...\t";
+            //std::cout << " creating" << std::endl;
             font::ptr newfont(new font(properties.fontname,properties.height,0));
-            fonts[properties]=newfont;
-            //std::cout << "created\n";
+            fonts[properties] = newfont;
             return newfont;
         }
         else
         {
-            font::ptr font_ptr=font_iter->second;
-            if(font_ptr)
+            font::ptr font_ptr = font_iter->second;
+            if (font_ptr)
             {
-                //std::cout << "cached\n";
+                //std::cout << "cached at " << font_iter->first.fontname 
+                //          << " " << font_iter->first.height << std::endl;
                 return font_ptr;
             }
-            //std::cout << "uncached...\t";
-            font::ptr newfont(new font(properties.fontname,properties.height,0));
-            fonts[properties]=newfont;
-            //std::cout << "Created\n";
+            //std::cout << "uncached (error)" << std::endl;
+            font::ptr newfont(new font(properties.fontname, properties.height,0));
+            fonts[properties] = newfont;
             return newfont;
         }
     }
-
 
 }
