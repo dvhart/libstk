@@ -2,7 +2,7 @@
  *    FILENAME: application.h
  * DESCRIPTION: Libstk application, handles events, timers, and widget drawing.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 23/Feb/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 23/Feb/2003  LAST UPDATE: 09/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -48,15 +48,14 @@ namespace stk
 			bool done_;
 			
 		protected:
-			application(surface::ptr surface, 
-			            event_system::ptr event_system);
+			application(surface::ptr surface);
+
 			
 		public:
 			/// Constructs a new Application Object
 			/// \param surface Target surface for drawing 
 			/// \param event_system Source for events
-			static application::ptr create(surface::ptr surface, 
-			            event_system::ptr event_system);
+			static application::ptr create(surface::ptr surface);
 			~application();
 
 			/// Runs The Application, returns when the application is shut down

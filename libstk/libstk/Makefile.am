@@ -12,9 +12,8 @@ libstk_la_SOURCES =\
 	component.h \
 	container.h container.cpp \
 	drawable.h \
-	event_system.h \
-	event_system_sdl.h event_system_sdl.cpp \
-	event_system_dfb.h event_system_dfb.cpp \
+	event_system.h event_system.cpp \
+	event_producer_sdl.h event_producer_sdl.cpp \
 	exceptions.h \
 	event.h \
 	event_handler.h \
@@ -42,7 +41,6 @@ libstk_la_SOURCES =\
 	state.h state.cpp \
 	stk.h stk_types.h \
 	surface.h surface_impl.h \
-	surface_dfb.h surface_dfb.cpp \
 	theme.h theme.cpp \
 	time_value.h \
 	timer.h timer.cpp \
@@ -54,9 +52,9 @@ library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 	
 library_include_HEADERS= \
 	aa_filter.h      event_system.h      key_event.h    state.h \
-	application.h    event_system_dfb.h  keycode.h      stk.h	\
-	button.h         event_system_sdl.h  label.h        surface.h	\
-	combiners.h      exceptions.h        list.h         surface_dfb.h \
+	application.h    keycode.h      stk.h	\
+	button.h         event_producer_sdl.h  label.h        surface.h	\
+	combiners.h      exceptions.h        list.h          \
 	combo.h          font.h              list_item.h    surface_sdl.h \
 	container.h      font_manager.h      mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             component.h    widget.h 	\

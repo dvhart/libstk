@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: event_system_sdl.cpp 
- * DESCRIPTION: SDL event system implementation.
+ *    FILENAME: event_producer_sdl.cpp 
+ * DESCRIPTION: SDL event producer implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 28/May/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 09/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -13,7 +13,7 @@
 #include <SDL/SDL.h>
 #include <iostream>
 #include "libstk/exceptions.h"
-#include "libstk/event_system_sdl.h"
+#include "libstk/event_producer_sdl.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/sdl_data.h"
@@ -23,34 +23,35 @@ using std::endl;
 
 namespace stk
 {
-	event_system_sdl::ptr event_system_sdl::create()
+	event_producer_sdl::ptr event_producer_sdl::create()
 	{
-		event_system_sdl::ptr new_event_system_sdl(new event_system_sdl());
-		return new_event_system_sdl;
+		event_producer_sdl::ptr new_event_producer_sdl(new event_producer_sdl());
+		event_system::get()->add_producer(new_event_producer_sdl);
+		return new_event_producer_sdl;
 	}
 	
-	event_system_sdl::event_system_sdl()
+	event_producer_sdl::event_producer_sdl()
 	{
-		cout << "event_system_sdl::event_system_sdl()" << endl;
+		cout << "event_producer_sdl::event_producer_sdl()" << endl;
 		// make sure SDL has been initialized
 		sdl_data_ = sdl_data::get(); // reference counting
 		sdl_data_->init();
 	}
 
-	event_system_sdl::~event_system_sdl()
+	event_producer_sdl::~event_producer_sdl()
 	{
-		cout << "event_system_sdl::~event_system_sdl()" << endl;
+		cout << "event_producer_sdl::~event_producer_sdl()" << endl;
 	}
 
-	boost::shared_ptr<stk::event> event_system_sdl::poll_event()
+	boost::shared_ptr<stk::event> event_producer_sdl::poll_event()
 	{
-		//cout << "event_system_sdl::poll_event()" << endl;
+		//cout << "event_producer_sdl::poll_event()" << endl;
 		// enter the event loop
 		SDL_Event new_event;
-		event::ptr event_(new event(event::none));
+		event::ptr event_ = event::create(event::none);
 		if (SDL_PollEvent(&new_event))
 		{
-			//cout << "event_system_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
+			//cout << "event_producer_sdl::poll_event() - event received of type: " << std::dec << (int)(new_event.type) << endl;
 			switch(new_event.type)
 			{
 				case SDL_KEYDOWN:
@@ -78,18 +79,18 @@ namespace stk
 					break;
 				case SDL_QUIT:
 					//cout << "SDL_QUIT" << endl;
-					return event::ptr(new event(event::quit));
+					return event::create(event::quit);
 					break;
 				default:
 					// throw something
-					cout << "event_system_sdl::poll_event() - unknown event type" << endl;
-					return event::ptr(new event(event::unknown));
+					cout << "event_producer_sdl::poll_event() - unknown event type" << endl;
+					return event::create(event::unknown);
 			}
 		}
 		return event_;
 	}
 
-	keycode event_system_sdl::sdl2stk_key(SDLKey sdl_key)
+	keycode event_producer_sdl::sdl2stk_key(SDLKey sdl_key)
 	{
 		keycode key;
 		switch (sdl_key)
@@ -153,7 +154,7 @@ namespace stk
 				key = f12;
 				break;
 			default:
-				cout << "event_system_sdl::sdl2stk_kay - unknown key" << std::hex << sdl_key << endl;
+				cout << "event_producer_sdl::sdl2stk_kay - unknown key" << std::hex << sdl_key << endl;
 				key = key_unknown;
 				break;
 		}

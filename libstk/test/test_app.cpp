@@ -2,7 +2,7 @@
  *    FILENAME: test_app.cpp
  * DESCRIPTION: An example application using Libstk.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 21/May/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 09/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -16,7 +16,7 @@
 #include <libstk/stk.h>
 
 // select our backend
-#include <libstk/event_system_sdl.h>
+#include <libstk/event_producer_sdl.h>
 #include <libstk/surface_sdl.h>
 
 using namespace stk;
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 	{
 		// create the event system
 		cout << "test_app - creating event system" << endl;
-		event_system::ptr test_event_system = event_system_sdl::create();
+		event_producer_sdl::ptr test_event_producer = event_producer_sdl::create();
 
 		// create the surface
 		cout << "test_app - creating surface" << endl;
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 			
 		// create the application
 		cout << "test_app - creating application" << endl;
-		application::ptr test_app = application::create(test_surface, test_event_system);
+		application::ptr test_app = application::create(test_surface);
 	
 		// create the main state
 		cout << "test_app - creating state" << endl;

@@ -1,8 +1,8 @@
 /******************************************************************************
- *    FILENAME: event_system_sdl.h
- * DESCRIPTION: SDL event backend.
+ *    FILENAME: event_producer_sdl.h
+ * DESCRIPTION: SDL event producer backend.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 28/May/2003
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 09/Jun/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available
@@ -10,11 +10,12 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
-#ifndef STK_EVENT_SYSTEM_SDL_H
-#define STK_EVENT_SYSTEM_SDL_H
+#ifndef STK_EVENT_PRODUCER_SDL_H
+#define STK_EVENT_PRODUCER_SDL_H
 
 #include <SDL/SDL.h>
 #include <libstk/keycode.h>
+#include <libstk/event_producer.h>
 #include <libstk/event_system.h>
 #include <libstk/sdl_data.h>
 
@@ -41,19 +42,19 @@
 	 */
 namespace stk
 {
-	class event_system_sdl : public event_system
+	class event_producer_sdl : public event_producer
 	{
 		private:
 			sdl_data::ptr sdl_data_;
 			keycode sdl2stk_key(SDLKey sdl_key);
 
 		protected:
-			event_system_sdl();
+			event_producer_sdl();
 			
 		public:
-			static event_system_sdl::ptr create();
-			virtual ~event_system_sdl();
-			virtual boost::shared_ptr<stk::event> poll_event();
+			static event_producer_sdl::ptr create();
+			virtual ~event_producer_sdl();
+			virtual event::ptr poll_event();
 	};
 }
 

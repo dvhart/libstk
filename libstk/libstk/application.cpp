@@ -37,14 +37,14 @@ using std::endl;
 namespace stk
 {
 
-	application::ptr application::create(surface::ptr surface, event_system::ptr event_system)
+	application::ptr application::create(surface::ptr surface)
 	{
-		application::ptr new_application(new application(surface, event_system));
+		application::ptr new_application(new application(surface));
 		return new_application;
 	}
 	
-	application::application(surface::ptr surface, event_system::ptr event_system) :
-		surface_(surface), event_system_(event_system), done_(false)
+	application::application(surface::ptr surface) :
+		surface_(surface), event_system_(event_system::get()), done_(false)
 	{
 		cout << "application::application()" << endl;
 		// initialize the theme
@@ -78,7 +78,7 @@ namespace stk
 		
 		// enter the main application loop: draw, handle_events, call timers
 		// FIXME: we have to do something about all these .lock() calls!!!
-		event::ptr event_(new event(event::none)); // should we use create here ?
+		event::ptr event_ = event::create(event::none); // should we use create here ?
 		while (!done_)
 		{
 			rectangle t_rect = current_state_.lock()->redraw_rect();
