@@ -1,8 +1,8 @@
 
 [filenumbers]
 0=33
-1=21
-2=17
+1=34
+2=14
 3=67
 4=36
 5=17
@@ -38,3 +38,8 @@ ShowLocals=true
 5=/home/carter/libstk/src/font.cpp
 6=/home/carter/libstk/src/font_mngr.h
 7=/home/carter/libstk/src/font_mngr.cpp
+
+[File View]
+filter.file.unmatch=*.so *.o *.a *.la
+filter.file.ignore.hidden=0
+filter.dir.ignore.hidden=0

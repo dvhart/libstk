@@ -12,6 +12,7 @@ AM_PATH_SDL($SDL_VERSION,:,AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!
 AC_SUBST(top_srcdir)
 AC_SUBST(SDL_CFLAGS)
 AC_SUBST(SDL_LIBS)
+AC_SUBST(prefix)
 
 AM_CONFIG_HEADER(config.h)
 
@@ -20,5 +21,6 @@ CXXFLAGS="$CXXFLAGS"
 AC_OUTPUT([
 Makefile
 src/Makefile
+src/utility/Makefile
 libstk.pc
 ])

@@ -7,6 +7,6 @@ Name: Libstk
 Description: The Settop box Toolkit
 Requires:
 Version: @VERSION@
-Libs: -L${libdir}
-Cflags: 
+Libs: -L${libdir} -llibstk-@VERSION@
+Cflags: -I$(includedir)/libstk-@VERSION@ 
 
