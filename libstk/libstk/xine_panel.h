@@ -82,6 +82,8 @@ namespace stk
         void slower();
         void toggle_fullscreen();
         bool visualization(const std::string& name);
+        /// Send a xine event to the current stream (for more customizable frontends)
+        void send_event(xine_event_t* xe);
         // xine_panel signals
         boost::signal<bool (), combiner::logical_or<bool> > on_playback_finished;
         /********** END XINE PANEL INTERFACE **********/

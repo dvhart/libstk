@@ -197,7 +197,7 @@ namespace stk
         surface->gc(gc);
         surface->fill_rect(clip_rect);
 
-        // send an expose event to the xine object
+        // FIXME: send an expose event to the xine object
     }
 
     void xine_panel::event_listener_wrapper(void *user_data, const xine_event_t *xine_event) 
@@ -335,18 +335,21 @@ namespace stk
         {
             INFO(" "<<xine_list_post_plugins_typed(xine_, XINE_POST_TYPE_AUDIO_VISUALIZATION)[i++]);
         }
-        INFO("Init " << name);
-        post = xine_post_init(xine_, name.c_str(), 0, &xine_ao_port_, &xine_vo_port_);
-        //INFO("New stream with fftgraph inputs");
-        INFO("Audio input @ " << post->audio_input[0]);
-        //INFO("Video input @ " << post->video_input[0]);
-        INFO("Rewire ports to use post plugin");
-        //i = 0;
-        //while (xine_post_list_inputs(post)[i]) INFO(" "<<xine_post_list_inputs(post)[i++]);
-        xine_post_wire_audio_port(xine_get_audio_source(xine_stream_), post->audio_input[0]);
-        INFO("Post plugin loaded");
         // END HACK
-        return true;
+        if (post = xine_post_init(xine_, name.c_str(), 0, &xine_ao_port_, &xine_vo_port_))
+        {
+            xine_post_wire_audio_port(xine_get_audio_source(xine_stream_), post->audio_input[0]);
+            INFO("Post plugin " << name << " loaded");
+            return true;
+        }
+        ERROR("Failed to load post plugin " << name << " using none");
+        // FIXME: unwire any existing connection ?
+        return false;
+    }
+
+    void xine_panel::send_event(xine_event_t* xe)
+    {
+        xine_event_send(xine_stream_, xe);
     }
 } 
 
