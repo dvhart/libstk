@@ -8,7 +8,7 @@ namespace stk
 	{
 		// ascii
 		key_null, key_soh, key_stk, key_etx, key_eot, key_enq, key_ack, key_bell, 
-		key_backspace, key_tab, key_linefeed, key_vtab, key_ff, key_carriagereturn, key_so, key_si,
+		key_backspace, key_tab, key_linefeed, key_vtab, key_ff, key_enter, key_so, key_si, // FIXME: I use enter for ascii carriagereturn, is this right?
 		key_dle, key_dc1, key_dc2, key_dc3, key_dc4, key_nak, key_syn, key_etb,
 		key_can, key_em, key_sub, key_esc, key_fs, key_gs, key_rs, key_us,
 		key_space, key_exclamation, key_dquote, key_pound, key_dollar, key_percent, key_ampersand, key_squote, 

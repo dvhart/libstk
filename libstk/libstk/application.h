@@ -40,7 +40,7 @@ namespace stk
 
 			/// Runs The Application, returns when the application is shut down
 			int run();
-			void quit();
+			bool quit(); // bool is so we can use it as a slot
 			
 			/// Adds a new state to the Application
 			void add_state(boost::shared_ptr<stk::state>);

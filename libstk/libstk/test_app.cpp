@@ -38,16 +38,12 @@ int main(int argc, char* argv[])
 	test_app->add_state(test_state);
 	//Label test_label(new label(test_state, "Test Label", 10, 10, 100, 30));
 	
-	// CARTER
-	// FIXME: this won't let me create a button with a state as parent, it wants container
-	// but state is derived from container, do shared/weak pointers not accept derived class pointers?
 	cout << "test_app - creating button" << endl;
 	Button test_button(new button(test_state, "Test Button", 120, 10, 100, 30));
 	
 	test_state->add_child(test_button);
 	// bind button click to quit
-	// do we need to dereference test_app ?
-	//test_button->on_click.connect(boost::bind(&stk::application::quit, test_app.get())); 
+	test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
 
 	// run the program
 	cout << "test_app - run" << endl;

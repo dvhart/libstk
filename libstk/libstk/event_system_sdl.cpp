@@ -32,11 +32,11 @@ namespace stk
 			{
 				case SDL_KEYDOWN:
 					cout << "SDL_KEYDOWN" << endl;
-					return KeyEvent(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_up));
+					return KeyEvent(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_down));
 					break;
 				case SDL_KEYUP:
 					cout << "SDL_KEYUP" << endl;
-					return KeyEvent(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_down));
+					return KeyEvent(new key_event(sdl2stk_key(new_event.key.keysym.sym), key_up));
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					cout << "SDL_MOUSEBUTTONDOWN" << endl;
@@ -75,6 +75,9 @@ namespace stk
 			// FIXME: fill this in, take advantage of ascii codes if possible
 			case SDLK_ESCAPE:
 				key = key_esc;
+				break;
+			case SDLK_RETURN:
+				key = key_enter;
 				break;
 			default:
 				key = key_unknown;

@@ -21,6 +21,9 @@ namespace stk
 
 			// button signals
 			boost::signal<bool ()> on_click;
+
+			// event_handler interface
+			virtual void handle_event(boost::shared_ptr<stk::event> e);
 	};
 
 	typedef boost::shared_ptr<stk::button> Button;

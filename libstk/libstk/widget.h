@@ -22,7 +22,8 @@ namespace stk
 		private:
 
 		protected:
-			//widget() { }; // empty constructor, needed for creating derived classes ? 
+			// won't compile for dvhart without it...
+			widget() { }; // empty constructor, needed for creating derived classes ? 
 			boost::weak_ptr<parent> parent_;
 			int x_;
 			int y_;

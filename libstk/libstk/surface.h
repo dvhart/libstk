@@ -73,7 +73,6 @@ namespace stk
 		#include "aa_filter.h"
 	};
 
-	class surface;
 	class surface
 	{
 		protected:
@@ -131,8 +130,12 @@ namespace stk
 
 			// inline property methods
 			rectangle rect() const { return rect_; };
+			// FIXME: we may not need alpha now that we only have one surface..
+			// it may be nice for special cases where we need another surface
+			// need to think on it -- dvhart
 			byte alpha() const { return alpha_; };
 			void alpha(byte a) { alpha_ = a; };
+			// FIXME: should we be using smart pointers here with gcs and rects ?
 			graphics_context gc() const { return gc_; };
 			void gc(graphics_context &new_gc) { gc_ = new_gc; }; 		
 			void x1(int x) { rect_.x1(x); };

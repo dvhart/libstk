@@ -24,7 +24,7 @@ namespace stk
 {
 
 	application::application(Surface surface, EventSystem event_system) :
-		surface_(surface), event_system_(event_system)
+		surface_(surface), event_system_(event_system), done_(false)
 	{
 		cout << "application::application()" << endl;
 	}
@@ -36,7 +36,6 @@ namespace stk
 	int application::run()
 	{
 		cout << "application::run()" << endl;
-		done_ = false;
 		int retval = 0;
 	
 		if (states_.size() == 0) 
@@ -49,7 +48,7 @@ namespace stk
 		{
 			current_state_ = *states_.begin();
 			// FIXME: ask current_state_ for its first focusable widget
-			current_widget_ = *states_.begin();
+			current_widget_ = (*states_.begin())->get_active_child();
 			hover_widget_ = *states_.begin();
 		}
 		
@@ -65,16 +64,16 @@ namespace stk
 					cout << "application::run() - no current widget" << endl;
 				else
 					ptr->handle_event(event_);
-				//cout << "application::run() - done is currently " << done_ << endl;
 			}
 		}
 		cout << "application::run() - leaving" << endl;
 		return retval;
 	}
 
-	void application::quit()
+	bool application::quit()
 	{
 		done_ = true;
+		return true;
 	}
 	
 	void application::add_state(boost::shared_ptr<state> state)
