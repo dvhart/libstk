@@ -27,6 +27,8 @@ namespace stk
         dsc.flags = DSDESC_CAPS;
         
         dsc.caps = primary?DSCAPS_PRIMARY:(DFBSurfaceCapabilities)0;
+        dsc.caps =  static_cast<DFBSurfaceCapabilities>(dsc.caps | DSCAPS_FLIPPING);
+        
 
         if(rect_specified)
         {
@@ -62,14 +64,15 @@ namespace stk
     
     void surface_dfb::put_pixel(int x, int y, color clr)
     {
-//        std::cerr << "H";
+        surface->SetDrawingFlags(surface,DSDRAW_BLEND);
+        
         surface->SetColor(surface,(clr&0xff000000)>>24,(clr&0xff0000)>>16,(clr&0xff00)>>8,clr&0xff);
         surface->DrawLine(surface,x,y,x,y); // hack *ggg*
     }
     
     void surface_dfb::put_pixel_aa(int x, int y, double distance, color clr)
     {
-//        clr&=~0xff;
+//      clr&=~0xff;
         
         put_pixel(x,y,clr);
     }
@@ -78,8 +81,9 @@ namespace stk
     {
         clr &=~0xff;
         clr|=alpha_a;
-        if(alpha_a>230)
-            put_pixel(x,y,clr);
+        
+        //if(alpha_a>230
+        put_pixel(x,y,clr);
     }
     
     color surface_dfb::get_pixel(int x, int y) const
@@ -88,7 +92,6 @@ namespace stk
     
     color surface_dfb::gen_color(const std::string &str_color) const
     {
-        byte r, g, b, a;
         unsigned long int_color = strtoll(str_color.c_str(), NULL, 16);
         return int_color;
     }
