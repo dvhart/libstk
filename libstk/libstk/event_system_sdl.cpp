@@ -20,7 +20,7 @@ namespace stk
 
 	event event_system_sdl::poll_event()
 	{
-		cout << "event_system_sdl::poll_event()" << endl;
+		//cout << "event_system_sdl::poll_event()" << endl;
 		// enter the event loop
 		SDL_Event new_event;
 		event event_(no_event);

@@ -30,7 +30,7 @@ namespace stk
 	surface_sdl::surface_sdl(const rectangle &rect) : surface(rect)
 	{
 		cout << "surface_sdl::surface_sdl()" << endl;	
-		sdl_surface_ = SDL_SetVideoMode(rect.w(), rect.h(), 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
+		sdl_surface_ = SDL_SetVideoMode(rect.w(), rect.h(), 32, SDL_HWSURFACE|SDL_DOUBLEBUF/*|SDL_FULLSCREEN*/);
 	}
 
 	surface_sdl::~surface_sdl()

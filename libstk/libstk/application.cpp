@@ -15,6 +15,7 @@
 #include "event.h"
 #include "key_event.h"
 #include "mouse_event.h"
+#include "state.h"
 
 using std::cout;
 using std::endl;
@@ -35,6 +36,7 @@ namespace stk
 	int application::run()
 	{
 		cout << "application::run()" << endl;
+		done_ = false;
 		int retval = 0;
 	
 		if (states_.size() == 0) 
@@ -46,21 +48,22 @@ namespace stk
 		else
 		{
 			current_state_ = *states_.begin();
-			// CARTER
-			// FIXME: it refuses to let me assign current_widget_, I have tried some of the following
-			//boost::shared_ptr<widget> tptr( new widget( *states_.begin() ) );
-			//boost::weak_ptr<widget> tptr( (widget *)((*(states_.begin())).get()) );
-			//current_widget_ = tptr;
+			// FIXME: is there a better way ?
+			current_widget_ = boost::shared_dynamic_cast<widget>(*states_.begin());
 		}
 		
 		event event_(no_event);
 		while (!done_)
 		{
 			event_ = event_system_->poll_event();
-			cout << "application::run() - event received of type: " << event_.type() << endl;
 			if (event_.type() != no_event)
 			{
-				current_widget_.get()->handle_event(event_);
+				//cout << "application::run() - event received of type: " << event_.type() << endl;
+				if (current_widget_.get() == 0)
+					cout << "application::run() - null current widget" << endl;
+				else
+					current_widget_.get()->handle_event(event_);
+				//cout << "application::run() - done is currently " << done_ << endl;
 			}
 		}
 		cout << "application::run() - leaving" << endl;
