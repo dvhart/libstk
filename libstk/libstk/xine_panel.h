@@ -32,14 +32,13 @@ namespace stk
         typedef boost::weak_ptr<xine_panel> weak_ptr;
 
     private:
-        xine_panel(const rectangle& rect);
-        /// get the audio/video ports and set up the event handler
-        /// must be called after the parent has been set
-        void init(const std::string& config);
+        xine_panel(const rectangle& rect = rectangle());
         /// static wrapper that receives a xine_panel as user_data and then calls its listener
         static void event_listener_wrapper(void *user_data, const xine_event_t* xine_event);
         /// the actual event listener, called by xine_event_listener_wrapper
         void event_listener(const xine_event_t* xine_event);
+        /// tell xine the surface has changed, bound to the on_resize signal :: FIXME we shouldn't use a public signal ??
+        void drawable_changed();
         /// the xine backend, one per xine_panel so they can play at different speeds (ie pause)
         xine_t*             xine_;
         /// each xine panel has one stream, and therefore one audio and video port, and event queue
@@ -47,12 +46,7 @@ namespace stk
         xine_video_port_t*  xine_vo_port_;
         xine_audio_port_t*  xine_ao_port_;
         xine_event_queue_t* xine_event_queue_;
-
-        // HACK
-        xine_audio_port_t* ao_ports[2];
-        xine_video_port_t* vo_ports[2];
-        xine_post_t* post;
-        // END HACK
+        xine_post_t*        xine_post_;
 
         /// the rectangle we return to from fullscreen mode
         rectangle restore_rect_;
@@ -60,7 +54,8 @@ namespace stk
 
     public:
         static xine_panel::ptr create(container::ptr parent, const rectangle& _rect, 
-                const std::string& config="/usr/local/share/libstk/xine_config"); // fixme: use PACKAGE_PREFIX ??
+                const std::string& config = "/usr/local/share/libstk/xine_config", // fixme: use PACKAGE_PREFIX ??
+                const std::string& audio_driver = "auto");
         ~xine_panel();
 
         /********** EVENT HANDLER INTERFACE **********/
@@ -71,11 +66,22 @@ namespace stk
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
         /********** END DRAWABLE INTERFACE **********/
 
+        /********** WIDGET INTERFACE **********/
+        /********** END WIDGET INTERFACE **********/
+
         /********** XINE PANEL INTERFACE **********/
         void open(const std::string& filename);
+        /// play the current stream from position (0-65535) or time millis
+        /// position is used if both != 0
         void play(int position, int millis);
+        /// pause the playback of the current stream
         void pause();     
+        /// toggle play/pause state
         void playpause(); 
+        /// stop playback (doesn't destroy stream_)
+        void stop(); 
+        /// close the stream, open must be called prior to play
+        void close(); 
         void speed(int val);
         int speed();
         void faster();
@@ -84,6 +90,20 @@ namespace stk
         bool visualization(const std::string& name);
         /// Send a xine event to the current stream (for more customizable frontends)
         void send_event(xine_event_t* xe);
+        /// Get xine engine status, see xine.h for a list of defined status values
+        int status();
+        /// Get and set xine engine parameters, see xine.h for a list of defined param's and ranges
+        int parameter(int param);
+        void parameter(int param, int value);
+        /// Get xine stream info, see xine.h for a list of defined stream infos and ranges
+        int stream_info(int info);
+        /// Get xine stream meta info, see xine.h for a list of defined stream meta infos
+        std::string meta_info(int info);
+        /// Get stream position information.  (depends on stream support)
+        ///\param stream_pos the positon in the stream out of 65535
+        ///\param ms_pos the position in milliseconds
+        ///\param ms_len the length of the stream in milliseconds
+        void position(int* stream_pos, int* ms_pos, int* ms_len);
         // xine_panel signals
         boost::signal<bool (), combiner::logical_or<bool> > on_playback_finished;
         /********** END XINE PANEL INTERFACE **********/

@@ -1,3 +1,38 @@
+2003-12-13 09:32  carter
+
+	* libstk/edit_box.h: Fixed stupid API, (passed an Reference where a
+	  Const reference is sufficient)
+
+2003-12-13 06:27  carter
+
+	* libstk/scroll_box.cpp: Fixed the bug reported by christopher
+	  slade.
+
+2003-12-12 18:09  dvhart
+
+	* libstk/application.cpp, libstk/state.h, test/xine_test.cpp: added
+	  on_enter|leave events to state and call them when changing states
+	  in application
+
+2003-12-12 15:02  dvhart
+
+	* libstk/: event_producer_sdl.cpp, keycode.h: added modifier key
+	  mapping to event_producer_sdl
+
+2003-12-12 10:41  dvhart
+
+	* libstk/: xine_panel.cpp, xine_panel.h: added send_event routine
+	  to the xine_panel
+
+2003-12-12 08:45  dvhart
+
+	* configure_all.sh, libstk/xine_panel.cpp, libstk/xine_panel.h:
+	  xine_panel draws a black background on draw
+
+2003-12-11 16:56  dvhart
+
+	* ChangeLog: ChangeLog update
+
 2003-12-11 14:34  dvhart
 
 	* libstk/list_item_userdata.h: list_item_userdata update

@@ -37,11 +37,8 @@ namespace stk
 
     void list_item::handle_event(event::ptr e)
     {
-        INFO("list_item::handle_event");
         // handle list_item events
-        // WRITEME...
-
-        // list_item does not inherit from widget, so we have to go to the parent directly
+        // ... none atm
         widget::handle_event(e);
     }
 

@@ -31,7 +31,6 @@
 #include <boost/thread/recursive_mutex.hpp>
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
-#include "libstk/stk.h"
 #include "libstk/sdl_data.h"
 #include "libstk/overlay.h"
 #include "libstk/overlay_sdl.h"

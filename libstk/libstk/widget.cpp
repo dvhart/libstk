@@ -38,6 +38,7 @@ namespace stk
     }
 
     // wrap the rectangle interface, emitting on_resize as appropriate
+    // FIXME: should we always call redraw too when we resize?
     void widget::rect(const rectangle& rect) 
     { 
         if (rect_ != rect)

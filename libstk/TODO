@@ -1,5 +1,12 @@
+THOUGHTS
+========
 consider using point for x,y in mouse event, then rewrite clumsy position().x() code in container
 consider renaming list add_item and remove_item to add and remove to be more like a container
+add protected library signals mirroring the public signals. i.e. on_resize and on_resize_lib
+  always call both from library code.  This way users won't be able to clear a signal of all
+  connections (included necessary library connections) and render the system broken.
+should we call redraw(rect()) whenever a widget is resized?  just add the call below each 
+  on_resize call
 
 MEETING TOPICS
 ==============
@@ -12,11 +19,9 @@ TASKS (Some duplicated items here and below)
 ============================================
 Exceptions (need class hierarchy, declare throws, use them...)
 Spinner - (AUTOCOMPLETE, NO EDIT)
-Template list_item for users to derive from
 Purge all magic numbers
 Scrollbars - Marc to finish
 Combo Box - Darren to write
-Edit Box (could be prettier, setting selection via API needed)
 Markup Area (simple html renderer ?)
 Surface blitting / locking / creation (from app surface ?) - YES
 surface: finish locking and add pixel_format routine

@@ -10,21 +10,41 @@
  *************************************************************************************************/
 
 #include <iostream>
+#include <boost/bind.hpp>
 #include "libstk/xine_panel.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/logging.h"
 #include "libstk/color_manager.h" // delete if we move draw to tribal_theme
+#include "libstk/override_return.h"
 
 namespace stk
 {
     xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect, 
-            const std::string& config)
+            const std::string& config, const std::string& audio_driver)
     {
-        xine_panel::ptr new_xine_panel(new xine_panel(rect));
-        new_xine_panel->parent(parent);
-        new_xine_panel->init(config);
-        return new_xine_panel;
+        xine_panel::ptr xp(new xine_panel(rect));
+        xp->parent(parent);
+
+        INFO("initializing the xine engine");
+        xp->xine_ = xine_new();
+        xine_config_load(xp->xine_, config.c_str());
+        xine_init(xp->xine_);
+
+        INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
+        xp->xine_ao_port_ = xine_open_audio_driver(xp->xine_, audio_driver.c_str(), NULL);
+        // FIXME: XINE_VISUAL_TPE_STK
+        xp->xine_vo_port_ = xine_open_video_driver(xp->xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)xp.get()); 
+        xp->xine_stream_ = xine_stream_new(xp->xine_, xp->xine_ao_port_, xp->xine_vo_port_);
+
+        xp->xine_event_queue_ = xine_event_new_queue(xp->xine_stream_);
+        xine_event_create_listener_thread(xp->xine_event_queue_, &event_listener_wrapper, (void*)xp.get());
+        xine_gui_send_vo_data(xp->xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)xp.get());
+        xine_gui_send_vo_data(xp->xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+
+        // fixme: what's the best way to do this - we didn't want to use public signals for library stuff
+        xp->on_resize.connect(boost::function<bool()>((boost::bind(&xine_panel::drawable_changed, xp.get()), true)));
+        return xp;
     }
   
     xine_panel::xine_panel(const rectangle& rect) : widget(rect), fullscreen_(false)
@@ -42,25 +62,6 @@ namespace stk
         xine_close_audio_driver(xine_, xine_ao_port_);
         xine_close_video_driver(xine_, xine_vo_port_);
         xine_exit(xine_);
-    }
-
-    // FIXME: move this into create, no need for another routine
-    void xine_panel::init(const std::string& config)
-    {
-        INFO("initializing the xine engine");
-        xine_ = xine_new();
-        xine_config_load(xine_, config.c_str());
-        xine_init(xine_);
-
-        INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
-        xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
-        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
-        xine_stream_ = xine_stream_new(xine_, xine_ao_port_, xine_vo_port_);
-
-        xine_event_queue_ = xine_event_new_queue(xine_stream_);
-        xine_event_create_listener_thread(xine_event_queue_, &event_listener_wrapper, (void*)this);
-        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
-        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
     }
 
     void xine_panel::handle_event(event::ptr e)
@@ -193,11 +194,34 @@ namespace stk
     void xine_panel::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         graphics_context::ptr gc = graphics_context::create();
-        gc->fill_color(color_manager::get()->get_color(color_properties("0x00000000", surface)));
+        
+        // fill area with black
+        gc->fill_color(color_manager::get()->get_color(color_properties("0x000000FF", surface)));
         surface->gc(gc);
         surface->fill_rect(clip_rect);
 
-        // FIXME: send an expose event to the xine object
+        // fill stream video area with blue (hack for Xv overlays with blue colorkey)
+        // FIXME: this doesn't work for audio only streams with visualizations
+        if (status() == XINE_STATUS_PLAY)
+        {
+            float aspect = (float)width()/(float)height();
+            float vid_aspect = (float)stream_info(XINE_STREAM_INFO_VIDEO_WIDTH)/(float)stream_info(XINE_STREAM_INFO_VIDEO_HEIGHT);
+            int vid_w;
+            int vid_h;
+            if (aspect > vid_aspect) { vid_h = height(); vid_w = height()*vid_aspect; }
+            else { vid_w = width(); vid_h = width()/vid_aspect; }
+            int vid_x = (width() - vid_w)/2;
+            int vid_y = (height() - vid_h)/2;
+            rectangle vid_rect(vid_x, vid_y, vid_w, vid_h);
+            gc->fill_color(color_manager::get()->get_color(color_properties("0x0101FEFF", surface)));
+            surface->gc(gc);
+            surface->fill_rect(vid_rect.intersection(clip_rect));
+        }
+
+        // FIXME: these are deprecated, use: xine_port_send_gui_data(...)
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_EXPOSE_EVENT, NULL);
     }
 
     void xine_panel::event_listener_wrapper(void *user_data, const xine_event_t *xine_event) 
@@ -225,16 +249,30 @@ namespace stk
         } // end switch
     }
 
+    void xine_panel::drawable_changed()
+    {
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+    }
+
     void xine_panel::open(const std::string& stream_mrl)
     {
+        INFO("opening stream");
         if (!xine_open(xine_stream_, stream_mrl.c_str()))
         {
             INFO("xine_open failed to open stream mrl: " << stream_mrl);
         }
+        redraw(rect());
+
+        // FIXME: these are deprecated, use: xine_port_send_gui_data(...)
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_EXPOSE_EVENT, NULL);
     }
 
     void xine_panel::play(int position, int millis)
     {
+        INFO("playing stream");
         if (!xine_play(xine_stream_, position, millis))
         {
             INFO("xine_play failed");
@@ -256,9 +294,22 @@ namespace stk
             xine_set_param(xine_stream_, XINE_PARAM_SPEED, XINE_SPEED_NORMAL);
     }
 
+    // FIXME: we may need to check xine status and only call the xine routines if the stream is valid?
+    void xine_panel::stop()
+    {
+        INFO("stopping stream");
+        xine_stop(xine_stream_);
+    }
+
+    // FIXME: we may need to check xine status and only call the xine routines if the stream is valid?
+    void xine_panel::close()
+    {
+        INFO("closing stream");
+        xine_close(xine_stream_);
+    }
+
     void xine_panel::speed(int val)
     {
-        INFO(__FUNCTION__ << " not implemented");
         switch(val)
         {
             case  XINE_SPEED_PAUSE:
@@ -274,7 +325,7 @@ namespace stk
         }
     }
 
-/*
+/* frim xine.h
 #define XINE_SPEED_PAUSE                   0
 #define XINE_SPEED_SLOW_4                  1
 #define XINE_SPEED_SLOW_2                  2
@@ -282,7 +333,6 @@ namespace stk
 #define XINE_SPEED_FAST_2                  8
 #define XINE_SPEED_FAST_4                  16
 */
-
 
     int xine_panel::speed()
     {
@@ -320,10 +370,13 @@ namespace stk
             rect(surface()->rect());
         }
         fullscreen_ = !fullscreen_;
+        redraw(rect());
+
         INFO("sending gui drawable changed");
+        // FIXME: this is now done on_resize()... is that the best way?, maybe we should just have a minimize function?
         // FIXME: these are deprecated, use: xine_port_send_gui_data(...)
-        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
-        xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+        //xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
+        //xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
     }
 
     bool xine_panel::visualization(const std::string& name)
@@ -336,9 +389,10 @@ namespace stk
             INFO(" "<<xine_list_post_plugins_typed(xine_, XINE_POST_TYPE_AUDIO_VISUALIZATION)[i++]);
         }
         // END HACK
-        if (post = xine_post_init(xine_, name.c_str(), 0, &xine_ao_port_, &xine_vo_port_))
+        if (xine_post_ = xine_post_init(xine_, name.c_str(), 0, &xine_ao_port_, &xine_vo_port_))
         {
-            xine_post_wire_audio_port(xine_get_audio_source(xine_stream_), post->audio_input[0]);
+            xine_post_wire_audio_port(xine_get_audio_source(xine_stream_), 
+                                      xine_post_->audio_input[0]);
             INFO("Post plugin " << name << " loaded");
             return true;
         }
@@ -347,9 +401,46 @@ namespace stk
         return false;
     }
 
+    // FIXME: we may need to check xine status and only call the xine routines if the stream is valid?
     void xine_panel::send_event(xine_event_t* xe)
     {
+        //xe->stream = xine_stream_; // is this done automatically
         xine_event_send(xine_stream_, xe);
+    }
+
+    int xine_panel::status()
+    {
+        return xine_get_status(xine_stream_);
+    }
+
+    int xine_panel::parameter(int param)
+    {
+        return xine_get_param(xine_stream_, param);
+    }
+
+    void xine_panel::parameter(int param, int value)
+    {
+        xine_set_param(xine_stream_, param, value);
+    }
+
+    int xine_panel::stream_info(int info)
+    {
+        return xine_get_stream_info(xine_stream_, info);
+    }
+
+    std::string xine_panel::meta_info(int info)
+    {
+        return std::string(xine_get_meta_info(xine_stream_, info));
+    }
+
+    void xine_panel::position(int* stream_pos, int* ms_pos, int* ms_len)
+    {
+        if (!xine_get_pos_length(xine_stream_, stream_pos, ms_pos, ms_len))
+        {
+            *stream_pos = 0;
+            *ms_pos = 0;
+            *ms_len = 0;
+        }
     }
 } 
 

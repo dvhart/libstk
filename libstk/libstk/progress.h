@@ -31,7 +31,7 @@ namespace stk
     private:
 
     protected:
-        progress(const std::wstring& format_label, const rectangle& rect, int range);
+        progress(const std::wstring& format_label = L"", const rectangle& rect = rectangle(), int range=100);
 
         /// rebuild the label to be displayed based on the current fill and range
         void build_label();
@@ -69,11 +69,9 @@ namespace stk
         void range(int val);
         int fill() { return fill_; }
         void fill(int val);
-        float percent()
-        {
-            return (float)fill_/(float)range_;
-        }
+        float percent() { return (float)fill_/(float)range_; }
         void percent(float val);
+        void label(const std::wstring& label) { format_label_ = label; }
         /********** END PROGRESS INTERFACE **********/
 
     };
