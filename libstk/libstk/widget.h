@@ -16,6 +16,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include <libstk/component.h>
 #include <libstk/keycode.h>
@@ -28,7 +29,7 @@ namespace stk
     class container;
     class state;
 
-    class widget : public component
+    class widget : public component, public boost::enable_shared_from_this<widget>
     {
     public:
         typedef boost::shared_ptr<widget> ptr;
@@ -113,16 +114,15 @@ namespace stk
         /********** END WIDGET INTERFACE **********/
 
         /********** COMPOSITE INTERFACE **********/
-        // FIXME: make these throw an exception or something
         virtual widget::ptr widget_at(int x, int y)
         {
-            return widget::ptr();
+            return shared_from_this();
         }
         virtual void delegate_mouse_event(mouse_event::ptr me)
         { }
         virtual widget::ptr get_active_child()
         {
-            return widget::ptr();
+            return shared_from_this();
         }
         virtual rectangle redraw_rect()
         {

@@ -25,7 +25,7 @@ namespace stk
     /// A class declaring the component interface.
     /// I think this class is superfluous and its interface should be moved
     /// down to widget. --dvhart
-    class component : public event_handler, public drawable
+    class component : public event_handler, public drawable 
     {
     public:
         typedef boost::shared_ptr<component> ptr;

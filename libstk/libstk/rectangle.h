@@ -18,6 +18,7 @@
 
 namespace stk
 {
+    /// dvhart docs of the rectangle class
     class rectangle
     {
     private:
@@ -30,13 +31,19 @@ namespace stk
         rectangle(const point &p1, const point &p2);
 
         // getters
+        /// Returns the upper left corner of the rectangle (this is duplicated by position())
         point p1() const { return p1_; }
+        /// Returns the lower right corner of the rectangle
         point p2() const { return p2_; }
+        /// Returns the x coordinate of the left edge
         int x1() const { return p1_.x(); }
+        /// Returns the y coordinate of the top edge
         int y1() const { return p1_.y(); }
+        /// Returns the x coordinate of the right edge
         int x2() const { return p2_.x(); }
+        /// Returns the y coordinate of the bottom edge
         int y2() const { return p2_.y(); }
-        int width() const { return p2_.x() - p1_.x() + 1; } // inclusive width
+        int width() const { return p2_.x() - p1_.x() + 1; }  // inclusive width
         int height() const { return p2_.y() - p1_.y() + 1; } // inclusive height
 
         // setters
@@ -48,21 +55,21 @@ namespace stk
         void height(int val) { p2_.y(val + p1_.y() - 1); }
 
         // utilities
-        /// Returns True if the Rectangle is Empty(w==0 h==0)
+        /// Returns true if the rectangle is empty(w==0 h==0)
         bool empty() const { return (!width() && !height()); }
-        /// Returns True if the given Point lies inside the rectangle
+        /// Returns true if the given Point lies inside the rectangle
         bool contains(int x, int y) const;
-        /// Returns True if the given Point lies inside the rectangle
+        /// Returns true if the given Point lies inside the rectangle
         bool contains(const point& p) const;
-        /// Returns True if the given rectangle intersects with this one
+        /// Returns true if the given rectangle intersects with this one
         bool intersects(const rectangle& rect) const;
-        /// Returns the Lower Left Corner of the Rectangle
+        /// Returns the upper left corner of the rectangle (this is duplicated by p1())
         point position() const { return p1_; }
-        /// Sets the Lower Left Corner of the Rectangle
+        /// Sets the upper left corner of the rectangle
         void position(int x, int y);
-        /// Sets the Lower Left Corner of the Rectangle
+        /// Sets the upper left corner of the rectangle
         void position(const point& p);
-        /// Returns the Area of intersection between both rectangles (the area they share)
+        /// Returns the area of intersection between both rectangles (the area they share)
         rectangle intersection(rectangle &rhs) const;
 
         // operators

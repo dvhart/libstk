@@ -113,8 +113,8 @@ namespace stk
             while (event_->type() != event::none)
             {
                 //INFO("event received of type: 0x" << std::hex << event_->type());
-		bool handled_by_on_event=on_event(event_);
-		if(!handled_by_on_event)
+		bool handled_by_on_event = on_event(event_);
+		if (!handled_by_on_event)
 		{
 		    // if it's a mouse event, let current_state_ determine who to send it too
 		    if (event_->type() == event::mouse_motion ||
@@ -125,7 +125,8 @@ namespace stk
 			
 			// update hover_widget as necessary
 			widget::ptr hover_ptr = hover_widget_.lock();
-			if (!hover_ptr || !hover_ptr->contains(me->x(), me->y()))
+                        // FIXME: this is broken, me->x is world coords, contains uses local coords
+			if (!hover_ptr || !hover_ptr->contains(me->x(), me->y())) 
 			{
 			    // NOTE: only leaf widgets can be hover widgets!!!
 			    if (hover_ptr)
