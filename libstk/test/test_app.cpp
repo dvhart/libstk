@@ -90,9 +90,9 @@ int main(int argc, char* argv[])
         else if (surface_type == "sdl")
         {
             test_surface = surface_sdl::create(rectangle(0, 0, 640, 480), false);
-            //test_event_producer = event_producer_sdl::create();
+            test_event_producer = event_producer_sdl::create();
             //INFO("CREATING INPUT EVENT PRODUCER");
-            test_event_producer = event_producer_input::create("/dev/input/event0");
+            //test_event_producer = event_producer_input::create("/dev/input/event0");
         }
 #endif
 #ifdef HAVE_DIRECTFB

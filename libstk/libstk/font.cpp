@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <math>
 #include <libstk/font.h>
 #include <libstk/read_dir.h>
 #include <libstk/exceptions.h>
@@ -97,10 +98,10 @@ namespace stk
         if (error)
             throw error_message_exception("font::font: could not set font size");
 
-        transformation_matrix.xx=cos(rotation_)*0x10000;
-        transformation_matrix.xy=-sin(rotation_)*0x10000;
-        transformation_matrix.yx=sin(rotation_)*0x10000;
-        transformation_matrix.yy=cos(rotation_)*0x10000;
+        transformation_matrix.xx = cos(rotation_)*0x10000;
+        transformation_matrix.xy = -sin(rotation_)*0x10000;
+        transformation_matrix.yx = sin(rotation_)*0x10000;
+        transformation_matrix.yy = cos(rotation_)*0x10000;
 
         // increment library usage counter
         font_count_++;
