@@ -30,6 +30,9 @@ namespace stk
         static int default_size;
 
     protected:
+        enum regions_ { NONE, ABOVE_BAR, BELOW_BAR, BAR }; // Region on which the user clicked
+        regions_ region(int x, int y); // get the region at the given coordinates
+        
         scroll_bar(const rectangle& rect, scroll_model::ptr model);
 
         scroll_model::ptr model_;
