@@ -2,6 +2,7 @@ lib_LTLIBRARIES  =\
 	libstk.la
 
 libstk_la_SOURCES =\
+	color_manager.h color_manager.cpp \
 	event_system.h \
 	event_system_sdl.h event_system_sdl.cpp \
 	event_system_dfb.h event_system_dfb.cpp \
@@ -48,7 +49,7 @@ library_include_HEADERS= \
 	drawable.h       glyph.h             component.h       widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
-	image_panel.h    theme.h
+	image_panel.h    theme.h             color_manager.h
 
 
 bin_PROGRAMS      = test_app

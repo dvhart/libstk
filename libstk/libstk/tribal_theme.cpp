@@ -1,3 +1,4 @@
+#include "libstk/color_manager.h"
 #include "libstk/graphics_context.h"
 #include "libstk/exceptions.h"
 #include "libstk/font_mngr.h"
@@ -108,7 +109,7 @@ namespace stk
 	{
 		//cout << "state::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(theme::user()->fill_state_color()); 
+		gc->fill_color(color_manager::get_color(color_properties(fill_state_color_str, surface)));
 		surface->gc(gc);
 		surface->fill_rect(rect_);	
 		container::draw(surface); // this will draw all the children - document this for theme howto
@@ -130,36 +131,36 @@ namespace stk
 		
 		if (pressed_)
 		{
-			gc->fill_color(theme::user()->fill_color_pressed()); 
-			gc->line_color(theme::user()->outline_color_pressed()); 
-			gc->font_fill_color(theme::user()->font_color_pressed());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_pressed_str, surface))); 
+			gc->line_color(color_manager::get_color(color_properties(outline_color_pressed_str, surface))); 
+			gc->font_fill_color(color_manager::get_color(color_properties(font_color_pressed_str, surface)));
 		}
 		else if(focused_)
 		{
-			gc->fill_color(theme::user()->fill_color_focused());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
 			if (hover_)
 			{
-				gc->line_color(theme::user()->outline_color_hover()); 
-				gc->font_fill_color(theme::user()->font_color_hover());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface))); 
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
 			}
 			else 
 			{
-				gc->line_color(theme::user()->outline_color_focused());
-				gc->font_fill_color(theme::user()->font_color_focused());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_focused_str, surface)));
 			}
 		}
 		else
 		{
-			gc->fill_color(theme::user()->fill_color_normal());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
 			if (hover_) 
 			{
-				gc->line_color(theme::user()->outline_color_hover()); 
-				gc->font_fill_color(theme::user()->font_color_hover());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface))); 
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
 			}
 			else 
 			{
-				gc->line_color(theme::user()->outline_color_normal());
-				gc->font_fill_color(theme::user()->font_color_normal());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
 			}
 		}
 		
@@ -176,11 +177,11 @@ namespace stk
 	{
 		//cout << "progress::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(theme::user()->fill_color_normal()); 
-		gc->line_color(theme::user()->outline_color_normal());
+		gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
+		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
 		stk::font::ptr bob = font::create("Arial.ttf", 18);
 		gc->font(bob);
-		gc->font_fill_color(theme::user()->font_color_normal());
+		gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
 		surface->gc(gc);
 		rectangle progress_rect(rect_.x1()+2, rect_.y1()+2, rect_.width()-4, rect_.height()-4);
 		progress_rect.width((int)(progress_rect.width()*percent()));
@@ -193,13 +194,13 @@ namespace stk
 	{
 		//cout << "label::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(theme::user()->fill_color_normal());
-		gc->line_color(theme::user()->outline_color_normal());
+		gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
+		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
 		try
 		{
 			stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
 			gc->font(arial_18);
-			gc->font_fill_color(theme::user()->font_color_normal());
+			gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
 			surface->gc(gc);
 			surface->draw_text(rect_, text_);
 		}
@@ -213,7 +214,7 @@ namespace stk
 	{
 		//cout << "image_panel::draw()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->line_color(theme::user()->outline_color_focused()); 
+		gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
 		surface->gc(gc);
 		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		//surface->draw_rect(rect_);
@@ -246,14 +247,14 @@ namespace stk
 		}
 		
 		graphics_context::ptr gc = graphics_context::create();
-		gc->line_color(theme::user()->outline_color_normal());
+		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
 		if (focused_)
-			gc->fill_color(theme::user()->fill_color_focused());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
 		else
-			gc->fill_color(theme::user()->fill_color_normal());
-		gc->font_fill_color(theme::user()->font_color_normal());
-		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
-		gc->font(arial_18);
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
+		gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
+		stk::font::ptr arial_12 = font::create("Arial.ttf", 12);
+		gc->font(arial_12);
 		surface->gc(gc);
 	
 		// outline the list box
@@ -296,34 +297,34 @@ namespace stk
 
 		if(focused_)
 		{
-			gc->fill_color(theme::user()->fill_color_focused());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
 			if (hover_)
 			{
-				gc->line_color(theme::user()->outline_color_hover()); 
-				gc->font_fill_color(theme::user()->font_color_hover());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface))); 
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
 			}
 			else 
 			{
-				gc->line_color(theme::user()->outline_color_focused());
-				gc->font_fill_color(theme::user()->font_color_focused());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_focused_str, surface)));
 			}
 		}
 		else
 		{
-			gc->fill_color(theme::user()->fill_color_normal());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
 			if (hover_) 
 			{
-				gc->line_color(theme::user()->outline_color_hover()); 
-				gc->font_fill_color(theme::user()->font_color_hover());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_hover_str, surface))); 
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_hover_str, surface)));
 			}
 			else 
 			{
-				gc->line_color(theme::user()->outline_color_normal());
-				gc->font_fill_color(theme::user()->font_color_normal());
+				gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
+				gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
 			}
 		}
 
-		gc->font_fill_color(theme::user()->font_color_normal());
+		gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
 		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
 		gc->font(arial_18);
 		surface->gc(gc);
@@ -371,10 +372,10 @@ namespace stk
 		graphics_context::ptr gc = graphics_context::create();
 		// fixme: this isn't detecting focus
 		if (focused())
-			gc->fill_color(theme::user()->fill_color_focused());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_focused_str, surface)));
 		else
-			gc->fill_color(theme::user()->fill_color_normal());
-		gc->line_color(theme::user()->outline_color_normal());
+			gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
+		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
 		surface->gc(gc);
 		surface->draw_rect(rect_);
 

@@ -63,7 +63,6 @@ namespace stk
 			color outline_color_hover() const { return outline_color_hover_; }
 			color outline_color_pressed() const { return outline_color_pressed_; }
 
-			color fill_state_color() const { return fill_state_color_; }
 			color fill_color_normal() const { return fill_color_normal_; }
 			color fill_color_focused() const { return fill_color_focused_; }
 			color fill_color_hover() const { return fill_color_hover_; }
