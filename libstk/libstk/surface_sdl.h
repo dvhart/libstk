@@ -61,7 +61,7 @@ namespace stk
 			inline void put_pixel(int x, int y, color clr);
 			inline void put_pixel_aa(int x, int y, double distance, color clr);
 			inline color pixel_at(int x, int y);
-			SDL_Rect rect_to_sdl_rect(rectangle &rect)
+			SDL_Rect rect_to_sdl_rect(const rectangle &rect)
 			{
 				SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.w(), rect.h() };
 				return sdl_rect;
@@ -82,9 +82,9 @@ namespace stk
 			virtual color gen_color(byte r, byte g, byte b, byte a);
 			virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
 			virtual void unlock();
-			virtual void blit(surface &p_surface, rectangle &src_rect, 
-					rectangle &dst_rect);
-
+			virtual void blit(surface &dst_surface);
+			virtual void flip();
+			
 			// optimized drawing routines
 			// WRITEME...
 
@@ -93,6 +93,8 @@ namespace stk
 
 			// optimized fill routines
 			// WRITEME...
+			virtual void fill_rect(int x1, int y1, int x2, int y2);
+			virtual void fill_rect(const rectangle &rect);
 
 			// optimized aa fill routines
 			// WRITEME...

@@ -101,20 +101,19 @@ namespace stk
 	{
 	}
 	
-	void surface_sdl::blit(surface &dst_surface, rectangle &src_rect, 
-			rectangle &dst_rect)
+	void surface_sdl::blit(surface &dst_surface)
 	{
 		// blit the local surface to the destination surface
 		surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
 		if (dst_surface_ptr != NULL)
 		{
-			SDL_Rect src_sdl_rect = rect_to_sdl_rect(src_rect);
-			SDL_Rect dst_sdl_rect = rect_to_sdl_rect(dst_rect);
+			SDL_Rect dst_sdl_rect = rect_to_sdl_rect(rect_);
 			
-			if (sdl_surface_ && SDL_BlitSurface(sdl_surface_, &src_sdl_rect,
+			if (SDL_BlitSurface(sdl_surface_, NULL,
 						dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
 			{
-				cerr << "widget: Failed to blit sdl_surface_ to screen" << endl;
+				throw error_message_exception(
+						"widget: Failed to blit sdl_surface_ to screen");
 			}
 		}
 		else
@@ -125,6 +124,11 @@ namespace stk
 		}
 	}
 
+	void surface_sdl::flip()
+	{
+		SDL_Flip(sdl_surface_);
+	}
+	
 	// optimized pixel routines
 	void surface_sdl::put_pixel(int x, int y, color clr)
 	{
@@ -275,6 +279,20 @@ namespace stk
 
 	// optimized fill routines
 	// WRITEME...
+	void surface_sdl::fill_rect(int x1, int y1, int x2, int y2)
+	{
+		Uint32 sdl_color = (Uint32)gc_.fill_color();
+		rectangle rect(x1, y1, x2 - x1, y2 - y1);
+		SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
+		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
+	}
+	
+	void surface_sdl::fill_rect(const rectangle &rect)
+	{
+		Uint32 sdl_color = (Uint32)gc_.fill_color();
+		SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
+		SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
+	}
 
 	// optimized aa fill routines
 	// WRITEME...

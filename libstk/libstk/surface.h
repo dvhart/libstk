@@ -108,18 +108,20 @@ namespace stk
 			void alpha(byte a) { alpha_ = a; };
 			graphics_context gc() const { return gc_; };
 			void gc(graphics_context &new_gc) { gc_ = new_gc; }; 		
+			void x1(int x) { rect_.x1(x); };
+			void y1(int y) { rect_.y1(y); };
 
 			// methods which MUST be implemented in derived classes
-			virtual void draw_pixel(int x, int y, color clr) = 0;
-			virtual void draw_pixel_aa(int x, int y, double distance, color clr) = 0;
-			virtual color get_pixel(int x, int y) = 0;
+			virtual void draw_pixel(int x, int y, color clr) { };
+			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { };
+			virtual color get_pixel(int x, int y) { };
 			// format: "0xRRGGBBAA", 0-255, alpha 255 being opaque
-			virtual color gen_color(const std::string &str_color) = 0;
-			virtual color gen_color(byte r, byte g, byte b, byte a) = 0;
-			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) = 0;
-			virtual void unlock() = 0;
-			virtual void blit(surface &p_surface, rectangle &src_rect, 
-					rectangle &dst_rect) = 0;
+			virtual color gen_color(const std::string &str_color) { }; // make const
+			virtual color gen_color(byte r, byte g, byte b, byte a) { }; // make const
+			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) { };
+			virtual void unlock() { };
+			virtual void blit(surface &dst_surface) { };
+			virtual void flip() { };
 
 			/* A NOTE ON EFFICIENCY AND PERFORMANCE
 			 * ----------------------------------

@@ -16,7 +16,7 @@ namespace stk
 			{
 				// enforce p1 as upper left coordinate
 				// (this assume 0,0 is the upper left corner of the screen (like SDL))
-				if ((x1 < x1+w) || (y1 < y1+h))
+				if ((x1 > x1+w) || (y1 > y1+h))
 					throw error_message_exception(
 							"x1,y1 must be less than x2,y2");
 			};
@@ -24,7 +24,7 @@ namespace stk
 			{
 				// enforce p1 as upper left coordinate
 				// (this assume 0,0 is the upper left corner of the screen (like SDL))
-				if ((p1.x() < p2.x()) || (p1.y() < p2.y()))
+				if ((p1.x() > p2.x()) || (p1.y() > p2.y()))
 					throw error_message_exception(
 							"p1.x(),p1.y() must be less than p1.x(),p1.y()");
 			}; 
