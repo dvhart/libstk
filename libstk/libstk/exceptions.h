@@ -31,10 +31,9 @@ namespace stk
 
 		exception() {}
 	public:
-
-		exception(const std::string) { _error = error; }
+		exception(const std::string &error) { _error = error; }
 		~exception() {}
-
+		
 		std::string get_error() { return _error; }
 	};
 } // namespace stk

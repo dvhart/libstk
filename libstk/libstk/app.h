@@ -54,10 +54,10 @@ namespace stk {
 		void run();
 
 		/* sets */
-		void set_state(const state &state);	  /* sets "state" as current state */
+		void set_state(const state &val);	  /* sets "state" as current state */
 		void set_state(const std::string &name);     /* looks up a state by its "name" and sets it as the current */
 		void set_theme(const std::string &name);     /* sets the theme by its "name" */
-		void set_focused(const std::widget &widget); /* focuses the "widget" */
+		void set_focused(const std::widget &val); /* focuses the "widget" */
 		void set_focused(const std::string &name);   /* looks up a widget by its "name" and gives it the focus */
 		/* ---- */
 
@@ -68,7 +68,7 @@ namespace stk {
 		stk::widget *get_widget(const std::string &name);	 /* looks up a widget by its "name" and returns it */
 		/* ---- */
 
-		void add_state(const state &state);
+		void add_state(const state &val);
 		void register_key(SDLKey key, stk::keyslot callback) { _keybindings[key] = callback; };
 	};
 } // namespace stk

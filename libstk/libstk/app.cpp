@@ -189,24 +189,24 @@ int app::run()
 	} // while (!done)
 }
 
-void app::set_state(const stk::state &state)
+void app::set_state(const stk::state &val)
 {
-	state_iter = find(states.begin(), states.end(), state.get_name());
-	if (state_iter == states.end()) return 1;
+	state_iter = find(_states.begin(), _states.end(), val.get_name());
+	if (state_iter == _states.end()) return 1;
 	set_focused(state_iter.data());
 }
 
 void app::set_state(const std::string &name)
 {
-	state_iter = find(states.begin(), states.end(), name);
-	if (state_iter == states.end()) return 1;
+	state_iter = find(_states.begin(), _states.end(), name);
+	if (state_iter == _states.end()) return 1;
 	set_focused(state_iter.data());
 }
 
-void app::add_state(const stk::state &state)
+void app::add_state(const stk::state &val)
 {
-	states[val.name] = &state;
-	if (states.count() == 1) state_iter = states.begin();
+	_states[val.get_name()] = &val;
+	if (_states.size() == 1) state_iter = _states.begin();
 }
 
 void app::set_theme(const std::string &name)
@@ -217,7 +217,7 @@ stk::widget *app::get_widget(const std::string &name)
 {
 	std::cout << "lookup_widget start" << std::endl;
 
-	for (state::state_map::iterator iter = states.begin(); iter != states.end(); iter++)
+	for (state::state_map::iterator iter = _states.begin(); iter != _states.end(); iter++)
 	{
 		if (iter->get_name() == name) return iter.data();
 		stk::widget *the_widget = iter->get_widget(name);
@@ -238,11 +238,11 @@ bool app::good_event(SDL_Event *event)
 	return false;
 }
 
-void app::set_focused(stk::widget &widget) {
-	if (&widget == _focused_widget) return;
+void app::set_focused(stk::widget &val) {
+	if (&val == _focused_widget) return;
 
-	focused_widget->set_focused(false);
-	widget.set_focused(true);
-	focused_widget = &widget;
+	_focused_widget->set_focused(false);
+	val.set_focused(true);
+	_focused_widget = &widget;
 }
 
