@@ -29,7 +29,8 @@ namespace stk
     class container;
     class state;
 
-    class widget : public component, public boost::enable_shared_from_this<widget>
+    class widget : public rectangle, public component, 
+    public boost::enable_shared_from_this<widget>
     {
     public:
         typedef boost::shared_ptr<widget> ptr;
@@ -57,6 +58,18 @@ namespace stk
 
     public:
         virtual ~widget();
+
+        /********** RECTANGLE INTERFACE **********/
+        /// Get the rectangular region oocupied by the drawable
+        virtual rectangle rect() { return rectangle(p1_, p2_); }
+
+        /// Set the position and size of the drawable
+        virtual void rect(const rectangle& rect) 
+        { 
+            p1(rect.p1()); 
+            p2(rect.p2()); 
+        }
+        /********** END RECTANGLE INTERFACE **********/
 
         /********** EVENT HANDLER INTERFACE **********/
         /// Try to handle standard events.

@@ -363,6 +363,8 @@ namespace stk
         
         clip_rect.position(clip_rectangle.position()+offset_);
                                     
+        INFO("new sdl clip_rect: " << clip_rect);
+
         SDL_MUTEX_LOCK;
         surface::clip_rect(clip_rect);
         SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rect);

@@ -1,3 +1,51 @@
+2003-09-21 04:57  carter
+
+	* libstk/container.cpp: Fixed a bug in container which fucked up
+	the child container when you removed an item that wasnt actually a
+	child of the container
+
+2003-09-21 02:53  carter
+
+	* libstk/: list.cpp, list.h: ADded missing accessor functions for
+	the vertical scroll modell in list
+
+2003-09-18 09:37  carter
+
+	* libstk/list.cpp: Fixed a crash bug that occured if the mouse was
+	clicked in the area that belongs to the list box but to no
+	list_item
+
+2003-09-17 20:44  dvhart
+
+	* libstk/: application.cpp, container.cpp, label.cpp, sdl_data.cpp,
+	xine_panel.cpp, xine_panel.h: implemented xine panel event listener
+	and wrapper, added test code for arrow keys (basic dvdnav works
+	with the xine_panel focused, try 'xine_test sdl dvd://')
+
+2003-09-17 14:10  dvhart
+
+	* libstk/backend_dfb.cpp, libstk/button.cpp, libstk/container.cpp,
+	libstk/drawable.h, libstk/edit_box.cpp, libstk/edit_box.h,
+	libstk/image_panel.cpp, libstk/list.cpp, libstk/list_item.h,
+	libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
+	libstk/progress.cpp, libstk/rectangle.cpp, libstk/rectangle.h,
+	libstk/sdl_data.cpp, libstk/sdl_data.h, libstk/spinner.cpp,
+	libstk/spinner.h, libstk/spreadsheet.cpp, libstk/surface_sdl.cpp,
+	libstk/switched_panel.cpp, libstk/tribal_theme.cpp,
+	libstk/viewport.cpp, libstk/widget.cpp, libstk/widget.h,
+	test/hello_world.cpp: fixed segfaults do to sdl_data using a
+	shared_ptr to store instance_ instead of a weak_ptr, alleviated
+	some density do to Marc's peculiar aversion to whitespace :-), and
+	made drawable derive publicly from rectangle.  The last may not be
+	ideal but since both widget and list_item need it, I started at
+	drawable, It seems natural enough for a drawable to be a rect,
+	except that application derives from it.... which it shouldn't
+	anyway.
+
+2003-09-16 23:35  dvhart
+
+	* ChangeLog: ChangeLog update
+
 2003-09-16 23:35  dvhart
 
 	* libstk/component.h, libstk/drawable.h, libstk/edit_box.cpp,

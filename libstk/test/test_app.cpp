@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
                 rectangle(10, 50, 150, 30));
         viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
         image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
-                rectangle(0, 0, 0, 0), image::create(test_viewport->surface(), "parrots.png"));
+                rectangle(0, 0, 384, 256), image::create(test_viewport->surface(), "parrots.png"));
         
         //scroll(test_viewport->h_scroll(),-10);
         button::ptr scroll_left = button::create(test_state,L"Scroll-", 

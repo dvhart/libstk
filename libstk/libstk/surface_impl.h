@@ -1367,8 +1367,7 @@ namespace stk
             // this is wrong IMNSHO, blitting should be offseted in the backend's surface class!!!!!!!
             //dest_rect.position(offset()+point(x, y));
             INFO("draw_image(" << x << "," << y << ")");
-            INFO("Image rect: X1=" << source_rect.x1() << " Y1=" << source_rect.y1() << " X2= "
-                 << source_rect.x2() << " Y2=" << source_rect.y2());
+            INFO("Image rect: " << source_rect);
             img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect, dest_rect);
         }
 

@@ -90,7 +90,7 @@ namespace stk
         rectangle redraw_rect = child->intersection(clip_rect);
 
         // Intersection tests should be in local coordinates
-        surface->offset(surface->offset()+child->position());
+        surface->offset(surface->offset() + child->position());
         // Keep redraw rect in local coordinates
         redraw_rect.position(redraw_rect.position()-child->position());         
         child->draw(surface, redraw_rect);

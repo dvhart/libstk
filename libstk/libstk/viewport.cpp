@@ -82,10 +82,11 @@ namespace stk
 
     void viewport::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        point scroll_offset;
-        scroll_offset.x(h_scroll()->begin());
-        scroll_offset.y(v_scroll()->begin());
-        surface->offset(surface->offset() + scroll_offset);        
+        INFO("clip_rect: " << clip_rect);
+        INFO("                surface offset: " << surface->offset().x() << "," << surface->offset().y());
+        point scroll_offset(h_scroll()->begin(), v_scroll()->begin());
+        surface->offset(surface->offset() + scroll_offset);
+        INFO("surface offset + scroll offset: " << surface->offset().x() << "," << surface->offset().y());
         container::draw(surface, rect()); // draw all the children
         surface->offset(surface->offset() - scroll_offset);
     }
