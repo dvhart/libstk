@@ -71,7 +71,7 @@ namespace stk
         void fill(int val);
         float percent() { return (float)fill_/(float)range_; }
         void percent(float val);
-        void label(const std::wstring& label) { format_label_ = label; }
+        void label(const std::wstring& label);
         /********** END PROGRESS INTERFACE **********/
 
     };

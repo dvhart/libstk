@@ -59,6 +59,12 @@ namespace stk
         redraw(rect());
     }
 
+    void progress::label(const std::wstring& label) 
+    { 
+        format_label_ = label; 
+        redraw(rect());
+    }
+
     void progress::build_label()
     {
         // %p, percent_*100 to two decimal places, followed by %
