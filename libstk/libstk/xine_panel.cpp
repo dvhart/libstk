@@ -51,25 +51,10 @@ namespace stk
         xine_init(xine_);
 
         INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
-        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
         xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
+        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
+        xine_stream_ = xine_stream_new(xine_, xine_ao_port_, xine_vo_port_);
 
-        // HACK: testing post plugins
-        INFO("Available plugins: ");
-        int i = 0;
-        while (xine_list_post_plugins(xine_)[i]) INFO(" "<<xine_list_post_plugins(xine_)[i++]);
-        ao_ports[0] = xine_ao_port_; ao_ports[1] = NULL;
-        vo_ports[0] = xine_vo_port_; vo_ports[1] = NULL;
-        INFO("Init fftgraph");
-        post = xine_post_init(xine_, "fftgraph", 1, ao_ports, vo_ports);
-        INFO("New stream with fftgraph inputs");
-        INFO("Audio input @ " << post->audio_input[0]);
-        INFO("Video input @ " << post->video_input[0]);
-        xine_stream_ = xine_stream_new(xine_, post->audio_input[0], xine_vo_port_);
-        INFO("Post plugin loaded");
-        // END HACK
-
-        //xine_stream_ = xine_stream_new(xine_, xine_ao_port_, xine_vo_port_);
         xine_event_queue_ = xine_event_new_queue(xine_stream_);
         xine_event_create_listener_thread(xine_event_queue_, &event_listener_wrapper, (void*)this);
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
@@ -325,6 +310,28 @@ namespace stk
         INFO("sending gui drawable changed");
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
+    }
+
+    bool xine_panel::visualization(const std::string& name)
+    {
+        // HACK: testing post plugins
+        INFO("Available plugins: ");
+        int i = 0;
+        while (xine_list_post_plugins(xine_)[i]) INFO(" "<<xine_list_post_plugins(xine_)[i++]);
+        ao_ports[0] = xine_ao_port_; ao_ports[1] = NULL;
+        vo_ports[0] = xine_vo_port_; vo_ports[1] = NULL;
+        INFO("Init " << name);
+        post = xine_post_init(xine_, name.c_str(), 1, ao_ports, vo_ports);
+        //INFO("New stream with fftgraph inputs");
+        //INFO("Audio input @ " << post->audio_input[0]);
+        //INFO("Video input @ " << post->video_input[0]);
+        INFO("Rewire ports to use post plugin");
+        i = 0;
+        while (xine_post_list_inputs(post)[i]) INFO(" "<<xine_post_list_inputs(post)[i++]);
+        xine_post_wire(xine_get_audio_source(xine_stream_), (xine_post_in_t*)xine_post_input(post, "audio in"));
+        INFO("Post plugin loaded");
+        // END HACK
+        return true;
     }
 } 
 

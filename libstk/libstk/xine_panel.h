@@ -77,6 +77,7 @@ namespace stk
         void faster();
         void slower();
         void toggle_fullscreen();
+        bool visualization(const std::string& name);
         // xine_panel signals
         boost::signal<bool (), combiner::logical_or<bool> > on_playback_finished;
         /********** END XINE PANEL INTERFACE **********/
