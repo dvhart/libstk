@@ -35,8 +35,6 @@ namespace stk
 			virtual void draw(boost::shared_ptr<stk::surface> surface);
 			//virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
 	};
-
-	
 }
 
 #endif

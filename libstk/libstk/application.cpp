@@ -56,7 +56,7 @@ namespace stk
 			current_state_ = *states_.begin();
 			// FIXME: ask current_state_ for its first focusable widget
 			current_widget_ = (*states_.begin())->get_active_child();
-			hover_widget_ = *states_.begin();
+			//hover_widget_ = current_widget_;
 		}
 		
 		// FIXME: we have to do something about all these make_shared calls!!!
@@ -83,13 +83,14 @@ namespace stk
 				{
 					mouse_event::ptr me = boost::shared_static_cast<mouse_event>(event_);
 					widget::ptr hover_ptr = boost::make_shared(hover_widget_);
-					if (!hover_ptr->contains(me->x(), me->y()))
+					if (!hover_ptr || !hover_ptr->contains(me->x(), me->y()))
 					{
+						// NOTE: only leag widgets can be hover widgets!!!
 						cout << "changing hover_widget_" << endl;
-						hover_ptr->hover(false);
-						hover_widget_ = boost::make_shared(current_state_)->widget_at(me->x(), me->y());	
-						if (!make_shared(hover_widget_)) hover_widget_ = current_state_;
-						boost::make_shared(hover_widget_)->hover(true);
+						if (hover_ptr) hover_ptr->hover(false);
+						hover_ptr = boost::make_shared(current_state_)->widget_at(me->x(), me->y());	
+						if (hover_ptr) hover_ptr->hover(true);
+						hover_widget_ = hover_ptr;
 					}
 					boost::make_shared(current_state_)->delegate_mouse_event(me);
 				}

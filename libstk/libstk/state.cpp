@@ -32,7 +32,7 @@ namespace stk
 	
 	void state::draw(surface::ptr surface)
 	{
-		cout << "state::draw() - redraw_rect_: " << redraw_rect_ << endl;
+		//cout << "state::draw() - redraw_rect_: " << redraw_rect_ << endl;
 		theme::instance()->draw_state(redraw_rect_);
 		container::draw(surface);
 	}
@@ -56,7 +56,6 @@ namespace stk
 		}
 		make_shared(parent_)->handle_event(e); 
 	}
-
 
 	boost::weak_ptr<widget> state::focused_widget()
 	{

@@ -59,7 +59,12 @@ namespace stk
 			bool focused() { return focused_; }
 			void focused(bool val) { focused_ = val; redraw(true, rect_); }
 			bool hover() { return hover_; } 
-			void hover(bool val) { hover_ = val; redraw(true, rect_); }
+			void hover(bool val) 
+			{ 
+				hover_ = val; 
+				redraw(true, rect_);
+				cout << "set hover to widget with rect: " << rect_ << endl;
+			}
 			
 			// event_handler interface
 			virtual void handle_event(event::ptr e);
