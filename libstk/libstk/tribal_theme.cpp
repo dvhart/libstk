@@ -28,6 +28,7 @@
 #include "libstk/numeric_spinner.h"
 #include "libstk/progress.h"
 #include "libstk/scroll_bar.h"
+#include "libstk/scroll_box.h"
 #include "libstk/spinner.h"
 #include "libstk/spreadsheet.h"
 #include "libstk/state.h"
@@ -404,8 +405,13 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_focused_str, surface)));
-        gc->fill_color(color_manager::get()->get_color(
-                    color_properties(fill_color_normal_str, surface)));
+        
+        if (focused_)
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
+        else
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
         surface->gc(gc);
         surface->draw_rect(outline_rect);
 
@@ -429,6 +435,21 @@ namespace stk
         }
     }
     int scroll_bar::default_size = 20;
+
+    void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
+    {
+        rectangle outline_rect = rect(); outline_rect.position(0, 0);
+        rectangle vis_rect = outline_rect; 
+
+        graphics_context::ptr gc = graphics_context::create();
+        gc->line_color(color_manager::get()->get_color(
+                    color_properties(outline_color_focused_str, surface)));
+
+        container::draw(surface, clip_rect);
+
+        surface->gc(gc);
+        surface->draw_rect(outline_rect);
+    }
 
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {

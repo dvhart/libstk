@@ -37,8 +37,6 @@ namespace stk
         scroll_bar::ptr v_scroll_bar_;
         viewport::ptr viewport_;
 
-        /// helper function to redraw the whole widget
-        void redraw();
     public:
         static scroll_box::ptr create(container::ptr parent, const rectangle& rect, 
                 bool v_scroll, bool h_scroll);

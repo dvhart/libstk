@@ -21,7 +21,6 @@ namespace stk
     {
         scroll_box::ptr new_scroll_box(new scroll_box(parent, rect));
 
-        INFO("creating viewport");
         rectangle vp_rect = rect; vp_rect.position(point(0, 0));
         if (v_scroll) vp_rect.x2(vp_rect.x2() - scroll_bar::default_size);
         if (h_scroll) vp_rect.y2(vp_rect.y2() - scroll_bar::default_size);
@@ -87,11 +86,6 @@ namespace stk
         if (v_scroll_bar_) v_scroll_bar_->model(model);
     }
 
-    void scroll_box::redraw()
-    {
-        container::redraw(rect());
-    }
-
     void scroll_box::handle_event(event::ptr e)
     {
         widget::handle_event(e);
@@ -103,11 +97,6 @@ namespace stk
             container::add(item);
         else
             viewport_->add(item);
-    }
-
-    void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
-    {
-        container::draw(surface, clip_rect);
     }
 
 }

@@ -98,8 +98,9 @@ namespace stk
             surface->clip_rect(redraw_rect);
             // draw the child
             child->draw(surface, redraw_rect);
-            // restore the surface offset
+            // restore the surface offset and clip_rect
             surface->offset(surface->offset()-child->position());
+            surface->clip_rect(clip_rect);
         }
     }
     
