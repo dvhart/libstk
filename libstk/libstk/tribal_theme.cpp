@@ -235,8 +235,12 @@ namespace stk
                     color_properties(fill_color_normal_str, surface)));
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
-        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
-        gc->font(arial_18);
+        font::ptr arial;
+        if(text_size())
+            arial = font_manager::get()->get_font(font_properties("Arial.ttf", *text_size()));
+        else
+            arial = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
+        gc->font(arial);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         surface->gc(gc);

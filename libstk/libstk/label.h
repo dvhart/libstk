@@ -16,6 +16,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
+#include <boost/optional.hpp>
 
 #include <libstk/widget.h>
 #include <libstk/container.h>
@@ -30,7 +31,7 @@ namespace stk
 
     private:
         std::wstring text_;
-
+        boost::optional<int> text_size_;
     protected:
         label(container::ptr parent, std::wstring text, const rectangle& rect);
 
@@ -47,7 +48,16 @@ namespace stk
         {
             text_ = t;
         }
-
+        boost::optional<int> text_size()
+        {
+            return text_size_;
+        }
+        void text_size(boost::optional<int> newsize)
+        {
+            text_size_=newsize;
+            redraw(rect());
+        }
+        
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
     };
 
