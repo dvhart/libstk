@@ -152,7 +152,7 @@ namespace stk
                 item->rect(rectangle(0, v_scroll_->size(), width(), items_[i]->height()));
                 v_scroll_->size(v_scroll_->size()+items_[i]->height());
             }
-
+            current_ = MAX(0, MIN(current_, items_.size()-1));
             redraw(widget::rect());
         }
     }
@@ -186,6 +186,7 @@ namespace stk
     {
         items_.clear();
         v_scroll_->size(0);
+        current_ = 0;
         redraw(widget::rect());
     }
     int list::size()
