@@ -1,11 +1,3 @@
-/***************************************************************************
-     exceptions.h  -  declares all exceptions
-        -------------------
-    begin  : Mon Sep 09 2002
-    copyright     : (C) 2002 by Dirk Hoerner
-    email  : dirkhoerner@gmx.de
-***************************************************************************/
-
 #ifndef STK_EXCEPTION_H
 #define STK_EXCEPTION_H
 

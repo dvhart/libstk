@@ -1,5 +1,5 @@
 // ***********************************************************
-// FIXME: we simply cast Uint32 sdl colors to color stk colors,
+// FIXME: we simply cast Uint32 sdl colors to stk colors,
 // we need to determine how exactly this mapping works
 // ***********************************************************
 

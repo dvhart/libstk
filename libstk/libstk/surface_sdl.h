@@ -1,11 +1,3 @@
-/***************************************************************************
-	surface.cpp  -  surface class implementation
-	-------------------
-begin                : Tue September 10 2002
-copyright            : (C) 2002 by Darren Hart
-email                : dvhart@byu.edu
- ***************************************************************************/
-
 #ifndef STK_SURFACE_SDL_H
 #define STK_SURFACE_SDL_H
 

@@ -48,28 +48,25 @@ namespace stk
 			virtual ~widget();
 
 			/********** EVENT HANDLER INTERFACE **********/
+			/// Try to handle standard events.
+			/// Handing the event up to parent_ if the event isn't handled.
 			virtual void handle_event(event::ptr e);
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/
 			virtual surface::ptr surface(); 
-			//virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
 			virtual void redraw(const rectangle& rect);
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** COMPONENT INTERFACE **********/
 			/// Return the parent pointer.
 			virtual component::ptr parent() { return parent_.lock(); }
-			/// Pass call along to parent
-			//virtual widget::ptr focus_next();
-			/// Pass call along to parent
-			//virtual widget::ptr focus_prev();
 			/********** END COMPONENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
 			virtual bool is_container() { return false; }
 			/// FIXME: what would be a better way to handle all these rect wrappers?
-			/// should widget possibly ingerit from rectangle ?
+			/// should widget possibly inherit from rectangle ?
 			rectangle rect() { return rect_; }
 			bool contains(int x, int y) { return rect_.contains(x, y); }
 			bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
