@@ -1,0 +1,298 @@
+<dvhart> ok
+<dvhart> so surface is still troubling me
+<carter> hmmm
+<carter> blitting?
+* carter thought about it
+<carter> the only good way of doing it 
+<carter> is trough RTTI
+<carter> Really
+<dvhart> that and mutliple surfaces and how to create them
+<dvhart> explain
+<carter> i mean
+<carter> if you have an SDL surface
+<carter> and you give it a SURFACE* Pointer
+<carter> to blit too
+<carter> it can only hardware blit
+<carter> if the target is a SDL surface too
+<carter> so it needs to use RTTI
+<dvhart> ah
+<carter> and to other surfaces
+<carter> it can only do a putpixel blit which is absolutely awfull slow :)
+<dvhart> yup
+<carter> so in the end
+<carter> the blitting is either
+<carter> a pixel by pixel copy
+<carter> or a call to the backend (SDL,directfb or something)
+<dvhart> we have no way of creating mulsitple surfaces atm
+<dvhart> at least not cleanly
+<carter> creating multiple surfaces
+<carter> Off screen
+<carter> should be done trough some Surface Factory 
+<carter> (we should use the same for our primary surface, this is really just a hack at the moment isnt it?!)
+<carter> i mean
+<carter> initialising SDL manually etc :)
+<dvhart> exactly!
+<dvhart> lets do an example with two surfaces
+<dvhart> video panel ?
+<carter> video?
+<carter> in the sense of motioN?! :)
+<dvhart> what would need another surface ?
+<carter> this is really backend dependent
+<carter> sprite animation
+<carter> double buffered widgets 
+<carter> or really a TV picture or something ;)
+<carter> hmmm
+<carter> how about a Surface Factory
+<carter> with parameters
+<carter> like 
+<codec> hi!
+<carter> width , height , flags 
+<carter> or something
+<carter> where flags
+<carter> is like SDL
+<dvhart> lo codec
+<carter> a combination
+<carter> of things like
+<carter> primary, video_mem, main_mem or something
+<carter> have to define the flag list
+<carter> and it might be backend specific
+<carter> but that seems to be the only way to me
+<dvhart> hmmmm
+<carter> hi codec
+<dvhart> trying to wrap my brain around it
+<codec> like a facehugger?
+<carter> lol
+<dvhart> ?
+<codec> never played halflife dvhart? :)
+<dvhart> nope
+<carter> :)
+<carter> LOL
+<codec> poor ;)
+<dvhart> ok so what is left in libstk really?
+<dvhart> surface creation/dubble buffering
+<dvhart> colored fonts
+<dvhart> axe that
+<carter> :)
+<carter> my original idea for coloured fonts
+<carter> was that we Blit the Alpha channel pic of the font
+<carter> with the colour 
+<carter> to the target surface
+<carter> s/blit/Blend
+<codec> i think thats the usual way
+<carter> hmmm
+<carter> in GFX it would be :)
+<dvhart> right, but how many surfaces?
+<carter> Opengl and stuff
+<codec> :)
+<dvhart> one per glyph?
+<carter> but in GUI
+<carter> no
+<carter> one per font
+<carter> and blit the single glyph out of the surface
+<dvhart> how big is that!!!! with uberscript its HUGE!
+<carter> usually very small surfaces (many of them)
+<carter> are slow
+<carter> at least on hardware GFX boards
+<codec> yup
+<carter> hmmmmmmmmm
+<carter> ok
+<carter> one surface for glyph
+<codec> ;s
+<dvhart> yuk
+* carter still wonders what the usual fast way of drawing fonts is :)
+* carter is too much into 3d stuff
+<dvhart> *g*
+<dvhart> I think a lot of implementations are limited to what is needed by the app
+<dvhart> we are trying to be generic AND international
+<codec> like getting an idea, grabbing a pencil and draw it?
+<carter> think so too
+<dvhart> bad combo for small surfaces
+<carter> codec: shut up
+<dvhart> *g*
+<codec> :x
+<carter> international is no prob darren
+<carter> we usually have only 100 glyphs imo :)
+<dvhart> it just makes the # of character larger thats all
+* carter is mostly interested in fontsets like russian
+<carter> not in Japanese or something like that
+<dvhart> how would 100 10x15 32 bit surfaces be handled in hardware
+<dvhart> (I have no experience in this area)
+<carter> thats the big question
+<carter> it might be handled well
+<carter> or it might be aligne
+<carter> on some 128*128 big memory chunks *lol*
+<dvhart> *g*
+<dvhart> ok, so this requires more research
+<carter> the usual rule of thumb
+<carter> in Opengl is 
+<carter> that you better do your own management
+<carter> of small textures
+<carter> but i dont know about other stuff
+<carter> and
+<carter> in most embedded targets
+<carter> blitting
+<carter> might be a Software operation
+<carter> (done in MXX or SSE2 assembly but still software)
+<carter> in that case
+<carter> many small surface
+<carter> s
+<carter> in system memory arent bad
+<carter> imo
+<dvhart> right
+<carter> lets do some research on this
+<dvhart> yup
+<dvhart> ok 
+<dvhart> so more on the direction of libstk
+<dvhart> we should keep in mind 
+<dvhart> interface without mouse
+<carter> yep
+<carter> !
+<carter> size!
+<dvhart> yup
+<carter> and a simple to use API
+<carter> good documentation
+<dvhart> media widgets
+<dvhart> embedded widgets
+<dvhart> not just GTK widgets
+<carter> yep
+<carter> *lol*
+<dvhart> if all we write is listbox and button, what good is it really ?
+<carter> :)
+<carter> yep
+<dvhart> I think spinner is a good example
+* carter hopes it will grew with its(/HIs) applications
+<carter> :)
+<dvhart> (although GTK has those*g*)
+<carter> lol
+<carter> yep
+<carter> but spinner seems good
+<carter> imo
+<carter> there should be some hint to the user
+<carter> how to use it though
+<carter> and its absoluelty useless if you have no keyboard :)
+<dvhart> the draw routine isn't complete
+<dvhart> yeah, well so is list atm
+<carter> yep :)
+<dvhart> the handlers aren't complete
+<carter> hmmm
+<carter> btw
+<dvhart> that is another good point thogh
+<carter> can you setup a bugzilla
+<carter> for tracking todo lists and bugs?
+<dvhart> uh....
+<dvhart> never done that before, will look into it
+* carter really got used to it @ work
+<dvhart> you want to do it ?
+<carter> only running on the Lan though
+<carter> have no server
+<carter> and not much experience :)
+<dvhart> sure you do
+<dvhart> *g*
+<carter> (security wise)
+<dvhart> carter@dvhart.com
+<carter> *hmmmmmmmm hmnmmmm ;)*
+<carter> no
+<carter> thats a task for
+<carter> root@dvhart.com
+<carter> *ggg*
+<dvhart> LOL
+<dvhart> do I get a big red S on my chest ?
+<carter> LOL
+<dvhart> ok I will look into it
+<carter> yep
+<carter> would be nice
+<carter> hmm
+<carter> dunno
+<carter> there might be a bit more light weight bug tracker too
+<dvhart> I was going to say earlier: in addition to working with no mouse, all widgets should work with no keyboard
+<carter> yep
+<carter> exactly :)
+<carter> thats why i am working on the OSD keyboard
+<dvhart> obviously we will need some kind of input though *g*
+<carter> Lol :)
+<carter> but it might only be a IR remote!
+<carter> btw
+<carter> what we should keep in mind too
+<dvhart> ok, so I will: convert scroll_decorator to scroll_box->container
+<carter> is that we might possibly only run
+<carter> on displays with a resolution
+<carter> of 160x120 or something
+<carter> yep
+* carter will work on the Scroll "modell" (MVC)
+<carter> and on the scrollbar
+<dvhart> OH that was my other point!
+<dvhart> many embedded devices have TWO displays
+<carter> ok
+<carter> thats no prob imo
+<dvhart> a simple LCD and an SVIDEO interface
+<carter> !
+<carter> 2 widget trees
+<carter> and two primary surfaces
+<carter> we should really look into it
+<carter> atm App doesnt support that idea, does it?
+<dvhart> not at all!
+<carter> ok
+<carter> -> Todolist
+<codec> if i only had some embedded stuff to code on
+<dvhart> yup
+<carter> codec: get some! :)
+<dvhart> right now my laptop is embedded enough!
+<carter> build a set top box
+<codec> lol, give me the money
+<carter> or some CNC machine
+<carter> or something ;)
+<carter> no
+<carter> i said
+<codec> hehe
+<carter> you should build it
+<carter> not you should BUY it
+<dvhart> and a $60 matrix orbital display
+<carter> ;)
+<dvhart> ok: TODO lists
+<dvhart> Darren: scrollbox, bugzilla
+<dvhart> what else ?
+<carter> color manager?
+<carter> is that one done?
+<dvhart> haven't looked at it yet
+<dvhart> and finishing the handlers for list and spinner
+<dvhart> Marc:
+<carter> Modell of scrolling
+<carter> OSD keyboard
+<carter> scrollbars
+<carter> Change of caching strategy in Font manager
+<carter> anything i forgotten?
+<dvhart> Nope, don't htink so
+<dvhart> Dirk: edit_box, learn libstk *g* (while it changes at the same time) LOL
+<dvhart> Everyone: research surfaces
+<carter> lol
+<carter> Yep :)
+<dvhart> ok anything else?
+<carter> ok
+<carter> dont think so
+<carter> i think thats it for today
+<dvhart> will do the conversion in the next hour or so if possible, but commit by tommorrow noon for sure
+<carter> ok!
+<carter> got much work tomorrow
+<carter> i think i'll work hard to get it running by thursday
+<carter> ok
+<dvhart> next meeting: Saturday non/8pm ?
+<carter> Cya later guys!
+<carter> probably
+<dvhart> oh
+<carter> will tell you if i cant make it
+<dvhart> I am out of town
+<dvhart> I can't mak eit
+<carter> hmmm
+<carter> ok
+<dvhart> monday probably
+<carter> ok
+<carter> !
+<carter> cya then
+<dvhart> nite
+<carter> other discussion takes place on mailinglist
+<carter> imo
+<carter> !
+<dvhart> yup
+<carter> ok
+<carter> N8
+<dvhart> later codec!
