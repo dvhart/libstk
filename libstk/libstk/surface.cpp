@@ -134,22 +134,22 @@ void surface ::draw_line(int x1, int y1, int x2, int y2, Uint32 color, /*style,w
   switch(dir) {
   case LR:
     {
-      for (x; x < x2; x++) draw_pixel(x, y1, color);
+      for (x; x <= x2; x++) draw_pixel(x, y1, color);
       break;
     }
   case RL:
     {
-      for (x; x > x2; x--) draw_pixel(x, y1, color);
+      for (x; x >= x2; x--) draw_pixel(x, y1, color);
       break;
     }
   case UP:
     {
-      for (y; y < y2; y++) draw_pixel(x1, y, color);
+      for (y; y <= y2; y++) draw_pixel(x1, y, color);
       break;
     }
   case DN:
     {
-      for (y; y > y2; y--) draw_pixel(x1, y, color);
+      for (y; y >= y2; y--) draw_pixel(x1, y, color);
       break;
     }
   case LRU_0:
