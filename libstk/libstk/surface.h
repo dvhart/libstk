@@ -241,7 +241,7 @@ namespace stk
 			virtual void fill_poly_aa(const std::vector<point> points);
 
 			// image routines
-			virtual void draw_image(const rectangle& rect, boost::shared_ptr<image> img);
+			virtual void draw_image(int x, int y, boost::shared_ptr<image> img);
 	};
 
 } //end namespace stk

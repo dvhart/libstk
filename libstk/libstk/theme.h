@@ -5,6 +5,7 @@
 #include <boost/weak_ptr.hpp>
 #include "surface.h"
 #include "rectangle.h"
+#include "image_panel.h"
 #include "image.h"
 
 namespace stk
@@ -50,7 +51,7 @@ namespace stk
 				bool active, bool focused, bool hover);
 			virtual void draw_progress(const rectangle& rect, const std::wstring& label, float range, bool focused); 
 			virtual void draw_label(const rectangle& rect, const std::wstring& text, bool focused);
-			virtual void draw_image(const rectangle& rect, image::ptr img);
+			virtual void draw_image_panel(const rectangle& rect, image::ptr img);
 	};
 }
 

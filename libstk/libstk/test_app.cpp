@@ -7,6 +7,7 @@
 #include "application.h"
 #include "state.h"
 #include "button.h"
+#include "image_panel.h"
 #include "image.h"
 #include "progress.h"
 #include "label.h"
@@ -74,6 +75,7 @@ int main(int argc, char* argv[])
 		test_button->on_click.connect( boost::bind(&stk::application::quit, test_app) );
 		
 		// create a couple labels using ÜberScript
+		cout << "test_app - creating labels" << endl;
 		label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"), 
 			rectangle(10, 10, 100, 30));
 		label::ptr test_label2 = label::create(test_state, 
@@ -81,25 +83,20 @@ int main(int argc, char* argv[])
 			rectangle(490, 10, 150, 30));
 		
 		// create a progress bar
+		cout << "test_app - creating a progress bar" << endl;
 		progress::ptr test_progress = progress::create(test_state, 
 			std::wstring(L"Loading - %p %r %d"), rectangle(10, 440, 320, 30), 100);
 		test_progress->percent(0.64);
 	
 		// create an image
-		image::ptr test_image = image::create(test_state, rectangle(120, 50, 220, 220));
-		
-		// check use count prior to run
-		cout << "SHARED POINTER USE COUNT PRIOR TO RUN" << endl;
-		cout << "test_surface.use_count() = " << test_surface.use_count() << endl;
-		cout << "test_event_system.use_count() = " << test_event_system.use_count() << endl;
-		cout << "test_app.use_count() = " << test_app.use_count() << endl;
-		cout << "test_state.use_count() = " << test_state.use_count() << endl;
-		cout << "test_button.use_count() = " << test_button.use_count() << endl;
+		cout << "test_app - creating an image_panel" << endl;
+		image_panel::ptr test_image_panel = image_panel::create(test_state, 
+				rectangle(10, 50, 404, 276), image::create("parrots.ppm"));
+		image_panel::ptr test_image_panel2 = image_panel::create(test_state, 
+				rectangle(420, 50, 120, 120), image::create(rectangle(0, 0, 100, 100)));
 		
 		// run the program
-		cout << "test_app - run" << endl;
 		retval = test_app->run();
-		cout << "test_app - returning " << std::dec << retval << endl;
 	}
 	catch (const exception& e)
 	{

@@ -1165,13 +1165,16 @@ namespace stk
 
 	// image routines
 	// like most unaccelerated routines, this implementation is really slow
-	void surface::draw_image(const rectangle& rect, image::ptr img)
+	void surface::draw_image(int x, int y, image::ptr img)
 	{
-		for (int x = 0; x < MIN(rect.width(),img->width()); x++)
+		for (int tx = 0; tx < img->width(); tx++)
 		{
-			for (int y = 0; y < MIN(rect.height(),img->height()); y++)
+			for (int ty = 0; ty < img->height(); ty++)
 			{
-				draw_pixel(x+rect.width(), y+rect.height(), img->pixel(x, y));
+				// convert the RRGGBBAA image color format to that of the
+				color clr =  img->pixel(tx, ty);
+				color sclr = gen_color((clr>>24)&0XFF, (clr>>16)&0xFF, (clr>>8)&0xFF, clr&0xFF);
+				draw_pixel(x+tx, y+ty, sclr);
 			}
 		}
 	}

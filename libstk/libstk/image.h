@@ -3,15 +3,11 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <boost/signal.hpp>
-
 #include "rectangle.h"
-#include "widget.h"
-#include "container.h"
 
 namespace stk
 {
-	class image : public widget
+	class image
 	{
 		public:
 			typedef boost::shared_ptr<image> ptr;
@@ -20,38 +16,25 @@ namespace stk
 		private:
 			
 		protected:
-			image(container::ptr parent, const rectangle& rect, 
-					const std::string& filename=""); 
+			image(const std::string& filename=""); 
+			image(const rectangle& rect); 
 			void init_pixels();
 			int width_;
 			int height_;
 			color** pixels_;
 			
 		public:
-			static image::ptr create(container::ptr parent, const rectangle& _rect,
-					const std::string& filename="");
+			static image::ptr create(const std::string& filename="");
+			static image::ptr create(const rectangle& _rect);
 			virtual ~image();
 
-			/********** EVENT HANDLER INTERFACE **********/
-			/********** END EVENT HANDLER INTERFACE **********/
-
-			/********** DRAWABLE INTERFACE **********/
-			virtual void draw(surface::ptr surface);
-			/********** END DRAWABLE INTERFACE **********/
-			
-			/********** PARENT INTERFACE **********/
-			/********** END PARENT INTERFACE **********/
-			
-			/********** WIDGET INTERFACE **********/
-			/********** END WIDGET INTERFACE **********/
-			
 			/********** IMAGE INTERFACE **********/
+			void load_ppmx(const std::string& filename);
 			color pixel(int x, int y) const;
 			void pixel(int x, int y, color new_color);
 			int width() { return width_; }
 			int height() { return height_; }
 			/********** END IMAGE INTERFACE **********/
-
 	};
 }
 
