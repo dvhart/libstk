@@ -14,7 +14,7 @@ namespace stk
 		public:
 			drawable();
 			~drawable();
-			virtual boost::smart_ptr<stk::surface> surface() = 0;
+			virtual boost::shared_ptr<stk::surface> surface() = 0;
 			
 	}; // class drawable
 } // namespace stk

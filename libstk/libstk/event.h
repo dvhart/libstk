@@ -1,6 +1,8 @@
 #ifndef STK_EVENT_H
 #define STK_EVENT_H
 
+#include <boost/shared_ptr.hpp>
+
 namespace stk
 {
 	enum event_type
@@ -10,21 +12,24 @@ namespace stk
 		mouse_down,
 		mouse_up,
 		mouse_motion
-	}
+	};
 	
 	class event
 	{
 		private:
-			event_type type_;
 
 		protected:
+			event_type type_;
 
 		public:
-			event();
-			virtual ~event();
-			event_type type();
+			event(event_type type) : type_(type) { };
+			virtual ~event() { };
+			event_type type() { return type_; };
 			
-	} //class event
+	}; //class event
+
+	typedef boost::shared_ptr<stk::event> Event;
+	
 } // namespace stk
 
 #endif

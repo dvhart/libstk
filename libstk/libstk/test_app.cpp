@@ -17,7 +17,7 @@ typedef boost::shared_ptr<application> Application;
 typedef boost::shared_ptr<state> State;
 typedef boost::shared_ptr<button> Button;
 
-void main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	// create the app
 	Surface test_surface(new surface_sdl());

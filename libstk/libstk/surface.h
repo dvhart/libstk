@@ -69,7 +69,7 @@ namespace stk
 	// static antialiased alpha falloff filter
 	static byte alpha_filter[256] =
 	{
-		#include "aa_filter_linear_m1.35.h"
+		#include "aa_filter.h"
 	};
 
 	class surface;

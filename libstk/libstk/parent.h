@@ -15,8 +15,9 @@ namespace stk
 		public:
 			parent();
 			~parent();
-			virtual boost::smart_ptr<widget> focus_next();
-			virtual boost::smart_ptr<widget> focus_prev();
+			virtual boost::shared_ptr<widget> focus_next();
+			virtual boost::shared_ptr<widget> focus_prev();
+			virtual void add_child(boost::shared_ptr<widget>);
 
 	}; // class parent
 } // namespace stk

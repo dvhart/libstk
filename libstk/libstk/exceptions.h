@@ -6,25 +6,27 @@
     email  : dirkhoerner@gmx.de
 ***************************************************************************/
 
-/***************************************************************************
- *          *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.       *
- *          *
- ***************************************************************************/
-
-#ifndef _STK_EXCEPTION_H_
-#define _STK_EXCEPTION_H_
+#ifndef STK_EXCEPTION_H
+#define STK_EXCEPTION_H
 
 #include <string>
 
 namespace stk
 {
+	/* exception base class
+	 * 
+	 */
 	class exception
-	{}
-	;
+	{
+		private:
+		public:
+			exception() { }
+			virtual ~exception() { }
+			virtual std::string to_string()
+			{
+				return std::string("exception");
+			}
+	}; // class exception
 
 	class error_message_exception : public exception
 	{
@@ -38,7 +40,7 @@ namespace stk
 			{
 				message_ = message;
 			}
-			~error_message_exception()
+			virtual ~error_message_exception()
 			{}
 
 			std::string message()
@@ -49,6 +51,12 @@ namespace stk
 			{
 				message_=message;
 			}
-	};
+
+			virtual std::string to_string()
+			{
+				return std::string();
+			}
+	}; // class error_message_exception
+	
 } // namespace stk
 #endif

@@ -2,7 +2,7 @@
 #define STK_APP_H
 
 #include <list>
-#include <boost/smart_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
 #include "parent.h"
@@ -18,7 +18,7 @@ namespace stk
 		private:
 			boost::shared_ptr<stk::surface> surface_;
 			boost::shared_ptr<stk::event_system> event_system_;
-			stl::list<boost::smart_ptr<stk::state>> states_;
+			stl::list<boost::shared_ptr<stk::state>> states_;
 			
 			boost::weak_ptr<stk::state> current_state_; 
 			boost::weak_ptr<stk::widget> current_widget_;
@@ -35,6 +35,17 @@ namespace stk
 
 			int run();
 			void quit();
+			
+			void add_state(boost::shared_ptr<stk::state>);
+			
+			// drawable interface
+			boost::shared_ptr<stk::surface> surface();
+
+			// event_handler interface
+			void handle_event(stk::event& e);
+			
+			// parent interface - is this necessary ?
+			void add_child(boost::shared_ptr<widget>);
 			
 			// do we want to make these available?
 			// or should they be strictly internal to application ? 

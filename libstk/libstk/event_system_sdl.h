@@ -1,6 +1,8 @@
 #ifndef STK_EVENT_SYSTEM_SDL_H
 #define STK_EVENT_SYSTEM_SDL_H
 
+#include "event_system.h"
+
 /* possible event calls in SDL
 	 currently we only use SDL_PollEvent, which calls SDL_PumpEvents
 	 SDL_PumpEvents - Pumps the event loop, gathering events from the input devices.
