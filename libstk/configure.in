@@ -68,7 +68,7 @@ AC_SUBST(LIBPNG_LIBS)
 
 dnl **** SDL compile flags
 AC_ARG_ENABLE(sdl,
-  [  --enable-sdl          build with SDL support [default=no]],,
+  [  --enable-sdl          build with SDL backend support [default=no]],,
   enable_sdl=no)
 if test x$enable_sdl = xyes; then
   SDL_VERSION=1.2.0	
@@ -80,7 +80,7 @@ AM_CONDITIONAL(SDL, test x$enable_sdl = xyes)
 
 dnl **** DirectFB compile flags
 AC_ARG_ENABLE(directfb,
-    [  --enable-directfb          build with directfb support [default=no]],,
+    [  --enable-directfb          build with DirectFB backend support [default=no]],,
     enable_directfb=no)
 if test x$enable_directfb = xyes; then
     PKG_CHECK_MODULES(DIRECTFB, directfb,
@@ -97,7 +97,7 @@ AC_SUBST(DIRECTFB_LIBS)
 
 dnl **** Framebuffer compile flags
 AC_ARG_ENABLE(fbdev,
-  [  --enable-fbdev             build with FrameBuffer support [default=no]],,
+  [  --enable-fbdev             build with /dev/fb backend support [default=no]],,
   enable_fbdev=no)
 if test x$enable_fbdev = xyes; then
   AC_MSG_RESULT([ *** FrameBuffer Support enabled])
