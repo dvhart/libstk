@@ -16,10 +16,13 @@ namespace stk
 	
 	class widget : public parent
 	{
+		public:
+			typedef boost::shared_ptr<widget> shared_ptr; 
+			typedef boost::weak_ptr<widget> weak_ptr;
 		private:
 
 		protected:
-			widget() { }; // empty constructor, needed for creating derived classes ? 
+			//widget() { }; // empty constructor, needed for creating derived classes ? 
 			boost::weak_ptr<parent> parent_;
 			int x_;
 			int y_;
@@ -28,7 +31,7 @@ namespace stk
 			
 		public:
 			widget(boost::shared_ptr<container> parent);
-			~widget();
+			virtual ~widget();
 
 			void draw(boost::shared_ptr<stk::surface> surface);
 			

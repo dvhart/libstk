@@ -20,6 +20,7 @@ namespace stk
 			container(boost::shared_ptr<stk::container> parent);
 			~container();
 			virtual bool is_container() { return true;} 
+			// FIXME :carter: implement all this
 			virtual boost::weak_ptr<stk::widget> get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 
 			

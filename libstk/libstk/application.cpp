@@ -60,10 +60,11 @@ namespace stk
 			if (event_->type() != no_event)
 			{
 				//cout << "application::run() - event received of type: " << event_.type() << endl;
-				if (current_widget_.get() == 0)
-					cout << "application::run() - null current widget" << endl;
+				widget::shared_ptr ptr=make_shared(current_widget_);
+				if (!ptr)
+					cout << "application::run() - no current widget" << endl;
 				else
-					current_widget_.get()->handle_event(event_);
+					ptr->handle_event(event_);
 				//cout << "application::run() - done is currently " << done_ << endl;
 			}
 		}
@@ -95,6 +96,7 @@ namespace stk
 		{
 			case key_down:
 			{		
+				// FIXME :Carter: shouldnt this be a polymorphic cast?
 				KeyEvent ke = boost::shared_static_cast<key_event>(e);
 				switch ( ke->key() )
 				{
@@ -132,6 +134,7 @@ namespace stk
 		return boost::shared_ptr<widget>((widget *)((*states_.begin()).get()));
 	}
 
+	// FIXME :Carter: Throw something? add_child is meaningless for an application
 	void application::add_child(boost::shared_ptr<widget> widget)
 	{
 	}

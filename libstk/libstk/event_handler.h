@@ -13,7 +13,7 @@ namespace stk
 			
 		public:
 			event_handler() { };
-			~event_handler() { };
+			virtual ~event_handler() { };
 			virtual void handle_event(boost::shared_ptr<stk::event> e) = 0;
 			
 	}; // class event_handler
