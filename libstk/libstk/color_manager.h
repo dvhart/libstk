@@ -12,14 +12,16 @@ namespace stk
 	/// Public color properties class.
 	struct color_properties
 	{
+		/// fixme: these are redundant with int_color, but we use them to create the color, perhaps we should just store the std::string in 0xRRGGBBAA.  Maybe pack the color and add access like my_color.red, etc.
 		unsigned char red, green, blue, alpha;
+		/// The color represented as 0xRRGGBBAA, used for comparison in the map. 
 		unsigned int int_color;
 		surface::ptr surface_;
 		color_properties(unsigned char r, unsigned char g, unsigned char b, 
 				             unsigned char a, surface::ptr s) 
-			: red(r), green(g), blue(b), surface_(s) 
+			: red(r), green(g), blue(b), alpha(a), surface_(s)
 		{
-			int_color = (red << 24)|(green << 16)|(blue << 8)|(alpha);
+			int_color = (r << 24)|(g << 16)|(b << 8)|a;
 		}
 		color_properties(const std::string& rgba, surface::ptr s) 
 			: surface_(s)
@@ -31,11 +33,12 @@ namespace stk
 			alpha = (int_color & 0x000000FF);
 		}
 
+		/// Less than comparison operator used by color_manager's map.
 		bool operator<(const color_properties& rhs) const;
 	};
 
-	/// \brief Class for manaing Surface Colors
-	/// This class manages all creation and retrieveal of color instances, the
+	/// Static class for managing surface colors.
+	/// This class manages all creation and retrieval of color instances, the
 	/// colors are stored according to surface and rgba values.
 	class color_manager
 	{
@@ -46,12 +49,10 @@ namespace stk
 
 		private:
 			static Tcolor_map color_map_;
-			color_manager();
 
 		public:
 			/// Get a color with the provided Properties
 			static color get_color(const color_properties& properties);
-			~color_manager();
 	};
 
 }

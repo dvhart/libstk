@@ -14,16 +14,6 @@ namespace stk
 		return (int_color < rhs.int_color) /*&& (surface_ < rhs.surface_)*/;
 	}
 
-	color_manager::color_manager()
-	{
-		cout << "color_manager::color_manager()" << endl;
-	}
-
-	color_manager::~color_manager()
-	{
-		cout << "color_manager::~color_manager()" << endl;
-	}
-
 	color color_manager::get_color(const color_properties& properties)
 	{
 		//cout << "color_manager::get_color()" << endl;
