@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: event_producer_sdl.cpp 
  * DESCRIPTION: SDL event producer implementation.
- *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Feb/2003  LAST UPDATE: 27/Jul/2003
+ *     AUTHORS: Darren Hart, Marc Strämke
+ *  START DATE: 22/Feb/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <SDL/SDL.h>
 #include <iostream>
@@ -19,10 +18,6 @@
 #include "libstk/sdl_data.h"
 #include "libstk/logging.h"
 
-/* FIXME: SDL reports the non-shifted keysym when shift is held down.  Are we using SDL
- * wrong or do we need to deal with that here, or possibly in the app ?
- * i.e. 3 and Shift-3 both return SDLK_3, rather than SDLK_3 and SDLK_HASH respectively.
- */
 namespace stk
 {
     event_producer_sdl::ptr event_producer_sdl::create()
@@ -37,10 +32,13 @@ namespace stk
         // make sure SDL has been initialized
         sdl_data_ = sdl_data::get(); // reference counting
         sdl_data_->init();
+        INFO("Enabling unicode");
+        SDL_EnableUNICODE(1);
     }
 
     event_producer_sdl::~event_producer_sdl()
     {
+        INFO("destructor");
     }
 
     boost::shared_ptr<stk::event> event_producer_sdl::poll_event()
@@ -88,76 +86,19 @@ namespace stk
     
     key_event::ptr event_producer_sdl::sdl2stk_key_event(SDL_keysym keysym, event::event_type type)
     {
-        INFO("Received SDL Key: " << std::hex << keysym.sym);
         keycode fn_code = (keycode)0; // FIXME: default to fn_none or something
         wchar_t character = 0;
         
-        // FIXME: fill in the rest of the keys 
-        
-        // handle key ranges
-        // a - z
-        if (keysym.sym >= SDLK_a && keysym.sym <= SDLK_z)
-        {
-            character = (wchar_t)(keysym.sym);
-            if (keysym.mod & KMOD_SHIFT) character += ('A' - 'a');
-        }
-        // 0 - 9
-        else if (keysym.sym >= SDLK_0 && keysym.sym <= SDLK_9)
-        {
-            if (keysym.mod & KMOD_SHIFT)
-            {
-                switch (keysym.sym)
-                {
-                case SDLK_0:
-                    character = ')';
-                    break;
-                case SDLK_1:
-                    character = '!';
-                    break;
-                case SDLK_2:
-                    character = '@';
-                    break;
-                case SDLK_3:
-                    character = '#';
-                    break;
-                case SDLK_4:
-                    character = '$';
-                    break;
-                case SDLK_5:
-                    character = '%';
-                    break;
-                case SDLK_6:
-                    character = '^';
-                    break;
-                case SDLK_7:
-                    character = '&';
-                    break;
-                case SDLK_8:
-                    character = '*';
-                    break;
-                case SDLK_9:
-                    character = '(';
-                    break;
-                }
-            }
-            else
-                character = '0' + SDLK_9 - keysym.sym;
-        }
-        // keypad 0 - keypad 9
-        else if (keysym.sym >= SDLK_KP0 && keysym.sym <= SDLK_KP9)
-        {
-        }
         // f1 - f12
-        else if (keysym.sym >= SDLK_F1 && keysym.sym <= SDLK_F12)
+        if (keysym.sym >= SDLK_F1 && keysym.sym <= SDLK_F12)
         {
             fn_code = (keycode)(key_f1 + (keycode)(keysym.sym - SDLK_F1));
         }
- 
         else
         {
             switch (keysym.sym)
             {
-            // FIXME: fill this in, take advantage of ascii codes if possible
+            // FIXME: fill this in
             case SDLK_BACKSPACE:
                 fn_code = key_backspace;
                 break;
@@ -192,6 +133,10 @@ namespace stk
             }
         }
         
+        INFO("Received SDL Key sym=" << std::hex << keysym.sym 
+                << " unicode: 0x" << std::hex << keysym.unicode);
+        character = (wchar_t)keysym.unicode;
+            
         if (fn_code == (keycode)0 && character == 0)
         {
             WARN("unknown key: " << std::hex << keysym.sym);

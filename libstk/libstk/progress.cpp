@@ -2,7 +2,7 @@
  *    FILENAME: progress.cpp
  * DESCRIPTION: Progress widget implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 22/Mar/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 22/Mar/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -13,9 +13,6 @@
 #include <sstream>
 #include "libstk/progress.h"
 #include "libstk/widget.h"
-
-using std::cout;
-using std::endl;
 
 namespace stk
 {
@@ -33,14 +30,14 @@ namespace stk
                        const rectangle& rect, int range) : widget(parent, rect), format_label_(format_label),
             range_(range)
     {
-        cout << "progress::progress()" << endl;
+        INFO("constructor");
         focusable_ = false;
         build_label();
     }
 
     progress::~progress()
     {
-        cout << "progress::~progress()" << endl;
+        INFO("destructor");
     }
 
     void progress::range(int val)

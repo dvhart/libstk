@@ -3,7 +3,7 @@
  * DESCRIPTION: An abstract base class providing the interface for all surface
  *              backends.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke 
- *  START DATE: 08/Sep/2002  LAST UPDATE: 20/Jul/2003
+ *  START DATE: 08/Sep/2002  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -23,9 +23,6 @@
 #include <libstk/graphics_context.h>
 #include <libstk/stk_types.h>
 #include <libstk/logging.h>
-
-using std::cout;
-using std::endl;
 
 /* stk::surface provides an interface to be implemented by all backend
  * surface implementations.  In general, one creates a screen from one of
@@ -54,11 +51,11 @@ namespace stk
     protected:
         surface() : offset_(0,0)
         {
-            cout << "surface::surface()" << endl;
+            INFO("constructor");
         }
         surface(const rectangle &rect) : rect_(rect),offset_(0,0)
         {
-            cout << "surface::surface(rectangle)" << endl;
+            INFO("constructor");
         }
 
         /// Position on the screen, width and height
@@ -75,7 +72,7 @@ namespace stk
     public:
         virtual ~surface()
         {
-            cout << "surface::~surface()" << endl;
+            INFO("destructor");
         }
 
         // inline property methods

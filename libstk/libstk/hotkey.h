@@ -3,7 +3,7 @@
  * DESCRIPTION: Used to Bind keys to functors that can be connected widget 
  *              on_keyup signals.
  *     AUTHORS: Darren Hart
- *  START DATE: 03/Jun/2003  LAST UPDATE: 03/Jun/2003
+ *  START DATE: 03/Jun/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -15,6 +15,7 @@
 
 #include <boost/signal.hpp>
 #include <libstk/keycode.h>
+#include <libstk/logging.h>
 
 namespace stk
 {
@@ -30,15 +31,15 @@ namespace stk
 
         boost::signal<bool ()> sig;
 
+        // FIXME: this should receive a key_event (keycode only defines the fn_keys)
         bool operator()(stk::keycode key)
         {
-            cout << "hotkey::operator() - received a " << key << endl;
+            INFO("operator() - received a " << key);
             if (!sig.empty() && key == key_)
             {
-                cout << "\texecuting slot\n\t";
+                INFO("\texecuting slot");
                 return sig();
             }
-            cout << endl;
             return false; // not handled
         }
     };

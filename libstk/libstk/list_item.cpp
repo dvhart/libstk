@@ -2,7 +2,7 @@
  *    FILENAME: list_item.cpp 
  * DESCRIPTION: List_item class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke 
- *  START DATE: 03/Mar/2003  LAST UPDATE: 14/Jul/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -12,9 +12,6 @@
 #include <iostream>
 #include "libstk/list.h"
 #include "libstk/list_item.h"
-
-using std::cout;
-using std::endl;
 
 namespace stk
 {
@@ -28,12 +25,12 @@ namespace stk
     list_item::list_item(list::ptr parent, std::wstring label)
             : parent_(parent), label_(label)
     {
-        cout << "list_item::list_item()" << endl;
+        INFO("constructor");
     }
 
     list_item::~list_item()
     {
-        cout << "list_item::~list_item()" << endl;
+        INFO("destructor");
     }
 
     void list_item::handle_event(event::ptr e)

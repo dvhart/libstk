@@ -2,7 +2,7 @@
  *    FILENAME: spinner.cpp
  * DESCRIPTION: Spinner widget implementation.
  *     AUTHORS: Darren Hart
- *  START DATE: 26/Apr/2003  LAST UPDATE: 25/Jun/2003
+ *  START DATE: 26/Apr/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -27,17 +27,18 @@ namespace stk
 
     spinner::spinner(container::ptr parent, const rectangle& rect, bool wrap) : 
         list(parent, rect), wrap_(wrap)
-        {
-            cout << "spinner::spinner()" << endl;
-            focusable(true);
-        }
+    {
+        INFO("constructor");
+        focusable(true);
+    }
 
     spinner::~spinner()
-    {}
+    {
+        INFO("destructor");
+    }
 
     void spinner::handle_event(event::ptr e)
     {
-        //cout << "spinner::handle_event()" << endl;
         if (items_.size() > 0) // do nothing if there are no items
         {
             switch (e->type())

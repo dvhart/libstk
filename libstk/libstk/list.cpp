@@ -2,7 +2,7 @@
  *    FILENAME: list.cpp
  * DESCRIPTION: List widget implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 25/Jun/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -15,9 +15,6 @@
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/keycode.h"
-
-using std::cout;
-using std::endl;
 
 namespace stk
 {
@@ -34,19 +31,18 @@ namespace stk
                scroll_model::ptr v_scroll) : widget(parent, rect), selected_(0),
             prev_selected_(0), v_scroll_(v_scroll)
     {
-        cout << "list::list()" << endl;
+        INFO("constructor");
         focusable(true);
         v_scroll_->vis_size(rect_.height());
     }
 
     list::~list()
     {
-        cout << "list::~list()" << endl;
+        INFO("destructor");
     }
 
     void list::handle_event(event::ptr e)
     {
-        //cout << "list::handle_event()" << endl;
         // handle list_item selection and clicking here...
         switch (e->type())
         {
@@ -95,7 +91,6 @@ namespace stk
     {
         items_.push_back(item);
         int index=std::find(items_.begin(),items_.end(),item)-items_.begin();
-        cout << "list::add_item: items_ count=" << items_.size() << endl;
 
         // adjust scroll properties
         // FIXME: add width to the list_item API

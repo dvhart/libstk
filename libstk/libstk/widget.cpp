@@ -2,7 +2,7 @@
  *    FILENAME: widget.cpp
  * DESCRIPTION: Widget abstract base class implementation.
  *     AUTHORS: Darren Hart, Marc Straemke, Dirk Hoerner
- *  START DATE: 08/Sep/2003  LAST UPDATE: 12/Jul/2003
+ *  START DATE: 08/Sep/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as
@@ -23,21 +23,18 @@
 #include "libstk/mouse_event.h"
 #include "libstk/widget.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
 
     widget::widget(component::ptr parent, const rectangle& rect) : parent_(parent), rect_(rect),
         focusable_(false), pressed_(false), focused_(false), hover_(false), frame_(0)
     {
-        cout << "widget::widget(parent)" << endl;
+        INFO("constructor");
     }
 
     widget::~widget()
     {
-        cout << "widget::~widget()" << endl;
+        INFO("destructor");
     }
 
     /// Handle common widget events
@@ -46,8 +43,6 @@ namespace stk
     /// routine if it hasn't handled the event on its own.
     void widget::handle_event(event::ptr e)
     {
-        //cout << "widget::handle_event()" << endl;
-
         // default handlers for focus/un_focus mouse_enter/leave events
         // a derived widget should call widget::handle_event() for these basic events
         switch (e->type())
@@ -98,7 +93,6 @@ namespace stk
 
     void widget::redraw(const rectangle& rect)
     {
-        //cout << "widget::redraw() - rectangle: " << rect << endl;
         parent_.lock()->redraw(rect);
     }
 

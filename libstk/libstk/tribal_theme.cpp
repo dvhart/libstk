@@ -3,7 +3,7 @@
  * DESCRIPTION: Default theme for Libstk.  Contains the user_theme class and 
  *              all themeable widget drawing routines.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 27/Apr/2003  LAST UPDATE: 14/Jul/2003
+ *  START DATE: 27/Apr/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -48,7 +48,7 @@ namespace stk
     // FIXME: don't use surface, use the color manager to get colors (outside the constructor)
     user_theme::user_theme(surface::ptr surface)
     {
-        cout << "user_theme::user_theme()" << endl;
+        INFO("constructor");
         // prepare our colors
         outline_color_normal_  = surface->gen_color(outline_color_normal_str);
         outline_color_focused_ = surface->gen_color(outline_color_focused_str);
@@ -68,7 +68,9 @@ namespace stk
     }
 
     user_theme::~user_theme()
-    {}
+    {
+        INFO("destructor");
+    }
 
     void user_theme::draw_arrow(int x, int y, int dir, surface::ptr surface, bool fill)
     {
@@ -124,7 +126,6 @@ namespace stk
     // define the various widget theme routines (draw(), region(), etc.)
     void state::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        //cout << "state::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
@@ -136,7 +137,6 @@ namespace stk
 
     void button::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        //cout << "button::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 
         rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
@@ -209,7 +209,6 @@ namespace stk
 
     void progress::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        //cout << "progress::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
@@ -231,7 +230,6 @@ namespace stk
 
     void label::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        //cout << "label::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
@@ -249,13 +247,11 @@ namespace stk
         }
         catch (const exception& e)
         {
-            cout << "theme::draw_label: error: " << e.what() << endl;
         }
     }
 
     void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        //cout << "image_panel::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
@@ -268,7 +264,6 @@ namespace stk
 
     void list::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        cout << "list::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         float sel;
 
@@ -311,8 +306,6 @@ namespace stk
 
         // adjust the list items using the vertical scroll_model
         surface->offset(surface->offset() - point(0,v_scroll_->begin()));
-        //cout << "\tSurface offset: " << surface->offset().x()
-        //     << "," << surface->offset().y() << endl;
 
         // draw the highlighted selection
         rectangle cur_rect;
@@ -340,7 +333,6 @@ namespace stk
 
     void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        //cout << "list_item::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         // draw list is responsible for setting the graphics context!!
         surface->draw_text(rect_, label_);
@@ -348,7 +340,6 @@ namespace stk
 
     void numeric_spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        cout << "numeric_spinner::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
         rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
@@ -431,7 +422,6 @@ namespace stk
     
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        cout << "spinner::draw()" << endl;
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
         rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
         rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);

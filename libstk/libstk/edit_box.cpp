@@ -2,7 +2,7 @@
  *    FILENAME: edit_box.cpp
  * DESCRIPTION: Edit box widget implementation
  *     AUTHORS: Dirk Hoerner, Darren Hart
- *  START DATE: 23/Jun/2003  LAST UPDATE: 27/Jul/2003
+ *  START DATE: 23/Jun/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -104,10 +104,9 @@ namespace stk
                 break;
             }
 
-            // handle ascii keys 
+            // handle text keys 
             if (!ke->fn_key() && ke->character() != 0)
             {
-                INFO("ASCII key received");
                 std::wstring insert_str;
                 insert_str += ke->character();
                 if (selection_end_ != selection_start_)

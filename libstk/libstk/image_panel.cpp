@@ -12,6 +12,7 @@
 
 #include "libstk/image_panel.h"
 #include "libstk/image.h"
+#include "libstk/logging.h"
 
 namespace stk
 {
@@ -27,10 +28,12 @@ namespace stk
     image_panel::image_panel(widget::ptr parent, const rectangle& rect, image::ptr img)
             : widget(parent, rect), image_(img)
     {
-        cout << "image_panel::image_panel()" << endl;
+        INFO("constructor");
     }
 
     image_panel::~image_panel()
-    {}
+    {
+        INFO("destructor");
+    }
 
 }

@@ -2,7 +2,7 @@
  *    FILENAME: button.cpp
  * DESCRIPTION: Button widget implementation.
  *     AUTHORS: Darren Hart, Marc Straemke 
- *  START DATE: 03/Mar/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -19,9 +19,6 @@
 #include "libstk/mouse_event.h"
 #include "libstk/keycode.h"
 
-using std::cout;
-using std::endl;
-
 namespace stk
 {
 
@@ -37,19 +34,18 @@ namespace stk
     button::button(boost::shared_ptr<container> parent, const std::wstring label,
                    const rectangle& rect) : widget(parent, rect), label_(label)
     {
-        cout << "button::button()" << endl;
+        INFO("constructor");
         focusable(true);
     }
 
     button::~button()
     {
-        cout << "button::~button()" << endl;
+        INFO("destructor");
     }
 
     // event_handler interface
     void button::handle_event(event::ptr e)
     {
-        //cout << "button::handle_event()" << endl;
         switch (e->type())
         {
         case event::key_up:
@@ -63,7 +59,6 @@ namespace stk
             case key_enter:
                 if (pressed_)
                 {
-                    cout << "button::handle_event() - emitting signal on_click()" << endl;
                     pressed_ = false;
                     redraw(rect_);
                     on_release();
@@ -79,7 +74,6 @@ namespace stk
             switch ( ke->fn_key() )
             {
             case key_enter:
-                cout << "button::handle_event() - emitting signal on_click()" << endl;
                 pressed_ = true;
                 redraw(rect_);
                 on_press();

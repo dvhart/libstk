@@ -2,7 +2,7 @@
  *    FILENAME: numeric_spinner.cpp
  * DESCRIPTION: numeric_spinner widget implementation.
  *     AUTHORS: Darren Hart
- *  START DATE: 14/Jul/2003  LAST UPDATE: 15/Jul/2003
+ *  START DATE: 14/Jul/2003  LAST UPDATE: 02/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -32,13 +32,15 @@ namespace stk
         widget(parent, rect), min_(min), max_(max), increment_(increment), value_(min), 
     precision_(precision), wrap_(wrap)
     {
-        cout << "numeric_spinner::numeric_spinner()" << endl;
+        INFO("constructor");
         focusable(true);
         build_label();
     }
 
     numeric_spinner::~numeric_spinner()
-    {}
+    {
+        INFO("destructor");
+    }
 
     void numeric_spinner::handle_event(event::ptr e)
     {
