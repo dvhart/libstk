@@ -64,7 +64,8 @@ namespace stk
 
 		// do not call parent->handle_event() here, the derived widget is responsible
 		// for that if they so desire (ie they don't handle an event)
-
+	
+		parent_.lock()->handle_event(e);
 		cout << "widget::handle_event() done" << endl;
 	}
 
