@@ -28,8 +28,9 @@ namespace stk
         return new_edit_box;
     }
 
-    edit_box::edit_box(const std::wstring& text, const rectangle& rect) : widget(rect), 
-        text_(text), selection_start_(0), selection_end_(0), pressed_(false)
+    edit_box::edit_box(const std::wstring& text, const rectangle& rect)
+        : widget(rect),text_(text), selection_start_(0), selection_end_(0),
+          pressed_(false), text_visible_(true)
     {
         INFO("constructor");
         focusable_ = true;

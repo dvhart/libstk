@@ -400,8 +400,17 @@ namespace stk
         int min_start = 2;
         int max_end   = MAX(width(), height())-2;
         int max_size  = max_end - min_start;
-        int start = max_size*model_->begin()/model_->size()+min_start;
-        int end = start+max_size*model_->vis_size()/model_->size();
+        int start,end;
+        if(model_->size()!=0)
+        {
+            start = max_size*model_->begin()/model_->size()+min_start;
+            end = start+max_size*model_->vis_size()/model_->size();
+        }
+        else
+        {
+            start=min_start;
+            end=max_end;
+        }
 
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
@@ -444,8 +453,17 @@ namespace stk
         int min_start = 2;
         int max_end   = MAX(width(), height())-2;
         int max_size  = max_end - min_start;
-        int start = max_size*model_->begin()/model_->size()+min_start;
-        int end = start+max_size*model_->vis_size()/model_->size();
+        int start,end;
+        if(model_->size()!=0)
+        {
+            start = max_size*model_->begin()/model_->size()+min_start;
+            end = start+max_size*model_->vis_size()/model_->size();
+        }
+        else
+        {
+            start=min_start;
+            end=max_end;
+        }
         
         if(y<start)
             return ABOVE_BAR;
@@ -637,7 +655,10 @@ namespace stk
             surface->draw_line(cursor_x, 3, cursor_x, height()-3);
             
             // draw the string text_
-            surface->draw_text(interior_rect, text_);
+            std::wstring text_to_draw(text_);
+            if(!text_visible_)  // Application requested to hide the entered characters
+                text_to_draw=std::wstring(text_.length(),L'*');
+            surface->draw_text(interior_rect, text_to_draw);
         }
         catch(...)
         {

@@ -35,7 +35,8 @@ namespace stk
         std::wstring text_;
         int selection_start_;
         int selection_end_;
-        bool pressed_; //used to tell if selecting
+        bool pressed_;          // used to tell if selecting
+        bool text_visible_;     // Determines of entered characters are displayed to the user
 
     protected:
         edit_box(const std::wstring& text, const rectangle& rect);
@@ -59,7 +60,15 @@ namespace stk
             selection_end_=0;
             redraw(rect());
         }
-
+        bool text_visible() const
+        {
+            return text_visible_;
+        }
+        void text_visible(bool newval)
+        {
+            text_visible_=newval;
+        }
+        
         // signals
         /// called when the text is changed
         boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_change;
