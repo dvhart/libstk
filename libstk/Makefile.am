@@ -1,6 +1,6 @@
-SUBDIRS = src
+SUBDIRS = libstk
 
-DIST_SUBDIRS= src
+DIST_SUBDIRS= libstk
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libstk.pc
