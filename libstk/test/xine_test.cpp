@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 #ifdef HAVE_SDL
         else if (surface_type == "sdl")
         {
-            screen = surface_sdl::create(rectangle(0, 0, 640, 480), false);
+            screen = surface_sdl::create(rectangle(0, 0, 640, 480), true);
             ep = event_producer_sdl::create();
         }
 #endif
@@ -91,14 +91,11 @@ int main(int argc, char* argv[])
         state::ptr main_state = state::create(app);
         
         // create the xine panel
+	INFO("creating the xine panel");
         xine_panel::ptr xp = xine_panel::create(main_state, rectangle(50, 50, 540, 380));
         xp->open(filename);
 
-        // testing multiple panels
-        //xine_panel::ptr xp2 = xine_panel::create(main_state, rectangle(0, 0, 50, 50));
-        //xp2->open(filename);
-        //xp2->play(0, 0);
-
+	INFO("creating the buttons");
         // buttons
         button::ptr prev_button = button::create(main_state, std::wstring(L"|<"), 
                 rectangle(50, 440, 81, 30));

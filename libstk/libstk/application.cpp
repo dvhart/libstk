@@ -94,6 +94,7 @@ namespace stk
             focused_widget_.lock()->handle_event(event::create(event::focus));
         else // FIXME: throw something
             ERROR("current state has no focusable widgets");
+        current_state_.lock()->on_enter();
         current_state_.lock()->redraw(surface_->rect());
 
         // enter the main application loop: handle_events, update timers, redraw
@@ -363,6 +364,7 @@ namespace stk
 
             INFO("Current widget unfocused");
 
+            current_state_.lock()->on_leave();
             current_state_ = new_cur_state;
             INFO("State Switched");
 
@@ -374,6 +376,7 @@ namespace stk
                 // FIXME: throw something
                 ERROR("application::run() - current state has no focusable widgets");
 
+            new_cur_state->on_enter();
             new_cur_state->redraw(new_cur_state->rect());
         }
         catch(...)

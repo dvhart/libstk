@@ -58,9 +58,11 @@ namespace stk
         /********** END CONTAINER INTERFACE **********/
 
         /********** STATE INTERFACE **********/
-        // these two should probably be moved up to container
+        // FIXME: these two should probably be moved up to container
         virtual widget::ptr focus_first();
         virtual widget::ptr focus_last();
+        boost::signal<bool (), combiner::logical_or<bool> > on_enter;
+        boost::signal<bool (), combiner::logical_or<bool> > on_leave;
         /********** END STATE INTERFACE **********/
     };
 }
