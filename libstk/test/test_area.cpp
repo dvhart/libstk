@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
                 rectangle(30, 30, 200, 150), scroll_box::automatic, scroll_box::automatic); 
         text_area::ptr test_area = text_area::create(text_scroll, 
                 std::wstring(L"Hello World\nThis is a really long long\nlong\nlong String.\nHello World"),
-                rectangle()/*(30, 30, 180, 80)*/,true);
+                rectangle()/*(30, 30, 180, 80)*/, true);
 
         button::ptr quit_button = button::create(test_state, L"Quit", 
                 rectangle(30, 300, 100, 30));

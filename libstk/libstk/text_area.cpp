@@ -43,7 +43,7 @@ namespace stk
          text_(text), selection_start_(0), selection_end_(0), pressed_(false), line_wrap_(line_wrap), editable_(editable)
     {
         INFO("constructor");
-        focusable(editable);
+        focusable(true);
     }
 
     text_area::~text_area()
@@ -52,7 +52,6 @@ namespace stk
     }
     void text_area::editable(bool edit)
     {
-        focusable(edit);
         editable_ = edit;
     }
     void text_area::resize()
@@ -101,56 +100,61 @@ namespace stk
             switch ( ke->fn_key() )
             {
             case key_backspace:
-                if (selection_end_ != selection_start_)
-                {
-                    text_.erase(sel_min, sel_width);
-                    selection_start_ = selection_end_ = sel_min;
-                    resize();
-                    redraw(widget::rect());
-                    on_change(text_);
+                if (editable_) {
+                    if (selection_end_ != selection_start_)
+                    {
+                        text_.erase(sel_min, sel_width);
+                        selection_start_ = selection_end_ = sel_min;
+                        resize();
+                        redraw(widget::rect());
+                        on_change(text_);
+                    }
+                    else if (selection_end_ > 0)
+                    {
+                        sel_min--;
+                        text_.erase(sel_min, 1);
+                        selection_start_ = selection_end_ = sel_min;
+                        resize();
+                        redraw(widget::rect());
+                        on_change(text_);
+                    }
                 }
-                else if (selection_end_ > 0)
-                {
-                    sel_min--;
-                    text_.erase(sel_min, 1);
-                    selection_start_ = selection_end_ = sel_min;
-                    resize();
-                    redraw(widget::rect());
-                    on_change(text_);
-                }
-                
                 return;
                 break;
             case key_delete:
-                if (selection_end_ != selection_start_)
-                {
-                    text_.erase(sel_min, sel_width);
-                    selection_start_ = selection_end_ = sel_min;
-                    resize();
-                    redraw(widget::rect());
-                    on_change(text_);
-                }
-                else if (sel_min < (int)text_.size())
-                {
-                    text_.erase(sel_min, 1);
-                    resize();
-                    redraw(widget::rect());
-                    on_change(text_);
+                if (editable_) {
+                    if (selection_end_ != selection_start_)
+                    {
+                        text_.erase(sel_min, sel_width);
+                        selection_start_ = selection_end_ = sel_min;
+                        resize();
+                        redraw(widget::rect());
+                        on_change(text_);
+                    }
+                    else if (sel_min < (int)text_.size())
+                    {
+                        text_.erase(sel_min, 1);
+                        resize();
+                        redraw(widget::rect());
+                        on_change(text_);
+                    }
                 }
                 return;
                 break;
             case key_enter:
-                if (selection_end_ != selection_start_)
-                {
-                    text_.erase(sel_min, sel_width);
-                    selection_start_ = selection_end_ = sel_min;
+                if (editable_) {
+                    if (selection_end_ != selection_start_)
+                    {
+                        text_.erase(sel_min, sel_width);
+                        selection_start_ = selection_end_ = sel_min;
+                    }
+                    text_.insert(selection_end_, L"\n");
+                    selection_start_ = ++selection_end_;
+                    //make the size bigger
+                    resize();
+                    redraw(widget::rect());
+                    on_change(text_);
                 }
-                text_.insert(selection_end_, L"\n");
-                selection_start_ = ++selection_end_;
-                //make the size bigger
-                resize();
-                redraw(widget::rect());
-                on_change(text_);
                 return;
                 break;
             case key_leftarrow:
@@ -178,7 +182,7 @@ namespace stk
                     new_pos = MIN(chars_in_line(line_ - 1), current_pos);
                     selection_end_ = line_start_position(line_ - 1) + new_pos;
                     scroll();
-                    
+
                 }
                 if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
                 redraw(widget::rect());
@@ -202,18 +206,20 @@ namespace stk
             // handle text keys 
             if (!ke->fn_key() && ke->character() != 0)
             {
-                std::wstring insert_str;
-                insert_str += ke->character();
-                if (selection_end_ != selection_start_)
-                {
-                    text_.erase(sel_min, sel_width);
-                    selection_start_ = selection_end_ = sel_min;
+                if (editable_) {
+                    std::wstring insert_str;
+                    insert_str += ke->character();
+                    if (selection_end_ != selection_start_)
+                    {
+                        text_.erase(sel_min, sel_width);
+                        selection_start_ = selection_end_ = sel_min;
+                    }
+                    text_.insert(selection_end_, insert_str);
+                    selection_start_ = ++selection_end_;
+                    resize();
+                    redraw(widget::rect());
+                    on_change(text_);
                 }
-                text_.insert(selection_end_, insert_str);
-                selection_start_ = ++selection_end_;
-                resize();
-                redraw(widget::rect());
-                on_change(text_);
                 return;
             }
             else
