@@ -428,7 +428,8 @@ namespace stk
             surface->fill_rect(vis_rect);
         }
     }
-    
+    int scroll_bar::default_size = 20;
+
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         rectangle interior_rect(3, 3, width()-6, height()-6);

@@ -26,6 +26,8 @@ namespace stk
     public:
         typedef boost::shared_ptr<scroll_bar> ptr;
         typedef boost::weak_ptr<scroll_bar> weak_ptr;
+        /// the default width/height of a vertical/horizontal scrollbar, define in each theme
+        static int default_size;
 
     protected:
         scroll_bar(container::ptr parent, const rectangle& rect, scroll_model::ptr model);

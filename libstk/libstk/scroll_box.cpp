@@ -22,19 +22,20 @@ namespace stk
         scroll_box::ptr new_scroll_box(new scroll_box(parent, rect));
 
         INFO("creating viewport");
-        // FIXME: get the 20s from the theme somehow
         rectangle vp_rect = rect; vp_rect.position(point(0, 0));
-        if (v_scroll) vp_rect.x2(vp_rect.x2() - 20);
-        if (h_scroll) vp_rect.y2(vp_rect.y2() - 20);
+        if (v_scroll) vp_rect.x2(vp_rect.x2() - scroll_bar::default_size);
+        if (h_scroll) vp_rect.y2(vp_rect.y2() - scroll_bar::default_size);
         new_scroll_box->viewport_ = viewport::create(new_scroll_box, vp_rect);
        
         if (v_scroll && h_scroll)
         {
-                rectangle v_rect(rect.width()-20, 0, 20, rect.height()-20);
+                rectangle v_rect(rect.width()-scroll_bar::default_size, 0, 
+                        scroll_bar::default_size, rect.height()-scroll_bar::default_size);
                 new_scroll_box->v_scroll_bar_ = scroll_bar::create(new_scroll_box, v_rect, 
                         new_scroll_box->viewport_->v_scroll());
 
-                rectangle h_rect(0, rect.height()-20, rect.width()-20, 20);
+                rectangle h_rect(0, rect.height()-scroll_bar::default_size, 
+                        rect.width()-scroll_bar::default_size, scroll_bar::default_size);
                 new_scroll_box->h_scroll_bar_ = scroll_bar::create(new_scroll_box, h_rect, 
                         new_scroll_box->viewport_->h_scroll());
         }
@@ -42,13 +43,15 @@ namespace stk
         {
             if (v_scroll)
             {
-                rectangle v_rect(rect.width()-20, 0, 20, rect.height());
+                rectangle v_rect(rect.width()-scroll_bar::default_size, 0, 
+                        scroll_bar::default_size, rect.height());
                 new_scroll_box->v_scroll_bar_ = scroll_bar::create(new_scroll_box, v_rect, 
                         new_scroll_box->viewport_->v_scroll());
             }
             if (h_scroll)
             {
-                rectangle h_rect(0, rect.height()-20, rect.width(), 20);
+                rectangle h_rect(0, rect.height()-scroll_bar::default_size, 
+                        rect.width(), scroll_bar::default_size);
                 new_scroll_box->h_scroll_bar_ = scroll_bar::create(new_scroll_box, h_rect, 
                         new_scroll_box->viewport_->h_scroll());
             }
