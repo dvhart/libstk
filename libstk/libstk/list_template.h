@@ -118,6 +118,7 @@ namespace stk
                         {
                             select_none();
                             items_[current_]->selected(true);
+                            on_update_selection();
                         }
                     }
                     else 
@@ -257,10 +258,8 @@ namespace stk
             // FIXME: we might as well return items_.size()-1 (since we always add it to the end)
             int index = std::find(items_.begin(), items_.end(), item) - items_.begin();
             if (index == current_) on_update_current();
-
             // assign the new item a rectangle (this depends on us adding item to the end)
             item->rect(rectangle(0, v_scroll_->size(), width(), item->height()));
-
             // adjust scroll properties
             if (h_scroll_->size() < item->width()) h_scroll_->size(item->width());
             v_scroll_->size(v_scroll_->size()+item->height());
