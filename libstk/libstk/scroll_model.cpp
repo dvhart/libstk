@@ -9,6 +9,7 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
+#include "stk_types.h"
 #include "scroll_model.h"
 
 namespace stk
@@ -19,7 +20,7 @@ namespace stk
         return new_scroll_model;
     }
 
-    scroll_model::scroll_model() : size_(1),begin_(0),vis_size_(1)
+    scroll_model::scroll_model() : size_(1), begin_(0), vis_size_(1)
     {}
 
     int scroll_model::size() const
@@ -29,7 +30,8 @@ namespace stk
 
     void scroll_model::size(int newsize)
     {
-        size_=newsize;
+        size_ = newsize;
+        begin_ = MAX(0, MIN(begin_, size_-vis_size_));
         on_change();
     }
 
@@ -40,7 +42,7 @@ namespace stk
 
     void scroll_model::begin(int value)
     {
-        begin_=value;
+        begin_ = MAX(0, MIN(value, size_-vis_size_));
         on_change();
     }
 
@@ -56,7 +58,8 @@ namespace stk
 
     void scroll_model::vis_size(int newsize)
     {
-        vis_size_=newsize;
+        vis_size_ = newsize;
+        begin_ = MAX(0, MIN(begin_, size_-vis_size_));
         on_change();
     }
 
