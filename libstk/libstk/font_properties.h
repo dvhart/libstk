@@ -14,6 +14,7 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/optional.hpp>
 #include <string>
 #include <libstk/logging.h>
 
@@ -24,12 +25,14 @@ namespace stk
     {
         typedef enum { plain=0, italic, bold, bold_italic } font_style;
 
-        std::string fontname;
-        int height;
-        font_style style;
-        float rotation;
+        boost::optional<std::string> fontname;
+        boost::optional<int> height;
+        boost::optional<font_style> style;
+        boost::optional<float> rotation;
 
-        font_properties(std::string name, int height, font_style style=plain, float rotation=0);
+        font_properties() { }
+        font_properties(std::string name, int height, font_style style, float rotation);
+        void merge(const font_properties& rhs);
 
         bool operator<(const font_properties& rhs) const;
     };

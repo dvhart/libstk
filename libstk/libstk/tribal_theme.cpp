@@ -154,7 +154,8 @@ namespace stk
 
         // prepare the font
 
-        font::ptr the_font = font_manager::get()->get_font(font_properties("Vera",18));
+        font::ptr the_font = font_manager::get()->get_font(
+                font_properties("Vera", 18, font_properties::plain, 0));
         gc->font(the_font);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
@@ -215,7 +216,7 @@ namespace stk
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
         font::ptr Vera_18 = font_manager::get()->get_font(
-                font_properties("Vera", 18, font_properties::italic));
+                 font_properties("Vera", 18, font_properties::italic, 0));
 
         gc->font(Vera_18);
         gc->font_fill_color(color_manager::get()->get_color(
@@ -236,16 +237,13 @@ namespace stk
                     color_properties(fill_color_normal_str, surface)));
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
-        font::ptr Vera;
-        if(text_size())
-        {
-            INFO("Drawing label with textsize=" << *text_size());
-            Vera = font_manager::get()->get_font(font_properties("Vera", *text_size()));
-        }
-        else
-            Vera = font_manager::get()->get_font(font_properties("Vera", 18));
 
-        gc->font(Vera);
+        font::ptr fnt;
+        font_properties props = font_props_;
+        props.merge(font_properties("Vera", 18, font_properties::plain, 0));
+        fnt = font_manager::get()->get_font(props);
+
+        gc->font(fnt);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
         surface->gc(gc);
@@ -272,7 +270,8 @@ namespace stk
 
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
-        font::ptr Vera_12 = font_manager::get()->get_font(font_properties("Vera", 12));
+        font::ptr Vera_12 = font_manager::get()->get_font(
+                font_properties("Vera", 12, font_properties::plain, 0));
         gc->font(Vera_12);
         surface->gc(gc);
 
@@ -359,7 +358,8 @@ namespace stk
 
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
-        font::ptr Vera_18 = font_manager::get()->get_font(font_properties("Vera",18));
+        font::ptr Vera_18 = font_manager::get()->get_font(
+                font_properties("Vera", 18, font_properties::plain, 0));
         gc->font(Vera_18);
         surface->gc(gc);
 
@@ -489,7 +489,8 @@ namespace stk
 
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
-        font::ptr Vera_18 = font_manager::get()->get_font(font_properties("Vera",18));
+        font::ptr Vera_18 = font_manager::get()->get_font(
+                font_properties("Vera", 18, font_properties::plain, 0));
         gc->font(Vera_18);
         surface->gc(gc);
 
@@ -531,7 +532,7 @@ namespace stk
 
         // prepare the font
         font::ptr Vera_18 = font_manager::get()->get_font(
-                font_properties("Vera",18, font_properties::bold));
+                font_properties("Vera",18, font_properties::bold, 0));
         gc->font(Vera_18);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
@@ -615,7 +616,8 @@ namespace stk
     }
     int edit_box::region(int x, int y)
     {
-        font::ptr Vera_18 = font_manager::get()->get_font(font_properties("Vera",18));
+        font::ptr Vera_18 = font_manager::get()->get_font(
+                font_properties("Vera", 18, font_properties::plain, 0));
         return Vera_18->chars_in_rect(rectangle(3, 0, x-rect_.x1(), height()), text_);
     }
 
@@ -660,7 +662,8 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
-        font::ptr the_font = font_manager::get()->get_font(font_properties("Vera", 10));
+        font::ptr the_font = font_manager::get()->get_font(
+                font_properties("Vera", 10, font_properties::plain, 0));
         
         gc->font(the_font);
         
@@ -696,7 +699,8 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
-        font::ptr Vera_14 = font_manager::get()->get_font(font_properties("Vera",14));
+        font::ptr Vera_14 = font_manager::get()->get_font(
+                font_properties("Vera", 14, font_properties::plain, 0));
         gc->font(Vera_14);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
@@ -759,7 +763,7 @@ namespace stk
     }
     font::ptr text_area::get_font()
     {
-        return font_manager::get()->get_font(font_properties("Vera",14));
+        return font_manager::get()->get_font(font_properties("Vera", 14, font_properties::plain, 0));
     }
     rectangle text_area::text_rectangle()
     {

@@ -1,3 +1,51 @@
+2003-12-04 08:26  dvhart
+
+	* libstk/: list_item.cpp, list_item.h, list_template.h,
+	  xine_panel.cpp, xine_panel.h: removed INFO statements from
+	  list_template's delegate_mouse_event list_item current(bool val)
+	  and selected(bool val) now redraw the widget as necessary
+
+2003-12-03 18:57  dvhart
+
+	* libstk/: list_template.h, xine_panel.cpp, xine_panel.h: changed
+	  list_template current() to current_item() and made current()
+	  return the integer index for consistency, added
+	  on_playback_finished signal to the xine_panel
+
+2003-12-03 13:34  dvhart
+
+	* libstk/: image_panel.h, tribal_theme.cpp: added default null
+	  image for image_panel::create, only draw if image_ is not null
+
+2003-12-02 23:13  dvhart
+
+	* libstk/stk.h: added list_item_userdata to the main header stk.h
+
+2003-12-02 21:35  dvhart
+
+	* libstk/: hotkey.h, state.cpp: added default constructor for
+	  hotkey
+
+2003-12-02 08:43  dvhart
+
+	* ChangeLog, libstk/Makefile.am, libstk/list_item_userdata.h,
+	  libstk/list_template.h: list_item_userdata widget and multiselect
+	  option to list_template
+
+2003-12-01 09:29  cslade
+
+	* libstk/text_area.cpp, test/test_area.cpp: I fixed editable in
+	  text_area
+
+2003-11-27 05:58  carter
+
+	* libstk/Makefile.am: Fixed Libjpeg linker options
+
+2003-11-27 05:45  carter
+
+	* libstk/image.cpp: Fixed compilation without LIBJPEG by adding a
+	  missing semicolon
+
 2003-11-24 17:41  cslade
 
 	* libstk/timer.h: I add a set repeat function for the timer

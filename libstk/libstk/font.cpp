@@ -37,9 +37,9 @@ namespace stk
     }
 
     font::font(const font_properties& prop)
-        : height_(prop.height), rotation_(prop.rotation) 
+        : height_(*prop.height), rotation_(*prop.rotation) 
     {
-        INFO("constructor: " << prop.fontname << ": " << prop.height << " pt, style " << (int)prop.style);
+        INFO("constructor: " << *prop.fontname << ": " << *prop.height << " pt, style " << (int)*prop.style);
         int error;
         // FIXME: consider using a freetype_backend (like dfb_backend and sdl_data)
         if (font_count_ == 0)
@@ -59,16 +59,16 @@ namespace stk
         {
             // look for the right family, no style
             font_properties replacement_font = prop;
-            if (prop.style != font_properties::plain)
+            if (*prop.style != font_properties::plain)
             {
                 INFO("falling back to " << prop.fontname << " plain");
-                replacement_font.style = font_properties::plain;
+                *replacement_font.style = font_properties::plain;
                 face_ = find_font(replacement_font);
                 if (face_ == NULL)
                 {
                     // or look for vera, right style
                     INFO("falling back to vera style " << prop.style);
-                    replacement_font.fontname = "vera";
+                    *replacement_font.fontname = "vera";
                     replacement_font.style = prop.style;
                     face_ = find_font(replacement_font);
                 }
@@ -77,7 +77,7 @@ namespace stk
             {
                 // or look for vera plain
                 INFO("falling back to vera plain");
-                replacement_font.fontname = "vera";
+                *replacement_font.fontname = "vera";
                 face_ = find_font(replacement_font);
             }
         }
@@ -126,7 +126,7 @@ namespace stk
     FT_Face font::find_font(const font_properties& prop)
     {
         string fontdir = PACKAGE_FONTS_DIR"/";
-        vector<dir_entry::ptr> selected_files = read_dir(fontdir, prop.fontname);
+        vector<dir_entry::ptr> selected_files = read_dir(fontdir, *prop.fontname);
 
         int error;
         FT_Face face = NULL;
@@ -160,7 +160,7 @@ namespace stk
             INFO(filename);
             INFO(face->family_name << ": " << prop.height << " pt, style " << face_style);
 
-            if (face_style == prop.style)
+            if (face_style == *prop.style)
             {
                 found_font = true;
                 break;

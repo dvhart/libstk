@@ -24,21 +24,29 @@ namespace stk
     bool font_properties::operator<(const font_properties& rhs) const
     {
         // check the high order
-        if (fontname < rhs.fontname) return true;
+        if ((fontname ? *fontname : "") < (rhs.fontname ? *rhs.fontname : "")) 
+            return true;
         // with each equal, check the lower order level
-        if (fontname == rhs.fontname)
+        if ((fontname ? *fontname : "") == (rhs.fontname ? *rhs.fontname : ""))
         {
-            if (height < rhs.height) return true;
-            if (height == rhs.height)
+            if ((height ? *height : 0) < (rhs.height ? *rhs.height : 0)) 
+                return true;
+            if ((height ? *height : 0) == (rhs.height ? *rhs.height : 0))
             {
-                if (rotation < rhs.rotation) return true;
-                if (rotation == rhs.rotation)
-                {
-                    return (style < rhs.style);
-                }
+                if ((rotation ? *rotation : 0) < (rhs.rotation ? *rhs.rotation : 0)) 
+                    return true;
+                if ((rotation ? *rotation : 0) == (rhs.rotation ? *rhs.rotation : 0)) 
+                    return ((style ? *style : plain) < (rhs.style ? *rhs.style : plain));
             }
         }
         return false;
     }
 
+    void font_properties::merge(const font_properties& rhs)
+    {
+        if (!fontname) fontname = rhs.fontname;
+        if (!height) height = rhs.height;
+        if (!style) style = rhs.style;
+        if (!rotation) rotation = rhs.rotation;
+    }
 } // namespace stk

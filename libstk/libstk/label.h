@@ -20,6 +20,7 @@
 
 #include <libstk/widget.h>
 #include <libstk/container.h>
+#include <libstk/font_properties.h>
 
 namespace stk
 {
@@ -31,7 +32,7 @@ namespace stk
 
     private:
         std::wstring text_;
-        boost::optional<int> text_size_;
+        font_properties font_props_;
 
     protected:
         label(std::wstring text, const rectangle& rect);
@@ -51,14 +52,11 @@ namespace stk
             redraw(rect());
         }
 
-        boost::optional<int> text_size()
+        /// Get and set the font properties object, any of the properties may be unspecified
+        font_properties font_props() { return font_props_; }
+        void font_props(font_properties props)
         {
-            return text_size_;
-        }
-
-        void text_size(boost::optional<int> newsize)
-        {
-            text_size_ = newsize;
+            font_props_ = props;
             redraw(rect());
         }
         
