@@ -17,6 +17,8 @@
 #include <libstk/event_producer.h>
 #include <libstk/event_system.h>
 #include <libstk/sdl_data.h>
+#include <libstk/event.h>
+#include <libstk/key_event.h>
 
 /* possible event calls in SDL
   currently we only use SDL_PollEvent, which calls SDL_PumpEvents
@@ -45,8 +47,8 @@ namespace stk
     {
     private:
         sdl_data::ptr sdl_data_;
-        keycode sdl2stk_key(SDLKey sdl_key);
         modcode sdl2stk_mod(SDLMod sdl_mod);
+        key_event::ptr sdl2stk_key_event(SDL_keysym keysym, event::event_type type);
 
     protected:
         event_producer_sdl();

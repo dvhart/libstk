@@ -48,7 +48,7 @@ namespace stk
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
             int sel_min = MIN(selection_end_, selection_start_);
             int sel_width = abs(selection_end_-selection_start_);
-            switch ( ke->key() )
+            switch ( ke->fn_key() )
             {
             case key_backspace:
                 if (selection_end_ != selection_start_)
@@ -105,22 +105,16 @@ namespace stk
             }
 
             // handle ascii keys 
-            if (ke->key() > key_backspace && ke->key() < key_delete)
+            if (!ke->fn_key() && ke->character() != 0)
             {
                 INFO("ASCII key received");
-                // FIXME: if text is selected, replace it with the current keystroke character 
                 std::wstring insert_str;
-                insert_str += (wchar_t)ke->key();
-                INFO("Current modifier: " << std::hex << ke->modlist());
-                if ((ke->modlist() & mod_shift) && (ke->key() >= key_a && ke->key() <= key_z)) 
-                    insert_str[0] += (wchar_t)('A' - 'a');
-                
+                insert_str += ke->character();
                 if (selection_end_ != selection_start_)
                 {
                     text_.erase(sel_min, sel_width);
                     selection_start_ = selection_end_ = sel_min;
                 }
- 
                 text_.insert(selection_end_, insert_str);
                 selection_start_ = ++selection_end_;
                 redraw(rect_);
@@ -128,7 +122,7 @@ namespace stk
                 return;
             }
             else
-                INFO("received unknown key: " << ke->key());
+                INFO("received unknown key: " << ke->fn_key());
             
             break; // key_down
         }

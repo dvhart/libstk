@@ -2,7 +2,7 @@
  *    FILENAME: xine_test.cpp
  * DESCRIPTION: An simple STK frontend to xine, demonstrating the overlay mechanism
  *     AUTHORS: Darren Hart
- *  START DATE: 20/Jul/2003  LAST UPDATE: 20/Jul/2003
+ *  START DATE: 20/Jul/2003  LAST UPDATE: 27/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -44,18 +44,22 @@ int main(int argc, char* argv[])
 
     try
     {
-        std::string surface_type;
-        if (argc < 2)
+#ifdef HAVE_LOGGING
+        logger::get()->add_target(&cout, LL_Info);
+#endif
+        std::string surface_type, filename;
+        if (argc < 3)
         {
-            throw error_message_exception("Usage: test_app sdl|dfb|fbdev");
+            throw error_message_exception("Usage: xine_test sdl|dfb|fbdev filename");
         }
         else
         {
             surface_type = std::string(argv[1]);
+            filename = std::string(argv[2]);
         }
         
         // select the surface and event system
-        cout << "test_app - selecting surface and event system" << endl;
+        INFO("selecting surface and event system");
         surface::ptr screen;
         event_producer::ptr ep;
 #ifdef HAVE_SDL
@@ -77,7 +81,7 @@ int main(int argc, char* argv[])
 #ifdef HAVE_SDL // needed for the event_system
         else if (surface_type == "fbdev")
         {
-            screen = surface_dfb::create(rectangle(0, 0, 640, 480));
+            screen = surface_fbdev::create(rectangle(0, 0, 1024, 768));
             ep = event_producer_sdl::create();
         }
 #endif
@@ -111,49 +115,51 @@ int main(int argc, char* argv[])
         xine_init(xine);
 
         // get the video and audio drivers
-        cout << "creating the xine video port" << endl;
+        INFO("creating the xine video port");
         vo_port = xine_open_video_driver(xine, "stk", XINE_VISUAL_TYPE_FB, (void *)xp.get());
-        cout << "creating the xine audio port" << endl;
+        INFO("creating the xine audio port");
         ao_port = xine_open_audio_driver(xine , "auto", NULL);
 
-        cout << "creating the xine stream" << endl;
+        INFO("creating the xine stream");
         stream = xine_stream_new(xine, ao_port, vo_port);
-        cout << "creating the xine event_queue" << endl;
+        INFO("creating the xine event_queue");
         event_queue = xine_event_new_queue(stream);
-        cout << "creating the xine event_listener" << endl;
+        INFO("creating the xine event_listener");
         xine_event_create_listener_thread(event_queue, xine_event_listener, NULL);
 
         //xine_gui_send_vo_data(stream, XINE_GUI_SEND_DRAWABLE_CHANGED, (void *) window[fullscreen]);
         //xine_gui_send_vo_data(stream, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void *) 1);
 
-        cout << "opening the stream" << endl;
-        if((!xine_open(stream, "test_movie")) || (!xine_play(stream, 0, 0))) {
-            cout << "unable to open test_movie" << endl;
+        INFO("opening the stream");
+        if((!xine_open(stream, filename.c_str())) || (!xine_play(stream, 0, 0))) {
+            INFO("unable to open " << filename);
             return 1;
         }
 
         // add a timer (quit after 30 seconds)
-        cout << "xine_test - creating timer to quit after 30 seconds" << endl;
+        INFO("xine_test - creating timer to quit after 30 seconds");
         timer::ptr quit_timer = timer::create(30000, true); // every 20 seconds
         quit_timer->on_timer.connect( boost::bind(&stk::application::quit, app.get()));
         app->add_timer(quit_timer);
 
-        
-        cout << "running the libstk app" << endl;
+        INFO("running the libstk app");
         // run the program
         retval = app->run();
 
         // xine cleanup
+        INFO("xine cleanup");
         xine_close(stream);
         xine_event_dispose_queue(event_queue);
         xine_dispose(stream);
         xine_close_audio_driver(xine, ao_port);  
         xine_close_video_driver(xine, vo_port);  
         xine_exit(xine);
+
+        INFO("shared pointer automatic destuction follows:");
     }
     catch (const exception& e)
     {
-        std::cout << "Exception: " << e.what() << std::endl;
+        ERROR("Exception: " << e.what());
     }
 
     return retval;

@@ -1,7 +1,7 @@
 
 [filenumbers]
-0=32
-1=1125
+0=88
+1=19
 2=28
 3=99
 4=41
@@ -35,12 +35,15 @@ filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
 [filelist]
-0=/home/codec/Projects/libstk/libstk/logger.h
+0=/home/dvhart/projects/libstk/libstk/event_producer_sdl.cpp
+1=/home/dvhart/projects/libstk/libstk/application.cpp
 
 [Project Tree]
 0=0
-1=0:0
-2=0:1
+
+[Symbol Tree]
+0=1
 
 [File Tree]
 0=0
+1=0:5

@@ -58,7 +58,7 @@ namespace stk
             // next and prev are currently in App, so activate (enter) should
             // probably be with them...
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            switch ( ke->key() )
+            switch ( ke->fn_key() )
             {
             case key_enter:
                 if (pressed_)
@@ -76,7 +76,7 @@ namespace stk
         case event::key_down:
         {
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            switch ( ke->key() )
+            switch ( ke->fn_key() )
             {
             case key_enter:
                 cout << "button::handle_event() - emitting signal on_click()" << endl;

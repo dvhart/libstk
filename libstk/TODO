@@ -30,7 +30,7 @@ event_producer_directfb
 IR support (IRDA / generic serial / lirc) ?
 Software Pointer (common to all graphic backends) - YES, make part of surface backends
 Document all existing classes / APIs
-Polish the build environment 
+Polish the build environment (add checks for boost)
 Add libstk to freshmeat
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion

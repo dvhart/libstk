@@ -102,8 +102,8 @@ int main(int argc, char* argv[])
 #ifdef HAVE_SDL // needed for the event_system
         else if (surface_type == "fbdev")
         {
-            test_surface = surface_dfb::create(rectangle(0, 0, 640, 480));
-            test_event_producer = event_producer_sdl::create();
+            test_surface = surface_fbdev::create(rectangle(0, 0, 640, 480));
+            //test_event_producer = event_producer_sdl::create();
         }
 #endif
 #endif
@@ -164,9 +164,11 @@ int main(int argc, char* argv[])
         viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
         // fixme: having to define the rectangle like this is lame, perhaps
         // rect should be relative to the parent container?
+        /* REMOVED UNTIL PNG AND SDL PLAY NICE
         image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
                 rectangle(10, 90, 400, 300), 
                 image::create(test_viewport->surface(),"parrots.png"));
+        */
 
         //scroll(test_viewport->h_scroll(),-10);
         button::ptr scroll_left=button::create(test_state,L"Scroll-", rectangle(100, 300, 90, 40));

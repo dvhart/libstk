@@ -13,16 +13,13 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include "libstk/sdl_data.h"
-
-using std::cout;
-using std::endl;
+#include "libstk/logging.h"
 
 namespace stk
 {
     sdl_data::ptr sdl_data::instance_;
 
-    sdl_data::ptr sdl_data::get
-        ()
+    sdl_data::ptr sdl_data::get()
     {
         if (instance_)
             return instance_;
@@ -32,22 +29,20 @@ namespace stk
 
     sdl_data::sdl_data() : first_init_(true)
     {
-        std::cout << "sdl_data::sdl_data()" << endl;
     }
 
     sdl_data::~sdl_data()
     {
-        std::cout << "sdl_data::~sdl_data()" << endl;
-        cout << "\tuse_count: " << instance_.use_count() << endl;
+        INFO("sdl_data::~sdl_data()");
+        INFO("use_count: " << instance_.use_count());
         SDL_Quit();
     }
 
     void sdl_data::init()
     {
-        cout << "sdl_data::init()" << endl;
         if (first_init_)
         {
-            cout << "\tInitializing SDL" << endl;
+            INFO("Initializing SDL");
             if (SDL_Init(0) < 0) // FIXME: do we want to use the SDL_EVENT_THREAD flag here ? or joysticks ?
                 throw error_message_exception(std::string("Unable to init SDL: ") +
                                               std::string(SDL_GetError()));

@@ -13,13 +13,13 @@ else
  tests_sdl  =
 endif
 if DFB
- tests_dfb  = test_app 
+ tests_dfb  = test_app hello_world
  dfb_cflags = $(DIRECTFB_CFLAGS)
 else
  tests_dfb  = 
 endif
 if FBDEV
- tests_fbdev  = test_app hello_world_fbdev
+ tests_fbdev  = test_app hello_world
 else
  tests_fbdev  = 
 endif
@@ -35,8 +35,6 @@ hello_world_SOURCES       = hello_world.cpp
 test_app_SOURCES          = test_app.cpp
 hydra_SOURCES             = hydra.cpp
 xine_test_SOURCES         = xine_test.cpp
-test_app_fbdev_SOURCES    = test_app_fbdev.cpp
-hello_world_fbdev_SOURCES = hello_world_fbdev.cpp
 	
 # FIXME: fix the way we link to the library here
 hello_world_LDADD       = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
@@ -44,5 +42,4 @@ test_app_LDADD          = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype 
 hydra_LDADD             = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 xine_test_LDADD         = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la 
 xine_test_LDFLAGS       = `xine-config --libs`
-hello_world_fbdev_LDADD = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 

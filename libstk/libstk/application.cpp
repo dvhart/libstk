@@ -105,14 +105,14 @@ namespace stk
             }
             else
             {
-                //cout << "applicaiton::run() - nothing to redraw" << endl;
+                //INFO("nothing to redraw");
             }
 
             // handle all available events before redrawing
             event_ = event_system_->poll_event();
             while (event_->type() != event::none)
             {
-                //cout << "application::run() - event received of type: " << event_->type() << endl;
+                //INFO("event received of type: 0x" << std::hex << event_->type());
 		bool handled_by_on_event=on_event(event_);
 		if(!handled_by_on_event)
 		{
@@ -214,7 +214,7 @@ namespace stk
         {
             // FIXME :Carter: shouldnt this be a polymorphic cast?
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            switch (ke->key())
+            switch (ke->fn_key())
             {
             case key_escape:
                 quit();

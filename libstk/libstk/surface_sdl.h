@@ -55,6 +55,7 @@ namespace stk
     private:
         SDL_Surface* sdl_surface_;
         sdl_data::ptr sdl_data_;
+        bool primary_;
 
         SDL_Rect rect_to_sdl_rect(const rectangle& rect)
         {

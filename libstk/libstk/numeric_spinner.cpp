@@ -42,13 +42,12 @@ namespace stk
 
     void numeric_spinner::handle_event(event::ptr e)
     {
-        //cout << "numeric_spinner::handle_event()" << endl;
         switch (e->type())
         {
-            case event::key_up:
+            case event::key_down:
                 {
                     key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                    switch ( ke->key() )
+                    switch ( ke->fn_key() )
                     {
                         case key_enter:
                         case key_uparrow:

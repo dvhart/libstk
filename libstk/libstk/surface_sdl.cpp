@@ -2,7 +2,7 @@
  *    FILENAME: surface_sdl.cpp
  * DESCRIPTION: SDL surface implementation.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke 
- *  START DATE: 10/Dec/2002  LAST UPDATE: 20/Jul/2003
+ *  START DATE: 10/Dec/2002  LAST UPDATE: 28/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -26,10 +26,6 @@
 #include "libstk/overlay.h"
 #include "libstk/overlay_sdl.h"
 
-using std::cout;
-using std::endl;
-using std::cerr;
-
 namespace stk
 {
 
@@ -41,38 +37,46 @@ namespace stk
 
     surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
     {
-        cout << "surface_sdl::surface_sdl()" << endl;
+        INFO("surface_sdl::surface_sdl()");
 
         // ensure that SDL has been initialized
         sdl_data_ = sdl_data::get(); // reference counting
         sdl_data_->init();
 
-        int bpp = 32;
-
         // if this is the first surface, init video and set the video mode
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0)
         {
             SDL_InitSubSystem(SDL_INIT_VIDEO);
-            sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), bpp,
-                                            SDL_HWSURFACE | SDL_DOUBLEBUF /*| SDL_FULLSCREEN*/);
+            sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 
+                                            0, SDL_HWSURFACE /*| SDL_DOUBLEBUF | SDL_FULLSCREEN*/);
+                                            // FIXME: SDL_DOUBLEBUF causes a blackscreen in framebuffer mode
+            if (!sdl_surface_)
+                ERROR("SDL_SetVideoMode failed: " << SDL_GetError());
+            primary_ = true;
             
         }
         // this is not the first surface, so make one size rect of the same format as the first
         else
         {
             // build a surface from the original and return that
-            SDL_Surface* temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA,
-                                        rect.width(), rect.height(), bpp, RMASK, GMASK, BMASK, AMASK);
+            SDL_Surface* temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA, rect.width(), rect.height(), 
+                                            0, RMASK, GMASK, BMASK, AMASK);
+            if (!temp_surface)
+                ERROR("SDL_CreateRGBSurface failed: " << SDL_GetError());
             sdl_surface_ = SDL_DisplayFormatAlpha(temp_surface); // convert to display format for faster blitting
+            if (!sdl_surface_)
+                ERROR("SDL_DisplayFormatAlpha failed: " << SDL_GetError());
             SDL_FreeSurface(temp_surface);
             SDL_SetAlpha(sdl_surface_, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
+            primary_ = false;
         }
     }
 
     surface_sdl::~surface_sdl()
     {
-        cout << "surface_sdl::~surface_sdl()" << endl;
-        if (sdl_surface_)
+        INFO("surface_sdl::~surface_sdl()");
+        // don't free the primary surface (returned by SDL_SetVideoMode), SDL_Quit does that!
+        if (sdl_surface_ && !primary_)
             SDL_FreeSurface(sdl_surface_);
     }
 
@@ -109,7 +113,7 @@ namespace stk
     {
         if (u_rect.empty())
         {
-            //cout << "surface_sdl::update() - updating entire screen" << endl;
+            //INFO("surface_sdl::update() - updating entire screen");
             SDL_Flip(sdl_surface_); // FIXME: this is hw accelerated if supported,
             // same as SDL_UpdateRect(surface, 0,0,0,0) otherwise
             // would it be faster to call SDL_Flip regardless of u_rect
@@ -117,7 +121,7 @@ namespace stk
         }
         else
         {
-            //cout << "surface_sdl::update() - updating the rect: " << u_rect << endl;
+            //INFO("surface_sdl::update() - updating the rect: " << u_rect);
             SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
         }
     }
@@ -189,7 +193,7 @@ namespace stk
         if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
         {
             //throw error_message_exception("surface_sdl::put_pixel() - pixel coords out of bounds");
-            cout << "surface_sdl::put_pixel() - pixel coords out of bounds" << endl;
+            INFO("surface_sdl::put_pixel() - pixel coords out of bounds");
             return;
         }
 
@@ -245,7 +249,7 @@ namespace stk
         if (x < 0 || y < 0 || x >= sdl_surface_->w || y >= sdl_surface_->h)
         {
             //throw error_message_exception("surface_sdl::get_pixel() - pixel coords out of bounds");
-            cout << "surface_sdl::get_pixel() - pixel coords out of bounds" << endl;
+            INFO("surface_sdl::get_pixel() - pixel coords out of bounds");
             return 0;
         }
 

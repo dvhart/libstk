@@ -3,7 +3,7 @@
  * DESCRIPTION: A simple class to store YUV overlay_sdl data (memory, size, format)
  *              backends.
  *     AUTHORS: Darren Hart
- *  START DATE: 20/Jul/2003  LAST UPDATE: 20/Jul/2003
+ *  START DATE: 20/Jul/2003  LAST UPDATE: 28/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -39,8 +39,10 @@ namespace stk
 
         overlay_sdl(int width, int height, int format, SDL_Surface* sdl_surface)
         {
-            cout << "overlay_sdl::overlay_sdl(rect, format, surface)" << endl;
+            INFO("overlay_sdl::overlay_sdl()");
             overlay_impl_ = SDL_CreateYUVOverlay(width, height, format, sdl_surface);
+            if (!overlay_impl_)
+                ERROR("SDL_CreateYUVOverlay failed");
         }
 
     public:
@@ -52,41 +54,20 @@ namespace stk
 
         virtual ~overlay_sdl()
         {
-            cout << "overlay_sdl::~overlay_sdl()" << endl;
+            INFO("overlay_sdl::~overlay_sdl()");
             SDL_FreeYUVOverlay(overlay_impl_);
         }
 
         // inline property methods
-        virtual int width() const
-        {
-            return overlay_impl_->w;
-        }
-        virtual int height() const
-        {
-            return overlay_impl_->h;
-        }
-        virtual int format() const
-        {
-            return overlay_impl_->format;
-        }
-        virtual int pitches(int index) const
-        {
-            return overlay_impl_->pitches[index];
-        }
-        virtual byte* pixels(int index) const
-        {
-            return overlay_impl_->pixels[index];
-        }
+        virtual int width() const { return overlay_impl_->w; }
+        virtual int height() const { return overlay_impl_->h; }
+        virtual int format() const { return overlay_impl_->format; }
+        virtual int pitches(int index) const { return overlay_impl_->pitches[index]; }
+        virtual byte* pixels(int index) const { return overlay_impl_->pixels[index]; }
 
         // methods
-        virtual void lock()
-        {
-            SDL_LockYUVOverlay(overlay_impl_);
-        }
-        virtual void unlock()
-        {
-            SDL_UnlockYUVOverlay(overlay_impl_);
-        }
+        virtual void lock() { SDL_LockYUVOverlay(overlay_impl_); }
+        virtual void unlock() { SDL_UnlockYUVOverlay(overlay_impl_); }
         virtual void display(const rectangle& rect)
         {
             SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };

@@ -53,17 +53,15 @@ namespace stk
             switch(new_event.type)
             {
             case SDL_KEYDOWN:
-            {
-                return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), 
-                            event::key_down, sdl2stk_mod(new_event.key.keysym.mod)));
+                return sdl2stk_key_event(new_event.key.keysym, event::key_down);
+                //return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym), 
+                //            event::key_down, sdl2stk_mod(new_event.key.keysym.mod)));
                 break;
-            }
             case SDL_KEYUP:
-            {
-                return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym),
-                            event::key_up, sdl2stk_mod(new_event.key.keysym.mod)));
+                return sdl2stk_key_event(new_event.key.keysym, event::key_up);
+                //return key_event::ptr(new key_event(sdl2stk_key(new_event.key.keysym.sym),
+                //           event::key_up, sdl2stk_mod(new_event.key.keysym.mod)));
                 break;
-            }
             case SDL_MOUSEBUTTONDOWN:
                 return mouse_event::ptr(new mouse_event(new_event.button.x, new_event.button.y,
                             new_event.button.button, event::mouse_down));
@@ -80,89 +78,126 @@ namespace stk
                 return event::create(event::quit);
                 break;
             default:
-                // throw something
-                WARN("unknown event type");
+                // throw something once we actually handle all SDL event types
+                //WARN("unknown event type: " << std::hex << new_event.type);
                 return event::create(event::unknown);
             }
         }
         return event_;
     }
     
-    keycode event_producer_sdl::sdl2stk_key(SDLKey sdl_key)
+    key_event::ptr event_producer_sdl::sdl2stk_key_event(SDL_keysym keysym, event::event_type type)
     {
-        INFO("Received SDL Key: " << std::hex << sdl_key);
-        keycode key;
-
+        INFO("Received SDL Key: " << std::hex << keysym.sym);
+        keycode fn_code = (keycode)0; // FIXME: default to fn_none or something
+        wchar_t character = 0;
+        
         // FIXME: fill in the rest of the keys 
         
         // handle key ranges
         // a - z
-        if (sdl_key >= SDLK_a && sdl_key <= SDLK_z)
+        if (keysym.sym >= SDLK_a && keysym.sym <= SDLK_z)
         {
-            key = (keycode)(key_a + (keycode)(sdl_key - SDLK_a));
-            return key;
+            character = (wchar_t)(keysym.sym);
+            if (keysym.mod & KMOD_SHIFT) character += ('A' - 'a');
         }
         // 0 - 9
-        if (sdl_key >= SDLK_0 && sdl_key <= SDLK_9)
+        else if (keysym.sym >= SDLK_0 && keysym.sym <= SDLK_9)
         {
-            key = (keycode)(key_0 + (keycode)(sdl_key - SDLK_0));
-            return key;
+            if (keysym.mod & KMOD_SHIFT)
+            {
+                switch (keysym.sym)
+                {
+                case SDLK_0:
+                    character = ')';
+                    break;
+                case SDLK_1:
+                    character = '!';
+                    break;
+                case SDLK_2:
+                    character = '@';
+                    break;
+                case SDLK_3:
+                    character = '#';
+                    break;
+                case SDLK_4:
+                    character = '$';
+                    break;
+                case SDLK_5:
+                    character = '%';
+                    break;
+                case SDLK_6:
+                    character = '^';
+                    break;
+                case SDLK_7:
+                    character = '&';
+                    break;
+                case SDLK_8:
+                    character = '*';
+                    break;
+                case SDLK_9:
+                    character = '(';
+                    break;
+                }
+            }
+            else
+                character = '0' + SDLK_9 - keysym.sym;
         }
         // keypad 0 - keypad 9
-        if (sdl_key >= SDLK_KP0 && sdl_key <= SDLK_KP9)
+        else if (keysym.sym >= SDLK_KP0 && keysym.sym <= SDLK_KP9)
         {
-            // FIXME: use stk keypad codes (don't exist atm)
-            key = (keycode)(key_0 + (keycode)(sdl_key - SDLK_KP0));
-            return key;
         }
         // f1 - f12
-        if (sdl_key >= SDLK_F1 && sdl_key <= SDLK_F12)
+        else if (keysym.sym >= SDLK_F1 && keysym.sym <= SDLK_F12)
         {
-            key = (keycode)(key_f1 + (keycode)(sdl_key - SDLK_F1));
-            return key;
+            fn_code = (keycode)(key_f1 + (keycode)(keysym.sym - SDLK_F1));
         }
  
-        
-        switch (sdl_key)
+        else
         {
-        // FIXME: fill this in, take advantage of ascii codes if possible
-        case SDLK_BACKSPACE:
-            key = key_backspace;
-            break;
-        case SDLK_TAB:
-            key = key_tab;
-            break;
-        case SDLK_RETURN:
-            key = key_enter;
-            break;
-        case SDLK_ESCAPE:
-            key = key_escape;
-            break;
-        case SDLK_SPACE:
-            key = key_space;
-            break;
-        case SDLK_DELETE:
-            key = key_delete;
-            break;
+            switch (keysym.sym)
+            {
+            // FIXME: fill this in, take advantage of ascii codes if possible
+            case SDLK_BACKSPACE:
+                fn_code = key_backspace;
+                break;
+            case SDLK_TAB:
+                fn_code = key_tab;
+                break;
+            case SDLK_RETURN:
+                fn_code = key_enter;
+                break;
+            case SDLK_ESCAPE:
+                fn_code = key_escape;
+                break;
+            case SDLK_SPACE:
+                character = ' ';
+                break;
+            case SDLK_DELETE:
+                fn_code = key_delete;
+                break;
 
-        case SDLK_LEFT:
-            key = key_leftarrow;
-            break;
-        case SDLK_RIGHT:
-            key = key_rightarrow;
-            break;
-        case SDLK_UP:
-            key = key_uparrow;
-            break;
-        case SDLK_DOWN:
-            key = key_downarrow;
-            break;
-        default:
-            WARN("unknown key: " << std::hex << sdl_key);
-            key = key_unknown;
-            break;
+            case SDLK_LEFT:
+                fn_code = key_leftarrow;
+                break;
+            case SDLK_RIGHT:
+                fn_code = key_rightarrow;
+                break;
+            case SDLK_UP:
+                fn_code = key_uparrow;
+                break;
+            case SDLK_DOWN:
+                fn_code = key_downarrow;
+                break;
+            }
         }
-        return key;
+        
+        if (fn_code == (keycode)0 && character == 0)
+        {
+            WARN("unknown key: " << std::hex << keysym.sym);
+            fn_code = key_unknown;
+        }
+        return key_event::ptr(new key_event(fn_code, type, sdl2stk_mod(keysym.mod), character));
     }
 
     modcode event_producer_sdl::sdl2stk_mod(SDLMod sdl_mod)

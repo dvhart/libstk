@@ -27,14 +27,16 @@ namespace stk
     private:
 
     protected:
-        keycode keycode_;
-        modcode  modlist_;
+        keycode fn_key_;
+        modcode modlist_;
+        wchar_t character_;
 
     public:
-        key_event(keycode key = key_null, event_type type = key_up, modcode modlist = mod_none);
+        key_event(keycode fn_key = key_null, event_type type = key_up, modcode modlist = mod_none, wchar_t character = 0);
         virtual ~key_event();
-        keycode key() const { return keycode_; }
+        keycode fn_key() const { return fn_key_; }
         modcode modlist() const { return modlist_; }
+        wchar_t character() const { return character_; }
     }; //class key_event
 } // namespace stk
 

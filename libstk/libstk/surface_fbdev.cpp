@@ -86,7 +86,6 @@ namespace stk
     surface_fbdev::ptr surface_fbdev::create()
     {
         surface_fbdev::ptr res(new surface_fbdev(boost::optional<rectangle>(),true));
-
         return res;
     }
 
@@ -214,6 +213,11 @@ namespace stk
         return overlay::ptr();
     }
 
+    surface::ptr surface_fbdev::create_surface(const rectangle& rect)
+    {
+        return surface_fbdev::create(rect);
+    }
+    
     // overridden drawing routines
     void surface_fbdev::blit(surface &dst_surface)
     {

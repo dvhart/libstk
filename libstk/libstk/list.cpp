@@ -58,10 +58,10 @@ namespace stk
             return;
             break;
         }
-        case event::key_up:
+        case event::key_down:
         {
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            switch ( ke->key() )
+            switch ( ke->fn_key() )
             {
             case key_uparrow:
                 if (selected_ > 0)

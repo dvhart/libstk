@@ -82,7 +82,7 @@ namespace stk
             break;
         case event::key_up:
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            if (on_keyup(ke->key())) return;
+            if (on_keyup(ke->fn_key())) return;
             break;
         }
 
