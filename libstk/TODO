@@ -18,13 +18,12 @@ write it!!!!
 
 OTHER
 ======
-logger - Marc
 png image loader - Marc
-surface_dfb - Marc
 input_capabilities - Marc
 Better font loading error messages.
 list::create(boost::shared_ptr< list > parent, std::wstring label, std::string data)
-    we are mixing std::string and std::wstring here
+    we are mixing std::string and std::wstring here, 
+We shouldnt be using a string for "data" anyway!!! (marc)
 
 WIDGETS TO WRITE
 ================
