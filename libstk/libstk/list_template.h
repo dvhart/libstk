@@ -61,10 +61,10 @@ namespace stk
         boost::signals::connection v_scroll_con_;
 
     public:
-        static list_template<Titem>::ptr create(container::ptr parent, const rectangle& rect, 
+        static typename list_template<Titem>::ptr create(container::ptr parent, const rectangle& rect, 
                 bool multiselect = false)
         {
-            list_template<Titem>::ptr new_list_template(
+            typename list_template<Titem>::ptr new_list_template(
                     new list_template<Titem>(rect, multiselect));
             new_list_template->on_resize.connect(boost::function<bool()>(
                         (boost::bind(&scrollable::update_vis_sizes, new_list_template.get(), 
