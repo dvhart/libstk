@@ -9,18 +9,39 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 
+dnl **** Boost Headers and libraries
+dnl FIXME is this AC_LANG SAVE/RESTORE stuff necessary ?
+AC_LANG_SAVE
+AC_LANG([C++])
+AC_CHECK_HEADER(boost/shared_ptr.hpp, , [AC_MSG_ERROR( *** boost/shared_ptr.hpp not found - build will fail)])
+AC_CHECK_HEADER(boost/weak_ptr.hpp, , [AC_MSG_ERROR( *** boost/weak_ptr.hpp not found - build will fail)])
+AC_CHECK_HEADER(boost/signal.hpp, , [AC_MSG_ERROR( *** boost/signal.hpp not found - build will fail)])
+AC_CHECK_HEADER(boost/shared_array.hpp, , [AC_MSG_ERROR( *** boost/shared_array.hpp not found - build will fail)])
+AC_CHECK_HEADER(boost/operators.hpp, , [AC_MSG_ERROR( ***  boost/operators.hpp not found - build will fail)])
+AC_CHECK_HEADER(boost/bind.hpp, , [AC_MSG_ERROR( *** boost/bind.hpp not found - build will fail)])
+AC_CHECK_HEADER(boost/optional.hpp, , [AC_MSG_ERROR( *** boost/optional.hpp not found - build will fail)])
+
+dnl FIXME make this use AC_CHECK_HEADERS and update the event_system/producers accordingly
+AC_CHECK_HEADER(boost/thread/mutex.hpp, , [AC_MSG_ERROR( *** boost/thread/mutex.hpp not found - build will fail)])
+
+AC_CHECK_LIB(boost_signals, main, , [AC_MSG_ERROR( *** boost_signals library not found - build will fail)])
+AC_CHECK_LIB(boost_thread, main, , [AC_MSG_ERROR( *** boost_thread library not found - build will fail)])
+AC_LANG_RESTORE
+
+
 dnl ---------------------------------------------
 dnl Find pkg-config -- perhaps we should axe this dependency and use freetype-config, libpng-config, etc...
 dnl ---------------------------------------------
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test x$PKG_CONFIG = xno ; then
-  echo "*** pkg-config not found. See http://pkgconfig.sourceforge.net"
-  echo "***     Freetype2 cannot be detected (build will fail)"
-  echo "***     All of DirectFB dependent parts will be disabled"
-  echo "***     All of Libpng dependent parts will be disabled"
+  AC_MSG_ERROR( *** pkg-config not found. See http://pkgconfig.sourceforge.net
+   ***     Freetype2 cannot be detected (build will fail)
+   ***     Other components that depend on pkg-config
+   ***       DirectFB
+   ***       Libpng
+  )
 dnl list other pkg-config dependent parts here
 fi
-
 
 dnl **** Freetype2 compile flags
 if test x$PKG_CONFIG != xno ; then

@@ -5,7 +5,7 @@ else
 endif
 SUBDIRS = libstk $(test_dir)
 
-DIST_SUBDIRS= libstk
+DIST_SUBDIRS= libstk test
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libstk.pc
