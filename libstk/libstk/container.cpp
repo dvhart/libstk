@@ -59,12 +59,12 @@ namespace stk
         {
             if ((*iter)->contains(me->x(), me->y()))
             {
-		mouse_event::ptr me_to_child(new mouse_event(me->x()-rect().x1(),me->y()-rect().y1(),
-							     me->button(),me->type()));
-		return (*iter)->delegate_mouse_event(me_to_child);
+                mouse_event::ptr me_to_child(new mouse_event(me->x()-x1(), me->y()-y1(), 
+                            me->button(), me->type()));
+                return (*iter)->delegate_mouse_event(me_to_child);
             }
         }
-	return widget::ptr();
+        return widget::ptr();
     }
 
     void container::add(widget::ptr w)
@@ -75,29 +75,31 @@ namespace stk
     void container::remove(widget::ptr item)
     {
         std::vector<boost::shared_ptr<stk::widget> >::iterator iter;
-        iter=std::find(children_.begin(), children_.end(), item);
+        iter = std::find(children_.begin(), children_.end(), item);
         children_.erase(iter);
     }
 
     void container::draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child)
     {
-        if(!child->rect().intersects(clip_rect))
+        if (!child->intersects(clip_rect))
             return;
-        rectangle redraw_rect = child->rect().intersection(clip_rect);
+        // FIXME: clip rect is world coords, child's rect is local
+        rectangle redraw_rect = child->intersection(clip_rect);
 
         // Intersection tests should be in local coordinates
-        surface->offset(surface->offset() + child->rect().p1());
+        surface->offset(surface->offset()+child->position());
         // Keep redraw rect in local coordinates
-        redraw_rect.position(redraw_rect.position()-child->rect().position());         
-        child->draw(surface,redraw_rect);
-        surface->offset(surface->offset() - child->rect().p1());
+        redraw_rect.position(redraw_rect.position()-child->position());         
+        child->draw(surface, redraw_rect);
+        surface->offset(surface->offset()-child->position());
     }
     
     // the routine manages the draw calls of the children, clip rect is in
     // screen space coordinates, redraw_rect is in local coordinates
     void container::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,clip_rect,_1));
+        std::for_each(children_.begin(), children_.end(), 
+                boost::bind(&container::draw_child, this, surface, clip_rect, _1));
     }
 
     void container::redraw(const rectangle& rect, drawable* source, bool transform)

@@ -7,6 +7,7 @@ surface::lock - do we return a format, or always 32 bit RGBA.  If always rgba,
 
 TASKS (Some duplicated items here and below)
 ============================================
+Exceptions (need class hierarchy, declare throws, use them...)
 Spinner - (AUTOCOMPLETE, NO EDIT)
 Template list_item for users to derive from
 Purge all magic numbers

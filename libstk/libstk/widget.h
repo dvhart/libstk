@@ -79,13 +79,17 @@ namespace stk
         /********** WIDGET INTERFACE **********/
         virtual bool is_container() { return false; }
         /// FIXME: what would be a better way to handle all these rect wrappers?
-        /// should widget possibly inherit from rectangle ?
+        /// should widget possibly inherit from rectangle 
         rectangle rect() { return rect_; }
         bool contains(int x, int y) { return rect_.contains(x, y); }
         bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
+        rectangle intersection(const rectangle& rhs) { return rect_.intersection(rhs); }
         int width() { return rect_.width(); }
         int height() { return rect_.height(); }
+        point position() const { return rect_.position(); }
         void position(int x, int y) { rect_.position(x, y); }
+        point p1() { return rect_.p1(); }
+        point p2() { return rect_.p2(); }
         int x1() { return rect_.x1(); }
         int y1() { return rect_.y1(); }
         int x2() { return rect_.x2(); }
