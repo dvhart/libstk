@@ -37,11 +37,11 @@ namespace stk
         static void event_listener_wrapper(void *user_data, const xine_event_t* xine_event);
         /// the actual event listener, called by xine_event_listener_wrapper
         void event_listener(const xine_event_t* xine_event);
-        /// every xine_panel shares a xine backend, audio, and video ports
+        /// every xine_panel shares a xine backend
         static xine_t*            xine_;
-        static xine_video_port_t* xine_vo_port_;
-        static xine_audio_port_t* xine_ao_port_;
-        /// each xine panel has its own stream and event handler
+        /// each xine panel has its own stream, event handler, audio, and video ports
+        xine_video_port_t* xine_vo_port_;
+        xine_audio_port_t* xine_ao_port_;
         xine_stream_t*      xine_stream_;
         xine_event_queue_t* xine_event_queue_;
 

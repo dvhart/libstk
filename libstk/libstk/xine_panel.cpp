@@ -17,8 +17,6 @@
 namespace stk
 {
     xine_t* xine_panel::xine_ = NULL;
-    xine_video_port_t*  xine_panel::xine_vo_port_ = NULL;
-    xine_audio_port_t*  xine_panel::xine_ao_port_ = NULL;
 
     xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect, 
             const std::string& config)
@@ -41,12 +39,11 @@ namespace stk
             xine_ = xine_new();
             xine_config_load(xine_, config.c_str());
             xine_init(xine_);
-            INFO("creating the xine video and audio ports");
-            xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
-            xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
         }
 
-        INFO("creating the xine stream, event queue, and event_listener");
+        INFO("creating the xine stream, event queue, event_listener, audio, and video ports");
+        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
+        xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
         xine_stream_ = xine_stream_new(xine_, xine_ao_port_, xine_vo_port_);
         xine_event_queue_ = xine_event_new_queue(xine_stream_);
         xine_event_create_listener_thread(xine_event_queue_, &event_listener_wrapper, (void*)this);
