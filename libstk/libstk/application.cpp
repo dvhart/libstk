@@ -165,9 +165,10 @@ namespace stk
                         {
                             // FIXME: ugly hack, temporary until we decide if list_items should be
                             //        widgets and lists should be containers --dvhart
-                            list::ptr focused_list;
-                            if ((focused_list = boost::shared_dynamic_cast<list>(focused_widget)) && (focused_list->size() > 0))
-                                focused_list->current()->handle_event(event_);
+                            list::ptr focused_list; list_item::ptr cur_item;
+                            if ((focused_list = boost::shared_dynamic_cast<list>(focused_widget)) &&
+                                    (cur_item = focused_list->current()))
+                                cur_item->handle_event(event_);
                             else
                                 focused_widget->handle_event(event_);
                         }
@@ -177,7 +178,7 @@ namespace stk
             }
 
             // update all timers, and remove those that have expired
-            Ttimers::iterator new_end = remove_if(timers_.begin(), timers_.end(), 
+            Ttimers::iterator new_end = std::remove_if(timers_.begin(), timers_.end(), 
                     timer_update_predicate);
             timers_.erase(new_end, timers_.end());
 
