@@ -26,7 +26,7 @@ namespace stk
 
 	void scroll_box::handle_event(event::ptr e)
 	{
-		cout << "scroll_box::handle_event()" << endl;	
+		//cout << "scroll_box::handle_event()" << endl;	
 		switch (e->type())
 		{
 			case event::key_up:
@@ -36,7 +36,7 @@ namespace stk
 				switch ( ke->key() )
 				{
 					case up_arrow:
-						cout << "scroll_box::handle_event() - scroll up" << endl;
+						//cout << "scroll_box::handle_event() - scroll up" << endl;
 						if (vposition_ > 0)
 						{
 							vposition_ -= 1;
@@ -46,7 +46,7 @@ namespace stk
 						return;
 						break;
 					case down_arrow:
-						cout << "scroll_box::handle_event() - scroll down" << endl;
+						//cout << "scroll_box::handle_event() - scroll down" << endl;
 						if (vposition_ < (vrange_ - height()))
 						{
 							vposition_ += 1;
@@ -56,7 +56,7 @@ namespace stk
 						return;
 						break;
 					case left_arrow:
-						cout << "scroll_box::handle_event() - scroll left" << endl;
+						//cout << "scroll_box::handle_event() - scroll left" << endl;
 						if (hposition_ > 0)
 						{
 							hposition_ -= 1;
@@ -66,7 +66,7 @@ namespace stk
 						return;
 						break;
 					case right_arrow:
-						cout << "scroll_box::handle_event() - scroll right" << endl;
+						//cout << "scroll_box::handle_event() - scroll right" << endl;
 						if (hposition_ < (hrange_ - width()))
 						{
 							hposition_ += 1;
