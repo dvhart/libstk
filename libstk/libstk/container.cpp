@@ -35,15 +35,19 @@ namespace stk
 
     widget::ptr container::widget_at(int x, int y)
     {
+        x -= x1();
+        y -= y1();
+
+        // if we don't contain this point, return a null pointer
+        if (x >= width() || y >= height()) return widget::ptr();
+
+        // cycle through the widgets, and return the first that doesn't return a null pointer
         std::vector<widget::ptr>::iterator iter = children_.begin();
         for (iter; iter != children_.end(); iter++)
-        {
-            if ((*iter)->contains(x, y))
-                return *iter;
-        }
-        //INFO("widget_at not found, returning an empty shared_ptr");
-        return widget::ptr();
-        //return container::ptr(this); // FIXME: why does this cause a segfault
+            if ((*iter)->widget_at(x, y)) return *iter;
+
+        // no children are at this location, return this
+        return shared_from_this();
     }
 
     void container::delegate_mouse_event(mouse_event::ptr me)
