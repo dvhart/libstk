@@ -1,3 +1,68 @@
+2003-12-11 14:34  dvhart
+
+	* libstk/list_item_userdata.h: list_item_userdata update
+
+2003-12-11 11:17  carter
+
+	* libstk/tribal_theme.cpp: Made scroll_bar usable on keyboardless
+	  systems
+
+2003-12-11 11:16  carter
+
+	* libstk/scroll_bar.cpp: Added Code that makes scroll_bar usable
+	  with a mouse only system
+
+2003-12-11 11:13  carter
+
+	* libstk/scroll_bar.h: Added a region function to scrollbar for
+	  event handling theme interaction
+
+2003-12-11 11:12  carter
+
+	* libstk/list_template.h: Fixed questionable validity check in
+	  list_template
+
+2003-12-11 11:04  carter
+
+	* libstk/scroll_box.cpp: Refactored large pieces of scroll_box,
+	  made it much more efficient (before each time an item was added
+	  to a listbox, the scrollbars would be destroyed and re created!)
+
+2003-12-11 02:48  dvhart
+
+	* libstk/xine_panel.cpp: xine_panel visualization updates
+
+2003-12-10 14:35  dvhart
+
+	* ChangeLog, libstk/font.cpp, libstk/font_properties.cpp,
+	  libstk/font_properties.h, libstk/label.h,
+	  libstk/tribal_theme.cpp: new font_properties interface to label,
+	  each aspect of font_properties is no a boost::optional<T>
+
+2003-12-10 14:35  vhmauery
+
+	* libstk/: application.cpp, application.h, time_value.h, timer.cpp,
+	  timer.h: virtualized app, extended timers
+
+2003-12-07 03:38  carter
+
+	* libstk/rectangle.h: Made the Rectangle class POD (removed all
+	  virtual functions)
+
+2003-12-05 16:57  cslade
+
+	* libstk/application.cpp: I fixed the remove_timer function
+
+2003-12-05 14:42  cslade
+
+	* libstk/: application.cpp, application.h: I added a remove_state
+	  in the application
+
+2003-12-04 12:13  dvhart
+
+	* libstk/: xine_panel.cpp, xine_panel.h: preliminary visualization
+	  support in xine_panel
+
 2003-12-04 08:26  dvhart
 
 	* libstk/: list_item.cpp, list_item.h, list_template.h,
