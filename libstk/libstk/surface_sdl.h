@@ -84,13 +84,13 @@ namespace stk
         inline color get_pixel(int x, int y) const;
         virtual color gen_color(const std::string &str_color) const;
         virtual color gen_color(byte r, byte g, byte b, byte a) const;
-        virtual void lock(rectangle &rect, int flags, color** buf, int &stride)
-            ;
+        virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
         virtual void unlock();
         virtual void update(const rectangle& u_rect=rectangle());
 
         // overridden drawing routines
         virtual void blit(surface &dst_surface);
+	virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect) ;
         virtual void fill_rect(int x1, int y1, int x2, int y2);
         virtual void fill_rect(const rectangle& rect);
     };

@@ -139,6 +139,29 @@ namespace stk
                                           "Can only blit an sdl_surface to another sdl_surface");
         }
     }
+    void surface_sdl::blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect)
+    {
+        // blit the local surface to the destination surface
+        surface_sdl *dst_surface_ptr = dynamic_cast<surface_sdl *>(&dst_surface);
+        if (dst_surface_ptr != NULL)
+        {
+	    SDL_Rect src_sdl_rect = rect_to_sdl_rect(src_rect);
+	    SDL_Rect dst_sdl_rect = rect_to_sdl_rect(dst_rect);
+	    
+	    if (SDL_BlitSurface(sdl_surface_, &src_sdl_rect ,
+                                dst_surface_ptr->sdl_surface(), &dst_sdl_rect) < 0)
+            {
+                throw error_message_exception(
+                    "widget: Failed to blit sdl_surface_ to screen");
+            }
+        }
+        else
+        {
+            throw error_message_exception("surface_sdl::blit - "
+                                          "unable to cast dst_surface to surface_sdl\n"
+                                          "Can only blit an sdl_surface to another sdl_surface");
+        }
+    }
 
     void surface_sdl::put_pixel(int x_, int y_, color clr)
     {
