@@ -17,7 +17,8 @@
 #include <boost/thread/recursive_mutex.hpp>
 #include <libstk/exceptions.h>
 
-#define SDL_MUTEX_LOCK boost::recursive_mutex::scoped_lock scoped_lock(sdl_data::get()->mutex);;
+#define SDL_MUTEX_LOCK   boost::recursive_mutex::scoped_lock scoped_lock(sdl_data::get()->mutex);//INFO("SDL_MUTEX_LOCK");
+#define SDL_MUTEX_UNLOCK //INFO("SDL_MUTEX_UNLOCK"); 
 
 namespace stk
 {

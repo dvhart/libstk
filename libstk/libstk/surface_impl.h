@@ -201,30 +201,22 @@ namespace stk
         // implementation of drawing routines
         virtual void draw_pixel(int x, int y, color clr)
         {
-            lock();
             static_cast<surface_backend*>(this)->put_pixel(x, y, clr);
-            unlock();
         }
 
         virtual void draw_pixel_aa(int x, int y, double distance, color clr)
         {
-            lock();
             static_cast<surface_backend*>(this)->put_pixel_aa(x, y, distance, clr);
-            unlock();
         }
 
         virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
         {
-            lock();
             static_cast<surface_backend*>(this)->put_pixel_aa(x, y, alpha_a, clr);
-            unlock();
         }
 
         virtual color read_pixel(int x, int y)
         {
-            lock();
             return static_cast<surface_backend*>(this)->get_pixel(x, y);
-            unlock();
         }
 
         virtual void blit(surface &dst_surface)
@@ -240,7 +232,6 @@ namespace stk
         // non antialiased draw routines
         virtual void draw_line(int x1, int y1, int x2, int y2)
         {
-            lock();
             // determine the line direction
             int dir = direction(x1, y1, x2, y2);
             int x = x1;
@@ -500,7 +491,6 @@ namespace stk
                     break;
                 }
             }
-            unlock();
         }
 
 
@@ -511,7 +501,6 @@ namespace stk
 
         virtual void draw_arc(int x1, int y1, int x2, int y2, int quadrant)
         {
-            lock();
             color clr = gc_->line_color();
             int a = x2 - x1;
             int b = y2 - y1;
@@ -626,7 +615,6 @@ namespace stk
                     break;
                 }
             }
-            unlock();
         }
 
 
@@ -639,18 +627,15 @@ namespace stk
 
         virtual void draw_rect(int x1, int y1, int x2, int y2)
         {
-            lock();
             draw_line(x1, y1, x2, y1);
             draw_line(x2, y1, x2, y2);
             draw_line(x1, y2, x2, y2);
             draw_line(x1, y1, x1, y2);
-            unlock();
         }
 
 
         virtual void draw_circle(int x, int y, int radius)
         {
-            lock();
             int xp = 0;
             int yp = radius;
             int d = 1 - radius;
@@ -676,7 +661,6 @@ namespace stk
                 xp++;
                 circle_points(xp, yp, x, y);
             }
-            unlock();
         }
 
         virtual void draw_circle(const rectangle &rect)
@@ -688,7 +672,6 @@ namespace stk
 
         virtual void draw_ellipse(int x, int y, int a, int b)
         {
-            lock();
             int xp = 0;
             int yp = b;
 
@@ -746,7 +729,6 @@ namespace stk
                 yp--;
                 ellipse_points(xp, yp, x, y);
             }
-            unlock();
         }
 
         virtual void draw_ellipse(const rectangle &rect)
@@ -759,7 +741,6 @@ namespace stk
 
         virtual void draw_poly(std::vector<point> points)
         {
-            lock();
             if (points.size() < 1)
             {
                 INFO("draw_poly - no points to draw");
@@ -778,12 +759,10 @@ namespace stk
             p_iter_b = points.begin();
             draw_line(p_iter_a->x(), p_iter_a->y(),
                       p_iter_b->x(), p_iter_b->y());
-            unlock();
         }
 
         virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
         {
-            lock();
             // ignore the bounds and stuff for now
             int x = rect.x1();
             int y = rect.y1();
@@ -818,13 +797,11 @@ namespace stk
                 if (i<text.length()-1)
                     x += (fon->kerning(text[i], text[i+1]) >> 6);
             }
-            unlock();
         }
 
         // antialiased draw routines
         virtual void draw_line_aa(int x1, int y1, int x2, int y2)
         {
-            lock();
             color clr = gc_->line_color();
 
             // determine the line direction
@@ -1166,7 +1143,6 @@ namespace stk
                     break;
                 }
             }
-            unlock();
         }
 
         virtual void draw_arc_aa(const rectangle &rect, int quadrant)
@@ -1216,7 +1192,6 @@ namespace stk
 
         virtual void draw_poly_aa(std::vector<point> points)
         {
-            lock();
             if (points.size() < 1)
             {
                 WARN("draw_poly_aa - no points to draw");
@@ -1235,7 +1210,6 @@ namespace stk
             p_iter_b = points.begin();
             draw_line_aa(p_iter_a->x(), p_iter_a->y(),
                          p_iter_b->x(), p_iter_b->y());
-            unlock();
         }
 
         // non antialiased fill routines
@@ -1271,7 +1245,6 @@ namespace stk
 
         virtual void fill_poly(std::vector<point> points)
         {
-            lock();
             typedef std::list<edge> edge_list;
             // FIXME: this will segfault for poly's outside the surface vertically
             std::vector<edge_list> edges(rect_.height());
@@ -1344,7 +1317,6 @@ namespace stk
                     edge_iter2++;
                 }
             }
-            unlock();
         }
 
         // antialiased fill routines
@@ -1380,10 +1352,8 @@ namespace stk
 
         virtual void fill_poly_aa(std::vector<point> points)
         {
-            lock();
             fill_poly(points);
             draw_poly_aa(points);
-            unlock();
         }
 
         // image routines

@@ -9,6 +9,20 @@
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
+/* SDL has multi-threading problems in X.  To account for this, all library calls should be
+ * wrapped with SDL_MUTEX_LOCK and SDL_MUTEX_UNLOCK.  The current definition of these macros
+ * uses a boost recursive mutex and a scoped lock (meaning SDL_MUTEX_UNLOCK does nothing), but 
+ * please include both in case the implementation of the locking mechanism changes in the future.
+ * Note that the put_pixel and get_pixel routines are not wrapped for performance reasons, any call
+ * to one of these methods must be made inside the lock.
+ *
+ * SDL requires the surface to be locked (SDL_SurfaceLock()) prior to any direct access to 
+ * surface->pixels, for this reason the drawing routines which call any of the put_pixel or 
+ * get_pixel private members should be wrapped in lock() and unlock().  Note, draw_line is wrapped,
+ * draw_poly is not however because it calls draw_line.  Please be take care in using lock() and
+ * unlock() appropriately.
+ */
+
 #include <cmath>
 #include <vector>
 #include <list>
@@ -33,7 +47,7 @@ namespace stk
 
     surface_sdl::surface_sdl(const rectangle &rect) : surface_impl<surface_sdl>(rect)
     {
-        INFO("constructor");
+        SDL_MUTEX_LOCK;
 
         // ensure that SDL has been initialized
         sdl_data_ = sdl_data::get(); // reference counting
@@ -42,7 +56,6 @@ namespace stk
         // if this is the first surface, init video and set the video mode
         if (SDL_WasInit(SDL_INIT_VIDEO) == 0)
         {
-            INFO("Creating initial surface");
             SDL_InitSubSystem(SDL_INIT_VIDEO);
             sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), 32, 
                     SDL_HWSURFACE /*| SDL_DOUBLEBUF | SDL_FULLSCREEN*/);
@@ -55,7 +68,6 @@ namespace stk
         // this is not the first surface, so make one size rect of the same format as the first
         else
         {
-            INFO("Creating additional surface");
             // build a surface from the original and return that
             SDL_Surface* temp_surface = SDL_CreateRGBSurface(0, rect.width(), rect.height(), 32, 
                     RMASK, GMASK, BMASK, AMASK);
@@ -68,14 +80,16 @@ namespace stk
             SDL_SetAlpha(sdl_surface_, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
             primary_ = false;
         }
+        SDL_MUTEX_UNLOCK;
     }
 
     surface_sdl::~surface_sdl()
     {
-        INFO("destructor");
+        SDL_MUTEX_LOCK;
         // don't free the primary surface (returned by SDL_SetVideoMode), SDL_Quit does that!
         if (sdl_surface_ && !primary_)
             SDL_FreeSurface(sdl_surface_);
+        SDL_MUTEX_UNLOCK;
     }
 
     void surface_sdl::put_pixel(int x, int y, color clr)
@@ -254,19 +268,24 @@ namespace stk
 
     color surface_sdl::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
     {
+        SDL_MUTEX_LOCK;
         Uint32 sdl_color = SDL_MapRGBA(sdl_surface_->format, r, g, b, a);
+        SDL_MUTEX_UNLOCK;
         return (color)sdl_color;
     }
 
     void surface_sdl::lock()
     {
+        SDL_MUTEX_LOCK;
         if (SDL_LockSurface(sdl_surface_))
             throw error_message_exception("surface_sdl::lock() failed - " + 
                     std::string(SDL_GetError()));
+        SDL_MUTEX_UNLOCK;
     }
     
     void surface_sdl::lock(rectangle &rect, int flags, color** buf, int& stride)
     {
+        SDL_MUTEX_LOCK;
         // FIXME: what shall we do with flags (i.e. read and write)
         SDL_LockSurface(sdl_surface_);
         switch (sdl_surface_->format->BytesPerPixel)
@@ -286,11 +305,14 @@ namespace stk
             break;
         }
         stride = sdl_surface_->pitch;
+        SDL_MUTEX_UNLOCK;
     }
 
     void surface_sdl::unlock()
     {
+        SDL_MUTEX_LOCK;
         SDL_UnlockSurface(sdl_surface_);
+        SDL_MUTEX_UNLOCK;
     }
 
     void surface_sdl::update(const rectangle& u_rect)
@@ -310,6 +332,7 @@ namespace stk
             //INFO("surface_sdl::update() - updating the rect: " << u_rect);
             SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
         }
+        SDL_MUTEX_UNLOCK;
     }
 
     overlay::ptr surface_sdl::create_overlay(int width, int height, int format)
@@ -328,9 +351,11 @@ namespace stk
     }
     void surface_sdl::clip_rect(const rectangle& clip_rectangle)
     {
+        SDL_MUTEX_LOCK;
         surface::clip_rect(clip_rectangle);
         SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rectangle);
         SDL_SetClipRect(sdl_surface_, &sdl_rect);
+        SDL_MUTEX_UNLOCK;
     }
     
     void surface_sdl::blit(surface& dst_surface)
@@ -356,6 +381,7 @@ namespace stk
                                           "unable to cast dst_surface to surface_sdl\n"
                                           "Can only blit an sdl_surface to another sdl_surface");
         }
+        SDL_MUTEX_UNLOCK;
     }
 
     void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
@@ -383,18 +409,25 @@ namespace stk
                     "unable to cast dst_surface to surface_sdl\n"
                     "Can only blit an sdl_surface to another sdl_surface");
         }
+        SDL_MUTEX_UNLOCK;
     }
 
     // non antialiased draw routines
     void surface_sdl::draw_pixel(int x, int y, color clr)
     {
         SDL_MUTEX_LOCK;
-        surface_impl<surface_sdl>::draw_pixel(x, y, clr);
+        lock();
+        put_pixel(x, y, clr);
+        unlock();
+        SDL_MUTEX_UNLOCK;
     }
     void surface_sdl::draw_line(int x1, int y1, int x2, int y2)
     {
         SDL_MUTEX_LOCK;
+        lock();
         surface_impl<surface_sdl>::draw_line(x1, y1, x2, y2);
+        unlock();
+        SDL_MUTEX_UNLOCK;
     }
     void surface_sdl::draw_arc(const rectangle& rect, int quadrant)
     {
@@ -409,6 +442,7 @@ namespace stk
     {
         SDL_MUTEX_LOCK;
         surface_impl<surface_sdl>::draw_rect(x1, y1, x2, y2);
+        SDL_MUTEX_UNLOCK;
     }
     void surface_sdl::draw_circle(int x, int y, int radius)
     {
@@ -430,30 +464,42 @@ namespace stk
     {
         SDL_MUTEX_LOCK;
         surface_impl<surface_sdl>::draw_poly(points);
+        SDL_MUTEX_UNLOCK;
     }
     void surface_sdl::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
     {
         SDL_MUTEX_LOCK;
+        lock();
         surface_impl<surface_sdl>::draw_text(rect, text, kerning_mode);
+        unlock();
+        SDL_MUTEX_UNLOCK;
     }
     void surface_sdl::draw_image(int x, int y, image::ptr img)
     {
         SDL_MUTEX_LOCK;
         surface_impl<surface_sdl>::draw_image(x, y, img);
+        SDL_MUTEX_UNLOCK;
     }
     // antialiased draw routines
     void surface_sdl::draw_pixel_aa(int x, int y, double distance, color clr)
     {
-        INFO(__FUNCTION__ << " not implemented");
+        lock();
+        put_pixel_aa(x, y, distance, clr);
+        unlock();
     }
     void surface_sdl::draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
     {
-        INFO(__FUNCTION__ << " not implemented");
+        lock();
+        draw_pixel_aa(x, y, alpha_a, clr);
+        unlock();
     }
     void surface_sdl::draw_line_aa(int x1, int y1, int x2, int y2)
     {
         SDL_MUTEX_LOCK;
+        lock();
         surface_impl<surface_sdl>::draw_line_aa(x1, y1, x2, y2);
+        unlock();
+        SDL_MUTEX_UNLOCK;
     }
     void surface_sdl::draw_arc_aa(const rectangle &rect, int quadrant)
     {
@@ -491,6 +537,7 @@ namespace stk
     {
         SDL_MUTEX_LOCK;
         surface_impl<surface_sdl>::draw_poly_aa(points);
+        SDL_MUTEX_UNLOCK;
     }
     
     // non antialiased fill routines
@@ -504,6 +551,7 @@ namespace stk
         Uint32 sdl_color = (Uint32)gc_->fill_color();
         SDL_Rect rect = {x1, y1, x2 - x1, y2 - y1};
         SDL_FillRect(sdl_surface_, &rect, sdl_color);
+        SDL_MUTEX_UNLOCK;
     }
 
     void surface_sdl::fill_rect(const rectangle& rect)
@@ -514,6 +562,7 @@ namespace stk
         Uint32 sdl_color = (Uint32)gc_->fill_color();
         SDL_Rect sdl_rect = rect_to_sdl_rect(t_rect);
         SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
+        SDL_MUTEX_UNLOCK;
     }
 
     void surface_sdl::fill_circle(int x, int y, int radius)
@@ -534,6 +583,9 @@ namespace stk
     }
     void surface_sdl::fill_poly(std::vector<point> points)
     {
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::fill_poly(points);
+        SDL_MUTEX_UNLOCK;
     }
     // antialiased fill routines
     void surface_sdl::fill_rect_aa(int x1, int y1, int x2, int y2)
@@ -562,7 +614,9 @@ namespace stk
     }
     void surface_sdl::fill_poly_aa(std::vector<point> points)
     {
-        INFO(__FUNCTION__ << " not implemented");
+        SDL_MUTEX_LOCK;
+        surface_impl<surface_sdl>::fill_poly_aa(points);
+        SDL_MUTEX_UNLOCK;
     }
 
 

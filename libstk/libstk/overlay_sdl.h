@@ -37,10 +37,11 @@ namespace stk
 
         overlay_sdl(int width, int height, int format, SDL_Surface* sdl_surface)
         {
-            //INFO("overlay_sdl::overlay_sdl()");
+            SDL_MUTEX_LOCK;
             overlay_impl_ = SDL_CreateYUVOverlay(width, height, format, sdl_surface);
             if (!overlay_impl_)
                 ERROR("SDL_CreateYUVOverlay failed");
+            SDL_MUTEX_UNLOCK;
         }
 
     public:
@@ -52,8 +53,9 @@ namespace stk
 
         virtual ~overlay_sdl()
         {
-            //INFO("overlay_sdl::~overlay_sdl()");
+            SDL_MUTEX_LOCK;
             SDL_FreeYUVOverlay(overlay_impl_);
+            SDL_MUTEX_UNLOCK;
         }
 
         // inline property methods
@@ -64,13 +66,24 @@ namespace stk
         virtual byte* pixels(int index) const { return overlay_impl_->pixels[index]; }
 
         // methods
-        virtual void lock() { SDL_LockYUVOverlay(overlay_impl_); }
-        virtual void unlock() { SDL_UnlockYUVOverlay(overlay_impl_); }
+        virtual void lock() 
+        { 
+            SDL_MUTEX_LOCK;
+            SDL_LockYUVOverlay(overlay_impl_); 
+            SDL_MUTEX_UNLOCK;
+        }
+        virtual void unlock() 
+        { 
+            SDL_MUTEX_LOCK;
+            SDL_UnlockYUVOverlay(overlay_impl_); 
+            SDL_MUTEX_UNLOCK;
+        }
         virtual void display(const rectangle& rect)
         {
             SDL_MUTEX_LOCK;
             SDL_Rect sdl_rect = { rect.x1(), rect.y1(), rect.width(), rect.height() };
             SDL_DisplayYUVOverlay(overlay_impl_, &sdl_rect);
+            SDL_MUTEX_UNLOCK;
         }
     };
 
