@@ -15,6 +15,7 @@
 #include <libstk/read_dir.h>
 #include <libstk/exceptions.h>
 #include <libstk/logging.h>
+#include <libstk/glyph.h>
 
 using std::wstring;
 using std::string;
@@ -221,6 +222,35 @@ namespace stk
                 len += kerning(text[i], text[i+1], kerning_mode).x();
         }
         return len >> 6;
+    }
+
+    /// Returns
+    rectangle font::draw_extends(const wstring& text, int kerning_mode)
+    {
+        rectangle extends(0,0,0,0);
+
+        int len=0;
+        for (unsigned int i=0; i<text.length(); i++)
+        {
+            const glyph::ptr current_glyph=glyph(text[i]);
+
+            if(-current_glyph->bearing_y() < extends.y1())
+                extends.y1(-current_glyph->bearing_y());
+            if((-current_glyph->bearing_y() + current_glyph->height()) > extends.y2())
+                extends.y2(-current_glyph->bearing_y() + current_glyph->height());
+            
+            len += current_glyph->advance_x();
+            if (i < text.length()-1)
+                len += kerning(text[i], text[i+1], kerning_mode).x();
+            
+            if(len > extends.x2())
+                extends.x2(len);
+        }
+        extends.x1(extends.x1()>>6);
+        extends.x2(extends.x2()>>6);
+        extends.y1(extends.y1()>>6);
+        extends.y2(extends.y2()>>6);
+        return extends;
     }
 
     int font::chars_in_rect(const rectangle& rect, const wstring& text, int kerning_mode)

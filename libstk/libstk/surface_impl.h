@@ -766,10 +766,27 @@ namespace stk
             // ignore the bounds and stuff for now
             int x = rect.x1() << 6; // 1/64 pixel
             int y = rect.y1() << 6; // 1/64 pixel
+
             // get the font from the gc
             font::ptr fon = gc_->font();
             if (fon == NULL)
                 throw error_message_exception("draw_text: gc's font is null");
+
+            rectangle text_extends=fon->draw_extends(text);
+
+
+            switch(gc_->horizontal_alignment())
+            {
+            case ha_left:
+                break;
+            case ha_center:
+                x = ((rect.x1() + rect.width()/2) - text_extends.width()/2) << 6;
+                break;
+            case ha_right:
+                x = (rect.x2() - text_extends.width()) << 6;
+                break;
+            }
+            
             // find the number of chars that fit in the rect
             // FIXME: With kerning this really doesnt work well
             int chars_to_draw = fon->chars_in_rect(rect, text);
@@ -1384,7 +1401,8 @@ namespace stk
             rectangle dest_rect = source_rect;  
             // FIXME: IMNSHO, blitting should be offset in the backend's surface class!
             dest_rect.position(point(x, y));
-
+            img->offscreen_surface->gc(graphics_context::create());
+            
             img->offscreen_surface->blit(*static_cast<surface_backend*>(this), source_rect, dest_rect);
         }
 

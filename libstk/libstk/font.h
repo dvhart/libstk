@@ -52,7 +52,12 @@ namespace stk
         static font::ptr create(const font_properties& prop);
 
         const stk::glyph::ptr glyph(wchar_t c);
+        /// Get the X size of the to be drawn text (depreciated?)
         int draw_len(const std::wstring& text, int kerning_mode = 0);
+        /// Get the extends of the given text if it was to be drawn.
+        /// Origin of the returned coordinates is the font baseline!
+        rectangle draw_extends(const std::wstring& text, int kerning_mode = 0);
+        
         int chars_in_rect(const rectangle& rect, const std::wstring& text, int kerning_mode = 0);
         point kerning(wchar_t left, wchar_t right, int kerning_mode = 0);
         int height() const { return height_; }
