@@ -14,7 +14,7 @@ else
 endif
 if DFB
  tests_dfb  = hello_world_dfb test_app_dfb
- dfb_cflags = -I/usr/local/include/directfb -I/usr/include/directfb
+ dfb_cflags = $(DIRECTFB_CFLAGS)
 else
  tests_dfb  = 
 endif
@@ -44,8 +44,8 @@ test_app_LDADD          = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype 
 hydra_LDADD             = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 xine_test_LDADD         = $(SDL_LIBS) -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la 
 xine_test_LDFLAGS       = `xine-config --libs`
-test_app_dfb_LDADD      = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la -ldirectfb
-hello_world_dfb_LDADD   = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la -ldirectfb
+test_app_dfb_LDADD      = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la $(DIRECTFB_LIBS)
+hello_world_dfb_LDADD   = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la $(DIRECTFB_LIBS)
 hello_world_fbdev_LDADD = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 test_app_fbdev_LDADD    = -lboost_signals -lboost_thread -lfreetype -lz $(top_srcdir)/libstk/libstk.la
 

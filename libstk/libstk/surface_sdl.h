@@ -85,6 +85,7 @@ namespace stk
         virtual void unlock();
         virtual void update(const rectangle& u_rect=rectangle());
         virtual boost::shared_ptr<overlay> create_overlay(int width, int height, int format);
+        virtual surface::ptr create_surface(const rectangle& rect);
 
         // overridden drawing routines
         // FIXME: make the blit accept "const rectangle&"s
@@ -93,7 +94,6 @@ namespace stk
         virtual void fill_rect(int x1, int y1, int x2, int y2);
         virtual void fill_rect(const rectangle& rect);
 
-        virtual surface::ptr create_surface(const rectangle& rect);
     };
 } //end namespace stk
 

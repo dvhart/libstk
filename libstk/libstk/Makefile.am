@@ -8,7 +8,6 @@ lib_LTLIBRARIES  =\
 if DFB
  headers_dfb = backend_dfb.h surface_dfb.h
  sources_dfb = backend_dfb.cpp backend_dfb.h surface_dfb.cpp surface_dfb.h 
- libs_dfb = -ldirectfb
 endif
 
 if SDL
@@ -111,6 +110,6 @@ library_include_HEADERS= \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 
 # FIXME: do the autotools thing for freetype
-libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb) $(libpng_libs) $(libpng_includes)
+libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(DIRECTFB_LIBS) $(libpng_libs) $(libpng_includes)
 
-INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) -I/usr/local/include/directfb/ -I/usr/include/directfb/
+INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) $(DIRECTFB_CFLAGS)

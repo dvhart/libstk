@@ -44,8 +44,7 @@ namespace stk
         cout << "surface_sdl::surface_sdl()" << endl;
 
         // ensure that SDL has been initialized
-        sdl_data_ = sdl_data::get
-                        (); // reference counting
+        sdl_data_ = sdl_data::get(); // reference counting
         sdl_data_->init();
 
         int bpp = 32;
@@ -55,7 +54,8 @@ namespace stk
         {
             SDL_InitSubSystem(SDL_INIT_VIDEO);
             sdl_surface_ = SDL_SetVideoMode(rect.width(), rect.height(), bpp,
-                                            SDL_HWSURFACE | SDL_DOUBLEBUF /*|SDL_FULLSCREEN*/); // FIXME: use the flags
+                                            SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
+            
         }
         // this is not the first surface, so make one size rect of the same format as the first
         else

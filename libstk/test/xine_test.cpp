@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
         // it is automatically registered with the primary event_system
         event_producer_sdl::ptr event_prod = event_producer_sdl::create();
         // create the primary surface
-        surface::ptr screen = surface_sdl::create(rectangle(0, 0, 640, 480));
+        surface::ptr screen = surface_sdl::create(rectangle(0, 0, 1024, 768));
         // create the application
         application::ptr app = application::create(screen);
 
