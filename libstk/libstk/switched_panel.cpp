@@ -65,7 +65,7 @@ namespace stk
         {
             rectangle redraw_rect = clip_rect;
             // Intersection tests should be in local coordinates
-            redraw_rect.position(redraw_rect.position()-surface->offset());
+            redraw_rect.position(redraw_rect.position()-rect_.position());
             redraw_rect=redraw_rect.intersection(rect());
             
             surface->offset(surface->offset() + active_widget_ptr->rect().p1());

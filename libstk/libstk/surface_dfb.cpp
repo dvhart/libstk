@@ -247,16 +247,19 @@ namespace stk
     
     void surface_dfb::clip_rect(const rectangle& clip_rectangle)
     {
+        rectangle clip_rect=clip_rectangle;
+        clip_rect.position(clip_rectangle.position()+offset_);
+        surface::clip_rect(clip_rect);
         // FIXME: this doesn't set the clip_rect_ in the surface_dfb class!
         if (clip_rectangle.empty())
             surface->SetClip(surface, NULL);
         else
         {
             DFBRegion region;
-            region.x1 = clip_rectangle.x1();
-            region.x2 = clip_rectangle.x2();
-            region.y1 = clip_rectangle.y1();
-            region.y2 = clip_rectangle.y2();
+            region.x1 = clip_rect.x1();
+            region.x2 = clip_rect.x2();
+            region.y1 = clip_rect.y1();
+            region.y2 = clip_rect.y2();
             
             surface->SetClip(surface, &region); 
         }

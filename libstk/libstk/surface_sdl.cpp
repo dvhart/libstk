@@ -355,9 +355,13 @@ namespace stk
     }
     void surface_sdl::clip_rect(const rectangle& clip_rectangle)
     {
+        rectangle clip_rect=clip_rectangle;
+        
+        clip_rect.position(clip_rectangle.position()+offset_);
+                                    
         SDL_MUTEX_LOCK;
-        surface::clip_rect(clip_rectangle);
-        SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rectangle);
+        surface::clip_rect(clip_rect);
+        SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rect);
         SDL_SetClipRect(sdl_surface_, &sdl_rect);
         SDL_MUTEX_UNLOCK;
     }
@@ -391,6 +395,8 @@ namespace stk
     void surface_sdl::blit(surface& dst_surface, rectangle src_rect, rectangle dst_rect)
     {
         SDL_MUTEX_LOCK;
+
+        dst_rect.position(dst_rect.position()+dst_surface.offset());
         
         INFO("blit: src(" << src_rect << ")  dst_rect(" << dst_rect << ")");
         // blit the local surface to the destination surface

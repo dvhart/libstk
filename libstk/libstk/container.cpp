@@ -82,9 +82,14 @@ namespace stk
     void container::draw_child(surface::ptr surface, const rectangle& clip_rect, widget::ptr child)
     {
         if(!child->rect().intersects(clip_rect))
-           return;
+            return;
+        rectangle redraw_rect = child->rect().intersection(clip_rect);
+
+        // Intersection tests should be in local coordinates
         surface->offset(surface->offset() + child->rect().p1());
-        child->draw(surface,clip_rect);
+        // Keep redraw rect in local coordinates
+        redraw_rect.position(redraw_rect.position()-child->rect().position());         
+        child->draw(surface,redraw_rect);
         surface->offset(surface->offset() - child->rect().p1());
     }
     
@@ -92,13 +97,7 @@ namespace stk
     // screen space coordinates, redraw_rect is in local coordinates
     void container::draw(surface::ptr surface, const rectangle& clip_rect)
     {
-        std::vector<widget::ptr>::iterator iter = children_.begin();
-        rectangle redraw_rect = clip_rect;
-        // Intersection tests should be in local coordinates
-        redraw_rect.position(redraw_rect.position()-surface->offset());
-        redraw_rect=redraw_rect.intersection(rect());
-                
-        std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,rect_,_1));
+        std::for_each(children_.begin(),children_.end(),boost::bind(&container::draw_child,this,surface,clip_rect,_1));
     }
 
     void container::redraw(const rectangle& rect, drawable* source, bool transform)
