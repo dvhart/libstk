@@ -46,11 +46,11 @@ namespace stk
 		error = FT_New_Face( lib_, filename.c_str(), 0, &face_);
 		if (error == FT_Err_Unknown_File_Format)
 		{
-			throw error_message_exception("font::font: unknown file format");
+			throw error_message_exception("font::font: unknown file format: " + fontname);
 		}
 		else if (error)
 		{
-			throw error_message_exception("font::font: unknown error loading font");
+			throw error_message_exception("font::font: unknown error loading font: " + fontname);
 		}
 
 		error = FT_Set_Pixel_Sizes(
