@@ -7,6 +7,10 @@ $tar -xzvf libstk.tar.gz
 $cd libstk
 $./autogen.sh
 $./configure --enable-sdl --enable-logging --enable-tests
+$make
+
+If everything went well, install the library
+$su
 $make install
 
 (get all the configure options using ./configure --help)
@@ -19,10 +23,13 @@ and the header files in
     /usr/local/include/libstk-#.#.#/libstk/*.h
 
 please install Arial.ttf in the following directory
-    /usr/local/stk/share/fonts
+    /usr/share/libstk/fonts/fonts
 
 run the test apps in test/ or /usr/local/bin
 
 let us know how it goes on the mailing list, see http://www.libstk.org
+
+Known Bugs:
+test_app will crash if libpng support is not found.
 
 
