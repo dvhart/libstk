@@ -46,4 +46,13 @@ namespace stk
     {
         return parent_.lock()->surface();
     }
+
+    void list_item::redraw(const rectangle& rect, drawable* source, bool transform)
+    {
+        // FIXME: what is the benefit of copying the rectangle?
+        rectangle redraw_rect(rect);
+        parent_.lock()->redraw(redraw_rect, this, true);
+    }
+
+
 }

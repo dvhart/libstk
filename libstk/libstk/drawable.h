@@ -55,7 +55,7 @@ namespace stk
         /// \parma source The source fo the redraw upcall, used for optimization
         ///        NULL means unknown -> no optimization
         /// \param transform The coordinates need to be transformed
-        virtual void redraw(const rectangle& rect, drawable* source=NULL, bool transform=false)
+        virtual void redraw(const rectangle& rect, drawable* source = NULL, bool transform = false)
         { }
 
     }; // class drawable
