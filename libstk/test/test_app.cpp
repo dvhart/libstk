@@ -39,6 +39,13 @@ bool scroll_slot(stk::scroll_model::ptr target,int increment)
     return true;
 }
 
+bool print_edit_box_text(std::wstring text)
+{
+	// FIXME: better idea how to output a wstring?
+	std::cout << "edit_box text: \"" << std::string(text.begin(), text.end()) << "\"" << endl;
+	return true;
+}
+
 int main(int argc, char* argv[])
 {
     int retval = 0;
@@ -148,6 +155,11 @@ int main(int argc, char* argv[])
         no_op no_op_;
         test_timer->on_timer.connect(no_op_);
         test_app->add_timer(test_timer);
+
+				// create an edit_box
+				cout << "test_app - creating edit_box" << endl;
+				edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", rectangle(340, 440, 260, 30));
+				test_edit->on_release.connect(&print_edit_box_text);
 
         // run the program
         retval = test_app->run();

@@ -1,5 +1,5 @@
 ## compiler flags
-AM_CXXFLAGS = -Wall
+#AM_CXXFLAGS = -Wall
 
 lib_LTLIBRARIES  =\
 	libstk.la
@@ -62,7 +62,8 @@ libstk_la_SOURCES =\
 	viewport.h viewport.cpp \
 	widget.h widget.cpp \
 	logging.h logging.cpp \
-	$(sources_sdl) $(sources_dfb) event_producer_elotouch.cpp event_producer_elotouch.h
+	$(sources_sdl) $(sources_dfb) event_producer_elotouch.cpp event_producer_elotouch.h \
+	edit_box.h edit_box.cpp
 
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk

@@ -22,7 +22,6 @@ if test x$enable_sdl = xyes; then
  fi
 fi
 
-
 AM_CONDITIONAL(SDL, test x$enable_sdl = xyes)
 
 

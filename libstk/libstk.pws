@@ -1,6 +1,6 @@
 
 [filenumbers]
-0=68
+0=32
 1=1125
 2=28
 3=99
@@ -35,19 +35,12 @@ filter.file.ignore.hidden=0
 filter.dir.ignore.hidden=0
 
 [filelist]
-0=/home/carter/libstk/libstk/application.cpp
-1=/home/carter/libstk/libstk/surface.cpp
-2=/home/carter/libstk/libstk/point.h
-3=/home/carter/libstk/libstk/surface.h
-4=/home/carter/libstk/libstk/test_app.cpp
-5=/home/carter/libstk/libstk/tribal_theme.cpp
-6=/home/carter/libstk/libstk/scroll_box.h
-7=/home/carter/libstk/libstk/widget.h
-8=/home/carter/libstk/libstk/scroll_box.cpp
-9=/home/carter/libstk/libstk/Makefile.am
+0=/home/codec/Projects/libstk/libstk/logger.h
 
-[find_text]
-0=redraw
-1=rect_
-2=image
-3=scroll
+[Project Tree]
+0=0
+1=0:0
+2=0:1
+
+[File Tree]
+0=0

@@ -27,6 +27,7 @@
 #include "libstk/state.h"
 #include "libstk/theme.h"
 #include "libstk/tribal_theme.h"
+#include "libstk/edit_box.h"
 
 // all draw routines go here with the exception of container as it isn't
 // themeable and only draws its children
@@ -415,4 +416,66 @@ namespace stk
 	    return true;
 	return false;
     }
+
+	void edit_box::draw(surface::ptr surface, const rectangle& clip_rect)
+	{
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+
+		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
+		rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
+
+		graphics_context::ptr gc = graphics_context::create();
+
+		// prepare the font
+		font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+		gc->font(the_font);
+
+		if (pressed_)
+		{
+			gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_pressed_str, surface)));
+			gc->line_color(color_manager::get()->get_color(color_properties(outline_color_pressed_str, surface)));
+			gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_pressed_str, surface)));
+		}
+		else if(focused_)
+		{
+			gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
+			
+			if (hover_)
+			{
+				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
+				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
+			}
+			else
+			{
+				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_focused_str, surface)));
+				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_focused_str, surface)));
+			}
+		}
+		else
+		{
+			gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
+			
+			if (hover_)
+			{
+				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
+				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
+			}
+			else
+			{
+				gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
+				gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
+			}
+		}
+
+		// FIXME: I think we may be off by one in the rect draw/fill routines
+		// draw the label for all states
+		surface->gc(gc);
+		surface->fill_rect(interior_rect);
+
+		if (pressed_)
+			surface->draw_rect(rect_);
+		surface->draw_rect(outline_rect);
+		surface->draw_text(interior_rect, text_);
+	}
+
 }

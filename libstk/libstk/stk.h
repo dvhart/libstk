@@ -72,5 +72,6 @@
 //#include <libstk/tribal_theme.h> // theme specific
 #include <libstk/viewport.h>
 #include <libstk/widget.h>
+#include <libstk/edit_box.h>
 
 #endif
