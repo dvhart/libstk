@@ -25,11 +25,18 @@ namespace stk
         bool rect_specified=rect;
         
         dsc.flags = DSDESC_CAPS;
-        
+        backend_handle=backend_dfb::get();
+
         if(primary)
         {
             dsc.caps =  static_cast<DFBSurfaceCapabilities>( DSCAPS_FLIPPING | DSCAPS_PRIMARY) ;
-        }        
+        }
+        else
+        {
+            dsc.flags = (DFBSurfaceDescriptionFlags)( dsc.flags | DSDESC_PIXELFORMAT);
+            dsc.pixelformat=backend_handle->format;
+            dsc.pixelformat=DSPF_ARGB; // \FIXME Hardcode a format with alpha for now!
+        }
 
         if(rect_specified)
         {
@@ -37,9 +44,7 @@ namespace stk
             dsc.width=(*rect).width();
             dsc.height=(*rect).height();
         }
-        
-        
-        backend_handle=backend_dfb::get();
+
         IDirectFB* dfb=backend_handle->get_interface();
         
         dfb->CreateSurface(dfb,&dsc,&surface);
@@ -110,7 +115,7 @@ namespace stk
     
     color surface_dfb::gen_color(byte r, byte g, byte b, byte a) const
     {
-        return r << 24 | g << 16 | b << 8 | 0xff /*a*/;
+        return r << 24 | g << 16 | b << 8 | a;
     }
     
     void surface_dfb::lock(rectangle &rect, int flags, color** buf, int &stride)
