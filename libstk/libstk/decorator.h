@@ -33,8 +33,6 @@ namespace stk
 			virtual ~decorator() { }
 			
 			/********** EVENT HANDLER INTERFACE **********/
-			/// handle_event is an upward method, do not use it to pass events down
-			/// or infinite recursion will result.
 			virtual void handle_event(event::ptr e) 
 			{ 
 				cout << "decorator::handle_event()" << endl;
@@ -43,9 +41,6 @@ namespace stk
 			/********** END EVENT HANDLER INTERFACE **********/
 
 			/********** DRAWABLE INTERFACE **********/
-			/// surface is an upward method, do not call down from within surface
-			/// or infinite recursion will result.
-			//virtual surface::ptr surface() { return component_->surface(); }
 			virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle())
 			{ 
 				if (clip_rect.empty())
@@ -53,10 +48,6 @@ namespace stk
 				else
 					component_->draw(surface, clip_rect);
 			}
-			
-			/// redraw is an upward method, do not call down from within redraw
-			/// or infinite recursion will result.
-			//virtual void redraw(const rectangle& rect) { parent_.lock()->redraw(rect); }
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/

@@ -78,6 +78,8 @@ namespace stk
 			void position(int x, int y) { rect_.position(x, y); }
 			int x1() { return rect_.x1(); }
 			int y1() { return rect_.y1(); }
+			int x2() { return rect_.x2(); }
+			int y2() { return rect_.y2(); }
 
 			// widget attribute accessor methods
 			// FIXME: have the setters return bool ? 

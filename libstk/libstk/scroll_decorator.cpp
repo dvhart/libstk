@@ -38,26 +38,42 @@ namespace stk
 				{
 					case up_arrow:
 						cout << "scroll_decorator::handle_event() - scroll up" << endl;
-						component_->position(component_->x1(), component_->y1()+1);
-						redraw(rect_);
+						if (vposition_ > 0)
+						{
+							vposition_ -= 1;
+							component_->position(component_->x1(), component_->y1()+1);
+							redraw(rect_);
+						}
 						return;
 						break;
 					case down_arrow:
 						cout << "scroll_decorator::handle_event() - scroll down" << endl;
-						component_->position(component_->x1(), component_->y1()-1);
-						redraw(rect_);
+						if (vposition_ < (vrange_ - height()))
+						{
+							vposition_ += 1;
+							component_->position(component_->x1(), component_->y1()-1);
+							redraw(rect_);
+						}
 						return;
 						break;
 					case left_arrow:
 						cout << "scroll_decorator::handle_event() - scroll left" << endl;
-						component_->position(component_->x1()+1, component_->y1());
-						redraw(rect_);
+						if (hposition_ > 0)
+						{
+							hposition_ -= 1;
+							component_->position(component_->x1()+1, component_->y1());
+							redraw(rect_);
+						}
 						return;
 						break;
 					case right_arrow:
 						cout << "scroll_decorator::handle_event() - scroll right" << endl;
-						component_->position(component_->x1()-1, component_->y1());
-						redraw(rect_);
+						if (hposition_ < (hrange_ - width()))
+						{
+							hposition_ += 1;
+							component_->position(component_->x1()-1, component_->y1());
+							redraw(rect_);
+						}
 						return;
 						break;
 				}

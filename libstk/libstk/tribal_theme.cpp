@@ -296,12 +296,43 @@ namespace stk
 	void scroll_decorator::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		cout << "scroll_decorator::draw()" << endl;
-		decorator::draw(surface, clip_rect);
+
+		// draw the component
+		if (clip_rect.empty())
+		{
+			rectangle temp_rect = rect_;
+			temp_rect.width(rect_.width() - 20);
+			temp_rect.height(rect_.height() - 20);
+			decorator::draw(surface, temp_rect);
+		}
+		else
+		{
+			decorator::draw(surface, clip_rect);
+		}
 		
+		// outline the scroll panel
+		surface->clip_rect(rect_);
 		graphics_context::ptr gc = graphics_context::create();
+		// fixme: this isn't detecting focus
+		if (focused())
+			gc->fill_color(surface->gen_color(fill_color_focused_str));
+		else
+			gc->fill_color(surface->gen_color(fill_color_normal_str));
 		gc->line_color(surface->gen_color(outline_color_normal_str));
 		surface->gc(gc);
 		surface->draw_rect(rect_);
+
+		// draw the horizontal scroll bar
+		int scrollwidth = ((width()-20)*(width()-20))/hrange_;	
+		int scrollx = (int)((width() - 20 - scrollwidth)*((float)hposition_/(float)(hrange_-width())));
+		surface->fill_rect(rectangle(x1()+scrollx, y2()-20, scrollwidth, 20));
+		
+		// draw the vertical scroll bar
+		int scrollheight = ((height()-20)*(height()-20))/vrange_;	
+		// FIXME: the math is off here, not sure why
+		int scrolly = (int)((height() - 20 - scrollheight)*((float)vposition_/(float)(vrange_-height())));
+		surface->fill_rect(rectangle(x2()-20, y1()+scrolly, 20, scrollheight));
+		
 	}
 	
 }
