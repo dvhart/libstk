@@ -33,6 +33,8 @@
 // all draw routines go here with the exception of container as it isn't
 // themeable and only draws its children
 
+// FIXME: store the colors we use here in user_theme rather than just the str
+
 namespace stk
 {
     // define the theme create constructor here (we need the user_theme header - tribal_theme.h)
@@ -148,6 +150,8 @@ namespace stk
 
         font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
         gc->font(the_font);
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
 
         if (pressed_)
         {
@@ -155,8 +159,6 @@ namespace stk
                         color_properties(fill_color_pressed_str, surface)));
             gc->line_color(color_manager::get()->get_color(
                         color_properties(outline_color_pressed_str, surface)));
-            gc->font_fill_color(color_manager::get()->get_color(
-                        color_properties(font_color_pressed_str, surface)));
         }
         else if(focused_)
         {
@@ -166,15 +168,11 @@ namespace stk
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_focused_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_focused_str, surface)));
             }
         }
         else
@@ -185,15 +183,11 @@ namespace stk
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_normal_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_normal_str, surface)));
             }
         }
 
@@ -236,18 +230,12 @@ namespace stk
                     color_properties(fill_color_normal_str, surface)));
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
-        try
-        {
-            font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
-            gc->font(arial_18);
-            gc->font_fill_color(color_manager::get()->get_color(
-                        color_properties(font_color_normal_str, surface)));
-            surface->gc(gc);
-            surface->draw_text(rect_, text_);
-        }
-        catch (const exception& e)
-        {
-        }
+        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf", 18));
+        gc->font(arial_18);
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
+        surface->gc(gc);
+        surface->draw_text(rect_, text_);
     }
 
     void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
@@ -353,15 +341,11 @@ namespace stk
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_focused_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_focused_str, surface)));
             }
         }
         else
@@ -372,15 +356,11 @@ namespace stk
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_normal_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_normal_str, surface)));
             }
         }
 
@@ -435,15 +415,11 @@ namespace stk
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_focused_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_focused_str, surface)));
             }
         }
         else
@@ -454,15 +430,11 @@ namespace stk
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_hover_str, surface)));
             }
             else
             {
                 gc->line_color(color_manager::get()->get_color(
                             color_properties(outline_color_normal_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(
-                            color_properties(font_color_normal_str, surface)));
             }
         }
 
@@ -512,41 +484,46 @@ namespace stk
         // prepare the font
         font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
         gc->font(arial_18);
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
 
         if (pressed_)
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_pressed_str, surface)));
-            gc->line_color(color_manager::get()->get_color(color_properties(outline_color_pressed_str, surface)));
-            gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_pressed_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_pressed_str, surface)));
+            gc->line_color(color_manager::get()->get_color(
+                        color_properties(outline_color_pressed_str, surface)));
         }
         else if (focused_)
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
 
             if (hover_)
             {
-                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_hover_str, surface)));
             }
             else
             {
-                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_focused_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_focused_str, surface)));
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_focused_str, surface)));
             }
         }
         else
         {
-            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
 
             if (hover_)
             {
-                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_hover_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_hover_str, surface)));
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_hover_str, surface)));
             }
             else
             {
-                gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
-                gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_normal_str, surface)));
             }
         }
 
@@ -557,22 +534,35 @@ namespace stk
 
         if (pressed_) surface->draw_rect(rect_);
         surface->draw_rect(outline_rect);
-        surface->draw_text(interior_rect, text_);
 
-        if (focused_)
+        // cursor and selection calculations
+        int sel_min = MIN(selection_start_, selection_end_);
+        std::wstring presel_str = text_.substr(0, sel_min);
+        std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
+        int sel_x = interior_rect.x1() + arial_18->draw_len(presel_str);
+        int sel_width = arial_18->draw_len(sel_str);
+        int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
+
+        // draw the selection
+        if (selection_start_ != selection_end_)
         {
-            int sel_min = MIN(selection_start_, selection_end_);
-            std::wstring presel_str = text_.substr(0, sel_min);
-            std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
-            int sel_x = rect_.x1() + arial_18->draw_len(presel_str);
-            int sel_width = arial_18->draw_len(sel_str);
-            int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
-            
-            // draw the selection
-            surface->draw_rect(rectangle(sel_x, rect_.y1(), sel_width, rect_.height()));
-            // draw the cursor
-            surface->draw_rect(rectangle(cursor_x, rect_.y1(), 2, rect_.height()));
+            // yellow selection
+            if (focused_)
+                gc->fill_color(color_manager::get()->get_color(
+                            color_properties(fill_color_normal_str, surface)));
+            // light blue selection
+            else
+                gc->fill_color(color_manager::get()->get_color(
+                            color_properties(fill_color_focused_str, surface)));
+
+            surface->fill_rect(rectangle(sel_x, rect_.y1()+3, sel_width, rect_.height()-6));
         }
+        // draw the cursor if there is no selection and we are focused
+        else if (focused_)
+            surface->draw_line(cursor_x, rect_.y1()+3, cursor_x, rect_.y2()-3);
+        
+        // draw the string text_
+        surface->draw_text(interior_rect, text_);
     }
 
 }
