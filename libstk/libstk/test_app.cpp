@@ -1,12 +1,18 @@
 #include <iostream>
 
 #include "application.h"
+#include "event_system.h"
+#include "event_system_sdl.h"
+#include "surface.h"
+#include "surface_sdl.h"
 
 using namespace stk;
 using std::cout;
 using std::endl;
 
 // something like this defined in the class headers... not sure on naming convention yet
+typedef boost::shared_ptr<surface> Surface;
+typedef boost::shared_ptr<event_system> EventSystem;
 typedef boost::shared_ptr<application> Application;
 typedef boost::shared_ptr<state> State;
 typedef boost::shared_ptr<button> Button;
@@ -14,7 +20,9 @@ typedef boost::shared_ptr<button> Button;
 void main(int argc, char* argv[])
 {
 	// create the app
-	Application test_app(new application(/* event/surface parameters */));
+	Surface test_surface(new surface_sdl());
+	EventSystem test_event_system(new event_system_sdl());
+	Application test_app(new application(test_surface, test_event_system));
 
 	// create the main state
 	State test_state(new state(test_app));
