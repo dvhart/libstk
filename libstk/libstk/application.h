@@ -21,10 +21,12 @@ namespace stk
 			boost::weak_ptr<stk::widget> current_widget_; // why weak?
 			boost::weak_ptr<stk::state> hover_widget_; // why weak?
 			
-			
 		protected:
 			
 		public:
+			// we need to create the app with a surface and an event sub system
+			// so what parameters to use?  maybe a shared_ptr to a surface
+			// and maybe a new class event_system ?
 			application( /* what parameters */ );
 			~application();
 
