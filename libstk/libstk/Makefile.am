@@ -28,6 +28,11 @@ if LOGGING
  sources_logging = logging.h logging.cpp
 endif
 
+if LIBPNG
+ libpng_libs = -lpng -lz
+ libpng_includes = -I/usr/include/libpng
+endif
+
 if XINE
  headers_xine = xine_panel.h
  sources_xine = xine_panel.cpp
@@ -106,6 +111,6 @@ library_include_HEADERS= \
 	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 
 # FIXME: do the autotools thing for freetype
-libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb)
+libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb) $(libpng_libs) $(libpng_includes)
 
 INCLUDES = $(SDL_CFLAGS) -I/usr/include/freetype2 -I$(top_srcdir) -I/usr/local/include/directfb/ -I/usr/include/directfb/
