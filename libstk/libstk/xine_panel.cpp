@@ -14,6 +14,7 @@
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
 #include "libstk/logging.h"
+#include "libstk/color_manager.h" // delete if we move draw to tribal_theme
 
 namespace stk
 {
@@ -43,6 +44,7 @@ namespace stk
         xine_exit(xine_);
     }
 
+    // FIXME: move this into create, no need for another routine
     void xine_panel::init(const std::string& config)
     {
         INFO("initializing the xine engine");
@@ -187,6 +189,17 @@ namespace stk
         widget::handle_event(e);
     }
 
+    // FIXME: consider moving this to tribal_theme?
+    void xine_panel::draw(surface::ptr surface, const rectangle& clip_rect)
+    {
+        graphics_context::ptr gc = graphics_context::create();
+        gc->fill_color(color_manager::get()->get_color(color_properties("0x00000000", surface)));
+        surface->gc(gc);
+        surface->fill_rect(clip_rect);
+
+        // send an expose event to the xine object
+    }
+
     void xine_panel::event_listener_wrapper(void *user_data, const xine_event_t *xine_event) 
     {
         xine_panel* xp = reinterpret_cast<xine_panel*>(user_data);
@@ -308,6 +321,7 @@ namespace stk
         }
         fullscreen_ = !fullscreen_;
         INFO("sending gui drawable changed");
+        // FIXME: these are deprecated, use: xine_port_send_gui_data(...)
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_DRAWABLE_CHANGED, (void*)this);
         xine_gui_send_vo_data(xine_stream_, XINE_GUI_SEND_VIDEOWIN_VISIBLE, (void*)1);
     }

@@ -67,6 +67,10 @@ namespace stk
         virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/
 
+        /********** DRAWABLE INTERFACE **********/
+        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+        /********** END DRAWABLE INTERFACE **********/
+
         /********** XINE PANEL INTERFACE **********/
         void open(const std::string& filename);
         void play(int position, int millis);
