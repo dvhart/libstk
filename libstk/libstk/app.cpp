@@ -36,15 +36,15 @@ app::~app()
 
 void app::init(Uint32 sdl_flags)
 {
-    /* set some defaults */
-    if (!sdl_flags)
-        sdl_flags = SDL_INIT_VIDEO;
+	/* set some defaults */
+	if (!sdl_flags)
+		sdl_flags = SDL_INIT_VIDEO;
 
-    if (SDL_Init(sdl_flags | SDL_INIT_TIMER) < 0) /* we always pass SDL_INIT_TIMER since exec needs it */
-        throw stk::error_message_exception(std::string("app::init - Unable to init SDL: ")+boost::lexical_cast<std::string>(SDL_GetError()));
+	if (SDL_Init(sdl_flags | SDL_INIT_TIMER) < 0) /* we always pass SDL_INIT_TIMER since exec needs it */
+		throw stk::error_message_exception(std::string("app::init - Unable to init SDL: ")+boost::lexical_cast<std::string>(SDL_GetError()));
 
-    /* SDL cleanup on exit (ESC or window close) */
-    atexit(SDL_Quit);
+	/* SDL cleanup on exit (ESC or window close) */
+	atexit(SDL_Quit);
 }
 
 void app::init_video(int width, int height, int bpp, Uint32 sdl_flags)
@@ -53,12 +53,11 @@ void app::init_video(int width, int height, int bpp, Uint32 sdl_flags)
 void app::run()
 {}
 
-	
-	
 boost::weak_ptr<state> app::current_state()
 {
 	return current_state_;
 }
+
 void app::current_state(boost::weak_ptr<state> newstate)
 {
 	current_state_=newstate;
