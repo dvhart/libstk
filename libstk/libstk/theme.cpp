@@ -55,14 +55,14 @@ namespace stk
 	void theme::draw_button(const rectangle& rect, const std::wstring& label,
 		bool active, bool focused, bool hover)
 	{
-		rectangle interior_rect(rect.x1()+3, rect.y1()+3, rect.width()-5, rect.height()-4);
-		rectangle outline_rect(rect.x1()+1, rect.y1()+1, rect.width()-2, rect.height()-1);
+		rectangle interior_rect(rect.x1()+3, rect.y1()+3, rect.width()-6, rect.height()-6);
+		rectangle outline_rect(rect.x1()+1, rect.y1()+1, rect.width()-2, rect.height()-2);
 		
 		//cout << "theme::draw_button()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
 		
 		// prepare the font
-		stk::font::ptr the_font = font::create("Arial.ttf", 25);
+		stk::font::ptr the_font = font::create("Arial.ttf", 18);
 		gc->font(the_font);
 		
 		if (active)
@@ -94,6 +94,7 @@ namespace stk
 		// draw the label for all states
 		surface_->gc(gc);
 		surface_->fill_rect(interior_rect);
+		if (active) surface_->draw_rect(rect);
 		surface_->draw_rect(outline_rect);
 		surface_->draw_text(rect, label);
 	}
@@ -104,11 +105,11 @@ namespace stk
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(fill_color_normal_); 
 		gc->line_color(outline_color_normal_);
-		stk::font::ptr bob = font::create("Arial.ttf", 25);
+		stk::font::ptr bob = font::create("Arial.ttf", 18);
 		gc->font(bob);
 		gc->font_fill_color(font_color_normal_);
 		surface_->gc(gc);
-		rectangle progress_rect(rect.x1()+2, rect.y1()+2, rect.width()-4, rect.height()-3);
+		rectangle progress_rect(rect.x1()+2, rect.y1()+2, rect.width()-4, rect.height()-4);
 		progress_rect.width((int)(progress_rect.width()*percent));	
 		surface_->fill_rect(progress_rect);
 		surface_->draw_rect(rect);
@@ -123,7 +124,7 @@ namespace stk
 		gc->line_color(outline_color_normal_); 
 		try
 		{
-			stk::font::ptr bob = font::create("Arial.ttf", 25);
+			stk::font::ptr bob = font::create("Arial.ttf", 18);
 			gc->font(bob);
 			gc->font_fill_color(font_color_normal_);
 			surface_->gc(gc);

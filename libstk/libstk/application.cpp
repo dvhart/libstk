@@ -7,6 +7,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <unistd.h>
 
 #include "application.h"
 #include "event_system.h"
@@ -108,6 +109,7 @@ namespace stk
 				
 				event_ = event_system_->poll_event();
 			}
+			usleep(1000); // 1 ms
 		}
 		cout << "application::run() - leaving" << endl;
 		return retval;

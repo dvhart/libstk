@@ -34,7 +34,7 @@ namespace stk
 		{
 			if ((*iter)->contains(x, y)) return *iter;
 		}
-		cout << "widget_at not found, returning an empty shared_ptr" << endl;
+		//cout << "widget_at not found, returning an empty shared_ptr" << endl;
 		return widget::ptr();
 		//return container::ptr(this); // FIXME: why does this cause a segfault
 	}

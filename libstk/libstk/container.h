@@ -33,6 +33,8 @@ namespace stk
 			virtual widget::ptr get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 
 			
+			// widget_at returns a widget::ptr to the container's child that contains
+			// x,y.  It will call widget_at on a child that is a container to find
 			virtual widget::ptr widget_at(int x, int y);
 			virtual void delegate_mouse_event(mouse_event::ptr me);
 			

@@ -47,12 +47,12 @@ namespace stk
 {
 	// direction constants (used in the draw_line routines)
 	const int DOT   = 0x00;
-	const int LR    = 0x01;
-	const int RL    = 0x02;
-	const int UP    = 0x04;
-	const int DN    = 0x08;
-	const int S0    = 0x10;
-	const int S1    = 0x20;
+	const int LR    = 0x01;      // left to right horizontal
+	const int RL    = 0x02;      // right to left horizontal
+	const int UP    = 0x04;      // bottom to top verticle
+	const int DN    = 0x08;      // top to bottom verticle
+	const int S0    = 0x10;      // shallow slope (< 1.0)
+	const int S1    = 0x20;      // steep slot    (>= 1.0)
 	const int LRU_0 = LR+UP+S0;
 	const int LRU_1 = LR+UP+S1;
 	const int LRD_0 = LR+DN+S0;
@@ -203,7 +203,9 @@ namespace stk
 			 */
 			virtual void draw_poly(const std::vector<point> points);
 			// define the text interface... should we pass a rect and
-			// clip to that?
+			// clip to that?  --vhmauery
+			// no, the clip rect should be set by the theme before drawing 
+			//   we still have to add surface::slip(const rectangle& clip_rect) to surface...
 			virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode=0);
 
 			// antialiased draw routines

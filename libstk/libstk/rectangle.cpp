@@ -4,7 +4,7 @@
 namespace stk
 {
 	rectangle::rectangle(int x1, int y1, int w, int h) : 
-		p1_(point(x1, y1)), p2_(x1 + w, y1 + h) 
+		p1_(point(x1, y1)), p2_(x1 + w - 1, y1 + h - 1) 
 		{
 			// enforce p1 as upper left coordinate
 			// (this assume 0,0 is the upper left corner of the screen (like SDL))
@@ -22,14 +22,16 @@ namespace stk
 	}; 
 
 	// utilities
-	bool rectangle::contains(int x, int y) 
+	bool rectangle::contains(int x, int y) const
 	{ return (x > p1_.x() && x < p2_.x() && y > p1_.y() && y < p2_.y()); }
 
-	bool rectangle::intersects(const rectangle& rect)
+	bool rectangle::intersects(const rectangle& rect) const
 	{
-		bool x_in = ((rect.x1() > x1() && rect.x1() < x2()) || (rect.x2() > x1() && rect.x2() < x2()));
+		bool x_in = ((rect.x1() > x1() && rect.x1() < x2()) || 
+				        (rect.x2() > x1() && rect.x2() < x2()));
 		bool x_span = (rect.x1() <= x1() && rect.x2() >= x2());
-		bool y_in = ((rect.y1() > y1() && rect.y1() < y2()) || (rect.y2() > y1() && rect.y2() < y2()));
+		bool y_in = ((rect.y1() > y1() && rect.y1() < y2()) || 
+				        (rect.y2() > y1() && rect.y2() < y2()));
 		bool y_span (rect.y1() <= y1() && rect.y2() >= y2());
 		return ((x_span || x_in) && (y_span || y_in));
 	}
