@@ -41,29 +41,28 @@ namespace stk
     
     void surface_bitmap::put_pixel(int x, int y, color clr)
     {
-/*	x+=offset_.x();
+	x+=offset_.x();
 	y+=offset_.y();
 	if(!clip_rect_.contains(x,y))
 	    return;
 	if(!rect_.contains(x,y))
-	return; */
+            return;
+//        INFO("Putting pixel " << x << "," << y << "  With color=" << std::hex << clr);
 	unsigned char src_red = (clr >> 24) & 0xff;
 	unsigned char src_green = (clr >> 16) & 0xff;
 	unsigned char src_blue = (clr >> 8) & 0xff;
-	unsigned char src_alpha = (clr >> 0) & 0xff;
+        unsigned char src_alpha = (clr) & 0xff;
 
 	if(src_alpha!=0xff)
 	{
+            return;
 	    color dst_color=get_pixel(x,y);
 	    unsigned char dst_red = (clr >> 24) & 0xff;
 	    unsigned char dst_green = (clr >> 16) & 0xff;
 	    unsigned char dst_blue = (clr >> 8) & 0xff;
-	    src_red = (src_red*(int)src_alpha)>>8 | (dst_red*((int)0xff-src_alpha)) >> 8;
-	    src_green = (src_green*(int)src_alpha)>>8 | (dst_green*((int)0xff-src_alpha)) >> 8;
-	    src_blue = (src_blue*(int)src_alpha)>>8 | (dst_blue*((int)0xff-src_alpha)) >> 8;
-	    src_red=0xff;
-	    src_green=0xff;
-	    src_blue=0xff;
+	    src_red = (src_red*(int)src_alpha + dst_red*((int)0xff-src_alpha)) >> 8;
+	    src_green = (src_green*(int)src_alpha + dst_green*((int)0xff-src_alpha)) >> 8;
+	    src_blue = (src_blue*(int)src_alpha + dst_blue*((int)0xff-src_alpha)) >> 8;
 	}
 //	std::cout << (unsigned)src_red << " " << (unsigned)src_green << " " << (unsigned)src_blue << "  " ;
 	
@@ -73,13 +72,11 @@ namespace stk
     }
     void surface_bitmap::put_pixel_aa(int x, int y, double distance, color clr)
     {
-	ERROR("surface_bitmap::put_pixel_aa(int,int,double,clr) UNIMPLEMENTED");
+        put_pixel(x,y,clr);
     }
-    
     void surface_bitmap::put_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
     {
-	put_pixel(x,y,clr|alpha_a);
-	WARN("surface_bitmap::put_pixel_aa(int,int,uchar,color) UNIMPLEMENTED");
+	put_pixel(x,y,(clr&(~0xff))|alpha_a);
     }
     
     color surface_bitmap::get_pixel(int x, int y) const
@@ -87,6 +84,11 @@ namespace stk
 	x+=offset_.x();
 	y+=offset_.y();
 
+        if(!clip_rect_.contains(x,y))
+	    return 0;
+	if(!rect_.contains(x,y))
+            return 0;
+        
 	int color=0;
 	color|=bitmap.get()[y*rect_.width()*3+x*3]<<24;
 	color|=bitmap.get()[y*rect_.width()*3+x*3+1]<<16;
@@ -98,7 +100,11 @@ namespace stk
     
     color surface_bitmap::gen_color(byte r, byte g, byte b, byte a) const
     {
-	return (static_cast<int>(r) << 24 | g << 16 | b << 8 | a);
+        int color = (int)a;
+        color |= (int)b << 8;
+        color |= (int)g << 16;
+        color |= (int)r << 24;
+        return color;
     }
     
     void surface_bitmap::lock()
