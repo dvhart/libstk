@@ -279,5 +279,15 @@ namespace stk
         cout << "application::focus_prev()" << endl;
         return current_state_.lock()->focus_last();
     }
+    void application::current_state(state::ptr new_cur_state)
+    {
+        current_state_=new_cur_state;
+        new_cur_state->redraw(new_cur_state->rect());
+    }
+
+    state::ptr application::current_state() const
+    {
+        return current_state_.lock();
+    }
 
 }

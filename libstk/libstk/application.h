@@ -80,9 +80,11 @@ namespace stk
         virtual widget::ptr focus_next();
         virtual widget::ptr focus_prev();
 
+        void current_state(boost::shared_ptr<stk::state> new_cur_state);
+        boost::shared_ptr<stk::state> current_state() const;
+
     }
     ; // class application
-
 } // namespace stk
 
 #endif
