@@ -1,9 +1,0 @@
-#!/bin/sh
-echo "Building surface_sdl_test..."
-echo "g++ -c surface.cpp"
-g++ -c surface.cpp 
-echo "g++ -c surface_sdl.cpp"
-g++ -c surface_sdl.cpp 
-echo "g++ surface_sdl_test.cpp surface.o surface_sdl.o `sdl-config --libs` -o surface_sdl_test"
-g++ surface_sdl_test.cpp surface.o surface_sdl.o `sdl-config --libs` -o surface_sdl_test
-
