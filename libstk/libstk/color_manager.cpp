@@ -10,7 +10,9 @@ namespace stk
 
 	bool color_properties::operator<(const color_properties& rhs) const
 	{
+		// check the high order
 		if (int_color < rhs.int_color) return true;
+		// check the low order
 		if (int_color == rhs.int_color) return (surface_ < rhs.surface_);
 		return false;
 	}
