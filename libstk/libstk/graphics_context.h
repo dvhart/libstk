@@ -55,8 +55,11 @@ namespace stk
         stk::font::ptr font_;
         color font_fill_color_;
         color font_outline_color_;
+        bool alpha_blend_;      /// If enabled blitting and drawing routines alpha
+                                /// blend with the surface_color and the current colors
+                                /// alpha channel, default is on.
     protected:
-        graphics_context()
+        graphics_context() : alpha_blend_(true)
         {}
 
     public:
@@ -131,6 +134,14 @@ namespace stk
         void font_outline_color(color clr)
         {
             font_outline_color_ = clr;
+        }
+        bool alpha_blend() const
+        {
+            return alpha_blend_;
+        }
+        void alpha_blend(bool newval) 
+        {
+            alpha_blend_ = newval;
         }
     };
 }
