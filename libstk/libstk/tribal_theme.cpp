@@ -246,7 +246,9 @@ namespace stk
         gc->font(fnt);
         gc->font_fill_color(color_manager::get()->get_color(
                     color_properties(font_color_normal_str, surface)));
+        gc->horizontal_alignment(horizontal_alignment());
         surface->gc(gc);
+        
         rectangle outline_rect = rect(); outline_rect.position(0, 0);
         surface->draw_text(outline_rect, text_);
     }

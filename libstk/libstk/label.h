@@ -33,7 +33,7 @@ namespace stk
     private:
         std::wstring text_;
         font_properties font_props_;
-
+        en_horizontal_alignment horizontal_alignment_;
     protected:
         label(std::wstring text, const rectangle& rect);
 
@@ -51,6 +51,19 @@ namespace stk
             text_ = t;
             redraw(rect());
         }
+
+        /// Read the value Horizontal Alignment Property 
+        en_horizontal_alignment horizontal_alignment() const
+        {
+            return horizontal_alignment_;
+        }
+        /// Write/Set the value Horizontal Alignment Property 
+        void horizontal_alignment(en_horizontal_alignment new_alignment) 
+        {
+            horizontal_alignment_=new_alignment;
+            redraw(rect());
+        }
+        
 
         /// Get and set the font properties object, any of the properties may be unspecified
         font_properties font_props() { return font_props_; }
