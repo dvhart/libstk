@@ -26,13 +26,18 @@ namespace stk
 					const rectangle& _rect);
 			virtual ~button();
 
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
-
 			// button signals
-			boost::signal<bool ()> on_click;
+			boost::signal<bool ()> on_click; // FIXME: on_activate in widget maybe ?
 
 			// event_handler interface
 			virtual void handle_event(event::ptr e);
+
+			// drawable interface
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			// using defaults (widget.h)
+
+			// parent interface
+			// using defaults (widget.h)
 	};
 	
 } // namespace stk

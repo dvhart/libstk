@@ -34,8 +34,10 @@ namespace stk
 
 	void button::draw(boost::shared_ptr<stk::surface> surface)
 	{
-		/*if (redraw())*/ theme::instance()->draw_button(rect_, active_, focused_, hover_);
+		theme::instance()->draw_button(rect_, active_, focused_, hover_);
 		redraw_ = false;
+		redraw_rect_ = rectangle(); // FIXME: maybe move redraw_rect_ to container
+		                            // since leaf widgets never use it
 	}
 			
 	// event_handler interface

@@ -8,17 +8,18 @@ namespace stk
 {
 	class drawable
 	{
-		// FIXME have typedefs here?
 		private:
 			
 		protected:
+			bool redraw_; // should this be in drawable ?
+			rectangle redraw_rect_;
 			
 		public:
 			drawable() { };
 			virtual ~drawable() { };
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
-			//virtual void redraw(const rectangle& rect=rectangle(0,0,0,0)) { }
-			virtual void redraw(bool val) { }
+			virtual bool redraw() { return redraw_; }
+			virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0)) { }
 			
 	}; // class drawable
 } // namespace stk

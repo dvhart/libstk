@@ -27,14 +27,12 @@ namespace stk
 		public:
 			~container();
 
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
-			
-			virtual bool is_container() { return true; }
+			virtual bool is_container() { return true; } // FIXME: shouldn't this be in widget too
+
 			// FIXME :carter: implement all this
 			virtual widget::ptr get_active_child()  // called when the tree parser for widget cycling switches focus to a container
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 
 			
-			// FIXME: write me
 			virtual widget::ptr widget_at(int x, int y);
 			virtual void delegate_mouse_event(mouse_event::ptr me);
 			
@@ -42,8 +40,9 @@ namespace stk
 			virtual void handle_event(event::ptr e);
 
 			// drawable interface
-			//virtual surface::ptr surface() 
-			//{ return make_shared(parent_)->surface(); }
+			virtual boost::shared_ptr<stk::surface> surface(); 
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
 
 			// parent interface
 			// FIXME

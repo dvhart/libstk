@@ -47,7 +47,7 @@ namespace stk
 	{
 		redraw_ = false;
 	}
-	
+		
 	// event_handler interface - default back to parent
 	void widget::handle_event(event::ptr e)
 	{
@@ -67,7 +67,14 @@ namespace stk
 		// MSTR broken!
 		return boost::make_shared(parent_)->surface(); 
 	}
-
+	
+	void widget::redraw(bool val, const rectangle& rect)
+	{
+		redraw_ = val;
+		redraw_rect_ += rect;
+		make_shared(parent_)->redraw(true, rect);
+	}
+	
 	// parent interface
 	widget::ptr widget::focus_next()
 	{ 

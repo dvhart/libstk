@@ -49,13 +49,30 @@ namespace stk
 			// utilities
 			bool contains(int x, int y) 
 			{ return (x > p1_.x() && x < p2_.x() && y > p1_.y() && y < p2_.y()); }
+			
+			bool intersects(rectangle& rect)
+			{
+				bool x_in = ((rect.x1() > x1() && rect.x1() < x2) || (rect.x2() > x1() && rect.x2() < x2));
+				bool x_span = (rect.x1() <= x1() && rect.x2() >= x2());
+				bool y_in = ((rect.y1() > y1() && rect.y1() < y2) || (rect.y2() > y1() && rect.y2() < y2));
+				bool y_span (rect.y1() <= y1() && rect.y2() >= y2());
+				return ((x_span || x_in) && (y_span || y_in)) 
+			}
 
 			// operators
-			rectangle operator+(const rectangle& rect) const
+			const rectangle& operator+(const rectangle& rect) const
 			{
 				return rectangle(MIN(x1(), rect.x1()), MIN(y1(), rect.y1()), 
 						             MAX(x2(), rect.x2()), MAX(y2(), rect.y2()));
 			}
+			
+			const rectangle& operator+=(const rectangle& rect)
+			{
+				x1(MIN(x1(), rect.x1())); y1(MIN(y1(), rect.y1()));
+				x2(MAX(x2(), rect.x2())); y2(MAX(y2(), rect.y2()));
+				return *this;
+			}
+
 	};
 }
 

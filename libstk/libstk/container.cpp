@@ -25,16 +25,6 @@ namespace stk
 	container::~container()
 	{}
 
-	void container::draw(boost::shared_ptr<stk::surface> surface)
-	{
-		std::vector<widget::ptr>::iterator iter = children_.begin();
-		for (iter; iter != children_.end(); iter++)
-		{
-			if (true /*(*iter)->redraw()*/) (*iter)->draw(surface);
-		}
-		redraw_ = false; 
-	}
-
 	widget::ptr container::widget_at(int x, int y)
 	{ 
 		std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -72,6 +62,29 @@ namespace stk
 		children_.erase(iter);
 	}
 
+	void container::draw(boost::shared_ptr<stk::surface> surface)
+	{
+		std::vector<widget::ptr>::iterator iter = children_.begin();
+		for (iter; iter != children_.end(); iter++)
+		{
+			if ((*iter)->intersects(redraw_rect_)) (*iter)->draw(surface);
+		}
+		redraw_ = false;
+		redraw_rect_ = rectangle();
+	}
+
+	void container::redraw(bool val, const rectangle& rect=rectangle(0,0,0,0))
+	{
+		redraw_ = val;
+		redraw_rect_ += rect;
+		// augment redraw_rect_ if it intersects any other children_
+		for (iter; iter != children_.end(); iter++)
+		{
+			if ((*iter)->intersects(redraw_rect_)) (*iter)->draw(surface);
+		}
+		make_shared(parent_)->redraw(true, redraw_rect_);
+	}
+	
 	void container::handle_event(event::ptr e)
 	{
 		// handle standard container events

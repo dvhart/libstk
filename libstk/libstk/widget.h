@@ -33,7 +33,6 @@ namespace stk
 			rectangle rect_;
 			
 			// widget attributes
-			bool redraw_;
 			bool focusable_;
 			int tab_;
 			
@@ -45,12 +44,10 @@ namespace stk
 		public:
 			virtual ~widget();
 
-			virtual void draw(boost::shared_ptr<stk::surface> surface);
 			virtual bool contains(int x, int y) { return rect_.contains(x, y); }
+			virtual bool intersects(const rectangle& rect) { return rect_.intersects(rect); }
 
 			// widget attribute accessor methods
-			bool redraw() { return redraw_; }
-			virtual void redraw(bool val) { redraw_ = val; }
 			bool focusable() { return focusable_; }
 			void focusable(bool val) { focusable_ = val; }
 			int tab() { return tab_; }
@@ -67,11 +64,14 @@ namespace stk
 
 			// drawable interface
 			virtual boost::shared_ptr<stk::surface> surface(); 
+			virtual void draw(boost::shared_ptr<stk::surface> surface);
+			virtual void redraw(bool val, const rectangle& rect=rectangle(0,0,0,0));
 
 			// parent interface
 			virtual boost::shared_ptr<widget> focus_next();
 			virtual boost::shared_ptr<widget> focus_prev();
 			
+			boost::signal<bool (), combiner::logical_and<bool> > on_activate;
 			boost::signal<bool (), combiner::logical_and<bool> > on_focus;
 			boost::signal<bool (), combiner::logical_and<bool> > on_unfocus;
 			boost::signal<bool (), combiner::logical_and<bool> > on_mouse_enter;
