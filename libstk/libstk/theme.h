@@ -8,21 +8,6 @@
 
 namespace stk
 {
-	// some tribal colors for this theme
-	const std::string outline_color_normal_str_  = "0xFFFFFFFF";
-	const std::string outline_color_focused_str_ = "0xFFFF00FF";
-	const std::string outline_color_hover_str_   = "0xFFFFFFFF";
-	const std::string outline_color_active_str_  = "0xFFFF00FF";
-
-	const std::string fill_color_normal_str_     = "0x0088B2FF";
-	const std::string fill_color_focused_str_    = "0x0088B2FF";
-	const std::string fill_color_hover_str_      = "0x00C3FFFF";
-	const std::string fill_color_active_str_     = "0x00C3FFFF";
-	
-	const std::string font_color_normal_str_     = "0xFFFFFFFF";
-	const std::string font_color_focused_str_    = "0xFFFFFFFF";
-	const std::string font_color_hover_str_      = "0xFFFFFFFF";
-	const std::string font_color_active_str_     = "0xFFFFFFFF";
 	
 	class theme
 	{
@@ -42,6 +27,7 @@ namespace stk
 			color outline_color_hover_;
 			color outline_color_active_;
 			
+			color fill_state_color_;
 			color fill_color_normal_;
 			color fill_color_focused_;
 			color fill_color_hover_;

@@ -6,6 +6,23 @@
 
 namespace stk
 {
+	// some tribal colors for this theme
+	const std::string outline_color_normal_str_  = "0xFFFFFFFF";
+	const std::string outline_color_focused_str_ = "0xFFFFFFFF";
+	const std::string outline_color_hover_str_   = "0xFFFF00FF";
+	const std::string outline_color_active_str_  = "0xFFFF00FF";
+
+	const std::string fill_state_color_str_      = "0x0C2C4CFF";
+	const std::string fill_color_normal_str_     = "0x185899FF";
+	const std::string fill_color_focused_str_    = "0x2893FFFF";
+	const std::string fill_color_hover_str_      = "0x185899FF";
+	const std::string fill_color_active_str_     = "0x2893FFFF";
+	
+	const std::string font_color_normal_str_     = "0xFFFFFFFF";
+	const std::string font_color_focused_str_    = "0xFFFFFFFF";
+	const std::string font_color_hover_str_      = "0xFFFF00FF";
+	const std::string font_color_active_str_     = "0xFFFF00FF";
+
 	theme::ptr theme::instance_;
 
 	theme::ptr theme::create(stk::surface::ptr surface)
@@ -23,6 +40,7 @@ namespace stk
 		outline_color_hover_   = surface->gen_color(outline_color_hover_str_);
 		outline_color_active_  = surface->gen_color(outline_color_active_str_);
 
+		fill_state_color_      = surface_->gen_color(fill_state_color_str_);
 		fill_color_normal_     = surface->gen_color(fill_color_normal_str_);
 		fill_color_focused_    = surface->gen_color(fill_color_focused_str_);
 		fill_color_hover_      = surface->gen_color(fill_color_hover_str_);
@@ -48,7 +66,7 @@ namespace stk
 	{
 		//cout << "theme::draw_state()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(surface_->gen_color("0x004E66FF")); 
+		gc->fill_color(surface_->gen_color("0x0C2C4CFF")); 
 		surface_->gc(gc);
 		surface_->fill_rect(rect);	
 
@@ -85,20 +103,30 @@ namespace stk
 		else if(focused)
 		{
 			gc->fill_color(fill_color_focused_); 
-			gc->line_color(outline_color_focused_); 
-			gc->font_fill_color(font_color_focused_);
-		}
-		else if (hover)
-		{
-			gc->fill_color(fill_color_hover_); 
-			gc->line_color(outline_color_hover_); 
-			gc->font_fill_color(font_color_hover_);
+			if (hover) 
+			{
+				gc->line_color(outline_color_hover_); 
+				gc->font_fill_color(font_color_hover_);
+			}
+			else 
+			{
+				gc->line_color(outline_color_focused_); 
+				gc->font_fill_color(font_color_focused_);
+			}
 		}
 		else
 		{
 			gc->fill_color(fill_color_normal_); 
-			gc->line_color(outline_color_normal_); 
-			gc->font_fill_color(font_color_normal_);
+			if (hover) 
+			{
+				gc->line_color(outline_color_hover_); 
+				gc->font_fill_color(font_color_hover_);
+			}
+			else 
+			{
+				gc->line_color(outline_color_normal_); 
+				gc->font_fill_color(font_color_normal_);
+			}
 		}
 		
 		// FIXME: I think we may be off by one in the rect draw/fill routines
