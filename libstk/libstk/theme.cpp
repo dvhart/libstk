@@ -47,7 +47,7 @@ namespace stk
 	{
 		//cout << "theme::draw_state()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(surface_->gen_color("0xFFFFFFFF")); 
+		gc->fill_color(surface_->gen_color("0x004E66FF")); 
 		surface_->gc(gc);
 		surface_->fill_rect(rect);	
 	}
@@ -55,8 +55,16 @@ namespace stk
 	void theme::draw_button(const rectangle& rect, const std::wstring& label,
 		bool active, bool focused, bool hover)
 	{
+		rectangle interior_rect(rect.x1()+3, rect.y1()+3, rect.width()-5, rect.height()-4);
+		rectangle outline_rect(rect.x1()+1, rect.y1()+1, rect.width()-2, rect.height()-1);
+		
 		//cout << "theme::draw_button()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
+		
+		// prepare the font
+		stk::font::ptr the_font = font::create("Arial.ttf", 25);
+		gc->font(the_font);
+		
 		if (active)
 		{
 			gc->fill_color(fill_color_active_); 
@@ -82,12 +90,11 @@ namespace stk
 			gc->font_fill_color(font_color_normal_);
 		}
 		
+		// FIXME: I think we may be off by one in the rect draw/fill routines
 		// draw the label for all states
-		stk::font::ptr the_font = font::create("Arial.ttf", 25);
-		gc->font(the_font);
 		surface_->gc(gc);
-		surface_->fill_rect(rect);
-		surface_->draw_rect(rect);
+		surface_->fill_rect(interior_rect);
+		surface_->draw_rect(outline_rect);
 		surface_->draw_text(rect, label);
 	}
 
@@ -95,14 +102,14 @@ namespace stk
 	{
 		//cout << "theme::draw_progress()" << endl;
 		graphics_context::ptr gc = graphics_context::create();
-		gc->fill_color(fill_color_active_); 
+		gc->fill_color(fill_color_normal_); 
 		gc->line_color(outline_color_normal_);
 		stk::font::ptr bob = font::create("Arial.ttf", 25);
 		gc->font(bob);
 		gc->font_fill_color(font_color_normal_);
 		surface_->gc(gc);
-		rectangle progress_rect = rect;
-		progress_rect.width((int)(rect.width()*percent));	
+		rectangle progress_rect(rect.x1()+2, rect.y1()+2, rect.width()-4, rect.height()-3);
+		progress_rect.width((int)(progress_rect.width()*percent));	
 		surface_->fill_rect(progress_rect);
 		surface_->draw_rect(rect);
 		surface_->draw_text(rect, label);
@@ -120,7 +127,7 @@ namespace stk
 			gc->font(bob);
 			gc->font_fill_color(font_color_normal_);
 			surface_->gc(gc);
-			surface_->draw_rect(rect);
+			//surface_->draw_rect(rect);
 			surface_->draw_text(rect, text);
 		}
 		catch (const exception& e)
