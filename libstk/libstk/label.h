@@ -48,6 +48,7 @@ namespace stk
         void text(const std::wstring& t)
         {
             text_ = t;
+            redraw(rect());
         }
 
         boost::optional<int> text_size()
