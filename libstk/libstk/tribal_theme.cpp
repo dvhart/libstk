@@ -432,6 +432,29 @@ namespace stk
         }
         surface->fill_rect(vis_rect);
     }
+    scroll_bar::regions_ scroll_bar::region(int x, int y)
+    {
+        if(!rect().contains(x,y))
+            return NONE;
+
+        // translate model coordinates into scroll_bar coords
+        rectangle outline_rect = rect(); outline_rect.position(0, 0);
+        rectangle vis_rect = outline_rect; 
+
+        int min_start = 2;
+        int max_end   = MAX(width(), height())-2;
+        int max_size  = max_end - min_start;
+        int start = max_size*model_->begin()/model_->size()+min_start;
+        int end = start+max_size*model_->vis_size()/model_->size();
+        
+        if(y<start)
+            return ABOVE_BAR;
+        else if(y>end)
+            return BELOW_BAR;
+        else
+            return BAR;
+    }
+    
     int scroll_bar::default_size = 20;
 
     void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
@@ -585,34 +608,43 @@ namespace stk
         if (pressed_) surface->draw_rect(pressed_rect);
         surface->draw_rect(outline_rect);
 
-        // cursor and selection calculations
-        int sel_min = MIN(selection_start_, selection_end_);
-        std::wstring presel_str = text_.substr(0, sel_min);
-        std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
-        int sel_x = interior_rect.x1() + Vera_18->draw_len(presel_str);
-        int sel_width = Vera_18->draw_len(sel_str);
-        int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
-
-        // draw the selection
-        if (selection_start_ != selection_end_)
+        try
         {
-            // yellow selection
-            if (focused_)
-                gc->fill_color(color_manager::get()->get_color(
-                            color_properties(fill_color_normal_str, surface)));
-            // light blue selection
-            else
-                gc->fill_color(color_manager::get()->get_color(
-                            color_properties(fill_color_focused_str, surface)));
-
-            surface->fill_rect(rectangle(sel_x, 3, sel_width, height()-6));
-        }
-        // draw the cursor if there is no selection and we are focused
-        else if (focused_)
+            // cursor and selection calculations
+            int sel_min = MIN(selection_start_, selection_end_);
+            std::wstring presel_str = text_.substr(0, sel_min);
+            std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
+            int sel_x = interior_rect.x1() + Vera_18->draw_len(presel_str);
+            int sel_width = Vera_18->draw_len(sel_str);
+            int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
+            
+            // draw the selection
+            if (selection_start_ != selection_end_)
+            {
+                // yellow selection
+                if (focused_)
+                    gc->fill_color(color_manager::get()->get_color(
+                                       color_properties(fill_color_normal_str, surface)));
+                // light blue selection
+                else
+                    gc->fill_color(color_manager::get()->get_color(
+                                       color_properties(fill_color_focused_str, surface)));
+                
+                surface->fill_rect(rectangle(sel_x, 3, sel_width, height()-6));
+            }
+            // draw the cursor if there is no selection and we are focused
+            else if (focused_)
             surface->draw_line(cursor_x, 3, cursor_x, height()-3);
-        
-        // draw the string text_
-        surface->draw_text(interior_rect, text_);
+            
+            // draw the string text_
+            surface->draw_text(interior_rect, text_);
+        }
+        catch(...)
+        {
+            selection_start_=0;
+            selection_end_=0;
+            ERROR("Cought exception in edit_box");
+        }
     }
     int edit_box::region(int x, int y)
     {
