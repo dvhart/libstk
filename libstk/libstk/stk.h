@@ -53,6 +53,7 @@
 #include <libstk/list_item.h>
 #include <libstk/mouse_event.h>
 #include <libstk/numeric_spinner.h>
+#include <libstk/overlay.h>
 #include <libstk/point.h>
 #include <libstk/posix_time.h>
 #include <libstk/progress.h>
@@ -75,5 +76,6 @@
 #include <libstk/viewport.h>
 #include <libstk/widget.h>
 #include <libstk/edit_box.h>
+#include <libstk/xine_panel.h>
 
 #endif

@@ -1,14 +1,13 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: surface_sdl.cpp
  * DESCRIPTION: SDL surface implementation.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke 
- *  START DATE: 10/Dec/2002  LAST UPDATE: 14/May/2003
+ *  START DATE: 10/Dec/2002  LAST UPDATE: 20/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ **************************************************************************************************/
 
 // ***********************************************************
 // FIXME: we simply cast Uint32 sdl colors to stk colors,
@@ -20,10 +19,12 @@
 #include <list>
 #include <iostream>
 #include <SDL/SDL.h>
-#include "libstk/surface_sdl.h"
 #include "libstk/surface.h"
+#include "libstk/surface_sdl.h"
 #include "libstk/stk.h"
 #include "libstk/sdl_data.h"
+#include "libstk/overlay.h"
+#include "libstk/overlay_sdl.h"
 
 using std::cout;
 using std::endl;
@@ -115,6 +116,12 @@ namespace stk
             SDL_UpdateRect(sdl_surface_, u_rect.x1(), u_rect.y1(), u_rect.width(), u_rect.height());
         }
     }
+
+    overlay::ptr surface_sdl::create_overlay(int width, int height, int format)
+    {
+        return overlay_sdl::create(width, height, format, sdl_surface_);
+    }
+    
 
     // optimized pixel routines
     void surface_sdl::blit(surface &dst_surface)

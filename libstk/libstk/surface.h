@@ -1,15 +1,14 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: surface.h
  * DESCRIPTION: An abstract base class providing the interface for all surface
  *              backends.
  *     AUTHORS: Darren Hart, Vernon Mauery, Marc Straemke 
- *  START DATE: 08/Sep/2002  LAST UPDATE: 13/May/2003
+ *  START DATE: 08/Sep/2002  LAST UPDATE: 20/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_SURFACE_H
 #define STK_SURFACE_H
@@ -41,6 +40,7 @@ using std::endl;
 namespace stk
 {
     class image;
+    class overlay;
 
     class surface
     {
@@ -148,6 +148,7 @@ namespace stk
         /// to the real framebuffer.
         virtual void unlock() = 0;
         virtual void update(const rectangle& u_rect = rectangle()) = 0;
+        virtual boost::shared_ptr<overlay> create_overlay(int width, int height, int format) = 0;
 
         // The following methods are defined in surface_impl
         virtual void draw_pixel(int x, int y, color clr) = 0;
@@ -156,6 +157,7 @@ namespace stk
         virtual color read_pixel(int x, int y) = 0;
         virtual void blit(surface &dst_surface) = 0;
         virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect) = 0;
+        /* FIXME: make this purely virtual */
         
         // non antialiased draw routines
         virtual void draw_line(int x1, int y1, int x2, int y2) = 0;

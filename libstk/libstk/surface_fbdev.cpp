@@ -1,17 +1,17 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: surface_fbdev.cpp
  * DESCRIPTION: Direct FB surface implementation.
  *     AUTHORS: Vernon Mauery, Darren Hart 
- *  START DATE: 03/Mar/2003  LAST UPDATE: 14/May/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 20/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
-#include "surface_fbdev.h"
-//#include "backend_fbdev.h"
+#include "libstk/surface_fbdev.h"
+#include "libstk/overlay.h"
+//#include "libstk/backend_fbdev.h"
 #include "logging.h"
 #include <iostream>
 
@@ -206,6 +206,12 @@ namespace stk
 
     void surface_fbdev::update(const rectangle& u_rect)
     {
+    }
+
+    overlay::ptr surface_fbdev::create_overlay(int width, int height, int format)
+    {
+        cout << "surface_fbdev::create_overlay() - not implemented" << endl;
+        return overlay::ptr();
     }
 
     // overridden drawing routines

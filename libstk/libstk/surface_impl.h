@@ -1,15 +1,14 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: surface_impl.h
  * DESCRIPTION: This is a templated class that implements all the virtual 
  *              methods of the surface abstract base class inline.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 20/May/2003  LAST UPDATE: 28/May/2003
+ *  START DATE: 20/May/2003  LAST UPDATE: 20/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #ifndef STK_SURFACE_IMPL_H
 #define STK_SURFACE_IMPL_H
@@ -21,6 +20,7 @@
 #include <libstk/surface.h>
 #include <libstk/rectangle.h>
 #include <libstk/point.h>
+#include <libstk/overlay.h>
 #include <libstk/edge.h>
 #include <libstk/exceptions.h>
 #include <libstk/image.h>
@@ -144,6 +144,7 @@ namespace stk
             = 0;
         virtual void unlock() = 0;
         virtual void update(const rectangle& u_rect = rectangle()) = 0;
+        virtual overlay::ptr create_overlay(int width, int height, int format) = 0;
 
         // common alpha routines
         /* Index the static antialiased alpha filter.  Returns an alpha value

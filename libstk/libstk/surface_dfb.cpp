@@ -1,17 +1,17 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: surface_dfb.cpp
  * DESCRIPTION: Direct FB surface implementation.
- *     AUTHORS: Marc Strämke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 14/May/2003
+ *     AUTHORS: Marc Strämke, Darren Hart
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 20/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
-#include "surface_dfb.h"
-#include "backend_dfb.h"
+#include "libstk/surface_dfb.h"
+#include "libstk/backend_dfb.h"
+#include "libstk/overlay.h"
 #include "logging.h"
 #include <iostream>
 
@@ -60,8 +60,8 @@ namespace stk
     }
     surface_dfb::ptr surface_dfb::create()
     {
-        surface_dfb::ptr res(new surface_dfb(boost::optional<rectangle>(),true));
-        return res;
+        surface_dfb::ptr new_surface_dfb(new surface_dfb(boost::optional<rectangle>(),true));
+        return new_surface_dfb;
     }
     surface_dfb::ptr surface_dfb::create(const rectangle& rect, bool primary)
     {
@@ -124,8 +124,13 @@ namespace stk
         region.x2=u_rect.x2();
         region.y2=u_rect.y2();
         
-        surface->Flip(surface,&region,DSFLIP_BLIT);
-        
+        surface->Flip(surface,&region,DSFLIP_BLIT); 
+    }
+
+    overlay::ptr surface_dfb::create_overlay(int width, int height, int format)
+    {
+        cout << "surface_dfb::create_overlay() - not implemented" << endl;
+        return overlay::ptr();
     }
     
 

@@ -28,6 +28,11 @@ if LOGGING
  sources_logging = logging.h logging.cpp
 endif
 
+if XINE
+ headers_xine = xine_panel.h
+ sources_xine = xine_panel.cpp
+endif
+
 libstk_la_SOURCES =\
 	application.h	application.cpp \
 	button.h button.cpp \
@@ -53,6 +58,7 @@ libstk_la_SOURCES =\
 	list_item.h list_item.cpp \
 	mouse_event.h mouse_event.cpp \
 	numeric_spinner.h numeric_spinner.cpp \
+	overlay.h \
 	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	rectangle.h rectangle.cpp \
@@ -73,8 +79,9 @@ libstk_la_SOURCES =\
 	$(sources_sdl) $(sources_dfb) \
 	edit_box.h edit_box.cpp  \
 	event_producer_elotouch.h event_producer_elotouch.cpp \
-	spreadsheet.cpp spreadsheet.h
-
+	spreadsheet.cpp spreadsheet.h \
+	stk_c_wrapper.h stk_c_wrapper.cpp \
+	$(headers_xine) $(sources_xine)
 
 library_includedir=$(includedir)/libstk-$(VERSION)/libstk
 
@@ -92,12 +99,11 @@ library_include_HEADERS= \
 	event.h          progress.h 	     scroll_box.h   event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h     viewport.h          hotkey.h \
+	posix_time.h     viewport.h          hotkey.h       overlay.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
-	event_producer_elotouch.h spreadsheet.h \
-	numeric_spinner.h config.h \
-	$(headers_sdl)   $(headers_dfb) \
-	$(headers_fbdev) $(headers_logging)
+	event_producer_elotouch.h            spreadsheet.h  stk_c_wrapper.h \
+	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
+	$(headers_fbdev) $(headers_logging)  $(headers_xine)
 
 # FIXME: do the autotools thing for freetype
 libstk_la_LDFLAGS= $(SDL_LIBS) -version-info @libstk_libtool_version@ $(libs_dfb)
