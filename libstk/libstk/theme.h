@@ -8,6 +8,22 @@
 
 namespace stk
 {
+	// some tribal colors for this theme
+	const std::string outline_color_normal_str_  = "0x000000FF";
+	const std::string outline_color_focused_str_ = "0x00FF00FF";
+	const std::string outline_color_hover_str_   = "0x0000FFFF";
+	const std::string outline_color_active_str_  = "0xFF0000FF";
+
+	const std::string fill_color_normal_str_     = "0xFFFFFFFF";
+	const std::string fill_color_focused_str_    = "0xFFFF00FF";
+	const std::string fill_color_hover_str_      = "0x00FFFFFF";
+	const std::string fill_color_active_str_     = "0x00FF00FF";
+	
+	const std::string font_color_normal_str_     = "0x000000FF";
+	const std::string font_color_focused_str_    = "0xFFFFFFFF";
+	const std::string font_color_hover_str_      = "0xFFFFFFFF";
+	const std::string font_color_active_str_     = "0xFFFFFFFF";
+	
 	class theme
 	{
 		public:
@@ -20,6 +36,21 @@ namespace stk
 			
 		protected:
 			theme(stk::surface::ptr surface);
+			
+			color outline_color_normal_;
+			color outline_color_focused_;
+			color outline_color_hover_;
+			color outline_color_active_;
+			
+			color fill_color_normal_;
+			color fill_color_focused_;
+			color fill_color_hover_;
+			color fill_color_active_;
+
+			color font_color_normal_;
+			color font_color_focused_;
+			color font_color_hover_;
+			color font_color_active_;
 			
 		public:
 			static theme::ptr create(stk::surface::ptr surface);
