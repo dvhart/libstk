@@ -3,7 +3,7 @@
  * DESCRIPTION: Default theme for Libstk.  Contains the user_theme class and 
  *              all themeable widget drawing routines.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 27/Apr/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 27/Apr/2003  LAST UPDATE: 06/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -253,26 +253,6 @@ namespace stk
     void list::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
-        float sel;
-
-        if (prev_selected_ != selected_)
-        {
-            sel = (float)(prev_selected_) + (float)(selected_ - prev_selected_)*((float)frame_/4.0);
-            if (frame_ < 4)
-            {
-                frame_++;
-                redraw(rect_);
-            }
-            else
-            {
-                frame_ = 0;
-                prev_selected_ = selected_;
-            }
-        }
-        else
-        {
-            sel = (float)selected_;
-        }
 
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
@@ -289,41 +269,47 @@ namespace stk
         gc->font(arial_12);
         surface->gc(gc);
 
-        // outline the list box
-        surface->draw_rect(rect_);
-
         // adjust the list items using the vertical scroll_model
-        surface->offset(surface->offset() - point(0,v_scroll_->begin()));
-
-        // draw the highlighted selection
-        rectangle cur_rect;
-        cur_rect.x1(rect_.x1() + 2);
-        cur_rect.width(rect_.width() - 4);
-        cur_rect.y1(rect_.y1() + (int)(selected_*25) + 1);
-        cur_rect.height(23);
-        surface->fill_rect(cur_rect);
+        surface->offset(surface->offset() - point(0, v_scroll_->begin()-rect_.y1()));
 
         // draw each item
-        cur_rect.x1(rect_.x1() + 10);
-        cur_rect.width(rect_.width() - 20);
-        // FIXME: magic 25s
-        for (int i = v_scroll_->begin()/25; i < MIN(items_.size(), v_scroll_->end() / 25); i++)
+        int y = 0;
+        if (selected_ >= 0 && selected_ < items_.size()) items_[selected_]->selected(true);
+        if (current_ >= 0 && current_ < items_.size()) items_[current_]->current(true);
+        for (int i = 0; i < items_.size(); i++)
         {
-            cur_rect.y1(rect_.y1() + i*25);
-            cur_rect.height(25);
-            items_[i]->rect(cur_rect);
-            // FIXME: the clip_rect setting in list_item doesn't account for offset
-            items_[i]->draw(surface, surface->clip_rect());
+            if (y+items_[i]->height() > v_scroll_->begin() && y < v_scroll_->end())
+            {
+                // FIXME: the clip_rect setting in list_item doesn't account for offset
+                items_[i]->draw(surface, surface->clip_rect());
+            }
+            y += items_[i]->height();
         }
+        if (selected_ >= 0 && selected_ < items_.size()) items_[selected_]->selected(false);
+        if (current_ >= 0 && current_ < items_.size()) items_[current_]->current(false);
+        
+        surface->offset(surface->offset() + point(0, v_scroll_->begin()-rect_.y1()));
 
-        surface->offset(surface->offset() + point(0,v_scroll_->begin()));
+        // outline the list box
+        surface->draw_rect(rect_);
     }
 
     void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
     {
+        // FIXME: the rect doesn't account for offset
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        
         // draw list is responsible for setting the graphics context!!
-        surface->draw_text(rect_, label_);
+        // FIXME: it shouldn't be!
+        
+        rectangle label_rect(rect_.x1()+2, rect_.y1()+4, rect_.width()-4, rect_.height()-4);
+        if (selected_) surface->fill_rect(rect_);
+        if (current_) surface->draw_rect(rect_);
+        surface->draw_text(label_rect, label_);
+    }
+    int list_item::height()
+    {
+        return 25;
     }
 
     void numeric_spinner::draw(surface::ptr surface, const rectangle& clip_rect)

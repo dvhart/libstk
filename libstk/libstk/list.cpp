@@ -2,7 +2,7 @@
  *    FILENAME: list.cpp
  * DESCRIPTION: List widget implementation.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 03/Mar/2003  LAST UPDATE: 02/Aug/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 06/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -28,7 +28,7 @@ namespace stk
     }
 
     list::list(container::ptr parent, const rectangle& rect,
-               scroll_model::ptr v_scroll) : widget(parent, rect), selected_(0),
+               scroll_model::ptr v_scroll) : widget(parent, rect), current_(-1), selected_(0),
             prev_selected_(0), v_scroll_(v_scroll)
     {
         INFO("constructor");
@@ -49,7 +49,13 @@ namespace stk
         case event::mouse_down:
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-            selected_ = (v_scroll_->begin() / 25) + ((me->y() - rect_.y1()) / 25);
+            int y = 0;
+            for (selected_ = 0; selected_ < items_.size(); selected_++)
+            {
+                y += items_[selected_]->height();
+                if (y > me->y()-rect_.y1()) break;
+            }
+            current_ = selected_;
             redraw(rect_);
             return;
             break;
@@ -60,26 +66,40 @@ namespace stk
             switch ( ke->fn_key() )
             {
             case key_uparrow:
-                if (selected_ > 0)
+                if (current_ > 0)
                 {
-                    selected_--;
-                    // FIXME: magic 25's
-                    if (selected_ < v_scroll_->begin() / 25)
-                        v_scroll_->begin(v_scroll_->begin() - 25);
+                    current_--;
+                    if (items_[current_]->y1() < v_scroll_->begin())
+                        v_scroll_->begin(items_[current_]->y1());
+                    on_update_current();
+                    if (!(ke->modlist() & mod_control)) 
+                    {
+                        selected_ = current_;
+                        on_update_selection();
+                    }
                     redraw(rect_);
                 }
+                else current_ = 0;
                 return;
                 break;
             case key_downarrow:
-                if (selected_ < items_.size() - 1)
+                if (current_ < items_.size() - 1)
                 {
-                    selected_++;
-                    // FIXME: magic 25's
-                    if (selected_ >= v_scroll_->end() / 25)
-                        v_scroll_->begin(v_scroll_->begin() + 25);
+                    current_++;
+                    if (items_[current_]->y2() >= v_scroll_->end())
+                        v_scroll_->begin(v_scroll_->begin()+items_[current_]->height());
+                    if (!(ke->modlist() & mod_control)) selected_ = current_;
                     redraw(rect_);
                 }
+                else current_ = items_.size();
                 return;
+                break;
+            case key_enter:
+                selected_ = current_;
+                redraw(rect_);
+                return;
+                break;
+            default:
                 break;
             }
         }
@@ -90,13 +110,17 @@ namespace stk
     int list::add_item(list_item::ptr item)
     {
         items_.push_back(item);
-        int index=std::find(items_.begin(),items_.end(),item)-items_.begin();
+        int index = std::find(items_.begin(), items_.end(), item) - items_.begin();
 
+        // FIXME: the rect_.y1() should be removed from the item's y1 position, allowing
+        //        the surface offset to handle that (children x,y relative to parent)
+        item->rect(rectangle(rect_.x1(), v_scroll_->size(), 
+                    rect_.width(), item->height()));
+        
         // adjust scroll properties
         // FIXME: add width to the list_item API
         //if (h_scroll()->size() < item->width()) h_scroll()->size(item->width());
-        // FIXME: store the item height (25) somewhere, it is also magic in tribal_theme.cpp
-        v_scroll_->size(v_scroll_->size() + 25);
+        v_scroll_->size(v_scroll_->size()+item->height());
         return index;
     }
     void list::remove_item(int index)

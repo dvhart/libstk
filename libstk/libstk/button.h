@@ -47,8 +47,8 @@ namespace stk
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
         /********** END DRAWABLE INTERFACE **********/
 
-        /********** PARENT INTERFACE **********/
-        /********** END PARENT INTERFACE **********/
+        /********** COMPONENT INTERFACE **********/
+        /********** END COMPONENT INTERFACE **********/
 
         /********** BUTTON INTERFACE **********/
         /// set the property label (#label_)

@@ -71,7 +71,7 @@ namespace stk
         virtual void remove
             (boost::shared_ptr<widget> item)
         { }
-        /********** END PARENT INTERFACE **********/
+        /********** END COMPONENT INTERFACE **********/
 
     }
     ; // class parent

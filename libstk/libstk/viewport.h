@@ -61,7 +61,7 @@ namespace stk
         virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/
 
-        /********** PARENT INTERFACE **********/
+        /********** COMPONENT INTERFACE **********/
         /// Set the internal widget, replace it if already set.
         /// viewport only manages one child.
         virtual void add
@@ -78,7 +78,7 @@ namespace stk
             h_scroll()->size(children_[0]->width());
             v_scroll()->size(children_[0]->height());
         }
-        /********** END PARENT INTERFACE **********/
+        /********** END COMPONENT INTERFACE **********/
 
         /********** VIEWPORT INTERFACE **********/
         scroll_model::ptr h_scroll();

@@ -51,11 +51,11 @@ namespace stk
             virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
             /********** END DRAWABLE INTERFACE **********/
 
-            /********** PARENT INTERFACE **********/
+            /********** COMPONENT INTERFACE **********/
             /// \todo this would have to return a this pointer!!! unless we make list_items a widget and spinner a container!!!
             //virtual widget::ptr focus_next();
             //virtual widget::ptr focus_prev();
-            /********** END PARENT INTERFACE **********/
+            /********** END COMPONENT INTERFACE **********/
 
             /********** LIST INTERFACE **********/
             //virtual void add_item(list_item::ptr item);

@@ -49,7 +49,7 @@ namespace stk
         virtual void redraw(const rectangle& rect);
         /********** END DRAWABLE INTERFACE **********/
 
-        /********** PARENT INTERFACE **********/
+        /********** COMPONENT INTERFACE **********/
         /// Return the next focusable widget.
         /// Find the focused widget, and return the next focusable one.  If we
         /// have no children, or reach the end, ask return an empty widget::ptr.
@@ -66,7 +66,7 @@ namespace stk
         /// Remove a child widget from the children vector
         virtual void remove
             (widget::ptr item);
-        /********** END PARENT INTERFACE **********/
+        /********** END COMPONENT INTERFACE **********/
 
         /********** WIDGET INTERFACE **********/
         /// If any of the children widgets are focused, return true.

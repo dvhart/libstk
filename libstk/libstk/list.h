@@ -33,7 +33,7 @@ namespace stk
     private:
 
     protected:
-        int selected_, prev_selected_;
+        int current_, selected_, prev_selected_;
         list(container::ptr parent, const rectangle& rect,
              scroll_model::ptr v_scroll = scroll_model::create());
         std::vector<list_item::ptr> items_;
@@ -55,11 +55,11 @@ namespace stk
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
         /********** END DRAWABLE INTERFACE **********/
 
-        /********** PARENT INTERFACE **********/
+        /********** COMPONENT INTERFACE **********/
         /// \todo this would have to return a this pointer!!! unless we make list_items a widget and list a container!!!
         //virtual widget::ptr focus_next();
         //virtual widget::ptr focus_prev();
-        /********** END PARENT INTERFACE **********/
+        /********** END COMPONENT INTERFACE **********/
 
 
         /********** LIST INTERFACE **********/
@@ -70,6 +70,9 @@ namespace stk
         virtual list_item::ptr operator[](int index); /// returns the list_item at the specified location
         virtual void clear();   /// Erases the entire content of the list
         virtual int size();     /// Returns the number of elements in the list
+        // list signals FIXME: what should the signature of the slots be ?
+        boost::signal<bool (), combiner::logical_or<bool> > on_update_selection;
+        boost::signal<bool (), combiner::logical_or<bool> > on_update_current;
         /********** END LIST INTERFACE **********/
     };
 }
