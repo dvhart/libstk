@@ -189,8 +189,9 @@ namespace stk
         x2 += offset_.x();
         y2 += offset_.y();
         color clr = gc_->fill_color();
-        surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
+        surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr & 0xff);
         surface->FillRectangle(surface, x1, y1, x2-x1, y2-y1);
+
     }
     
     void surface_dfb::fill_rect(const rectangle& rect)
@@ -205,8 +206,9 @@ namespace stk
         x2 += offset_.x();
         y2 += offset_.y();
         color clr = gc_->line_color();
-        surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
+        surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         surface->DrawLine(surface, x1, y1, (x2-x1), (y2-y1));
+
     }
     
     void surface_dfb::draw_rect(const rectangle& rect)
@@ -221,7 +223,7 @@ namespace stk
         x2 += offset_.x();
         y2 += offset_.y();
         color clr = gc_->line_color();
-        surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, 0xff);
+        surface->SetColor(surface, (clr&0xff000000)>>24, (clr&0xff0000)>>16, (clr&0xff00)>>8, clr&0xff);
         surface->DrawRectangle(surface, x1, y1, (x2-x1), (y2-y1));
     }
     
