@@ -2,7 +2,7 @@
  *    FILENAME: list_item.h  
  * DESCRIPTION: A simple item for lists, can be derived to contain images, etc.
  *     AUTHORS: Darren Hart 
- *  START DATE: 03/Mar/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 03/Mar/2003  LAST UPDATE: 13/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -35,14 +35,11 @@ namespace stk
     protected:
         boost::weak_ptr<list> parent_;
         std::wstring label_;
-        std::string data_;
         rectangle rect_;
-        list_item(boost::shared_ptr<list> parent, std::wstring label,
-                  std::string data);
+        list_item(boost::shared_ptr<list> parent, std::wstring label);
 
     public:
-        static list_item::ptr create(boost::shared_ptr<list> parent,
-                                     std::wstring label, std::string data);
+        static list_item::ptr create(boost::shared_ptr<list> parent, std::wstring label);
         virtual ~list_item();
 
         /********** EVENT HANDLER INTERFACE **********/
@@ -63,14 +60,6 @@ namespace stk
         void label(const std::wstring& label)
         {
             label_ = label;
-        }
-        std::string data() const
-        {
-            return data_;
-        }
-        void data(const std::string& data)
-        {
-            data_ = data;
         }
         rectangle rect() const
         {

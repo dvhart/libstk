@@ -2,7 +2,7 @@
  *    FILENAME: hydra.cpp
  * DESCRIPTION: A simple concept app of the Hydra multi-client distributed home media network 
  *     AUTHORS: Darren Hart
- *  START DATE: 13/Jul/2003  LAST UPDATE: 13/Jul/2003
+ *  START DATE: 13/Jul/2003  LAST UPDATE: 14/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -58,9 +58,9 @@ int main(int argc, char* argv[])
         label::ptr kb_label = label::create(config_state, std::wstring(L"Keyboard: "), 
                 rectangle(400, 90, 100, 30));
         spinner::ptr kb_spinner = spinner::create(config_state, rectangle(500, 90, 125, 30));
-        list_item::ptr kb_item_phy = list_item::create(kb_spinner, L"Physical", "physical");
-        list_item::ptr kb_item_osd = list_item::create(kb_spinner, L"On Screen", "osd");
-        list_item::ptr kb_item_none = list_item::create(kb_spinner, L"None", "none");
+        list_item::ptr kb_item_phy = list_item::create(kb_spinner, L"Physical");
+        list_item::ptr kb_item_osd = list_item::create(kb_spinner, L"On Screen");
+        list_item::ptr kb_item_none = list_item::create(kb_spinner, L"None");
         // done button (return to main)
         button::ptr config_done_button = button::create(config_state, L"Done",
                 rectangle(530, 440, 100, 30));
