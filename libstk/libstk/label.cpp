@@ -19,8 +19,7 @@ namespace stk
     label::ptr label::create(container::ptr parent, std::wstring text, const rectangle& rect)
     {
         label::ptr new_label(new label(parent, text, rect));
-        parent->add
-        (new_label);
+        parent->add(new_label);
         return new_label;
     }
 
@@ -28,7 +27,6 @@ namespace stk
                  const rectangle& rect) : widget(parent, rect), text_(text)
     {
         INFO("constructor");
-        focusable_ = false;
     }
 
     label::~label()

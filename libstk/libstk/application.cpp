@@ -59,6 +59,7 @@ namespace stk
 
     application::~application()
     {
+        INFO("destructor");
     }
 
     int application::run()

@@ -1,6 +1,6 @@
 /**************************************************************************************************
  *     CVS $Id$
- * DESCRIPTION: Xine media panel
+ * DESCRIPTION: xine media panel
  *     AUTHORS: Darren Hart
  *  START DATE: 2003/Jul/21
  *
@@ -32,7 +32,11 @@ namespace stk
         typedef boost::weak_ptr<xine_panel> weak_ptr;
 
     private:
-        xine_panel(container::ptr parent, const rectangle& rect);
+        xine_panel(container::ptr parent, const rectangle& rect, const std::string& config);
+        /// static wrapper that receives a xine_panel as user_data and then calls its listener
+        static void event_listener_wrapper(void *user_data, const xine_event_t* xine_event);
+        /// the actual event listener, called by xine_event_listener_wrapper
+        void event_listener(const xine_event_t* xine_event);
         xine_t*             xine_;
         xine_stream_t*      xine_stream_;
         xine_video_port_t*  xine_vo_port_;
@@ -40,8 +44,15 @@ namespace stk
         xine_event_queue_t* xine_event_queue_;
 
     public:
-        static xine_panel::ptr create(container::ptr parent, const rectangle& _rect);
+        static xine_panel::ptr create(container::ptr parent, const rectangle& _rect, 
+                const std::string& config="/usr/local/share/libstk/xine_config");
         ~xine_panel();
+
+        /********** EVENT HANDLER INTERFACE **********/
+        virtual void handle_event(event::ptr e);
+        /********** END EVENT HANDLER INTERFACE **********/
+
+        /********** XINE PANEL INTERFACE **********/
         void open(const std::string& filename);
         void play(int position, int millis);
         void pause();     
@@ -50,6 +61,7 @@ namespace stk
         int speed();
         void faster();
         void slower();
+        /********** END XINE PANEL INTERFACE **********/
     };
 
 } // namespace stk

@@ -1,6 +1,6 @@
 /**************************************************************************************************
  *     CVS $Id$
- * DESCRIPTION: Xine media panel implementation
+ * DESCRIPTION: xine media panel implementation
  *     AUTHORS: Darren Hart
  *  START DATE: 2003/Jul/21
  *
@@ -11,30 +11,33 @@
 
 #include <iostream>
 #include "libstk/xine_panel.h"
-
-// FIXME: research how we should handle this
-void xine_event_listener(void *user_data, const xine_event_t *event) {
-}
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
 
 namespace stk
 {
-    xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect)
+    xine_panel::ptr xine_panel::create(container::ptr parent, const rectangle& rect, 
+            const std::string& config)
     {
-        xine_panel::ptr new_xine_panel(new xine_panel(parent, rect));
+        xine_panel::ptr new_xine_panel(new xine_panel(parent, rect, config));
+        parent->add(new_xine_panel);
         return new_xine_panel;
     }
   
-    xine_panel::xine_panel(container::ptr parent, const rectangle& rect) :
-        widget(parent, rect)
+    xine_panel::xine_panel(container::ptr parent, const rectangle& rect, 
+            const std::string& config) : widget(parent, rect)
     {
+        INFO("constructor");
+        focusable_ = true;
+        
         xine_ = xine_new();
         // FIXME: make this configurable or set it from the configure prefix
-        xine_config_load(xine_, "/usr/local/share/libstk/xine_config");
+        xine_config_load(xine_, config.c_str());
         xine_init(xine_);
 
         // get the video and audio drivers
         INFO("creating the xine video port");
-        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void *)this);
+        xine_vo_port_ = xine_open_video_driver(xine_, "stk", XINE_VISUAL_TYPE_FB, (void*)this);
         INFO("creating the xine audio port");
         xine_ao_port_ = xine_open_audio_driver(xine_, "auto", NULL);
         //xine_gui_send_vo_data(stream, XINE_GUI_SEND_DRAWABLE_CHANGED, (void *) window[fullscreen]);
@@ -46,18 +49,164 @@ namespace stk
         INFO("creating the xine event_queue");
         xine_event_queue_ = xine_event_new_queue(xine_stream_);
         INFO("creating the xine event_listener");
-        xine_event_create_listener_thread(xine_event_queue_, xine_event_listener, NULL);
+        xine_event_create_listener_thread(xine_event_queue_, &event_listener_wrapper, (void*)this);
     }
       
     xine_panel::~xine_panel()
     {
-        INFO("xine cleanup");
+        INFO("destructor");
         xine_close(xine_stream_);
         xine_event_dispose_queue(xine_event_queue_);
         xine_dispose(xine_stream_);
         xine_close_audio_driver(xine_, xine_ao_port_);
+        INFO("  close_video_driver");
         xine_close_video_driver(xine_, xine_vo_port_);
+        INFO("  exit");
         xine_exit(xine_);
+        INFO("  xine cleanup done");
+    }
+
+    void xine_panel::handle_event(event::ptr e)
+    {
+        switch(e->type())
+        {
+        // don't let widget::handle_event call redraw 
+        // (it causes our parent to draw over our video output)
+        case event::focus:
+            focused_ = true;
+            return;
+            break;
+        case event::un_focus:
+            focused_ = false;
+            return;
+            break;
+        case event::mouse_enter:
+            hover_ = true;
+            return;
+            break;
+        case event::mouse_leave:
+            hover_ = false;
+            return;
+            break;
+        case event::key_up:
+        {
+            key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+            switch ( ke->fn_key() )
+            {
+            case key_enter:
+                INFO("enter released");
+                return;
+                break;
+            }
+            break; // key_up
+        }
+        case event::key_down:
+        {
+            key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+            switch (ke->fn_key())
+            {
+            // FIXME: use a method to send these events to the xine engine
+            case key_enter:
+                xine_event_t xine_event;
+                xine_event.type = XINE_EVENT_INPUT_SELECT;
+                xine_event.data_length = 0;
+                xine_event.data = NULL;
+                xine_event.stream = xine_stream_;
+                gettimeofday(&xine_event.tv, NULL);
+                xine_event_send(xine_stream_, &xine_event);
+                return;
+                break;
+            case key_uparrow:
+            {
+                xine_event_t xine_event;
+                xine_event.type = XINE_EVENT_INPUT_UP;
+                xine_event.data_length = 0;
+                xine_event.data = NULL;
+                xine_event.stream = xine_stream_;
+                gettimeofday(&xine_event.tv, NULL);
+                xine_event_send(xine_stream_, &xine_event);
+                return;
+                break;
+            }
+            case key_downarrow:
+            {
+                xine_event_t xine_event;
+                xine_event.type = XINE_EVENT_INPUT_DOWN;
+                xine_event.data_length = 0;
+                xine_event.data = NULL;
+                xine_event.stream = xine_stream_;
+                gettimeofday(&xine_event.tv, NULL);
+                xine_event_send(xine_stream_, &xine_event);
+                return;
+                break;
+            }
+            case key_rightarrow:
+            {
+                xine_event_t xine_event;
+                xine_event.type = XINE_EVENT_INPUT_RIGHT;
+                xine_event.data_length = 0;
+                xine_event.data = NULL;
+                xine_event.stream = xine_stream_;
+                gettimeofday(&xine_event.tv, NULL);
+                xine_event_send(xine_stream_, &xine_event);
+                return;
+                break;
+            }
+            case key_leftarrow:
+            {
+                xine_event_t xine_event;
+                xine_event.type = XINE_EVENT_INPUT_LEFT;
+                xine_event.data_length = 0;
+                xine_event.data = NULL;
+                xine_event.stream = xine_stream_;
+                gettimeofday(&xine_event.tv, NULL);
+                xine_event_send(xine_stream_, &xine_event);
+                return;
+                break;
+            }
+            } // end switch (ke->fn_key())
+            break; // key_down
+        }
+        case event::mouse_down:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+            INFO("mouse button " << me->button() << " pressed");
+            return;
+            break; // mouse_down
+        }
+        case event::mouse_up:
+        {
+            mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+            INFO("mouse button " << me->button() << " released");
+            return;
+            break; // mouse_up
+        }
+        } // end switch
+        // if we haven't handled it, try the defaults and possibly pass it up
+        widget::handle_event(e);
+    }
+
+    void xine_panel::event_listener_wrapper(void *user_data, const xine_event_t *xine_event) 
+    {
+        xine_panel* xp = reinterpret_cast<xine_panel*>(user_data);
+        xp->event_listener(xine_event);
+    }
+
+    void xine_panel::event_listener(const xine_event_t* xine_event)
+    {
+        // FIXME: get a list of events and create corresponding signals...
+        switch(xine_event->type) { 
+        case XINE_EVENT_UI_PLAYBACK_FINISHED:
+            //running = 0;
+            INFO("XINE_EVENT_UI_PLAYBACK_FINISHED");
+            break;
+        case XINE_EVENT_PROGRESS:
+        {
+            xine_progress_data_t* pevent = (xine_progress_data_t*)xine_event->data;
+            INFO("XINE_EVENT_PROGRESS - " << pevent->description << "[" << pevent->percent << "%]");
+            break;
+        }
+        } // end switch
     }
 
     void xine_panel::open(const std::string& stream_mrl)

@@ -145,11 +145,7 @@ namespace stk
         iter = children_.begin();
         while (iter != children_.end() )
         {
-            if ((*iter)->focusable()) 
-            {
-                INFO("  found a focusable widget");
-                return *iter;
-            }
+            if ((*iter)->focusable()) return *iter;
             iter++;
         }
         // no focusable widgets, so return an empty pointer        
