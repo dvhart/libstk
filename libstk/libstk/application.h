@@ -28,7 +28,8 @@ namespace stk
 			application( /* what parameters */ );
 			~application();
 
-			void run();
+			int run();
+			void quit();
 			
 			// weak_ptrs?
 			boost::weak_ptr<state> current_state();

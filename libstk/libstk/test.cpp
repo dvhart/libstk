@@ -29,7 +29,7 @@ void sig_test()
 
 int main(int argc,char* arv[])
 {
-	stk::app test;
+	stk::application test_app;
 	stk::state test_state(ptr_to_stack(&test));
 	/*App test_app(new stk::app);  // (new stk::app) as an argument is weird
 	State test_state(new stk::state(test_app));
