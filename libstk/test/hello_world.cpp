@@ -11,16 +11,11 @@
  *****************************************************************************/
 
 #include <iostream>
-
-// libstk headers (FIXME: reduce this list, i.e. stk.h)
-#include "libstk/application.h"
-#include "libstk/exceptions.h"
-#include "libstk/label.h"
-#include "libstk/state.h"
+#include <libstk/stk.h>
 
 // backend specific headers
-#include "libstk/event_system_sdl.h"
-#include "libstk/surface_sdl.h"
+#include <libstk/event_system_sdl.h>
+#include <libstk/surface_sdl.h>
 
 using namespace stk;
 

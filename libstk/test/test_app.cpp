@@ -11,31 +11,38 @@
  *****************************************************************************/
 
 #include <iostream>
+
+// included in stk.h
+/*
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 #include <boost/bind.hpp>
 
-#include <boost/function.hpp> // testing hotkey
+#include <libstk/application.h>
+#include <libstk/button.h>
+#include <libstk/event_system.h>
+#include <libstk/exceptions.h>
+#include <libstk/image.h>
+#include <libstk/image_panel.h>
+#include <libstk/label.h>
+#include <libstk/list.h>
+#include <libstk/list_item.h>
+#include <libstk/progress.h>
+#include <libstk/spinner.h>
+#include <libstk/scroll_box.h>
+#include <libstk/state.h>
+#include <libstk/surface.h>
+#include <libstk/timer.h>
+#include <libstk/viewport.h>
+*/
 
-#include "libstk/application.h"
-#include "libstk/button.h"
-#include "libstk/event_system.h"
-#include "libstk/event_system_sdl.h"
-#include "libstk/exceptions.h"
-#include "libstk/image.h"
-#include "libstk/image_panel.h"
-#include "libstk/label.h"
-#include "libstk/list.h"
-#include "libstk/list_item.h"
-#include "libstk/progress.h"
-#include "libstk/spinner.h"
-#include "libstk/scroll_box.h"
-#include "libstk/state.h"
-#include "libstk/surface.h"
-#include "libstk/surface_sdl.h"
-#include "libstk/timer.h"
-#include "libstk/viewport.h"
+// stk common include
+#include <libstk/stk.h>
+
+// select our backend
+#include <libstk/event_system_sdl.h>
+#include <libstk/surface_sdl.h>
 
 using namespace stk;
 using std::cout;

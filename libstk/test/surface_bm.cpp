@@ -15,10 +15,8 @@
 
 #include <iostream>
 #include <SDL/SDL.h>
-#include "libstk/exceptions.h"
-#include "libstk/surface.h"
-#include "libstk/surface_sdl.h"
-#include "libstk/color_manager.h"
+#include <libstk/stk.h>
+#include <libstk/surface_sdl.h>
 
 using namespace stk;
 using std::cout;
