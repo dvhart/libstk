@@ -3,7 +3,8 @@ if TESTS
 else
     test_dir = 
 endif
-SUBDIRS = libstk $(test_dir)
+# $(test_dir)
+SUBDIRS = libstk test 
 
 DIST_SUBDIRS= libstk test
 

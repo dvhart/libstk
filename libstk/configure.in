@@ -24,8 +24,8 @@ AC_CHECK_HEADER(boost/optional.hpp, , [AC_MSG_ERROR( *** boost/optional.hpp not 
 dnl FIXME make this use AC_CHECK_HEADERS and update the event_system/producers accordingly
 dnl AC_CHECK_HEADER(boost/thread/mutex.hpp, , [AC_MSG_ERROR( *** boost/thread/mutex.hpp not found - build will fail)])
 
-AC_CHECK_LIB(boost_signals, main, , [AC_MSG_ERROR( *** boost_signals library not found - build will fail)])
-AC_CHECK_LIB(boost_thread, main, , [AC_MSG_ERROR( *** boost_thread library not found - build will fail)])
+AC_CHECK_LIB(boost_signals-gcc-mt-1_31, main, , [AC_MSG_ERROR( *** boost_signals library not found - build will fail)])
+AC_CHECK_LIB(boost_thread-gcc-mt-1_31, main, , [AC_MSG_ERROR( *** boost_thread library not found - build will fail)])
 AC_LANG_RESTORE
 
 
@@ -191,7 +191,7 @@ AC_SUBST(prefix)
 
 AM_CONFIG_HEADER(libstk/config.h)
 
-CXXFLAGS="$CXXFLAGS -Wall -W -Wno-switch -pedantic -O3"
+CXXFLAGS="$CXXFLAGS -Wall -W -Wno-switch -pedantic -O3 -pthread"
 
 AC_OUTPUT([
 Makefile
