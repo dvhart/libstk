@@ -14,13 +14,11 @@
 #ifndef STK_TIMER
 #define STK_TIMER
 
-#include <ctime>
-#include <sys/time.h>
-
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
 #include "libstk/combiners.h"
+#include "libstk/time_value.h"
 
 namespace stk
 {
@@ -43,9 +41,8 @@ namespace stk
 			/// Whether or not to reset the counter after a ready state
 			bool repeat_;
 			int counter_;
-
-			/// todo: temporary - move to arch specific file and use a time abstraction
-			struct timeval last_tv_;	
+			/// The last time it was updated
+			time_value last_tv_;	
 			
 		protected:
 

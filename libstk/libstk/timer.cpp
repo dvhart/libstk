@@ -12,9 +12,10 @@
 
 #include "libstk/timer.h"
 #include "libstk/exceptions.h"
+#include "libstk/time_value.h"
 
-#include <ctime>
-#include <sys/time.h> // this is POSIX only
+/// FIXME: make this configured at compile time
+#include "libstk/posix_time.h"
 
 namespace stk
 {
@@ -27,7 +28,7 @@ namespace stk
 	timer::timer(int interval, bool repeat)
 		: interval_(interval), counter_(interval), repeat_(repeat)
 	{
-		gettimeofday(&last_tv_, NULL);
+		last_tv_ = get_current_time_value();
 	}
 
 	timer::~timer()
@@ -36,17 +37,9 @@ namespace stk
 
 	bool timer::update()
 	{
-		struct timeval cur_tv;
-		gettimeofday(&cur_tv, NULL);
-
-		// WRITEME
 		// decrement counter_ by elapsed millis since last time ready() was called
-		int millis = 0;
-		millis += cur_tv.tv_sec*1000;
-		millis += cur_tv.tv_usec/1000;
-		millis -= last_tv_.tv_sec*1000;
-		millis -= last_tv_.tv_usec/1000;
-		counter_ -= millis;
+		time_value cur_tv = get_current_time_value();
+		counter_ -= (cur_tv - last_tv_).millis();
 		last_tv_ = cur_tv;
 		
 		if (counter_ <= 0)

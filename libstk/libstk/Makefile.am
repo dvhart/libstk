@@ -27,6 +27,7 @@ libstk_la_SOURCES =\
 	combo.h combo.cpp \
 	list_item.h list_item.cpp \
 	button.h button.cpp \
+	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	image_panel.h image_panel.cpp \
 	image.h image.cpp \
@@ -36,6 +37,7 @@ libstk_la_SOURCES =\
 	font_manager.h font_manager.cpp \
 	exceptions.h scroll_model.h scroll_model.cpp \
 	theme.h theme.cpp \
+	time_value.h \
 	timer.h timer.cpp \
 	tribal_theme.h tribal_theme.cpp \
 	scroll_bar.h scroll_bar.cpp 
@@ -52,8 +54,9 @@ library_include_HEADERS= \
 	drawable.h       glyph.h             component.h    widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
-	image_panel.h spinner.h scroll_model.h theme.h color_manager.h \
-	timer.h surface_impl.h
+	image_panel.h    spinner.h           scroll_model.h theme.h \
+	color_manager.h  timer.h             surface_impl.h time_value.h \
+	posix_time.h
 
 
 bin_PROGRAMS       = test_app surface_bm
