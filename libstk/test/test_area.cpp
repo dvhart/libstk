@@ -43,11 +43,14 @@ int main(int argc, char* argv[])
 
         
         text_area::ptr test_area = text_area::create(test_state, std::wstring(L"Hello World\nthisisareallylonglonglonglonglongstring\nHello World"), rectangle(30, 30, 180, 80));
+
+        button::ptr test_button_F1 = button::create(test_state, L"Quit", 
+                rectangle(30, 300, 100, 30));
+        test_button_F1->on_release.connect(boost::function<bool()>(
+                    (boost::bind(&application::quit, app.get()), true)));
         
-        INFO("hello_world - creating timer to quit after 15 seconds");
-        timer::ptr quit_timer = timer::create(15000, false);
-        quit_timer->on_timer.connect(boost::function<bool()>((boost::bind(&application::quit, app.get()), true)));
-        app->add_timer(quit_timer);
+        button::ptr test_button_F2 = button::create(test_state, L"F2", 
+                rectangle(10, 400, 100, 30));
 
         // run the program
         retval = app->run();

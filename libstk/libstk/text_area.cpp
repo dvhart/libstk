@@ -51,6 +51,7 @@ namespace stk
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
             unsigned int sel_min = MIN(selection_end_, selection_start_);
             unsigned int sel_width = abs(selection_end_-selection_start_);
+            unsigned int current_pos, new_pos;//for up and down
             switch ( ke->fn_key() )
             {
             case key_backspace:
@@ -89,7 +90,14 @@ namespace stk
                 return;
                 break;
             case key_enter:
+                if (selection_end_ != selection_start_)
+                {
+                    text_.erase(sel_min, sel_width);
+                    selection_start_ = selection_end_ = sel_min;
+                }
+                text_.insert(selection_end_, L"\n");
                 redraw(rect());
+                on_change(text_);
                 return;
                 break;
             case key_leftarrow:
@@ -102,6 +110,31 @@ namespace stk
                 if (selection_end_ < text_.size()) selection_end_++;
                 if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
                 redraw(rect());
+                return;
+                break;
+            case key_uparrow:
+                if (line_ == 0) //can't go up any more, ignore
+                {    
+                    selection_end_ = 0;
+                }
+                else
+                {
+                    //position of cursor on current line
+                    current_pos = selection_end_ - line_start_position(line_);
+                    new_pos = MIN(chars_in_line(line_ - 1), current_pos);
+                    selection_end_ = line_start_position(line_ - 1) + new_pos;
+                }
+                if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
+                redraw(rect());
+                return;
+                break;
+            case key_downarrow:
+                //position of cursor on current line
+                current_pos = selection_end_ - line_start_position(line_);
+                new_pos = MIN(chars_in_line(line_ + 1), current_pos);
+                selection_end_ = line_start_position(line_ + 1) + new_pos;
+                if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
+                redraw(rect());                
                 return;
                 break;
             }

@@ -15,8 +15,6 @@ Scrollbars - Marc to finish
 Scrollbox - Marc to finish
 Combo Box - Darren to write
 Edit Box (could be prettier, setting selection via API needed)
-Text Area - simple, no line break strategy, just \n and spaces, editable parameter and scroll model
-          - wrap visually, don't modify content
 Markup Area (simple html renderer ?)
 Surface blitting / locking / creation (from app surface ?) - YES
 surface: finish locking and add pixel_format routine
@@ -48,6 +46,7 @@ carter: Image (png loader, own surface, blit)
 dvhart: added multiselect to list
 dvhart: added override_return for bool(void) signals (still need support for one argument signals)
 dvhart: added xine_panel (some memory management work still needed)
+cslade: added a text area, and another test app (test_area) to test the text_area
 
 DOCUMENTATION
 =============

@@ -614,7 +614,6 @@ namespace stk
             }
         }
 
-        // FIXME: I think we may be off by one in the rect draw/fill routines
         // draw the label for all states
         surface->gc(gc);
         surface->fill_rect(interior_rect);
@@ -622,90 +621,240 @@ namespace stk
         if (pressed_) surface->draw_rect(pressed_rect);
         surface->draw_rect(outline_rect);
 
-        // cursor and selection calculations
-        /*int sel_min = MIN(selection_start_, selection_end_);
-        std::wstring presel_str = text_.substr(0, sel_min);
-        std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
-        int sel_x = interior_rect.x1() + arial_14->draw_len(presel_str);
-        int sel_width = arial_14->draw_len(sel_str);
-        int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;*/
-
-        // draw the selection
-        /*if (selection_start_ != selection_end_)
-        {
-            // yellow selection
-            if (focused_)
-                gc->fill_color(color_manager::get()->get_color(
-                            color_properties(fill_color_normal_str, surface)));
-            // light blue selection
-            else
-                gc->fill_color(color_manager::get()->get_color(
-                            color_properties(fill_color_focused_str, surface)));
-
-            surface->fill_rect(rectangle(sel_x, 3, sel_width, height()-6));
-        }
-        // draw the cursor if there is no selection and we are focused
-        else if (focused_) 
-        {
-            surface->draw_line(cursor_x, 3, cursor_x, height()-3);
-        }*/
-        
-        // draw the string text_
+        // draw each line
+        //variables to keep track of the lines
         int ypos = 3;
         bool cont = true;
         std::wstring line_str;
         std::wstring rest_of_text = text_;
-        int line_width, nline_width;
+        int line_width, nline_width, new_line;
         rectangle line_rect;
-        int numChars = 0;
+        int num_chars = 0;//counts the number of characters printed
+        //variables for the selection/cursor
+        int sel_min = MIN(selection_start_, selection_end_);
+        int sel_max = MAX(selection_start_, selection_end_);
+        int line_num = 0;
         while (cont) {
             line_rect = rectangle(3, ypos, width()-6, arial_14->height()+3);
             //parse out the next line
-            nline_width = rest_of_text.find('\n');
+            nline_width = rest_of_text.find(L'\n');
             line_width = arial_14->chars_in_rect(line_rect, rest_of_text);
             if (nline_width != -1 && (nline_width < line_width)) 
             {//if there is a new line in the line
                 line_str = rest_of_text.substr(0, nline_width);
+                
                 rest_of_text = rest_of_text.substr(nline_width+1, 
                         rest_of_text.length()-nline_width-1);
+                new_line = 1;//used to add in the new line character
             }
             else 
             {//no new line, just print it
-                line_width = arial_14->chars_in_rect(line_rect, rest_of_text);
                 line_str = rest_of_text.substr(0, line_width);
                 rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
+                new_line = 0;
             }
             
             //do cursor or selection
             if (selection_start_ == selection_end_ && focused_)
-            {//nothing selected print cursor and we are focused
-                if (selection_start_ > numChars && selection_start_ <= (numChars+line_str.length()))
+            {//nothing selected and we are focused -- print cursor
+                if (selection_start_ >= num_chars && selection_start_ <= (num_chars+(int)line_str.length()))
                 {//cursor is on this line
-                    int chars_before_cursor = selection_start_ - numChars;
+                    int chars_before_cursor = selection_start_ - num_chars;
                     int cursor_x = arial_14->draw_len(line_str.substr(0,chars_before_cursor));
                     //draw cursor
                     surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
                             ,line_rect.x1()+cursor_x,line_rect.y2());
+                    line_ = line_num;//to remember where the cursor is
 
                 }
+            } else if (selection_start_ != selection_end_)
+            {//draw selection
+                //yellow selection
+                if (focused_)
+                    gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
+                // light blue selection
+                else
+                    gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
+                if ( (sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()))
+                    && (sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length())) ) 
+                {//selection starts and ends on this line
+                    int sel_start = sel_min - num_chars;
+                    int sel_end = sel_max - num_chars;
+                    
+                    int start_x = arial_14->draw_len( line_str.substr(0, sel_start) );
+                    int end_x = arial_14->draw_len( line_str.substr(0, sel_end) );
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
+                    surface->fill_rect(sel_rect);
+                    line_ = line_num;
+                } else if  ( sel_min >= num_chars && sel_min <= (num_chars+(int)line_str.length()) ) 
+                {//selection starts on this line
+                    int sel_start = sel_min - num_chars;
+                    int start_x = arial_14->draw_len ( line_str.substr(0, sel_start) );
+                    int end_x = arial_14->draw_len (line_str);//to end of text
+                    rectangle sel_rect = rectangle(line_rect.x1()+start_x, line_rect.y1(), end_x - start_x, arial_14->height()+3);
+                    surface->fill_rect(sel_rect);
+                    if (selection_end_ == sel_min) line_ = line_num;//alway use selection_end_ to determine current line
+                } else if ( sel_max >= num_chars && sel_max <= (num_chars+(int)line_str.length()) )
+                {//selection ends of this line
+                    int sel_end = sel_max - num_chars;
+                    
+                    int end_x = arial_14->draw_len ( line_str.substr(0, sel_end) );
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
+                    surface->fill_rect(sel_rect);
+                    if (selection_end_ ==  sel_max) line_ = line_num;
+                } else if ( sel_min < num_chars  && sel_max > num_chars+((int)line_str.length()) )
+                {//selection covers line
+                    int end_x = arial_14->draw_len(line_str);
+                    rectangle sel_rect = rectangle(line_rect.x1(), line_rect.y1(), end_x, arial_14->height()+3);
+                    surface->fill_rect(sel_rect);
+                }
             }
-
-            numChars+=line_str.length();
+            num_chars += line_str.length()+new_line;
             //draw line
             surface->draw_text(line_rect, line_str );
             //move to next line
             ypos += arial_14->height()+3;
+            line_num++;
+            //decide if you need to stop, past end of rectangle
             if (ypos+arial_14->height()+3 >= interior_rect.y2())
+                cont = false;
+            //out of text
+            if (rest_of_text.length() == 0)
                 cont = false;
         }
         INFO("drawing");
     }
     int text_area::region(int x, int y)
+    {//finds where in the text the x,y is
+        //create font
+        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        //pass through text to find the position
+        int ypos = (y1()+ 3) + (arial_14->height() + 3);//the start of y plus a line
+        bool cont = true;
+        std::wstring line_str;
+        std::wstring rest_of_text = text_;
+        int line_width, nline_width, new_line;
+        int num_chars = 0;
+        while (cont) 
+        {
+            //parse out the next line
+            nline_width = rest_of_text.find('\n');
+            line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
+            if (nline_width != -1 && (nline_width < line_width)) 
+            {//if there is a new line in the line
+                line_str = rest_of_text.substr(0, nline_width);
+                rest_of_text = rest_of_text.substr(nline_width+1, 
+                        rest_of_text.length()-nline_width-1);
+                new_line = 1;//used to add in the new line character to the total characters
+            }
+            else 
+            {//no new line, just get the width
+                line_str = rest_of_text.substr(0, line_width);
+                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
+                new_line = 0;
+            }
+            //if is on this line
+            if (y <= ypos) {
+                return num_chars + arial_14->chars_in_rect(rectangle(3, 0, x-x1(), arial_14->height()+6), line_str);
+            }
+            num_chars+=line_str.length()+new_line;
+            //move to next line
+            ypos += arial_14->height()+3;
+            //no more text
+            if (rest_of_text.length() == 0)
+                cont = false;
+        }
+        // trying to get the last character, just return the last character
+        INFO("here again");
+        return text_.length();
+    }
+    int text_area::line_start_position(int line)
     {
         font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
-        return arial_14->chars_in_rect(rectangle(3, 0, x-x1(), y2()-y1()), text_);
+        //pass through text to find the position
+        bool cont = true;
+        std::wstring line_str;
+        std::wstring rest_of_text = text_;
+        int line_width, nline_width, new_line;
+        int num_chars = 0;
+        int line_num = 0; 
+        while (cont) 
+        {
+            //parse out the next line
+            nline_width = rest_of_text.find(L'\n');
+            line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
+            if (nline_width != -1 && (nline_width < line_width)) 
+            {//if there is a new line in the line
+                line_str = rest_of_text.substr(0, nline_width);
+                rest_of_text = rest_of_text.substr(nline_width+1, 
+                        rest_of_text.length()-nline_width-1);
+                new_line = 1;//used to add in the new line character to the total characters
+            }
+            else 
+            {//no new line, just get the width
+                line_str = rest_of_text.substr(0, line_width);
+                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
+                new_line = 0;
+            }
+            //if is on this line
+            if (line_num == line)
+                return num_chars;
+            
+            num_chars+=line_str.length()+new_line;
+            //move to next line
+            line_num ++;
+            //stop if no more text
+            if (rest_of_text.length() == 0)
+                cont = false;
+        }
+        
+        return text_.length();
     }
+    int text_area::chars_in_line(int line)
+    {
+        font::ptr arial_14 = font_manager::get()->get_font(font_properties("Arial.ttf",14));
+        //pass through text to find the position
+        bool cont = true;
+        std::wstring line_str;
+        std::wstring rest_of_text = text_;
+        int line_width, nline_width, new_line;
+        int num_chars = 0;
+        int line_num = 0; 
+        while (cont) 
+        {
+            //parse out the next line
+            nline_width = rest_of_text.find(L'\n');
+            line_width = arial_14->chars_in_rect(rectangle(3, 0, x2()-x1(), arial_14->height()+6), rest_of_text);
+            if (nline_width != -1 && (nline_width < line_width)) 
+            {//if there is a new line in the line
+                line_str = rest_of_text.substr(0, nline_width);
+                rest_of_text = rest_of_text.substr(nline_width+1, 
+                        rest_of_text.length()-nline_width-1);
+                new_line = 1;//used to add in the new line character to the total characters
+            }
+            else 
+            {//no new line, just get the width
+                line_str = rest_of_text.substr(0, line_width);
+                rest_of_text = rest_of_text.substr(line_width, rest_of_text.length()-line_width);
+                new_line = 0;
+            }
+            //if is on this line
+            if (line_num == line)
+                return line_str.length();
 
+            num_chars+=line_str.length()+new_line;
+            //move to next line
+            line_num ++;
+            //stop if no more text
+            if (rest_of_text.length() == 0)
+                cont = false;
+        }
+        
+        return 0;
+
+    }
     
     void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
     {

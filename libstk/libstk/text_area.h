@@ -30,11 +30,16 @@ namespace stk
     private:
         /// return the character index under the x, y coordinate
         int region(int x, int y);
+        /// return the starting position of line
+        int line_start_position(int line);
+        /// return the number of characters in line
+        int chars_in_line(int line);
 
         std::wstring text_;
         int selection_start_;
         int selection_end_;
         bool pressed_; //used to tell if selecting
+        int line_; //used to store the line of the cursor
 
     protected:
         text_area(container::ptr parent, const std::wstring& text, const rectangle& rect);
