@@ -1,8 +1,9 @@
 #ifndef STK_C_WRAPPER_H
 #define STK_C_WRAPPER_H
 
-#define STK_YV12_OVERLAY 0x32315659 
-#define STK_YUY2_OVERLAY 0x32595559
+// move these to a common file (atm also defined in overlay.h)
+#define STK_FORMAT_YV12 0x32315659 
+#define STK_FORMAT_YUY2 0x32595559
 
 #ifdef __cplusplus
 extern "C" {

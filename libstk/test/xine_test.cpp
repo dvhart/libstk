@@ -13,9 +13,21 @@
 #include <SDL/SDL.h> // temporary: to get sdl overlay formats, remove once we define our own
 #include <libstk/stk.h>
 
-// backend specific headers
+// backend specific includes (we select it dynamically, so include them all if built)
+#ifdef HAVE_SDL
 #include <libstk/event_producer_sdl.h>
 #include <libstk/surface_sdl.h>
+#endif
+#ifdef HAVE_DFB
+#include <libstk/surface_dfb.h>
+// what would be a good default backend ?
+#endif
+#ifdef HAVE_FBDEV
+#include <libstk/surface_fbdev.h>
+// what would be a good default backend ?
+#endif
+// FIXME: should this be configurable also ?  --enable-elotouch ?
+#include <libstk/event_producer_elotouch.h>
 
 // xine headers
 #include <xine.h>
@@ -32,11 +44,48 @@ int main(int argc, char* argv[])
 
     try
     {
-        // create the event producer
-        // it is automatically registered with the primary event_system
-        event_producer_sdl::ptr event_prod = event_producer_sdl::create();
-        // create the primary surface
-        surface::ptr screen = surface_sdl::create(rectangle(0, 0, 1024, 768));
+        std::string surface_type;
+        if (argc < 2)
+        {
+            throw error_message_exception("Usage: test_app sdl|dfb|fbdev");
+        }
+        else
+        {
+            surface_type = std::string(argv[1]);
+        }
+        
+        // select the surface and event system
+        cout << "test_app - selecting surface and event system" << endl;
+        surface::ptr screen;
+        event_producer::ptr ep;
+#ifdef HAVE_SDL
+        if (surface_type == "sdl")
+        {
+            screen = surface_sdl::create(rectangle(0, 0, 640, 480));
+            ep = event_producer_sdl::create();
+        }
+#endif
+#ifdef HAVE_DFB
+        else if (surface_type == "dfb")
+        {
+            screen = surface_dfb::create(rectangle(0, 0, 640, 480));
+            // FIXME: use something a bit more generic for the test app
+            ep = event_producer_elotouch::create("/dev/tts/0");
+        }
+#endif
+#ifdef HAVE_FBDEV
+#ifdef HAVE_SDL // needed for the event_system
+        else if (surface_type == "fbdev")
+        {
+            screen = surface_dfb::create(rectangle(0, 0, 640, 480));
+            ep = event_producer_sdl::create();
+        }
+#endif
+#endif
+        else
+            throw error_message_exception("Unknown surface type");
+
+        
         // create the application
         application::ptr app = application::create(screen);
 
@@ -83,6 +132,13 @@ int main(int argc, char* argv[])
             return 1;
         }
 
+        // add a timer (quit after 30 seconds)
+        cout << "xine_test - creating timer to quit after 30 seconds" << endl;
+        timer::ptr quit_timer = timer::create(30000, true); // every 20 seconds
+        quit_timer->on_timer.connect( boost::bind(&stk::application::quit, app.get()));
+        app->add_timer(quit_timer);
+
+        
         cout << "running the libstk app" << endl;
         // run the program
         retval = app->run();

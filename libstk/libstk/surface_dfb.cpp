@@ -12,6 +12,7 @@
 #include "libstk/surface_dfb.h"
 #include "libstk/backend_dfb.h"
 #include "libstk/overlay.h"
+#include "libstk/overlay_dfb.h"
 #include "logging.h"
 #include <iostream>
 
@@ -139,8 +140,8 @@ namespace stk
 
     overlay::ptr surface_dfb::create_overlay(int width, int height, int format)
     {
-        cout << "surface_dfb::create_overlay() - not implemented" << endl;
-        return overlay::ptr();
+        overlay::ptr new_overlay = overlay_dfb::create(width, height, format);
+        return new_overlay;
     }
     
 

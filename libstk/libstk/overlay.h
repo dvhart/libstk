@@ -21,6 +21,10 @@
 #include <libstk/surface.h>
 #include <libstk/stk_types.h>
 
+// supported pixel formats
+#define STK_FORMAT_YV12 0x32315659 
+#define STK_FORMAT_YUY2 0x32595559
+
 using std::cout;
 using std::endl;
 

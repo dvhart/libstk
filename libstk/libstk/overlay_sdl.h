@@ -35,16 +35,13 @@ namespace stk
         typedef boost::weak_ptr<overlay_sdl> weak_ptr;
 
     private:
+        SDL_Overlay* overlay_impl_;
 
-    protected:
         overlay_sdl(int width, int height, int format, SDL_Surface* sdl_surface)
         {
             cout << "overlay_sdl::overlay_sdl(rect, format, surface)" << endl;
             overlay_impl_ = SDL_CreateYUVOverlay(width, height, format, sdl_surface);
         }
-
-        // temp data (same as SDL structure)
-        SDL_Overlay* overlay_impl_;
 
     public:
         static overlay_sdl::ptr create(int width, int height, int format, SDL_Surface* sdl_surface)

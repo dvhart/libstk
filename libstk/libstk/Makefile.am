@@ -63,6 +63,8 @@ libstk_la_SOURCES =\
 	mouse_event.h mouse_event.cpp \
 	numeric_spinner.h numeric_spinner.cpp \
 	overlay.h \
+	overlay_dfb.h\
+	overlay_sdl.h \
 	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	rectangle.h rectangle.cpp \
@@ -103,7 +105,8 @@ library_include_HEADERS= \
 	event.h          progress.h 	     scroll_box.h   event_handler.h \
 	image_panel.h    spinner.h           scroll_model.h theme.h \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
-	posix_time.h     viewport.h          hotkey.h       overlay.h \
+	posix_time.h     viewport.h          hotkey.h       \
+	overlay.h        overlay_sdl.h       overlay_dfb.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
 	event_producer_elotouch.h            spreadsheet.h  stk_c_wrapper.h \
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
