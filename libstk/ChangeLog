@@ -1,4 +1,110 @@
-2003-12-14 18:07  dvhart
+2004-03-15 17:51  carter
+
+	* Makefile.am, configure.in: Made libstk compatible with new Boost
+	  release
+
+2004-02-08 14:58  carter
+
+	* libstk/edit_box.cpp: Fixed a bug in edit_box::handle event which
+	  let the edit_box stay in hover mode after the mouse left
+
+2004-01-08 17:33  carter
+
+	* libstk/label.cpp: Added missing initialisation value for
+	  horizontal algnment
+
+2004-01-08 17:18  carter
+
+	* libstk/: label.h, tribal_theme.cpp: Added alignment properties to
+	  label
+
+2004-01-08 17:18  carter
+
+	* libstk/surface_dfb.cpp: Added selective alpha blending capability
+	  to the dfb backend
+
+2004-01-08 17:16  carter
+
+	* libstk/graphics_context.h: Added the possibility to align text
+	  output horizontally
+
+2004-01-08 17:11  carter
+
+	* libstk/: font.cpp, font.h, surface_impl.h, stk_types.h: Added the
+	  possibility to draw aligned text
+
+2004-01-07 16:51  carter
+
+	* libstk/: edit_box.cpp, edit_box.h, tribal_theme.cpp: Added the
+	  possibility to hide the entered text of an edit_box (for password
+	  entry)
+
+2004-01-05 16:54  carter
+
+	* libstk/image.cpp: Made alpha blended drawing of the image to the
+	  drawing the default (Imo the users expect this)
+
+2004-01-05 16:31  carter
+
+	* libstk/: image.cpp, surface_dfb.cpp: Made Image and surface_dfb
+	  use the newly introduced alpha blending flag in graphics_context
+
+2004-01-05 16:27  carter
+
+	* libstk/application.cpp: fixed syntactic  error introduced by last
+	  patch
+
+2004-01-05 16:23  carter
+
+	* libstk/graphics_context.h: added the option to disable alpha
+	  blending with the background when drawing
+
+2004-01-05 16:18  carter
+
+	* libstk/application.cpp: Fixed a bug which lead to a crash if the
+	  current state was set before entering the mainloop (which is
+	  quite usefull to set the initial state by the user)
+
+2003-12-17 18:45  dvhart
+
+	* libstk/xine_panel.cpp: error testing of xine drivers and stream
+	  creation
+
+2003-12-16 20:29  cslade
+
+	* libstk/Makefile.am: I added the read_dir.h to the library
+
+2003-12-15 19:08  vhmauery
+
+	* libstk/application.cpp, libstk/application.h,
+	  libstk/container.cpp, libstk/text_area.h,
+	  libstk/tribal_theme.cpp, libstk/widget.cpp, libstk/widget.h,
+	  test/test_app.cpp: added visible and modal properties to widgets
+
+2003-12-15 05:55  dvhart
+
+	* libstk/progress.cpp: actually build the label after updating the
+	  format in progress::label
+
+2003-12-15 05:49  dvhart
+
+	* libstk/: progress.cpp, progress.h: redraw after label update in
+	  progress
+
+2003-12-15 05:19  dvhart
+
+	* TODO: TODO update
+
+2003-12-15 05:05  dvhart
+
+	* libstk/xine_panel.h: added more fullscreen getters/setters to
+	  xine_panel... needs some cleaning up
+
+2003-12-15 02:08  dvhart
+
+	* ChangeLog: updated changelog
+
+2003-12-15 02:07  dvhart
 
 	* ChangeLog, TODO, libstk/list_item.cpp, libstk/progress.h,
 	  libstk/surface_sdl.cpp, libstk/widget.cpp, libstk/xine_panel.cpp,
@@ -8,196 +114,196 @@
 	  where the video will go (ugly HACK to work with XV) added label()
 	  command to progress
 
-2003-12-13 09:32  carter
+2003-12-13 17:32  carter
 
 	* libstk/edit_box.h: Fixed stupid API, (passed an Reference where a
 	  Const reference is sufficient)
 
-2003-12-13 06:27  carter
+2003-12-13 14:27  carter
 
 	* libstk/scroll_box.cpp: Fixed the bug reported by christopher
 	  slade.
 
-2003-12-12 18:09  dvhart
+2003-12-13 02:09  dvhart
 
 	* libstk/application.cpp, libstk/state.h, test/xine_test.cpp: added
 	  on_enter|leave events to state and call them when changing states
 	  in application
 
-2003-12-12 15:02  dvhart
+2003-12-12 23:02  dvhart
 
 	* libstk/: event_producer_sdl.cpp, keycode.h: added modifier key
 	  mapping to event_producer_sdl
 
-2003-12-12 10:41  dvhart
+2003-12-12 18:41  dvhart
 
 	* libstk/: xine_panel.cpp, xine_panel.h: added send_event routine
 	  to the xine_panel
 
-2003-12-12 08:45  dvhart
+2003-12-12 16:45  dvhart
 
 	* configure_all.sh, libstk/xine_panel.cpp, libstk/xine_panel.h:
 	  xine_panel draws a black background on draw
 
-2003-12-11 16:56  dvhart
+2003-12-12 00:56  dvhart
 
 	* ChangeLog: ChangeLog update
 
-2003-12-11 14:34  dvhart
+2003-12-11 22:34  dvhart
 
 	* libstk/list_item_userdata.h: list_item_userdata update
 
-2003-12-11 11:17  carter
+2003-12-11 19:17  carter
 
 	* libstk/tribal_theme.cpp: Made scroll_bar usable on keyboardless
 	  systems
 
-2003-12-11 11:16  carter
+2003-12-11 19:16  carter
 
 	* libstk/scroll_bar.cpp: Added Code that makes scroll_bar usable
 	  with a mouse only system
 
-2003-12-11 11:13  carter
+2003-12-11 19:13  carter
 
 	* libstk/scroll_bar.h: Added a region function to scrollbar for
 	  event handling theme interaction
 
-2003-12-11 11:12  carter
+2003-12-11 19:12  carter
 
 	* libstk/list_template.h: Fixed questionable validity check in
 	  list_template
 
-2003-12-11 11:04  carter
+2003-12-11 19:04  carter
 
 	* libstk/scroll_box.cpp: Refactored large pieces of scroll_box,
 	  made it much more efficient (before each time an item was added
 	  to a listbox, the scrollbars would be destroyed and re created!)
 
-2003-12-11 02:48  dvhart
+2003-12-11 10:48  dvhart
 
 	* libstk/xine_panel.cpp: xine_panel visualization updates
 
-2003-12-10 14:35  dvhart
+2003-12-10 22:35  dvhart
 
 	* ChangeLog, libstk/font.cpp, libstk/font_properties.cpp,
 	  libstk/font_properties.h, libstk/label.h,
 	  libstk/tribal_theme.cpp: new font_properties interface to label,
 	  each aspect of font_properties is no a boost::optional<T>
 
-2003-12-10 14:35  vhmauery
+2003-12-10 22:35  vhmauery
 
 	* libstk/: application.cpp, application.h, time_value.h, timer.cpp,
 	  timer.h: virtualized app, extended timers
 
-2003-12-07 03:38  carter
+2003-12-07 11:38  carter
 
 	* libstk/rectangle.h: Made the Rectangle class POD (removed all
 	  virtual functions)
 
-2003-12-05 16:57  cslade
+2003-12-06 00:57  cslade
 
 	* libstk/application.cpp: I fixed the remove_timer function
 
-2003-12-05 14:42  cslade
+2003-12-05 22:42  cslade
 
 	* libstk/: application.cpp, application.h: I added a remove_state
 	  in the application
 
-2003-12-04 12:13  dvhart
+2003-12-04 20:13  dvhart
 
 	* libstk/: xine_panel.cpp, xine_panel.h: preliminary visualization
 	  support in xine_panel
 
-2003-12-04 08:26  dvhart
+2003-12-04 16:26  dvhart
 
 	* libstk/: list_item.cpp, list_item.h, list_template.h,
 	  xine_panel.cpp, xine_panel.h: removed INFO statements from
 	  list_template's delegate_mouse_event list_item current(bool val)
 	  and selected(bool val) now redraw the widget as necessary
 
-2003-12-03 18:57  dvhart
+2003-12-04 02:57  dvhart
 
 	* libstk/: list_template.h, xine_panel.cpp, xine_panel.h: changed
 	  list_template current() to current_item() and made current()
 	  return the integer index for consistency, added
 	  on_playback_finished signal to the xine_panel
 
-2003-12-03 13:34  dvhart
+2003-12-03 21:34  dvhart
 
 	* libstk/: image_panel.h, tribal_theme.cpp: added default null
 	  image for image_panel::create, only draw if image_ is not null
 
-2003-12-02 23:13  dvhart
+2003-12-03 07:13  dvhart
 
 	* libstk/stk.h: added list_item_userdata to the main header stk.h
 
-2003-12-02 21:35  dvhart
+2003-12-03 05:35  dvhart
 
 	* libstk/: hotkey.h, state.cpp: added default constructor for
 	  hotkey
 
-2003-12-02 08:43  dvhart
+2003-12-02 16:43  dvhart
 
 	* ChangeLog, libstk/Makefile.am, libstk/list_item_userdata.h,
 	  libstk/list_template.h: list_item_userdata widget and multiselect
 	  option to list_template
 
-2003-12-01 09:29  cslade
+2003-12-01 17:29  cslade
 
 	* libstk/text_area.cpp, test/test_area.cpp: I fixed editable in
 	  text_area
 
-2003-11-27 05:58  carter
+2003-11-27 13:58  carter
 
 	* libstk/Makefile.am: Fixed Libjpeg linker options
 
-2003-11-27 05:45  carter
+2003-11-27 13:45  carter
 
 	* libstk/image.cpp: Fixed compilation without LIBJPEG by adding a
 	  missing semicolon
 
-2003-11-24 17:41  cslade
+2003-11-25 01:41  cslade
 
 	* libstk/timer.h: I add a set repeat function for the timer
 
-2003-11-19 17:31  cslade
+2003-11-20 01:31  cslade
 
 	* libstk/: text_area.cpp, text_area.h: I add an option in text area
 	  to make it non editable
 
-2003-11-19 14:32  cslade
+2003-11-19 22:32  cslade
 
 	* libstk/list_template.h: Fixed list so that on_update_selection
 	  gets called on a mouse event
 
-2003-11-19 10:19  dvhart
+2003-11-19 18:19  dvhart
 
 	* libstk/: mouse_event.h, spinner.cpp, widget.cpp: widget now
 	  translates mouse events back to parent coordinates before passing
 	  them up the hierarchy
 
-2003-11-14 12:47  cslade
+2003-11-14 20:47  cslade
 
 	* libstk/image.cpp: I fixed resize.
 
-2003-11-14 12:19  cslade
+2003-11-14 20:19  cslade
 
 	* libstk/image.cpp: I fixed a bug in image.cpp
 
-2003-11-14 08:21  dvhart
+2003-11-14 16:21  dvhart
 
 	* libstk/application.cpp: minor updates
 
-2003-11-13 17:01  cslade
+2003-11-14 01:01  cslade
 
 	* libstk/label.h: I put a redraw when text_ is set.
 
-2003-11-13 16:31  cslade
+2003-11-14 00:31  cslade
 
 	* libstk/list_template.h: I fixed lists so they call
 	  on_update_selection on a down arrow
 
-2003-11-13 08:41  dvhart
+2003-11-13 16:41  dvhart
 
 	* TODO, libstk/application.cpp, libstk/list_item.cpp,
 	  libstk/list_item.h, libstk/list_template.h,
@@ -206,7 +312,7 @@
 	  draw routine and fewer overridden methods in list_template,
 	  coming soon...
 
-2003-11-12 13:41  dvhart
+2003-11-12 21:41  dvhart
 
 	* TODO, libstk/container.cpp, libstk/list.h,
 	  libstk/list_template.h, libstk/mouse_event.h, libstk/point.h,
@@ -217,39 +323,39 @@
 	  libstk/xine_panel.cpp: widgets now have a rectangle instead of
 	  are a rectangle
 
-2003-11-12 11:26  dvhart
+2003-11-12 19:26  dvhart
 
 	* libstk/: Makefile.am, list.cpp, list.h, list_item.cpp,
 	  list_item.h, list_template.h: new list implementation with
 	  list_template
 
-2003-11-10 15:11  cslade
+2003-11-10 23:11  cslade
 
 	* libstk/surface_impl.h: I made draw image offset to the point
 	  passed in.w
 
-2003-11-07 16:26  cslade
+2003-11-08 00:26  cslade
 
 	* libstk/: image.cpp, image_panel.h: I fixed some bugs in image
 	  panel
 
-2003-11-07 08:45  dvhart
+2003-11-07 16:45  dvhart
 
 	* libstk/: list.cpp, list.h: added current(int index) to list
 
-2003-11-06 15:08  cslade
+2003-11-06 23:08  cslade
 
 	* libstk/: image.cpp, image.h: I added scalling to the image class,
 	  you can scale up, down, or up in one direction and down in the
 	  other.
 
-2003-11-06 08:35  dvhart
+2003-11-06 16:35  dvhart
 
 	* ChangeLog, libstk/Makefile.am: added tribal_theme.h to the list
 	  of installed headers so it can be extended for custom widgets in
 	  applications
 
-2003-11-05 15:49  cslade
+2003-11-05 23:49  cslade
 
 	* configure.in, libstk/image.cpp, libstk/image.h, libstk/surface.h,
 	  libstk/surface_bitmap.cpp, libstk/surface_bitmap.h,
@@ -261,17 +367,17 @@
 	  method to all of the surfaces to be able to read the data in a
 	  uniform way.
 
-2003-11-04 09:16  cslade
+2003-11-04 17:16  cslade
 
 	* configure.in: I added a library check for libjpeg62
 
-2003-11-03 07:05  dvhart
+2003-11-03 15:05  dvhart
 
 	* libstk/application.cpp: minor update to hack in application that
 	  allows events to be passed to list_items (we need to discuss if
 	  list_items should be widgets and lists containers)
 
-2003-11-02 19:36  dvhart
+2003-11-03 03:36  dvhart
 
 	* libstk/: application.cpp, application.h, list.cpp, list.h,
 	  scroll_model.cpp: updated list to emit on_update_selection and
@@ -280,11 +386,11 @@
 	  instead of lists, also defined carter style container typedefs,
 	  ie Tstates and Ttimers
 
-2003-11-02 05:21  carter
+2003-11-02 13:21  carter
 
 	* libstk/surface_bitmap.cpp: Fixed various bugs in surface_bitmap
 
-2003-11-02 04:55  carter
+2003-11-02 12:55  carter
 
 	* libstk/: event_producer_elotouch.cpp, event_producer_elotouch.h:
 	  made the untouch position snap to the touch position if the
@@ -293,13 +399,13 @@
 	  moves while touching, which makes it difficult to untouch at the
 	  right position).
 
-2003-11-02 04:53  carter
+2003-11-02 12:53  carter
 
 	* libstk/: edit_box.cpp, edit_box.h: fixed edit_box bug where when
 	  the selection is shorter than the text currently displayed the
 	  redraw routine hangs
 
-2003-10-31 14:27  cslade
+2003-10-31 22:27  cslade
 
 	* TODO, configure.in, libstk/Makefile.am, libstk/image.cpp,
 	  libstk/image.h, test/Makefile.am, test/parrots.jpg,
@@ -310,22 +416,22 @@
 	  check for the lib file and update libjpeb_cflags to include the
 	  right directory, but everything should work.
 
-2003-10-31 12:59  dvhart
+2003-10-31 20:59  dvhart
 
 	* libstk/list.cpp: fixed a bug in list that crashed the system when
 	  current_ is left larger than items_.size() after a remove or
 	  clear
 
-2003-10-30 23:43  dvhart
+2003-10-31 07:43  dvhart
 
 	* libstk/list.cpp: list now resizes the scroll_model on clear
 
-2003-10-30 11:34  dvhart
+2003-10-30 19:34  dvhart
 
 	* libstk/: container.cpp, drawable.h, list_item.cpp, list_item.h:
 	  updated list_item to contain the redraw reoutine
 
-2003-10-30 10:26  dvhart
+2003-10-30 18:26  dvhart
 
 	* TODO, libstk/application.cpp, libstk/component.h,
 	  libstk/container.h, libstk/list.h: ugly hack in application.cpp
@@ -333,7 +439,7 @@
 	  a list.  this type of thing suggests again that perhaps list_item
 	  should derive from widget.  comments welcome.
 
-2003-10-29 16:20  dvhart
+2003-10-30 00:20  dvhart
 
 	* ChangeLog, libstk/combiners.h, libstk/scrollable.cpp,
 	  libstk/text_area.cpp: fixed text_area resizing bug by fixing the
@@ -342,33 +448,33 @@
 	  results (this is different from the conditional of an if or a
 	  while), also updated logical_and for the same behavior.
 
-2003-10-29 14:58  cslade
+2003-10-29 22:58  cslade
 
 	* libstk/surface_impl.h: I commented out a debug line that prints
 	  out a lot of stuff.
 
-2003-10-29 10:12  cslade
+2003-10-29 18:12  cslade
 
 	* libstk/: edit_box.cpp, edit_box.h, text_area.cpp, text_area.h: I
 	  added the api to edit_box, and added h_scroll to text_area:
 
-2003-10-27 01:42  carter
+2003-10-27 09:42  carter
 
 	* libstk/list.cpp: Fixed the list item position problem when
 	  removing items, current solution is somewhat unoptimal because i
 	  search trough all the items and fix up their position instead of
 	  only the items after the removed one
 
-2003-10-22 01:40  carter
+2003-10-22 09:40  carter
 
 	* libstk/: font.cpp, font.h, glyph.cpp, surface_dfb.cpp,
 	  surface_dfb.h, surface_impl.h: Made Fonts rotatable
 
-2003-10-21 08:59  cslade
+2003-10-21 16:59  cslade
 
 	* libstk/text_area.cpp: I just fixed some bugs in text_area
 
-2003-10-19 01:56  dvhart
+2003-10-19 09:56  dvhart
 
 	* ChangeLog, TODO, libstk/component.h, libstk/container.cpp,
 	  libstk/list.cpp, libstk/list.h, libstk/point.h,
@@ -386,49 +492,49 @@
 	  scrollable widget when it changes size.  Updated list, viewport,
 	  and text_area to make use of these signals and callbacks.
 
-2003-10-18 02:28  carter
+2003-10-18 10:28  carter
 
 	* libstk/: application.cpp, application.h: Made it possible that
 	  the user sets the active state before application->run().  Made
 	  application a weak_ptr based singleton to allow controlled
 	  destruction of the widget tree
 
-2003-10-17 16:20  cslade
+2003-10-18 00:20  cslade
 
 	* libstk/text_area.cpp, libstk/text_area.h,
 	  libstk/tribal_theme.cpp, test/test_area.cpp: I made Text area
 	  scrollable.
 
-2003-10-17 14:59  dvhart
+2003-10-17 22:59  dvhart
 
 	* libstk/xine_panel.cpp, libstk/xine_panel.h, test/xine_test.cpp:
 	  fixed xine_panel creation crash where the vo_port requires the
 	  parent to be set so it can get the surface, moved init code into
 	  xine_panel::init
 
-2003-10-13 13:53  dvhart
+2003-10-13 21:53  dvhart
 
 	* libstk/: numeric_spinner.cpp, progress.cpp, tribal_theme.cpp:
 	  spinner and progress number formatting
 
-2003-10-13 12:03  dvhart
+2003-10-13 20:03  dvhart
 
 	* libstk/list.cpp: fixed a bug in list that selected the wrong item
 	  if the v_scroll_ wasn't at the top
 
-2003-10-13 11:55  dvhart
+2003-10-13 19:55  dvhart
 
 	* libstk/: container.cpp, widget.cpp: fixed a bug in delegate event
 
-2003-10-13 11:33  vhmauery
+2003-10-13 19:33  vhmauery
 
 	* libstk/: read_dir.cpp, read_dir.h: really fixed sorting now
 
-2003-10-13 11:09  vhmauery
+2003-10-13 19:09  vhmauery
 
 	* libstk/: font.cpp, read_dir.h: sorting for read_dir-oops
 
-2003-10-12 17:34  dvhart
+2003-10-13 01:34  dvhart
 
 	* libstk/list.cpp, libstk/list.h, libstk/spinner.cpp,
 	  libstk/spinner.h, libstk/tribal_theme.cpp, libstk/viewport.cpp,
@@ -437,7 +543,7 @@
 	  rectangle&) in scrollable widgets to update the vis_size on the
 	  scroll models.  Clicking inside scroll_boxes is still broken
 
-2003-10-12 16:27  dvhart
+2003-10-13 00:27  dvhart
 
 	* doc/Doxyfile, libstk/button.cpp, libstk/button.h,
 	  libstk/component.h, libstk/container.cpp, libstk/container.h,
@@ -462,26 +568,26 @@
 	  one.	Also some updates to scroll_box.  Still need to write the
 	  create() routines without parent pointers
 
-2003-10-12 09:24  carter
+2003-10-12 17:24  carter
 
 	* libstk/surface_dfb.cpp: Fixed the lines to origin bug (how did
 	  the surface ever work?)
 
-2003-10-12 09:23  carter
+2003-10-12 17:23  carter
 
 	* test/hello_world.cpp: Removed some stuff i accidantly added to
 	  hello world
 
-2003-10-12 09:21  carter
+2003-10-12 17:21  carter
 
 	* test/Makefile.am: Readded printing test after someone (Darren?)
 	  Commented it out in the makefile
 
-2003-10-12 06:55  carter
+2003-10-12 14:55  carter
 
 	* libstk/Makefile.am: Fixed missing headers in distribution
 
-2003-10-11 11:13  dvhart
+2003-10-11 19:13  dvhart
 
 	* ChangeLog, libstk/list.cpp, libstk/list.h, libstk/scroll_bar.cpp,
 	  libstk/scroll_box.cpp, libstk/scroll_box.h,
@@ -489,16 +595,16 @@
 	  libstk/viewport.h, test/Makefile.am, test/test_app.cpp:
 	  preliminary scrollable interface - list is broken atm
 
-2003-10-11 09:03  carter
+2003-10-11 17:03  carter
 
 	* configure.in: Fixed error in print configuration
 
-2003-10-11 07:38  dvhart
+2003-10-11 15:38  dvhart
 
 	* libstk/: scrollable.cpp, scrollable.h: non widget version of
 	  scrollable
 
-2003-10-11 06:06  carter
+2003-10-11 14:06  carter
 
 	* configure.in, libstk/Makefile.am, libstk/font.cpp,
 	  libstk/surface_bitmap.cpp, libstk/surface_bitmap.h,
@@ -506,23 +612,23 @@
 	  Added first part of printing stuff (In memory bitmap surface)
 	  Fixed a bug in font.cpp which crashed my controller@work
 
-2003-10-10 15:46  cslade
+2003-10-10 23:46  cslade
 
 	* libstk/text_area.cpp: I modified the draw_text routine to just
 	  draw in the cliped area.
 
-2003-10-10 14:33  vhmauery
+2003-10-10 22:33  vhmauery
 
 	* libstk/font_properties.cpp, libstk/tribal_theme.cpp,
 	  test/test_app.cpp: fixed my boo boos :)
 
-2003-10-10 14:22  dvhart
+2003-10-10 22:22  dvhart
 
 	* libstk/: Makefile.am, scrollable.cpp, scrollable.h: initial
 	  scrollable object, nothing derives from it yet, it's just there
 	  now
 
-2003-10-10 14:19  vhmauery
+2003-10-10 22:19  vhmauery
 
 	* libstk/: Makefile.am, font.cpp, font.h, font_manager.cpp,
 	  font_manager.h, font_properties.cpp, font_properties.h,
@@ -530,24 +636,24 @@
 	  tribal_theme.cpp: fixed font_properties to work better, added
 	  paths/searching/defaults to fonts
 
-2003-10-10 12:15  cslade
+2003-10-10 20:15  cslade
 
 	* libstk/text_area.cpp, libstk/text_area.h, test/test_area.cpp: I
 	  added the api the the text_area, and make the line wrap break at
 	  white space.
 
-2003-10-10 11:27  dvhart
+2003-10-10 19:27  dvhart
 
 	* libstk/scroll_model.cpp: added ranges to scroll_model::begin_
 
-2003-10-09 19:38  cslade
+2003-10-10 03:38  cslade
 
 	* libstk/: text_area.cpp, text_area.h, tribal_theme.cpp: I put the
 	  code that actually draws lines of text in the text_area.cpp file
 	  and took it out of tribal_theme.  It made tribal_theme much
 	  easier to edit.
 
-2003-10-09 16:11  dvhart
+2003-10-10 00:11  dvhart
 
 	* libstk/: container.cpp, scroll_box.cpp, scroll_box.h,
 	  tribal_theme.cpp: container::draw_child now restores the
@@ -555,46 +661,46 @@
 	  a call to container::draw by widgets derived from container, like
 	  scroll_box
 
-2003-10-09 14:57  dvhart
+2003-10-09 22:57  dvhart
 
 	* libstk/: scroll_bar.h, scroll_box.cpp, tribal_theme.cpp: removed
 	  magic numbers from scroll_box creation
 
-2003-10-09 14:29  dvhart
+2003-10-09 22:29  dvhart
 
 	* libstk/tribal_theme.cpp: scroll_bar drawing updates, still don't
 	  have buttons
 
-2003-10-09 13:40  dvhart
+2003-10-09 21:40  dvhart
 
 	* libstk/scroll_box.cpp, libstk/scroll_box.h,
 	  libstk/tribal_theme.cpp, test/test_app.cpp: more scroll_box code
 	  - still not done
 
-2003-10-09 12:12  dvhart
+2003-10-09 20:12  dvhart
 
 	* libstk/scroll_box.cpp, libstk/scroll_box.h,
 	  libstk/tribal_theme.cpp, libstk/viewport.cpp, libstk/viewport.h,
 	  test/test_app.cpp: start of scroll_box - still broken
 
-2003-10-09 07:24  carter
+2003-10-09 15:24  carter
 
 	* test/test_area.cpp: made backend selection dynamic in test_area
 	  (worked with sdl only before)
 
-2003-10-08 18:05  dvhart
+2003-10-09 02:05  dvhart
 
 	* libstk/tribal_theme.cpp, test/test_area.cpp: scroll_bar updates,
 	  some updates to shorten text_area draw and remove unneeded/unused
 	  code
 
-2003-10-08 16:46  cslade
+2003-10-09 00:46  cslade
 
 	* libstk/: text_area.cpp, text_area.h, tribal_theme.cpp: I just
 	  fixed a little bug with the cursor printing twice on a line that
 	  wraped.
 
-2003-10-08 12:51  dvhart
+2003-10-08 20:51  dvhart
 
 	* libstk/button.h, libstk/scroll_bar.cpp, libstk/scroll_bar.h,
 	  libstk/scroll_model.h, libstk/tribal_theme.cpp,
@@ -602,12 +708,12 @@
 	  of scroll_bars (not done) and some code formatting in various
 	  files
 
-2003-10-08 11:11  dvhart
+2003-10-08 19:11  dvhart
 
 	* README, test/hello_world.cpp: updated hello_world to use larger
 	  box for new fonts, updated README
 
-2003-10-08 10:32  dvhart
+2003-10-08 18:32  dvhart
 
 	* Makefile.am, fonts/FreeMono.ttf, fonts/FreeMonoBold.ttf,
 	  fonts/FreeMonoBoldOblique.ttf, fonts/FreeMonoOblique.ttf,
@@ -621,7 +727,7 @@
 	  fonts/VeraSeBd.ttf, fonts/copyright, libstk/tribal_theme.cpp:
 	  bitsream fonts added, freefonts removed
 
-2003-10-07 16:33  dvhart
+2003-10-08 00:33  dvhart
 
 	* libstk/surface_sdl.cpp, libstk/surface_sdl.h,
 	  test/hello_world.cpp: surface_sdl::create now accepts a
@@ -632,11 +738,11 @@
 	  windowed mode with SDL now, the other test apps all run
 	  fullscreen
 
-2003-10-07 15:49  dvhart
+2003-10-07 23:49  dvhart
 
 	* test/Makefile.am: test Makefile.am update
 
-2003-10-07 15:35  dvhart
+2003-10-07 23:35  dvhart
 
 	* Makefile.am, fonts/FreeMono.ttf, fonts/FreeMonoBold.ttf,
 	  fonts/FreeMonoBoldOblique.ttf, fonts/FreeMonoOblique.ttf,
@@ -653,45 +759,45 @@
 	  PACKAGE_FONTS_DIR, all theme code updated to use FreeSans by
 	  default
 
-2003-10-07 11:06  dvhart
+2003-10-07 19:06  dvhart
 
 	* libstk/xine_panel.cpp, libstk/xine_panel.h, test/xine_test.cpp:
 	  fullscreen support in xine_panel (backspace when focused - for
 	  now), requires patch to xine CVS (see mailing list)
 
-2003-10-07 09:37  cslade
+2003-10-07 17:37  cslade
 
 	* libstk/: text_area.cpp, tribal_theme.cpp: As requested by Darren,
 	  I took out the feature of moving up to home and down to end.
 
-2003-10-06 23:09  dvhart
+2003-10-07 07:09  dvhart
 
 	* libstk/: xine_panel.cpp, xine_panel.h: xine_panel audio/video
 	  ports are not static
 
-2003-10-06 17:08  cslade
+2003-10-07 01:08  cslade
 
 	* libstk/: text_area.cpp, tribal_theme.cpp: I just fixed some bugs
 	  in the text area.
 
-2003-10-06 16:07  dvhart
+2003-10-07 00:07  dvhart
 
 	* libstk/xine_panel.cpp, libstk/xine_panel.h, test/xine_test.cpp:
 	  moving towards multiple xine panels working...
 
-2003-10-06 15:46  cslade
+2003-10-06 23:46  cslade
 
 	* TODO, libstk/text_area.cpp, libstk/text_area.h,
 	  libstk/tribal_theme.cpp, test/test_area.cpp: I finished all the
 	  modifications on the text area.  You can do everything you would
 	  expect to do with a normal text area.
 
-2003-10-06 14:10  dvhart
+2003-10-06 22:10  dvhart
 
 	* libstk/: state.cpp, state.h, surface_impl.h, tribal_theme.cpp:
 	  state background image support
 
-2003-10-03 17:50  cslade
+2003-10-04 01:50  cslade
 
 	* TODO, libstk/Makefile.am, libstk/edit_box.cpp, libstk/edit_box.h,
 	  libstk/stk.h, libstk/text_area.cpp, libstk/text_area.h,
@@ -703,16 +809,16 @@
 	  region function to handle different lines.  I also have to update
 	  the selection area.
 
-2003-10-03 11:03  dvhart
+2003-10-03 19:03  dvhart
 
 	* DEPS: DEPS udpate
 
-2003-10-03 08:40  dvhart
+2003-10-03 16:40  dvhart
 
 	* libstk/: edit_box.cpp, edit_box.h: edit_box variable
 	  select_state_ changed to pressed_ for consistency
 
-2003-10-02 20:49  dvhart
+2003-10-03 04:49  dvhart
 
 	* libstk/: edit_box.cpp, edit_box.h, spinner.h, tribal_theme.cpp:
 	  moved the character indexing code into edit_box::region defined
@@ -720,55 +826,55 @@
 	  else, also cleaned up some unnecessary redraws and mouse event
 	  creations in edit_box
 
-2003-10-02 20:26  dvhart
+2003-10-03 04:26  dvhart
 
 	* libstk/: overlay.h, overlay_sdl.h, stk_c_wrapper.cpp: fixed
 	  overlay destruction bug in stk_c_wrapper.cpp
 
-2003-10-02 17:25  dvhart
+2003-10-03 01:25  dvhart
 
 	* libstk/: overlay_sdl.h, stk_c_wrapper.cpp, theme.cpp: debug work
 	  towards overlay destruction bug
 
-2003-10-02 17:20  cslade
+2003-10-03 01:20  cslade
 
 	* libstk/: edit_box.cpp, edit_box.h: I added cursor movement and
 	  select box movement to the edit box.	We will add a function in
 	  the themes that tells us where in the text an x y coordinate is.
 
-2003-10-02 12:13  dvhart
+2003-10-02 20:13  dvhart
 
 	* libstk/: application.cpp, overlay.h, overlay_sdl.h,
 	  stk_c_wrapper.cpp, surface_sdl.cpp: debugging code toward fixing
 	  overlay destruction segfaults
 
-2003-09-30 14:54  dvhart
+2003-09-30 22:54  dvhart
 
 	* configure_all.sh: configure_all script for developers
 
-2003-09-30 14:40  dvhart
+2003-09-30 22:40  dvhart
 
 	* libstk/: application.cpp, container.cpp, container.h, drawable.h,
 	  surface_impl.h, tribal_theme.cpp, viewport.cpp: replacements for
 	  the lost revisions of several files
 
-2003-09-30 14:39  dvhart
+2003-09-30 22:39  dvhart
 
 	* libstk/container.cpp: fixing...
 
-2003-09-30 14:29  dvhart
+2003-09-30 22:29  dvhart
 
 	* libstk/: application.cpp, container.h, drawable.h,
 	  surface_impl.h, tribal_theme.cpp, viewport.cpp: cvs repo hack
 	  fixing accidental delete
 
-2003-09-25 18:22  dvhart
+2003-09-26 02:22  dvhart
 
 	* libstk/: application.cpp, label.h, tribal_theme.cpp,
 	  viewport.cpp: temporary fix in viewport::draw for problem
 	  regarding clip_rect in local coords
 
-2003-09-25 09:08  dvhart
+2003-09-25 17:08  dvhart
 
 	* ChangeLog, libstk/container.cpp, libstk/drawable.h,
 	  libstk/list_item.h, libstk/surface_impl.h,
@@ -777,24 +883,24 @@
 	  rectangle instead of drawable, started debugging drawing images
 	  with SDL (resulting from changing clip_rect to local coords)
 
-2003-09-21 04:57  carter
+2003-09-21 12:57  carter
 
 	* libstk/container.cpp: Fixed a bug in container which fucked up
 	  the child container when you removed an item that wasnt actually
 	  a child of the container
 
-2003-09-21 02:53  carter
+2003-09-21 10:53  carter
 
 	* libstk/: list.cpp, list.h: ADded missing accessor functions for
 	  the vertical scroll modell in list
 
-2003-09-18 09:37  carter
+2003-09-18 17:37  carter
 
 	* libstk/list.cpp: Fixed a crash bug that occured if the mouse was
 	  clicked in the area that belongs to the list box but to no
 	  list_item
 
-2003-09-17 20:44  dvhart
+2003-09-18 04:44  dvhart
 
 	* libstk/: application.cpp, container.cpp, label.cpp, sdl_data.cpp,
 	  xine_panel.cpp, xine_panel.h: implemented xine panel event
@@ -802,7 +908,7 @@
 	  dvdnav works with the xine_panel focused, try 'xine_test sdl
 	  dvd://')
 
-2003-09-17 14:10  dvhart
+2003-09-17 22:10  dvhart
 
 	* libstk/backend_dfb.cpp, libstk/button.cpp, libstk/container.cpp,
 	  libstk/drawable.h, libstk/edit_box.cpp, libstk/edit_box.h,
@@ -822,11 +928,11 @@
 	  a rect, except that application derives from it.... which it
 	  shouldn't anyway.
 
-2003-09-16 23:35  dvhart
+2003-09-17 07:35  dvhart
 
 	* ChangeLog: ChangeLog update
 
-2003-09-16 23:35  dvhart
+2003-09-17 07:35  dvhart
 
 	* libstk/component.h, libstk/drawable.h, libstk/edit_box.cpp,
 	  libstk/edit_box.h, libstk/list.cpp, libstk/list.h,
@@ -838,34 +944,34 @@
 	  rectangle wrapper in widget and list_item (this may still not be
 	  the best solution)
 
-2003-09-16 08:05  dvhart
+2003-09-16 16:05  dvhart
 
 	* libstk/drawable.h: drawable pointer typedefs
 
-2003-09-15 17:53  dvhart
+2003-09-16 01:53  dvhart
 
 	* ChangeLog, TODO, libstk/application.cpp, libstk/container.cpp,
 	  libstk/widget.h: whitespace, var naming consistency, updated
 	  comments and FIXME's, used wrapped rect routines from widget
 	  rather than widget->rect().bleh()
 
-2003-09-14 16:38  dvhart
+2003-09-15 00:38  dvhart
 
 	* libstk/: override_return.h, surface_dfb.cpp: fixed typo in
 	  override_return header ifdef, cast int to a dfb enum since it
 	  wouldn't compile
 
-2003-09-14 07:04  carter
+2003-09-14 15:04  carter
 
 	* libstk/: application.h, container.cpp, surface_dfb.cpp,
 	  surface_impl.h, surface_sdl.cpp, switched_panel.cpp,
 	  viewport.cpp: Further messed around(optimized) Drawing code
 
-2003-09-14 07:03  carter
+2003-09-14 15:03  carter
 
 	* libstk/override_return.h: Added missing header guard
 
-2003-09-14 03:04  carter
+2003-09-14 11:04  carter
 
 	* configure.in, libstk/application.cpp, libstk/application.h,
 	  libstk/container.cpp, libstk/container.h, libstk/drawable.h,
@@ -878,17 +984,17 @@
 	  to identify if the widget that caused the redraw is actually
 	  visible or not visible
 
-2003-09-13 08:02  carter
+2003-09-13 16:02  carter
 
 	* libstk/: viewport.cpp, viewport.h: Made it possible to use
 	  viweport with multiple childrens
 
-2003-09-13 08:01  carter
+2003-09-13 16:01  carter
 
 	* libstk/: container.cpp, container.h: Made redrawing of child
 	  widgets much cleaner
 
-2003-09-13 07:02  carter
+2003-09-13 15:02  carter
 
 	* ChangeLog, configure.in, libstk/Makefile.am,
 	  libstk/application.cpp, libstk/application.h,
@@ -908,53 +1014,53 @@
 	  bug in the SDL backend which disabled the screen redraw if one of
 	  the drawing commands draw outside the screen area
 
-2003-09-12 09:01  carter
+2003-09-12 17:01  carter
 
 	* libstk/: label.h, tribal_theme.cpp: Added a font size property to
 	  stk::label
 
-2003-09-12 06:49  carter
+2003-09-12 14:49  carter
 
 	* libstk/: application.cpp, application.h, container.cpp,
 	  container.h, tribal_theme.cpp, widget.cpp, widget.h: greatly
 	  simplified drawing code by removal of redraw rect etc.
 
-2003-09-12 06:45  carter
+2003-09-12 14:45  carter
 
 	* libstk/: rectangle.cpp, rectangle.h: improved intersection method
 	  of rectangle (can accept temporary objects now)
 
-2003-09-11 16:39  carter
+2003-09-12 00:39  carter
 
 	* libstk/application.cpp: fixed the mainloop with regards to local
 	  coordinates in containers and made it more robust
 
-2003-09-11 16:38  carter
+2003-09-12 00:38  carter
 
 	* libstk/: container.cpp, container.h, widget.cpp, widget.h:
 	  Modified Delegate_mouse_event so that the widget the event is
 	  delegated too gets returned to the caller, this allows us to get
 	  the clicked widget in a local coordinates safe manner
 
-2003-09-11 10:57  dvhart
+2003-09-11 18:57  dvhart
 
 	* libstk/: container.cpp, widget.cpp, widget.h: updated the
 	  widget_at routines to modify the x,y coords
 
-2003-09-11 08:59  dvhart
+2003-09-11 16:59  dvhart
 
 	* libstk/list.cpp: redraw after add_item in list
 
-2003-09-11 03:09  dvhart
+2003-09-11 11:09  dvhart
 
 	* libstk/: application.cpp, component.h, rectangle.h, widget.h:
 	  widget now derives from enable_shared_from_this
 
-2003-09-10 23:11  dvhart
+2003-09-11 07:11  dvhart
 
 	* ChangeLog, TODO, configure.in: Changelog, TODO updates
 
-2003-09-10 10:25  dvhart
+2003-09-10 18:25  dvhart
 
 	* libstk/Makefile.am, libstk/application.cpp, libstk/application.h,
 	  libstk/event_system.h, libstk/override_return.h, libstk/stk.h,
@@ -965,94 +1071,94 @@
 	  the test programs have been updated to use override_return where
 	  necessary.
 
-2003-09-10 09:04  dvhart
+2003-09-10 17:04  dvhart
 
 	* doc/uml.dia, libstk/xine_panel.cpp, libstk/xine_panel.h,
 	  test/xine_test.cpp: preliminary override_return implementation in
 	  xine_test
 
-2003-09-08 04:49  carter
+2003-09-08 12:49  carter
 
 	* libstk/: application.cpp, container.cpp: Added Additional Debug
 	  output for Tracing Redrawing Problems.  Fixed Redrawing Problems
 	  affecting the redraw Performance.
 
-2003-09-08 04:48  carter
+2003-09-08 12:48  carter
 
 	* libstk/: surface_fbdev.cpp, surface_impl.h: Fixed surface FBdev
 	  (No offscreen surfaces/Blitting yet) Customised Debug output for
 	  tracing redrawing problems
 
-2003-09-08 04:45  carter
+2003-09-08 12:45  carter
 
 	* libstk/: spreadsheet.cpp, spreadsheet.h, tribal_theme.cpp: Added
 	  preliminary Spreadsheet Widget and Fixed drawing code of state in
 	  the tribal theme
 
-2003-09-08 04:43  carter
+2003-09-08 12:43  carter
 
 	* libstk/: rectangle.cpp, rectangle.h: Documented all fember
 	  functions of Rectangle.  Added Intersection member Function.
 
-2003-09-08 01:33  carter
+2003-09-08 09:33  carter
 
 	* libstk/Makefile.am: Compile the C wrapper only if XINE is
 	  configured
 
-2003-09-08 01:15  carter
+2003-09-08 09:15  carter
 
 	* libstk/stk.h: Fixed a bug introduced by darren (Always including
 	  XINE even if it is not configured in!)
 
-2003-09-07 09:47  carter
+2003-09-07 17:47  carter
 
 	* libstk/surface_fbdev.cpp: Initial Fixes in the behaviour of
 	  surface_fbdev
 
-2003-09-07 09:43  carter
+2003-09-07 17:43  carter
 
 	* doc/: Doxyfile, doxygen_dummies.h: Slightly Improved Doxygen's
 	  Output by including Dummy Templates for Common STL vector
 	  templates
 
-2003-09-06 23:18  dvhart
+2003-09-07 07:18  dvhart
 
 	* libstk/xine_panel.cpp: implemented more xine_panel methods
 
-2003-09-06 18:46  dvhart
+2003-09-07 02:46  dvhart
 
 	* configure.in, libstk/Makefile.am, libstk/xine_panel.cpp,
 	  libstk/xine_panel.h, test/xine_test.cpp: new xine configuration
 	  setup, update xine_panel API, xine code moved from xine_test to
 	  the xine_panel widget, xine_test now has some media controls
 
-2003-09-06 11:07  dvhart
+2003-09-06 19:07  dvhart
 
 	* libstk/: overlay.h, overlay_sdl.h, sdl_data.h, surface_impl.h,
 	  surface_sdl.cpp: added SDL_MUTEX_LOCK/UNLOCK and lock/unlock
 	  wrappers to surface_sdl and overlay_sdl, removed the lock/unlock
 	  wrappers from surface_impl
 
-2003-09-05 12:26  dvhart
+2003-09-05 20:26  dvhart
 
 	* README: updated readme
 
-2003-09-04 22:59  dvhart
+2003-09-05 06:59  dvhart
 
 	* libstk/: overlay_sdl.h, sdl_data.cpp, sdl_data.h, surface_impl.h,
 	  surface_sdl.cpp, surface_sdl.h: using boost recursive scoped lock
 	  for sdl mutex now, still buggy, not complete
 
-2003-09-03 03:06  carter
+2003-09-03 11:06  carter
 
 	* libstk/surface_dfb.cpp: Fixed Transparency Issues
 
-2003-09-03 03:05  carter
+2003-09-03 11:05  carter
 
 	* libstk/event_producer_elotouch.cpp: Changed the Default
 	  Calibration Values to fit my Screen ;)
 
-2003-08-23 10:36  dvhart
+2003-08-23 18:36  dvhart
 
 	* TODO, libstk/overlay.h, libstk/overlay_sdl.h,
 	  libstk/posix_time.cpp, libstk/sdl_data.cpp, libstk/sdl_data.h,
@@ -1063,7 +1169,7 @@
 	  SDL in X, added timer_test, fixed timer subtraction bug
 	  (sometimes the cur time_value is less than the prev one)
 
-2003-08-09 11:13  dvhart
+2003-08-09 19:13  dvhart
 
 	* TODO, libstk/list.cpp, libstk/list.h, libstk/spinner.cpp,
 	  libstk/spinner.h, libstk/tribal_theme.cpp: Fixed a buf in list
@@ -1073,7 +1179,7 @@
 	  methods have been removed from list, but   added to spinner for
 	  now)
 
-2003-08-09 07:49  dvhart
+2003-08-09 15:49  dvhart
 
 	* TODO, libstk/Makefile.am, libstk/application.cpp,
 	  libstk/color_manager.cpp, libstk/container.cpp,
@@ -1093,29 +1199,29 @@
 	  container::focused() now returns true   if the container itself
 	  is focused (as of course it should :-) ),
 
-2003-08-08 13:31  dvhart
+2003-08-08 21:31  dvhart
 
 	* libstk/: surface_dfb.cpp, surface_sdl.cpp, tribal_theme.cpp:
 	  fixed directfb surface drawing problems
 
-2003-08-08 11:51  dvhart
+2003-08-08 19:51  dvhart
 
 	* libstk/: surface_dfb.cpp, surface_sdl.cpp: partial fix of
 	  directfb offset, the list int test_app and image blit is still
 	  wrong
 
-2003-08-07 17:39  dvhart
+2003-08-08 01:39  dvhart
 
 	* TODO, libstk/surface_sdl.cpp: TODO update, primitive locking in
 	  surface_sdl
 
-2003-08-07 16:35  dvhart
+2003-08-08 00:35  dvhart
 
 	* TODO, libstk/surface.h, libstk/surface_sdl.cpp,
 	  libstk/surface_sdl.h: sdl surface clipping now sets the
 	  SDL_ClipRect so blitting is also clipped
 
-2003-08-07 15:26  dvhart
+2003-08-07 23:26  dvhart
 
 	* libstk/: container.cpp, image.cpp, list.cpp, rectangle.cpp,
 	  rectangle.h, surface.h, surface_impl.h, surface_sdl.cpp,
@@ -1124,7 +1230,7 @@
 	  their parent\!, container sets the offset before drawing each
 	  child so *::draw routines don't have to
 
-2003-08-07 12:30  dvhart
+2003-08-07 20:30  dvhart
 
 	* libstk/image.cpp, libstk/image.h, libstk/image_panel.cpp,
 	  libstk/sdl_data.cpp, libstk/surface_impl.h,
@@ -1132,11 +1238,11 @@
 	  start of fixing the sdl surface, draw_image now has an ugly red
 	  square for testing, will go away soon
 
-2003-08-07 08:02  dvhart
+2003-08-07 16:02  dvhart
 
 	* TODO: updated TODO
 
-2003-08-06 14:23  dvhart
+2003-08-06 22:23  dvhart
 
 	* source_header.txt, libstk/aa_filter.h, libstk/application.cpp,
 	  libstk/application.h, libstk/backend_dfb.cpp,
@@ -1179,7 +1285,7 @@
 	  changed german names to use international characters, now all use
 	  cvs keywords, all are now in the 100 char width format
 
-2003-08-06 13:31  dvhart
+2003-08-06 21:31  dvhart
 
 	* libstk/: aa_filter.h, application.cpp, application.h,
 	  backend_dfb.cpp, backend_dfb.h, button.cpp, button.h,
@@ -1207,15 +1313,15 @@
 	  widget.cpp, widget.h, xine_panel.cpp, xine_panel.h: new headers
 	  in all sources using cvs keywords
 
-2003-08-06 13:29  dvhart
+2003-08-06 21:29  dvhart
 
 	* libstk/widget.h: new header test... again
 
-2003-08-06 13:24  dvhart
+2003-08-06 21:24  dvhart
 
 	* libstk/widget.h: testing new cvs keyword headers
 
-2003-08-06 10:47  dvhart
+2003-08-06 18:47  dvhart
 
 	* TODO, libstk/button.h, libstk/component.h, libstk/container.h,
 	  libstk/image_panel.h, libstk/list.cpp, libstk/list.h,
@@ -1225,17 +1331,17 @@
 	  header files removed fixed height from list_item, affects list,
 	  list_item, theme surface_dfb has some problems with offset now
 
-2003-08-05 13:06  dvhart
+2003-08-05 21:06  dvhart
 
 	* README, autogen.sh, libstk/font.cpp, libstk/logging.cpp,
 	  libstk/logging.h, libstk/surface_sdl.cpp, test/hello_world.cpp:
 	  updated readme and included libtoolize in the autogen script
 
-2003-08-02 12:30  dvhart
+2003-08-02 20:30  dvhart
 
 	* libstk/tribal_theme.cpp: theme updates
 
-2003-08-02 11:32  dvhart
+2003-08-02 19:32  dvhart
 
 	* libstk/: button.cpp, edit_box.cpp, event_producer_sdl.cpp,
 	  font_manager.cpp, hotkey.h, image_panel.cpp, list.cpp,
@@ -1245,47 +1351,47 @@
 	  works for keydown events though), converted many cout lines to
 	  INFO
 
-2003-08-01 19:10  dvhart
+2003-08-02 03:10  dvhart
 
 	* test/: hello_world.cpp, test_app.cpp: usage msg update to test
 	  apps
 
-2003-08-01 19:02  dvhart
+2003-08-02 03:02  dvhart
 
 	* configure.in: backend added to surface backend config --enable
 	  command comments
 
-2003-08-01 18:40  dvhart
+2003-08-02 02:40  dvhart
 
 	* test/: hello_world.cpp, test_app.cpp: directfb configure fixes
 
-2003-08-01 17:00  dvhart
+2003-08-02 01:00  dvhart
 
 	* libstk/font.cpp, test/hydra.cpp: font msg typo and a catch(...)
 	  block in hydra
 
-2003-08-01 16:48  dvhart
+2003-08-02 00:48  dvhart
 
 	* test/: hello_world.cpp, hydra.cpp: fixed an output msg in
 	  hello_world and added cout default logging to hydra
 
-2003-08-01 16:39  dvhart
+2003-08-02 00:39  dvhart
 
 	* configure.in: use the pkg-config macros in configure.in
 
-2003-08-01 15:42  dvhart
+2003-08-01 23:42  dvhart
 
 	* Makefile.am, configure.in, libstk/Makefile.am: updated
 	  configure.in to test for the presence of the boost headers and
 	  libs
 
-2003-07-31 22:45  dvhart
+2003-08-01 06:45  dvhart
 
 	* configure.in, libstk_old.tar.gz, libstk/Makefile.am,
 	  test/Makefile.am: freetype and libpng configuration through
 	  pkg-config
 
-2003-07-31 00:37  dvhart
+2003-07-31 08:37  dvhart
 
 	* TODO, libstk.pws, libstk/application.cpp, libstk/button.cpp,
 	  libstk/edit_box.cpp, libstk/event_producer_sdl.cpp,
@@ -1298,11 +1404,11 @@
 	  test/hello_world_fbdev.cpp, test/test_app.cpp,
 	  test/xine_test.cpp: move toward new key_event using character()
 
-2003-07-28 11:15  dvhart
+2003-07-28 19:15  dvhart
 
 	* ChangeLog, TODO: changelog and todo update
 
-2003-07-28 11:11  dvhart
+2003-07-28 19:11  dvhart
 
 	* libstk/: application.cpp, edit_box.cpp, edit_box.h,
 	  event_producer_sdl.cpp, font.h, tribal_theme.cpp: changed
@@ -1311,7 +1417,7 @@
 	  support, cursor position, and drawing of them to edit_box   still
 	  needs support for setting cursor with mouse click
 
-2003-07-27 19:54  dvhart
+2003-07-28 03:54  dvhart
 
 	* libstk/application.cpp, libstk/edit_box.cpp,
 	  libstk/event_producer_sdl.cpp, libstk/event_producer_sdl.h,
@@ -1322,7 +1428,7 @@
 	  some issues, see event_producer_sdl.cpp for comments) and
 	  dependent files
 
-2003-07-26 09:43  dvhart
+2003-07-26 17:43  dvhart
 
 	* doc/coding_standards, libstk/application.h, libstk/backend_dfb.h,
 	  libstk/color_manager.h, libstk/combo.h, libstk/component.h,
@@ -1348,76 +1454,76 @@
 	  Read) Added more keycode mappings for event_producer_sdl Updated
 	  LOTS of header files and some spacing issues in various files
 
-2003-07-25 09:08  dvhart
+2003-07-25 17:08  dvhart
 
 	* libstk/: overlay_dfb.h, surface_dfb.cpp: more dfb overlay fixes
 	  (and some added whitespace :-) )
 
-2003-07-24 21:32  dvhart
+2003-07-25 05:32  dvhart
 
 	* libstk/Makefile.am: removed spreadsheet entries from Makefile.am
 	  until Marc adds the files to the repository
 
-2003-07-24 18:13  dvhart
+2003-07-25 02:13  dvhart
 
 	* libstk/overlay_dfb.h: overlay_dfb.h file
 
-2003-07-24 18:12  dvhart
+2003-07-25 02:12  dvhart
 
 	* libstk/Makefile.am, libstk/overlay.h, libstk/overlay_sdl.h,
 	  libstk/stk_c_wrapper.h, libstk/surface_dfb.cpp,
 	  test/xine_test.cpp: initial overlay_dfb impl (broken) and
 	  xine_test is now unified as well
 
-2003-07-24 01:00  carter
+2003-07-24 09:00  carter
 
 	* libstk/: edit_box.cpp, event_producer_elotouch.cpp: Removed
 	  superflous debug output from elotouch backend Added very Basic
 	  edit capability to edit_box
 
-2003-07-24 00:57  carter
+2003-07-24 08:57  carter
 
 	* test/: Makefile.am, hello_world_dfb.cpp: Removed Directfb test
 	  app
 
-2003-07-23 13:54  dvhart
+2003-07-23 21:54  dvhart
 
 	* test/: Makefile.am, test_app_dfb.cpp, test_app_fbdev.cpp: removed
 	  other test_app files
 
-2003-07-23 09:46  dvhart
+2003-07-23 17:46  dvhart
 
 	* test/: test_app.cpp, test_app_dfb.cpp: unified test_app.cpp, now
 	  accepts a single argument specifying the backend: sdl|dfb|fbdev
 
-2003-07-23 00:29  dvhart
+2003-07-23 08:29  dvhart
 
 	* configure.in, libstk/Makefile.am, libstk/surface_sdl.cpp,
 	  libstk/surface_sdl.h, test/Makefile.am, test/xine_test.cpp: now
 	  uses pkg-config for directfb cflags and libs, sdl defaults to
 	  full screen
 
-2003-07-22 16:13  dvhart
+2003-07-23 00:13  dvhart
 
 	* libstk/widget.h: updated commments
 
-2003-07-22 11:28  dvhart
+2003-07-22 19:28  dvhart
 
 	* Makefile.am, configure.in, test/test_app.cpp,
 	  test/test_app_dfb.cpp, test/xine_test.cpp: added --enable-tests
 	  to configure, changed test_app so it builds (still segs), change
 	  xine_test to use 'auto' for the audio plugin
 
-2003-07-22 09:42  carter
+2003-07-22 17:42  carter
 
 	* libstk/surface_dfb.cpp: Fixed rendering with Alpha channel
 
-2003-07-22 09:06  carter
+2003-07-22 17:06  carter
 
 	* libstk/: image.cpp, image.h: Added PNG image loader and
 	  implemented image drawing via an offscreen surface
 
-2003-07-22 09:05  carter
+2003-07-22 17:05  carter
 
 	* libstk/: surface.h, surface_dfb.cpp, surface_dfb.h,
 	  surface_impl.h, surface_sdl.cpp, surface_sdl.h: Added generic
@@ -1425,16 +1531,16 @@
 	  handling DFB backend Implemented new image drawing by simple
 	  blitting
 
-2003-07-22 09:02  carter
+2003-07-22 17:02  carter
 
 	* test/: parrots.png, test_app_dfb.cpp: Added PNG to the DFB demo
 
-2003-07-22 08:56  carter
+2003-07-22 16:56  carter
 
 	* configure.in, libstk/Makefile.am: Added LIBPNG to the build
 	  system
 
-2003-07-21 15:18  dvhart
+2003-07-21 23:18  dvhart
 
 	* configure.in, libstk/Makefile.am, libstk/button.h,
 	  libstk/overlay.h, libstk/overlay_sdl.h, libstk/stk.h,
@@ -1451,32 +1557,32 @@
 	  --enable-xine as an option.  I also cleaned up some comments,
 	  headers, etc.
 
-2003-07-21 09:48  carter
+2003-07-21 17:48  carter
 
 	* libstk/: event_producer_elotouch.cpp, surface_dfb.cpp: bugs fixed
 
-2003-07-20 13:45  carter
+2003-07-20 21:45  carter
 
 	* libstk/: application.cpp, application.h: addded event filtering
 
-2003-07-20 13:03  carter
+2003-07-20 21:03  carter
 
 	* libstk/: surface_sdl.cpp, surface_sdl.h: Adedd "sub surface
 	  blitting" in the sdl backend
 
-2003-07-20 08:05  carter
+2003-07-20 16:05  carter
 
 	* libstk/: backend_dfb.h, surface.h, surface_dfb.cpp,
 	  surface_dfb.h, surface_impl.h: Added new Subsurface Blitting API
 	  to surface.  Implemented blitting and offscreen surface
 	  construction in the DFB backend
 
-2003-07-20 08:02  carter
+2003-07-20 16:02  carter
 
 	* libstk/: application.cpp, application.h: Added overlay/"underlay
 	  *lol" capability via predraw and postdraw signals
 
-2003-07-15 12:48  dvhart
+2003-07-15 20:48  dvhart
 
 	* libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
 	  libstk/spinner.cpp, libstk/spinner.h, libstk/surface_fbdev.cpp,
@@ -1486,19 +1592,19 @@
 	  spinner/numeric_spinner behavior to accomodate the wrap
 	  parameter, formatted some files
 
-2003-07-15 11:10  vhmauery
+2003-07-15 19:10  vhmauery
 
 	* test/test_app_fbdev.cpp: fixed fbdev test app for new list items
 
-2003-07-15 10:44  vhmauery
+2003-07-15 18:44  vhmauery
 
 	* configure.in: minor fix to configure.in
 
-2003-07-15 10:39  vhmauery
+2003-07-15 18:39  vhmauery
 
 	* libstk/config.h.in: removed because autogenerated
 
-2003-07-15 10:37  vhmauery
+2003-07-15 18:37  vhmauery
 
 	* configure.in, libstk/Makefile.am, libstk/config.h.in,
 	  libstk/logging.h, libstk/surface_fbdev.cpp,
@@ -1506,7 +1612,7 @@
 	  test/hello_world_fbdev.cpp, test/test_app_fbdev.cpp: added
 	  framebuffer surface, fixed configure.in/makefile.am
 
-2003-07-14 23:06  dvhart
+2003-07-15 07:06  dvhart
 
 	* TODO, libstk/Makefile.am, libstk/component.h,
 	  libstk/numeric_spinner.cpp, libstk/numeric_spinner.h,
@@ -1516,51 +1622,51 @@
 	  use an enum for regions and define it and the region(x,y) method
 	  as private members
 
-2003-07-14 15:39  dvhart
+2003-07-14 23:39  dvhart
 
 	* libstk/drawable.h, libstk/list_item.cpp, libstk/list_item.h,
 	  test/hydra.cpp, test/test_app.cpp, test/test_app_dfb.cpp: removed
 	  user_data from list_item
 
-2003-07-14 13:56  dvhart
+2003-07-14 21:56  dvhart
 
 	* TODO, doc/irc_14072003_session.txt: IRC log and annotated TODO
 	  file
 
-2003-07-14 11:14  dvhart
+2003-07-14 19:14  dvhart
 
 	* test/: Makefile.am, dihmen.cpp, hydra.cpp: renamed dihmen test to
 	  hydra
 
-2003-07-14 10:25  carter
+2003-07-14 18:25  carter
 
 	* libstk/Makefile.am: resolved various build issues (not all though
 	  .)
 
-2003-07-14 10:24  carter
+2003-07-14 18:24  carter
 
 	* libstk/stk.h: removed backend specific include of sdl_data.h from
 	  stk.h
 
-2003-07-14 10:23  carter
+2003-07-14 18:23  carter
 
 	* libstk/surface_dfb.cpp: Fixed Antialised(read Alpha channel)
 	  Rendering on Directfb.
 
-2003-07-14 10:21  carter
+2003-07-14 18:21  carter
 
 	* libstk/edit_box.h: Added missing redraw call when modifying the
 	  Edit box's text
 
-2003-07-14 10:20  carter
+2003-07-14 18:20  carter
 
 	* libstk/: list.cpp, list.h: Added STL Style interface to list
 
-2003-07-14 09:17  carter
+2003-07-14 17:17  carter
 
 	* TODO: Added points for discussion
 
-2003-07-13 22:46  dvhart
+2003-07-14 06:46  dvhart
 
 	* TODO, libstk/application.cpp, libstk/container.cpp,
 	  libstk/container.h, libstk/state.cpp, libstk/state.h: fixed
@@ -1570,32 +1676,32 @@
 	  application to focus the first widget of a state on start and on
 	  current_state(state::ptr)
 
-2003-07-13 17:25  dvhart
+2003-07-14 01:25  dvhart
 
 	* ChangeLog, TODO: updated TODO and ChangeLog Files
 
-2003-07-13 17:21  dvhart
+2003-07-14 01:21  dvhart
 
 	* libstk/application.cpp, libstk/application.h, test/Makefile.am,
 	  test/dihmen.cpp, test/test_app.cpp: Added dihmen test app,
 	  application::current_state(state::ptr) now returns bool to ease
 	  use as a slot, removed stk:: prefix in test_app.cpp
 
-2003-07-13 08:51  dvhart
+2003-07-13 16:51  dvhart
 
 	* TODO, libstk/list_item.h, libstk/parrots.ppm, libstk/widget.cpp,
 	  libstk/widget.h: some header comment formatting, removed widget
 	  tab code, removed parrots image from libstk dir, updated TODO
 	  file
 
-2003-07-11 21:08  dvhart
+2003-07-12 05:08  dvhart
 
 	* libstk/: application.cpp, button.cpp, button.h, container.cpp,
 	  hotkey.h, spinner.cpp, spinner.h: fixed keyboard widget cycling
 	  (hotkey now returns false if it doesn't handle the key, the value
 	  of sig() otherwise), changed some comments
 
-2003-07-11 19:39  dvhart
+2003-07-12 03:39  dvhart
 
 	* TODO, doc/uml.dia, libstk/Makefile.am, libstk/spinner.cpp,
 	  libstk/spinner.h, libstk/tribal_theme.cpp, test/Makefile.am:
@@ -1603,68 +1709,68 @@
 	  along with spinner::draw().  region() should now be used in all
 	  widgets to determine what region a coordinate resides in.
 
-2003-07-08 09:21  carter
+2003-07-08 17:21  carter
 
 	* libstk/: event_producer_elotouch.cpp, event_producer_elotouch.h:
 	  added elotouch event producer
 
-2003-07-07 19:00  dhoerner
+2003-07-08 03:00  dhoerner
 
 	* autogen.sh, configure.in, libstk.pws, libstk/Makefile.am,
 	  libstk/edit_box.cpp, libstk/edit_box.h, libstk/stk.h,
 	  libstk/tribal_theme.cpp, test/test_app.cpp: added the edit_box
 	  widget to the source. still lacking some features.
 
-2003-07-03 05:03  carter
+2003-07-03 13:03  carter
 
 	* TODO: Updated my TODO's
 
-2003-06-29 02:26  carter
+2003-06-29 10:26  carter
 
 	* libstk/: Makefile.am, application.cpp, config.h.in, stk.h:
 	  Changed build system to allow backend selection.  Removed
 	  uneccesary headers from stk.h Fixed some (in my eyes) Bug with
 	  the initial drawing in Application.cpp
 
-2003-06-29 02:22  carter
+2003-06-29 10:22  carter
 
 	* libstk/: backend_dfb.cpp, backend_dfb.h, surface_dfb.cpp,
 	  surface_dfb.h: Added preliminary (read: hacked together) Directfb
 	  Backend
 
-2003-06-29 02:21  carter
+2003-06-29 10:21  carter
 
 	* libstk/: logging.cpp, logging.h: added Logging system
 
-2003-06-29 02:16  carter
+2003-06-29 10:16  carter
 
 	* configure.in: [no log message]
 
-2003-06-29 02:15  carter
+2003-06-29 10:15  carter
 
 	* test/: Makefile.am, hello_world_dfb.cpp, test_app_dfb.cpp: added
 	  examples for Directfb usage
 
-2003-06-27 14:05  dvhart
+2003-06-27 22:05  dvhart
 
 	* TODO, doc/irc_27062003_session.txt: TODO update and todays irc
 	  log
 
-2003-06-27 08:36  dvhart
+2003-06-27 16:36  dvhart
 
 	* libstk/: application.cpp, application.h: made application a
 	  singleton
 
-2003-06-26 09:43  dvhart
+2003-06-26 17:43  dvhart
 
 	* libstk/: color_manager.cpp, color_manager.h, tribal_theme.cpp:
 	  converted color_manager to a singleton
 
-2003-06-26 00:04  dvhart
+2003-06-26 08:04  dvhart
 
 	* ChangeLog: updated changelog
 
-2003-06-26 00:03  dvhart
+2003-06-26 08:03  dvhart
 
 	* TODO, libstk/event_system.cpp, libstk/font_manager.cpp,
 	  libstk/font_manager.h, libstk/tribal_theme.cpp,
@@ -1673,15 +1779,15 @@
 	  font_manager::get() now returns a font_manager::ptr for
 	  consistency and safety
 
-2003-06-25 19:59  dvhart
+2003-06-26 03:59  dvhart
 
 	* project: removed project script from cvs repository
 
-2003-06-25 19:53  dvhart
+2003-06-26 03:53  dvhart
 
 	* ChangeLog: updated changelog
 
-2003-06-25 19:52  dvhart
+2003-06-26 03:52  dvhart
 
 	* libstk/: button.cpp, button.h, combiners.h, container.cpp,
 	  list.cpp, list_item.cpp, progress.cpp, spinner.cpp, state.cpp,
@@ -1691,26 +1797,26 @@
 	  themselves) -changed empty combiners to return false (allows
 	  checking for event handling of empty signals)
 
-2003-06-23 11:40  dvhart
+2003-06-23 19:40  dvhart
 
 	* ChangeLog, TODO, source_header.txt, libstk/application.cpp:
 	  changelog update, source_header to new format width, so ugly
 	  formatting fixes in application.cpp
 
-2003-06-23 10:34  carter
+2003-06-23 18:34  carter
 
 	* libstk/: application.cpp, application.h: Reverted Darrens
 	  mistakes *gg* (back incorporated my changes before darren changed
 	  indentation)
 
-2003-06-22 08:34  carter
+2003-06-22 16:34  carter
 
 	* libstk/: spinner.cpp, spinner.h, tribal_theme.cpp: Changed
 	  spinner so that the scrolling direction is only dependent on the
 	  mouse location (upper/lower half) if its in the area of the skin
 	  where the arrows are drawn
 
-2003-06-14 21:16  dvhart
+2003-06-15 05:16  dvhart
 
 	* libstk/application.cpp, libstk/application.h, libstk/button.cpp,
 	  libstk/button.h, libstk/color_manager.cpp,
@@ -1742,23 +1848,23 @@
 	  test/test_app.cpp: formatting with 4 spaces and namespace
 	  indentation, no public/private/protected indention
 
-2003-06-12 06:50  carter
+2003-06-12 14:50  carter
 
 	* libstk/: Makefile.am, application.cpp, application.h, widget.cpp:
 	  Added Functionality in stk::application for switching between
 	  States
 
-2003-06-10 13:59  dvhart
+2003-06-10 21:59  dvhart
 
 	* libstk/Makefile.am, libstk/event_system.cpp,
 	  libstk/event_system.h, libstk/surface_sdl.cpp, test/Makefile.am:
 	  basic locking implemented in event_system
 
-2003-06-10 10:07  dvhart
+2003-06-10 18:07  dvhart
 
 	* libstk/event_producer.h: event_producer header
 
-2003-06-09 21:22  dvhart
+2003-06-10 05:22  dvhart
 
 	* source_header.txt, libstk/Makefile.am, libstk/application.cpp,
 	  libstk/application.h, libstk/event.h,
@@ -1781,11 +1887,11 @@
 	  scoped_lock() to the event_system around the events_ queue
 	  operations
 
-2003-06-03 17:10  dvhart
+2003-06-04 01:10  dvhart
 
 	* libstk/hotkey.h: hotkey build fix
 
-2003-06-03 16:59  dvhart
+2003-06-04 00:59  dvhart
 
 	* libstk/Makefile.am, libstk/component.h,
 	  libstk/graphics_context.h, libstk/hotkey.h, libstk/rectangle.h,
@@ -1794,13 +1900,13 @@
 	  new hotkey class and build fix using stk_types.h in addition to
 	  stk.h
 
-2003-06-03 16:04  dvhart
+2003-06-04 00:04  dvhart
 
 	* libstk/stk.h, test/hello_world.cpp, test/surface_bm.cpp,
 	  test/test_app.cpp: simplified application header use by adding
 	  standard libstk headers to stk.h
 
-2003-06-03 15:39  dvhart
+2003-06-03 23:39  dvhart
 
 	* Makefile.am, configure.in, libstk/Makefile.am,
 	  libstk/application.h, libstk/button.h, libstk/color_manager.h,
@@ -1819,16 +1925,16 @@
 	  test/surface_bm.cpp, test/test_app.cpp: fixed headers to include
 	  like <libstk/foo.h> and moved tests to the test directory
 
-2003-05-30 14:19  dvhart
+2003-05-30 22:19  dvhart
 
 	* libstk/test_app.cpp: functional hotkey implementation in
 	  test_app.cpp (F1 Quits)
 
-2003-05-30 00:26  dvhart
+2003-05-30 08:26  dvhart
 
 	* ChangeLog: Changelog
 
-2003-05-30 00:26  dvhart
+2003-05-30 08:26  dvhart
 
 	* ChangeLog, libstk/application.cpp, libstk/container.cpp,
 	  libstk/event_system_sdl.cpp, libstk/keycode.h, libstk/state.cpp,
@@ -1836,13 +1942,13 @@
 	  initial attempt at hotkeys, comments in test_app.cpp as to why it
 	  isn't working
 
-2003-05-28 23:19  dvhart
+2003-05-29 07:19  dvhart
 
 	* libstk/: button.cpp, list.cpp, list_item.cpp, progress.cpp,
 	  viewport.cpp, widget.cpp: some constructor and destructor
 	  comments to aid in debugging memory leaks
 
-2003-05-28 23:13  dvhart
+2003-05-29 07:13  dvhart
 
 	* libstk/: Makefile.am, event_system_sdl.cpp, event_system_sdl.h,
 	  sdl_data.cpp, sdl_data.h, surface_impl.h, surface_sdl.cpp,
@@ -1854,30 +1960,30 @@
 	  prevented   the application from being destroyed do to circular
 	  shared_ptr references
 
-2003-05-24 13:14  jam
+2003-05-24 21:14  jam
 
 	* libstk/application.cpp: added 'default' case to switch in key
 	  event handling routine; added 'default' case to switch in event
 	  handling routine. both changes fix warnings generated by -Wall.
 
-2003-05-24 12:34  dvhart
+2003-05-24 20:34  dvhart
 
 	* Makefile.am, libstk/Makefile.am: -Wall compiler option added
 
-2003-05-24 12:19  dvhart
+2003-05-24 20:19  dvhart
 
 	* INSTALL: default INSTALL file
 
-2003-05-24 12:06  jam
+2003-05-24 20:06  jam
 
 	* DEPS: added.
 
-2003-05-24 02:45  dvhart
+2003-05-24 10:45  dvhart
 
 	* libstk/: viewport.cpp, viewport.h: addition of viewport source
 	  files
 
-2003-05-22 12:20  dvhart
+2003-05-22 20:20  dvhart
 
 	* libstk/: Makefile.am, font.cpp, list.cpp, list.h, point.h,
 	  rectangle.cpp, rectangle.h, scroll_box.cpp, scroll_box.h,
@@ -1889,40 +1995,40 @@
 	  (position, contains) to rectangle added offset support to
 	  surface_sdl::fill_rect routines
 
-2003-05-21 10:26  dvhart
+2003-05-21 18:26  dvhart
 
 	* libstk/font.cpp: added filename to font errors
 
-2003-05-21 09:57  dvhart
+2003-05-21 17:57  dvhart
 
 	* TODO: more TODO updates
 
-2003-05-21 03:20  dvhart
+2003-05-21 11:20  dvhart
 
 	* TODO: updated the TODO
 
-2003-05-20 14:47  dvhart
+2003-05-20 22:47  dvhart
 
 	* TODO, configure.in, libstk/timer.cpp: TODO update, timer comment
 
-2003-05-20 14:21  dvhart
+2003-05-20 22:21  dvhart
 
 	* libstk/: Makefile.am, point.h, posix_time.cpp, posix_time.h,
 	  time_value.h, timer.cpp, timer.h: new time_value class and
 	  abstracted time function in posix_time.h
 
-2003-05-20 10:51  dvhart
+2003-05-20 18:51  dvhart
 
 	* libstk/surface_impl.h: make surface_imple draw_pixel calls with
 	  the static_cast of this and put_pixel
 
-2003-05-20 09:23  dvhart
+2003-05-20 17:23  dvhart
 
 	* libstk/: Makefile.am, scroll_box.cpp, surface.cpp, surface.h,
 	  surface_impl.h, surface_sdl.cpp, surface_sdl.h, test_app.cpp: new
 	  templated surface architecture
 
-2003-05-19 23:52  carter
+2003-05-20 07:52  carter
 
 	* libstk/: scroll_box.cpp, scroll_model.cpp, scroll_model.h,
 	  test_app.cpp, tribal_theme.cpp: changed representation of the
@@ -1930,43 +2036,43 @@
 	  scroll_box into its own source file (doesnt belong into the
 	  Theme!)
 
-2003-05-19 23:51  carter
+2003-05-20 07:51  carter
 
 	* libstk/: Makefile.am, scroll_bar.cpp, scroll_bar.h: added scroll
 	  bar sourcefiles
 
-2003-05-17 09:32  dvhart
+2003-05-17 17:32  dvhart
 
 	* libstk/surface_bm.cpp: fps added to surface_bm
 
-2003-05-17 09:28  dvhart
+2003-05-17 17:28  dvhart
 
 	* libstk/: Makefile.am, surface_bm.cpp, surface_sdl.h: surface
 	  benchmark utility, surface_bm
 
-2003-05-14 07:57  dvhart
+2003-05-14 15:57  dvhart
 
 	* libstk/surface_sdl_test.cpp: surface test removal
 
-2003-05-14 06:37  dvhart
+2003-05-14 14:37  dvhart
 
 	* libstk/: Makefile.am, scroll_box.cpp, scroll_box.h,
 	  scroll_model.cpp, scroll_model.h, test_app.cpp: modell to model
 	  renaming
 
-2003-05-14 06:18  dvhart
+2003-05-14 14:18  dvhart
 
 	* libstk/: scroll_model.cpp, scroll_model.h: scroll_model files
 
-2003-05-14 06:17  dvhart
+2003-05-14 14:17  dvhart
 
 	* libstk/: scroll_modell.cpp, scroll_modell.h: model not modell
 
-2003-05-14 04:49  dvhart
+2003-05-14 12:49  dvhart
 
 	* source_header.txt: source_header template
 
-2003-05-14 04:45  dvhart
+2003-05-14 12:45  dvhart
 
 	* libstk/: application.cpp, button.cpp, color_manager.cpp,
 	  combo.cpp, container.cpp, event_system_dfb.cpp,
@@ -1978,11 +2084,11 @@
 	  surface_sdl_test.cpp, test_app.cpp, theme.cpp, timer.cpp,
 	  tribal_theme.cpp, widget.cpp: cpp source headers filled in
 
-2003-05-13 14:14  dvhart
+2003-05-13 22:14  dvhart
 
 	* libstk/font_manager.cpp: font_manager includes fix
 
-2003-05-13 14:03  dvhart
+2003-05-13 22:03  dvhart
 
 	* libstk/: Makefile.am, aa_filter.h, application.cpp,
 	  application.h, button.cpp, button.h, color_manager.cpp,
@@ -2006,18 +2112,18 @@
 	  it in on all the header files, all cpp files still need to be
 	  filled in
 
-2003-05-13 09:17  dvhart
+2003-05-13 17:17  dvhart
 
 	* libstk/: rectangle.cpp, surface_sdl.cpp, tribal_theme.cpp: theme
 	  clipping fixes
 
-2003-05-13 08:30  dvhart
+2003-05-13 16:30  dvhart
 
 	* libstk/: Makefile.am, application.cpp, application.h,
 	  color_manager.h, test_app.cpp, timed_event.cpp, timed_event.h,
 	  timer.cpp, timer.h: new timer implementation, count down
 
-2003-05-13 07:58  carter
+2003-05-13 15:58  carter
 
 	* ChangeLog, libstk.pws, libstk/Makefile.am, libstk/scroll_box.cpp,
 	  libstk/scroll_box.h, libstk/scroll_modell.cpp,
@@ -2027,141 +2133,141 @@
 	  scroll location beeing held in special objects called
 	  scroll_modell
 
-2003-05-07 04:38  dvhart
+2003-05-07 12:38  dvhart
 
 	* libstk/scroll_box.cpp: turned off some debug statements
 
-2003-05-07 04:35  dvhart
+2003-05-07 12:35  dvhart
 
 	* libstk/: Makefile.am, application.cpp, application.h,
 	  combiners.h, test_app.cpp, timed_event.cpp, timed_event.h,
 	  widget.cpp: initial timed_event implementation, still needs to
 	  abstract time
 
-2003-05-06 09:40  dvhart
+2003-05-06 17:40  dvhart
 
 	* libstk/color_manager.cpp: comments
 
-2003-05-06 06:47  dvhart
+2003-05-06 14:47  dvhart
 
 	* libstk/color_manager.cpp: fixed color_properties less than
 	  operator
 
-2003-05-05 17:43  dvhart
+2003-05-06 01:43  dvhart
 
 	* libstk/: color_manager.cpp, color_manager.h: color_manager
 	  comments and removal of constructor and destructor
 
-2003-05-05 12:17  dvhart
+2003-05-05 20:17  dvhart
 
 	* libstk/: Makefile.am, color_manager.cpp, color_manager.h,
 	  tribal_theme.cpp, tribal_theme.h: added first implementation of
 	  the color manager
 
-2003-05-05 09:30  dvhart
+2003-05-05 17:30  dvhart
 
 	* libstk/: Makefile.am, application.cpp, event.h, font_mngr.cpp,
 	  font_mngr.h, spinner.cpp, theme.cpp, theme.h, tribal_theme.cpp,
 	  tribal_theme.h: initial user_theme pimpl implementation
 
-2003-05-05 08:17  dvhart
+2003-05-05 16:17  dvhart
 
 	* doc/irc_05052003_session.txt: new irc log
 
-2003-05-03 05:54  carter
+2003-05-03 13:54  carter
 
 	* libstk/point.h: Modified Point class to contain additional
 	  Overloaded operators to make it more useful
 
-2003-05-02 12:13  dvhart
+2003-05-02 20:13  dvhart
 
 	* libstk/: button.cpp, list.cpp, spinner.cpp, spinner.h,
 	  tribal_theme.cpp: spinner draws arrows and responds to mouse
 	  events, it now also wraps around instead of stopping at top and
 	  bottom
 
-2003-05-02 10:58  dvhart
+2003-05-02 18:58  dvhart
 
 	* libstk/: exceptions.h, surface.cpp, surface.h, surface_sdl.cpp,
 	  surface_sdl.h, widget.cpp, widget.h: Removed old license headers
 	  from all source code
 
-2003-05-02 08:55  carter
+2003-05-02 16:55  carter
 
 	* libstk/: font_mngr.cpp, font_mngr.h: Changed Caching strategy of
 	  font_mngr (Never Trashes ATM)
 
-2003-05-02 08:47  carter
+2003-05-02 16:47  carter
 
 	* libstk/widget.cpp: Made stk::widget pass the events up to the
 	  parent
 
-2003-04-29 09:00  dvhart
+2003-04-29 17:00  dvhart
 
 	* libstk/decorator.h: removal of decorator
 
-2003-04-29 08:50  dvhart
+2003-04-29 16:50  dvhart
 
 	* doc/uml.dia: somewhat updated uml diagram
 
-2003-04-29 08:43  dvhart
+2003-04-29 16:43  dvhart
 
 	* libstk/: Makefile.am, application.cpp, application.h,
 	  component.h, container.cpp, container.h, parent.h, state.cpp,
 	  widget.cpp, widget.h: parent renamed to component
 
-2003-04-29 08:26  dvhart
+2003-04-29 16:26  dvhart
 
 	* TODO: TODO update
 
-2003-04-29 08:24  dvhart
+2003-04-29 16:24  dvhart
 
 	* libstk/: scroll_decorator.cpp, scroll_decorator.h: removed
 	  decorators
 
-2003-04-29 08:22  dvhart
+2003-04-29 16:22  dvhart
 
 	* libstk/: Makefile.am, container.cpp, container.h,
 	  image_panel.cpp, image_panel.h, scroll_box.cpp, scroll_box.h,
 	  test_app.cpp, tribal_theme.cpp: scroll_decorator conversion to
 	  scroll_box
 
-2003-04-29 07:55  dvhart
+2003-04-29 15:55  dvhart
 
 	* doc/irc_29042003_session.txt: irc log
 
-2003-04-28 17:02  dvhart
+2003-04-29 01:02  dvhart
 
 	* libstk/: decorator.h, scroll_decorator.cpp, surface.cpp,
 	  tribal_theme.cpp, widget.h: scrollbars on the scroll_decorator
 
-2003-04-28 09:32  dvhart
+2003-04-28 17:32  dvhart
 
 	* TODO, libstk/decorator.h, libstk/image_panel.cpp,
 	  libstk/scroll_decorator.cpp, libstk/scroll_decorator.h,
 	  libstk/test_app.cpp, libstk/tribal_theme.cpp, libstk/widget.h:
 	  scrolling implemented
 
-2003-04-28 08:41  dvhart
+2003-04-28 16:41  dvhart
 
 	* libstk/decorator.h: some comments
 
-2003-04-28 08:30  dvhart
+2003-04-28 16:30  dvhart
 
 	* libstk/: application.cpp, container.cpp, container.h, parent.h,
 	  widget.cpp, widget.h: fixed infinite loop in focus_next,prev
 	  routines
 
-2003-04-28 07:17  dvhart
+2003-04-28 15:17  dvhart
 
 	* doc/license.txt: final license document
 
-2003-04-28 02:10  dvhart
+2003-04-28 10:10  dvhart
 
 	* libstk/: container.cpp, decorator.h, test_app.cpp,
 	  tribal_theme.cpp: more decorator work
 
-2003-04-27 17:52  dvhart
+2003-04-28 01:52  dvhart
 
 	* doc/Doxyfile, libstk/button.h, libstk/container.cpp,
 	  libstk/container.h, libstk/decorator.h, libstk/drawable.h,
@@ -2172,41 +2278,41 @@
 	  libstk/tribal_theme.cpp, libstk/widget.cpp, libstk/widget.h:
 	  composite pattern and decorator update
 
-2003-04-27 12:11  dvhart
+2003-04-27 20:11  dvhart
 
 	* libstk/: button.cpp, container.cpp, container.h, decorator.h,
 	  image_panel.cpp, label.cpp, parent.h, progress.cpp, test_app.cpp,
 	  widget.cpp: move toward composite model
 
-2003-04-27 09:25  dvhart
+2003-04-27 17:25  dvhart
 
 	* libstk/: Makefile.am, decorator.h, list.cpp, list.h,
 	  rectangle.cpp, rectangle.h, scroll_decorator.cpp,
 	  scroll_decorator.h, widget.cpp, widget.h: beginnings of decorator
 	  and scroll_decorator
 
-2003-04-27 03:19  dvhart
+2003-04-27 11:19  dvhart
 
 	* libstk/tribal_theme.cpp: tribal theme updates
 
-2003-04-26 12:44  dvhart
+2003-04-26 20:44  dvhart
 
 	* libstk/: Makefile.am, button.cpp, container.h, image.h,
 	  image_panel.cpp, label.cpp, list.cpp, list.h, list_item.cpp,
 	  progress.cpp, spinner.cpp, spinner.h, state.cpp, test_app.cpp,
 	  theme.cpp, theme.h, widget.cpp, widget.h: spinner widget
 
-2003-04-26 06:48  dvhart
+2003-04-26 14:48  dvhart
 
 	* TODO, doc/irc_26042003_session.txt, libstk/drawable.h,
 	  libstk/list_item.cpp, libstk/list_item.h, libstk/test_app.cpp,
 	  libstk/theme.cpp, libstk/theme.h: new list_item parentage
 
-2003-04-25 09:00  dvhart
+2003-04-25 17:00  dvhart
 
 	* libstk/: make_test, test.cpp: removed old test
 
-2003-04-25 08:49  carter
+2003-04-25 16:49  carter
 
 	* libstk.pc.in, libstk/Makefile.am, libstk/application.cpp,
 	  libstk/application.h, libstk/button.cpp, libstk/button.h,
@@ -2228,24 +2334,24 @@
 	  libstk/widget.cpp, libstk/widget.h: fixed installation via
 	  makefiles
 
-2003-04-25 08:17  carter
+2003-04-25 16:17  carter
 
 	* Makefile.am, configure.in: fixed Makefiles for new dir structure
 
-2003-04-25 08:02  carter
+2003-04-25 16:02  carter
 
 	* configure.in: fixed stupid mistake
 
-2003-04-25 07:55  carter
+2003-04-25 15:55  carter
 
 	* configure.in, libstk/Makefile.am: fixed libtool versioning
 
-2003-04-25 07:44  carter
+2003-04-25 15:44  carter
 
 	* Makefile.am, configure.in, libstk.pc.in, libstk.pws,
 	  libstk/Makefile.am: fixed makefiles (sort of)
 
-2003-04-25 05:10  dvhart
+2003-04-25 13:10  dvhart
 
 	* TODO, doc/license.txt, libstk/application.cpp, libstk/button.cpp,
 	  libstk/container.cpp, libstk/graphics_context.h, libstk/list.cpp,
@@ -2254,55 +2360,55 @@
 	  libstk/theme.h, libstk/widget.cpp, libstk/widget.h: initial lists
 	  - animated - and updated license
 
-2003-04-14 16:34  dvhart
+2003-04-15 00:34  dvhart
 
 	* doc/license.txt: license attempt one
 
-2003-04-14 16:06  dvhart
+2003-04-15 00:06  dvhart
 
 	* libstk/: application.cpp, button.cpp, button.h, container.cpp,
 	  container.h, event.h, event_system_sdl.cpp, image_panel.cpp,
 	  label.cpp, progress.cpp, state.cpp, test_app.cpp, theme.cpp,
 	  widget.cpp, widget.h: focus and hover behavior with events
 
-2003-04-14 08:50  carter
+2003-04-14 16:50  carter
 
 	* libstk/button.h: updated doc
 
-2003-04-14 08:36  dvhart
+2003-04-14 16:36  dvhart
 
 	* doc/: irc_14042003_session.txt, license.txt: april 14 irc session
 
-2003-04-14 07:06  carter
+2003-04-14 15:06  carter
 
 	* TODO: added touchscreen support
 
-2003-04-14 06:21  dvhart
+2003-04-14 14:21  dvhart
 
 	* libstk/: image_panel.cpp, image_panel.h: image_panel
 
-2003-04-14 06:17  dvhart
+2003-04-14 14:17  dvhart
 
 	* libstk/: button.cpp, progress.cpp, progress.h, test_app.cpp,
 	  widget.h: widget traversal focus and active fixes
 
-2003-04-13 12:28  dvhart
+2003-04-13 20:28  dvhart
 
 	* TODO, libstk/surface.cpp, libstk/surface.h, libstk/test_app.cpp,
 	  libstk/theme.cpp, libstk/widget.cpp, libstk/widget.h: image
 	  clipping
 
-2003-04-13 10:40  dvhart
+2003-04-13 18:40  dvhart
 
 	* libstk/image.cpp: image exception fixes
 
-2003-04-13 10:13  dvhart
+2003-04-13 18:13  dvhart
 
 	* libstk/: Makefile.am, image.cpp, image.h, parrots.ppm,
 	  surface.cpp, surface.h, test_app.cpp, theme.cpp, theme.h: initial
 	  image support
 
-2003-04-11 17:12  dvhart
+2003-04-12 01:12  dvhart
 
 	* TODO, libstk/container.h, libstk/image.cpp, libstk/image.h,
 	  libstk/progress.cpp, libstk/progress.h, libstk/surface.cpp,
@@ -2310,47 +2416,47 @@
 	  libstk/theme.h: progress bar label format string and initial
 	  image widget
 
-2003-04-11 12:47  dvhart
+2003-04-11 20:47  dvhart
 
 	* TODO: TODO file
 
-2003-04-11 12:37  dvhart
+2003-04-11 20:37  dvhart
 
 	* libstk/: application.cpp, application.h, container.cpp,
 	  container.h, drawable.h, event_handler.h, font_mngr.h, parent.h,
 	  widget.cpp, widget.h: some documentation
 
-2003-04-11 12:37  dvhart
+2003-04-11 20:37  dvhart
 
 	* doc/: libstk.xml, license.txt: initial license document
 
-2003-04-06 10:49  dvhart
+2003-04-06 18:49  dvhart
 
 	* libstk/: application.cpp, button.cpp, container.cpp, state.cpp,
 	  state.h: widget traversal work
 
-2003-04-06 09:22  dvhart
+2003-04-06 17:22  dvhart
 
 	* libstk/: theme.cpp, theme.h: theme sync with website
 
-2003-04-06 06:23  dvhart
+2003-04-06 14:23  dvhart
 
 	* contact.php, index.php, overview.php, technology.php: removal of
 	  php files :-)
 
-2003-04-06 06:09  carter
+2003-04-06 14:09  carter
 
 	* doc/: libstk.xml, process_xml.sh,
 	  dot_files/widget_tree_example.dot, images/doc_images_go_here:
 	  Commmited basic documentation, mainly serves as a starting point
 	  for the rest of the team to start writing docs
 
-2003-04-06 05:37  carter
+2003-04-06 13:37  carter
 
 	* doc/: htmlchunkedsheet.xsl, process_xml.sh: added basic
 	  environment for processing docbook based documentation
 
-2003-04-05 19:50  dvhart
+2003-04-06 04:50  dvhart
 
 	* index.php, contact.php, overview.php, technology.php, uml.dia,
 	  images/dilbert_ui.gif, images/dilbert_ui.png,
@@ -2359,7 +2465,7 @@
 	  include/footer.php, include/header.php, include/javascript.js,
 	  include/menu.php, include/theme.css: Initial CVS upload
 
-2003-04-05 19:50  dvhart
+2003-04-06 04:50  dvhart
 
 	* index.php, contact.php, overview.php, technology.php, uml.dia,
 	  images/dilbert_ui.gif, images/dilbert_ui.png,
@@ -2368,106 +2474,106 @@
 	  include/footer.php, include/header.php, include/javascript.js,
 	  include/menu.php, include/theme.css: Initial revision
 
-2003-04-05 09:38  dvhart
+2003-04-05 18:38  dvhart
 
 	* libstk/application.cpp: no more app segfault when clicking on
 	  state
 
-2003-04-05 04:40  dvhart
+2003-04-05 13:40  dvhart
 
 	* libstk/application.h: another change...
 
-2003-04-05 04:21  dvhart
+2003-04-05 13:21  dvhart
 
 	* libstk/: application.cpp, container.cpp, container.h: more widget
 	  cycling
 
-2003-04-05 03:58  dvhart
+2003-04-05 12:58  dvhart
 
 	* libstk/: application.cpp, button.h, label.cpp, progress.cpp,
 	  state.cpp, test_app.cpp, theme.cpp, theme.h, widget.h: more
 	  widget cycling routines
 
-2003-04-04 07:36  dvhart
+2003-04-04 16:36  dvhart
 
 	* libstk/: container.cpp, container.h, parent.h, widget.cpp,
 	  widget.h: key and mouse focus synchronization working
 
-2003-04-04 06:36  dvhart
+2003-04-04 15:36  dvhart
 
 	* libstk/: application.cpp, container.cpp, container.h, drawable.h,
 	  surface.h, surface_sdl.cpp, surface_sdl.h: massive rendering
 	  speed improvements
 
-2003-04-03 13:01  dvhart
+2003-04-03 22:01  dvhart
 
 	* libstk/: application.cpp, application.h, button.cpp,
 	  container.cpp, container.h, drawable.h, event_system_sdl.cpp,
 	  state.cpp, state.h, widget.cpp, widget.h: key and mouse focus
 	  preliminary code
 
-2003-03-28 08:23  carter
+2003-03-28 16:23  carter
 
 	* libstk.pws, libstk/Makefile.am, libstk/font.h,
 	  libstk/font_mngr.cpp, libstk/font_mngr.h, libstk/theme.cpp: added
 	  basic font manager, havent changed the theme yet!
 
-2003-03-24 07:08  dvhart
+2003-03-24 15:08  dvhart
 
 	* libstk/: application.cpp, container.cpp, container.h,
 	  rectangle.cpp, rectangle.h, surface.h, test_app.cpp, theme.cpp:
 	  fixed a bug in rectangle creation and width,height setting
 
-2003-03-23 13:58  dvhart
+2003-03-23 21:58  dvhart
 
 	* libstk/: theme.cpp, theme.h: update to tribal theme colors
 
-2003-03-23 06:49  dvhart
+2003-03-23 14:49  dvhart
 
 	* libstk/theme.h: tribal colors
 
-2003-03-23 06:31  dvhart
+2003-03-23 14:31  dvhart
 
 	* libstk/: theme.cpp, theme.h: theme mods
 
-2003-03-23 05:06  dvhart
+2003-03-23 13:06  dvhart
 
 	* libstk/progress.cpp: progress formatting
 
-2003-03-22 15:30  vhmauery
+2003-03-22 23:30  vhmauery
 
 	* libstk/font.cpp: font chars_in_rect fix
 
-2003-03-22 05:36  dvhart
+2003-03-22 13:36  dvhart
 
 	* libstk/: Makefile.am, button.cpp, button.h, progress.cpp,
 	  progress.h, test_app.cpp, theme.cpp, theme.h: progress bar
 
-2003-03-22 03:44  dvhart
+2003-03-22 11:44  dvhart
 
 	* libstk/: button.cpp, exceptions.h, test_app.cpp, theme.cpp,
 	  widget.h: some exception handling
 
-2003-03-22 03:03  dvhart
+2003-03-22 11:03  dvhart
 
 	* libstk/: application.cpp, button.cpp, button.h, test_app.cpp,
 	  theme.cpp, theme.h: text labels in buttons - why are the boxes
 	  following the text ?
 
-2003-03-22 02:47  dvhart
+2003-03-22 10:47  dvhart
 
 	* doc/uml.dia, libstk/application.cpp, libstk/button.cpp,
 	  libstk/container.cpp, libstk/container.h, libstk/drawable.h,
 	  libstk/label.cpp, libstk/widget.cpp, libstk/widget.h: some
 	  hover/active state modifications
 
-2003-03-22 02:21  dvhart
+2003-03-22 10:21  dvhart
 
 	* libstk.pws, libstk/application.cpp, libstk/state.cpp,
 	  libstk/state.h, libstk/widget.h: redraw and hover working
 	  together
 
-2003-03-21 18:05  dvhart
+2003-03-22 02:05  dvhart
 
 	* doc/uml.dia, libstk/Makefile.am, libstk/application.cpp,
 	  libstk/button.cpp, libstk/font.cpp, libstk/point.h,
@@ -2475,49 +2581,49 @@
 	  libstk/surface.cpp, libstk/surface_sdl.cpp, libstk/surface_sdl.h,
 	  libstk/widget.cpp, libstk/widget.h: redraw updates
 
-2003-03-21 16:51  dvhart
+2003-03-22 00:51  dvhart
 
 	* libstk/: container.cpp, state.cpp: redraw changes
 
-2003-03-21 12:53  dvhart
+2003-03-21 20:53  dvhart
 
 	* libstk/: container.cpp, container.h, state.cpp, state.h,
 	  theme.cpp, theme.h, widget.cpp, widget.h: more redraw work
 
-2003-03-21 11:40  dvhart
+2003-03-21 19:40  dvhart
 
 	* libstk/container.cpp: container fix
 
-2003-03-21 11:37  dvhart
+2003-03-21 19:37  dvhart
 
 	* libstk/: drawable.h, widget.cpp: drawable fix
 
-2003-03-21 11:34  dvhart
+2003-03-21 19:34  dvhart
 
 	* libstk/: container.cpp, rectangle.h, widget.h: rectangle fixes
 	  again
 
-2003-03-21 11:31  dvhart
+2003-03-21 19:31  dvhart
 
 	* libstk/rectangle.h: rectangle fixes
 
-2003-03-21 11:28  dvhart
+2003-03-21 19:28  dvhart
 
 	* libstk/: button.cpp, button.h, container.cpp, container.h,
 	  drawable.h, rectangle.h, widget.cpp, widget.h: some broken
 	  changes - redraw work
 
-2003-03-20 03:46  vhmauery
+2003-03-20 11:46  vhmauery
 
 	* libstk/: font.cpp, font.h, surface.cpp, surface.h,
 	  surface_sdl.cpp, test_app.cpp, theme.cpp: fonts: kerning fixed,
 	  labels: bounding boxes
 
-2003-03-20 03:42  dvhart
+2003-03-20 11:42  dvhart
 
 	* libstk/: application.cpp, button.cpp: reduced debug messages
 
-2003-03-20 03:15  dvhart
+2003-03-20 11:15  dvhart
 
 	* doc/uml.dia, libstk/application.cpp, libstk/application.h,
 	  libstk/button.cpp, libstk/button.h, libstk/container.cpp,
@@ -2529,44 +2635,44 @@
 	  libstk/widget.cpp, libstk/widget.h: start of theme, event
 	  passing, and drawing hierarchy
 
-2003-03-19 14:23  vhmauery
+2003-03-19 22:23  vhmauery
 
 	* libstk/: font.cpp, font.h, glyph.cpp, glyph.h,
 	  graphics_context.h, label.cpp, label.h, surface.cpp, surface.h,
 	  surface_sdl.cpp, test_app.cpp, theme.cpp, theme.h: more font
 	  rendering fixes
 
-2003-03-17 12:30  vhmauery
+2003-03-17 20:30  vhmauery
 
 	* libstk/: Makefile.am, font.cpp, font.h, glyph.cpp, glyph.h,
 	  graphics_context.h, label.cpp, label.h, surface.cpp, surface.h,
 	  surface_sdl.cpp, surface_sdl.h, test_app.cpp, theme.cpp, theme.h:
 	  added fonts/glyphs
 
-2003-03-17 09:52  dvhart
+2003-03-17 17:52  dvhart
 
 	* libstk/: application.cpp, button.cpp, container.cpp, theme.cpp,
 	  theme.h, widget.cpp, widget.h: theme singleton with shared_ptr
 	  members
 
-2003-03-17 08:14  dvhart
+2003-03-17 16:14  dvhart
 
 	* libstk/: Makefile.am, application.cpp, button.cpp, button.h,
 	  container.cpp, container.h, state.cpp, state.h, surface_sdl.cpp,
 	  surface_sdl.h, test_app.cpp, theme.cpp, theme.h, widget.cpp,
 	  widget.h: theme prototype
 
-2003-03-15 07:40  vhmauery
+2003-03-15 15:40  vhmauery
 
 	* libstk/: font.cpp, font.h: added font class preliminary
 
-2003-03-15 00:34  carter
+2003-03-15 08:34  carter
 
 	* libstk/: button.cpp, state.cpp, widget.cpp: fixes for
 	  boost_1_30_0 (Quick hacks, not fixes) Doing Wrong weak ptr usage
 	  here!
 
-2003-03-10 08:59  dvhart
+2003-03-10 16:59  dvhart
 
 	* libstk/: application.cpp, application.h, button.cpp, button.h,
 	  combiners.h, container.h, event_system.h, event_system_sdl.cpp,
@@ -2574,29 +2680,29 @@
 	  surface_sdl.cpp, surface_sdl.h, test_app.cpp, widget.cpp,
 	  widget.h: object factories - initial implementation
 
-2003-03-10 02:14  dvhart
+2003-03-10 10:14  dvhart
 
 	* libstk/combiners.h: initial combiners - untested and not
 	  integrated
 
-2003-03-10 01:46  dvhart
+2003-03-10 09:46  dvhart
 
 	* libstk/ptr_test.cpp: ptr_test, initial submission
 
-2003-03-10 01:28  dvhart
+2003-03-10 09:28  dvhart
 
 	* libstk/: Makefile.am, application.cpp, container.cpp,
 	  container.h, event_system_sdl.cpp, quit_event.cpp, quit_event.h,
 	  state.cpp, surface.h, surface_sdl.cpp, test_app.cpp, widget.cpp,
 	  widget.h: initial add_child changes - incomplete
 
-2003-03-08 11:07  dvhart
+2003-03-08 19:07  dvhart
 
 	* libstk/: application.cpp, application.h, button.h, container.cpp,
 	  container.h, parent.h, state.cpp, widget.cpp, widget.h:
 	  constructor and parent interface changes
 
-2003-03-08 09:13  carter
+2003-03-08 17:13  carter
 
 	* libstk/: application.cpp, application.h, button.cpp, button.h,
 	  container.h, drawable.h, event.h, event_handler.h,
@@ -2604,22 +2710,22 @@
 	  state.h, surface.h, test_app.cpp, widget.h: Changed the Typedefs
 	  to the new class::ptr style
 
-2003-03-08 08:53  carter
+2003-03-08 16:53  carter
 
 	* libstk/: application.h, button.h: Typedef Changes
 
-2003-03-08 08:50  carter
+2003-03-08 16:50  carter
 
 	* libstk/application.h: Initial typedef Changes
 
-2003-03-08 08:43  dvhart
+2003-03-08 16:43  dvhart
 
 	* doc/: dvhart_carter_architecture.txt, gpl_license.txt,
 	  irc_08032003_session.txt, irc_08032003_topics.txt,
 	  lgpl_license.txt, mozilla_license.txt, qt_license.txt, uml.dia,
 	  wxwindows_license.txt: some docs
 
-2003-03-07 17:52  dvhart
+2003-03-08 01:52  dvhart
 
 	* doc/uml.dia, libstk/application.cpp, libstk/application.h,
 	  libstk/button.cpp, libstk/button.h, libstk/container.h,
@@ -2627,7 +2733,7 @@
 	  libstk/surface.h, libstk/test_app.cpp, libstk/widget.h: working
 	  signal test in test_app, Enter on button exits
 
-2003-03-07 07:55  carter
+2003-03-07 15:55  carter
 
 	* autogen.sh, libstk.pws, doc/Doxyfile, libstk/application.cpp,
 	  libstk/application.h, libstk/container.h, libstk/drawable.h,
@@ -2635,12 +2741,12 @@
 	  some smaller things, look at my Mailing list post from 7.3.03
 	  21:44
 
-2003-03-07 02:18  dvhart
+2003-03-07 10:18  dvhart
 
 	* libstk/application.cpp: application current widget assignment
 	  changes
 
-2003-03-06 15:24  dvhart
+2003-03-06 23:24  dvhart
 
 	* libstk/: Makefile.am, application.cpp, application.h, button.cpp,
 	  button.h, container.cpp, container.h, event.h, event_handler.h,
@@ -2649,18 +2755,18 @@
 	  quit_event.h, state.cpp, state.h, test_app.cpp, widget.cpp,
 	  widget.h: compilable test_app with working events and exit
 
-2003-03-06 10:03  dvhart
+2003-03-06 18:03  dvhart
 
 	* libstk/: application.cpp, event_system_sdl.cpp, surface_sdl.cpp:
 	  compiling demo - yeehaw
 
-2003-03-06 09:22  dvhart
+2003-03-06 17:22  dvhart
 
 	* libstk/: button.cpp, button.h, container.cpp, container.h,
 	  state.cpp, state.h, test_app.cpp, widget.cpp, widget.h: fixed
 	  button constructor arg count
 
-2003-03-05 16:52  dvhart
+2003-03-06 00:52  dvhart
 
 	* libstk/: Makefile.am, application.cpp, application.h, button.cpp,
 	  button.h, container.cpp, container.h, drawable.h, event.h,
@@ -2669,7 +2775,7 @@
 	  state.h, surface.h, surface_sdl.cpp, surface_sdl.h, test_app.cpp,
 	  widget.cpp, widget.h: some partially compilable code
 
-2003-03-03 09:49  dvhart
+2003-03-03 17:49  dvhart
 
 	* doc/uml.dia, libstk/Makefile.am, libstk/aa_filter.h,
 	  libstk/application.cpp, libstk/application.h, libstk/button.cpp,
@@ -2685,29 +2791,29 @@
 	  libstk/surface_dfb.h, libstk/test_app.cpp: new files, some work
 	  towards compiling
 
-2003-02-22 08:42  dvhart
+2003-02-22 16:42  dvhart
 
 	* libstk/: event.h, event_system_sdl.cpp, event_system_sdl.h,
 	  surface_sdl.cpp: event system work
 
-2003-02-22 08:00  dvhart
+2003-02-22 16:00  dvhart
 
 	* libstk/: application.h, event_system.h, event_system_sdl.cpp,
 	  event_system_sdl.h, test_app.cpp: event_system classes
 
-2003-02-22 05:42  dvhart
+2003-02-22 13:42  dvhart
 
 	* doc/uml.dia, libstk/test_app.cpp: more updates
 
-2003-02-22 05:11  dvhart
+2003-02-22 13:11  dvhart
 
 	* libstk/application.h: application notes
 
-2003-02-22 05:08  dvhart
+2003-02-22 13:08  dvhart
 
 	* libstk/: application.h, test.cpp, test_app.cpp: test_app program
 
-2003-02-22 04:56  dvhart
+2003-02-22 12:56  dvhart
 
 	* libstk/: aa_filter_linear_m1.25.h, aa_filter_linear_m1.3.h,
 	  aa_filter_linear_m1.35.h, aa_filter_linear_m1.5.h,
@@ -2720,111 +2826,111 @@
 	  aa_filters/aa_filter_linear_m1.h,
 	  aa_filters/aa_filter_linear_m2.h: aa_filter cleanup
 
-2003-02-22 04:33  dvhart
+2003-02-22 12:33  dvhart
 
 	* libstk/: app.cpp, app.h, application.h, drawable.h,
 	  event_handler.h, keycode.h, parent.h, widget.h: some new header
 	  files
 
-2003-02-09 11:52  dvhart
+2003-02-09 19:52  dvhart
 
 	* doc/uml.dia: updated uml
 
-2003-02-08 06:07  carter
+2003-02-08 14:07  carter
 
 	* doc/uml.dia: proposed hierarchie
 
-2003-02-08 05:08  dvhart
+2003-02-08 13:08  dvhart
 
 	* doc/uml.dia: updated dia file
 
-2003-02-01 01:40  dvhart
+2003-02-01 09:40  dvhart
 
 	* doc/uml.dia, libstk/surface.cpp, libstk/surface_sdl_test.cpp,
 	  libstk/widget.h: uml dia start
 
-2002-12-11 05:06  dvhart
+2002-12-11 13:06  dvhart
 
 	* libstk/: stk.h, stk_types.h: missing files
 
-2002-12-11 04:22  dvhart
+2002-12-11 12:22  dvhart
 
 	* libstk/: graphics_context.h, surface.cpp, surface.h,
 	  surface_sdl.cpp, surface_sdl.h, surface_sdl_test.cpp: comments
 	  and minor surface changes
 
-2002-12-10 16:17  dvhart
+2002-12-11 00:17  dvhart
 
 	* libstk/: make_test, rectangle.h, surface.h, surface_sdl.cpp,
 	  surface_sdl.h, surface_sdl_test.cpp: surface_sdl_test demo
 	  works!!!!! still missing some functionality, but the hierarchical
 	  surface model is working.
 
-2002-12-10 14:21  dvhart
+2002-12-10 22:21  dvhart
 
 	* libstk/: surface.cpp, surface_sdl.cpp, surface_sdl.h,
 	  surface_sdl_test.cpp: surface_sdl demo (one whole line *g*)
 
-2002-12-10 12:29  dvhart
+2002-12-10 20:29  dvhart
 
 	* libstk/: surface_sdl.cpp, surface_sdl.h: the surface_sdl files
 	  some DA forgot to commit
 
-2002-12-10 12:28  dvhart
+2002-12-10 20:28  dvhart
 
 	* libstk/: surface.cpp, surface.h: Partial surface_sdl
 	  implementation
 
-2002-12-10 11:31  dvhart
+2002-12-10 19:31  dvhart
 
 	* libstk/: rectangle.h, stk_types.h, surface.cpp, surface.h: fixed
 	  surface so it compiles
 
-2002-12-10 08:14  dvhart
+2002-12-10 16:14  dvhart
 
 	* libstk/: stk_types.h, surface.cpp, surface.h: Mostly?? complete
 	  surface.h and surface.cc
 
-2002-12-10 06:23  dvhart
+2002-12-10 14:23  dvhart
 
 	* libstk/surface.h: update to surface.h
 
-2002-12-10 06:16  dvhart
+2002-12-10 14:16  dvhart
 
 	* libstk/: app.cpp, edge.h, exceptions.h, graphics_context.h,
 	  point.h, rectangle.h, stk_types.h, surface.h: New surface
 	  interface in surface.h
 
-2002-11-29 02:43  carter
+2002-11-29 10:43  carter
 
 	* configure.in, libstk.pc.in: Added Pkg-Config support (was bored
 	  :)) )
 
-2002-11-29 02:38  carter
+2002-11-29 10:38  carter
 
 	* autogen.sh, configure.in, libstk/Makefile.am, libstk/test.cpp:
 	  mucked around with Makefiles and added some code demoing the
 	  stack based widget technic in test.cpp
 
-2002-11-29 01:41  carter
+2002-11-29 09:41  carter
 
 	* libstk/: state.cpp, state.h: added missing state files
 
-2002-11-26 16:26  dvhart
+2002-11-27 00:26  dvhart
 
 	* doc/coding_standards, libstk/test.cpp, libstk/widget.h: Initial
 	  thoughts on boost signals, see widget.h
 
-2002-11-26 06:54  carter
+2002-11-26 14:54  carter
 
 	* libstk/: app.cpp, app.h, test.cpp: [no log message]
 
-2002-11-26 06:42  carter
+2002-11-26 14:42  carter
 
 	* libstk/: container.cpp, container.h, widget.cpp, widget.h: oops
 	  commited wrong version,fixed now :)
 
-2002-11-26 06:39  carter
+2002-11-26 14:39  carter
 
 	* libstk.pws, libstk/Makefile.am, libstk/app.h,
 	  libstk/container.cpp, libstk/container.h, libstk/widget.cpp,
@@ -2832,20 +2938,20 @@
 	  advanced features like cycling trough all widgets in a state is
 	  missing!
 
-2002-09-25 03:43  carter
+2002-09-25 11:43  carter
 
 	* libstk/surface.cpp: corrected dvhart's non ISO c++ code :)
 
-2002-09-19 05:32  carter
+2002-09-19 13:32  carter
 
 	* libstk/widget.h: fixed the built
 
-2002-09-17 08:04  carter
+2002-09-17 16:04  carter
 
 	* libstk/: container.cpp, container.h: "fixed" codecs container
 	  implementation (the old one was neither usable nor Legal c++ )
 
-2002-09-17 05:11  dvhart
+2002-09-17 13:11  dvhart
 
 	* libstk/: aa_filter_linear_m1.25.h, aa_filter_linear_m1.3.h,
 	  aa_filter_linear_m1.35.h, aa_filter_linear_m1.5.h,
@@ -2854,7 +2960,7 @@
 	  code, includes aa lines and poly fill/draw.  needs some cleanup,
 	  but I wanted it in CVS asap
 
-2002-09-17 03:12  dhoerner
+2002-09-17 11:12  dhoerner
 
 	* Makefile.am, autogen.sh, configure.in, libstk/Makefile.am,
 	  libstk/app.cpp, libstk/app.h, libstk/container.cpp,
@@ -2862,7 +2968,7 @@
 	  implemented stk::container fixed Makefiles, they are working now
 	  with SDL ;)
 
-2002-09-14 08:53  carter
+2002-09-14 16:53  carter
 
 	* configure.in, libstk.pws, libstk/Makefile.am, libstk/app.cpp,
 	  libstk/app.h, libstk/exceptions.h, libstk/surface.cpp,
@@ -2870,49 +2976,49 @@
 	  Makefiles(automake for Sigc++).  Purged old stuff out of all
 	  classes, codebase compiles(does nothing(TM))
 
-2002-09-12 03:51  dvhart
+2002-09-12 11:51  dvhart
 
 	* libstk/surface.cpp: Horizontal and Verticle lines now draw the
 	  coords inclusively [x1,x2] or [y1,y2]
 
-2002-09-12 03:17  dvhart
+2002-09-12 11:17  dvhart
 
 	* libstk/surface.cpp: Fixed minor bug on draw_line that prevented
 	  45 degree lines to draw.
 
-2002-09-11 16:32  dvhart
+2002-09-12 00:32  dvhart
 
 	* doc/coding_standards, libstk/surface.cpp, libstk/surface.h:
 	  Primitive draw_line complete.
 
-2002-09-11 07:21  carter
+2002-09-11 15:21  carter
 
 	* doc/coding_standards: added draft coding standards
 
-2002-09-10 06:21  dvhart
+2002-09-10 14:21  dvhart
 
 	* libstk/: app.cpp, app.h, exceptions.h, surface.cpp, surface.h:
 	  minor modification to app.  initial surface class. (non-working)
 
-2002-09-09 11:10  dhoerner
+2002-09-09 19:10  dhoerner
 
 	* Makefile.am, configure.in, libstk/Makefile.am, libstk/app.cpp,
 	  libstk/app.h, libstk/exceptions.h: rewrote Makefiles and
 	  configure.in, added exceptions, changed stuff in app.*
 
-2002-09-08 05:14  dvhart
+2002-09-08 13:14  dvhart
 
 	* libstk_old.tar.gz: Added libstk_old.tar.gz for reference
 
-2002-09-08 04:56  dvhart
+2002-09-08 12:56  dvhart
 
 	* configure.in: Fixed configure.in again...
 
-2002-09-08 04:55  dvhart
+2002-09-08 12:55  dvhart
 
 	* carter_irc.txt, configure.in: Fixed configure.in
 
-2002-09-08 04:47  dvhart
+2002-09-08 12:47  dvhart
 
 	* AUTHORS, COPYING, ChangeLog, Makefile.am, NEWS, README, TODO,
 	  autogen.sh, carter_irc.txt, configure.in, gpl.texinfo,
@@ -2922,7 +3028,7 @@
 	  libstk/app.h, libstk/surface.h, libstk/widget.cpp,
 	  libstk/widget.h: Initial import into CVS
 
-2002-09-08 04:47  dvhart
+2002-09-08 12:47  dvhart
 
 	* AUTHORS, COPYING, ChangeLog, Makefile.am, NEWS, README, TODO,
 	  autogen.sh, carter_irc.txt, configure.in, gpl.texinfo,
