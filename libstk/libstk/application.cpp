@@ -68,8 +68,13 @@ namespace stk
 			rectangle t_rect = current_state_.lock()->redraw_rect();
 			if ( !t_rect.empty() ) 
 			{
+				//cout << "applicaiton::run() - redrawing state" << endl;
 				current_state_.lock()->draw(surface_);
 				surface_->update( t_rect );
+			}
+			else
+			{
+				//cout << "applicaiton::run() - nothing to redraw" << endl;
 			}
 			
 			// handle all available events before redrawing

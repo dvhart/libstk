@@ -11,26 +11,55 @@ namespace stk
 		public:
 			typedef boost::shared_ptr<graphics_context> graphics_context::ptr;
 
+			/// Enumeration of the types of line segment joints
+			enum line_joint_type
+			{
+				/// outer corners are rounded with radius line_width/2, inner corners are sharp
+				round, 
+				/// divide the angle in half and allow the lines to intersect
+				mitre, 
+				/// like mitre but trimmed perpendicular to the mitre at a certain distance
+				trimmed_mitre
+			};
+
+			/// Enumeration of the types of line caps
+			enum line_cap_type
+			{
+				/// line ends are capped with discs of radius line_width/2
+				disc, 
+				/// line ends are cut perpendicular to their centerline
+				square
+			};
+
 		private:
+			/// The width in pixels of the pen used to draw primitives
 			int line_width_;
-			int line_style_;
+			/// The type of joint drawn between line segments: round, mitre, trimmed_mitre
+			line_joint_type line_joint_; 
+			/// The way line ends are drawn: disc, square
+			line_cap_type line_cap_;  
 			color line_color_;
 			color fill_color_;
 			// font stuff
 			stk::font::ptr font_;
 			color font_fill_color_;
 			color font_outline_color_;
-			// we may need to subclass the gc (gc_sdl, gc_dfb, etc)
 		protected:
 			graphics_context() {}
 			
 		public:
-			static graphics_context::ptr create() { return graphics_context::ptr(new graphics_context()); }
+			static graphics_context::ptr create() 
+			{ 
+				return graphics_context::ptr(new graphics_context()); 
+			}
 			virtual ~graphics_context() {}
+			// drawing style
 			int line_width() const { return line_width_; }
 			void line_width(int val) { line_width_ = val; }
-			int line_style() const { return line_style_; }
-			void line_style(int val) { line_style_ = val; }
+			line_joint_type line_joint() const { return line_joint_; }
+			void line_joint(line_joint_type val) { line_joint_ = val; }
+			line_cap_type line_cap() const { return line_cap_; }
+			void line_cap(line_cap_type val) { line_cap_ = val; }
 			color line_color() const { return line_color_; }
 			void line_color(color clr) { line_color_ = clr; }
 			color fill_color() const { return fill_color_; }

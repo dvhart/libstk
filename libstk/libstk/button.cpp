@@ -36,16 +36,13 @@ namespace stk
 
 	void button::draw(surface::ptr surface)
 	{
-		theme::instance()->draw_button(rect_, label_, active_, focused_, hover_);
+		theme::instance()->draw_button(rect_, label_, pressed_, focused_, hover_);
 	}
 			
 	// event_handler interface
 	void button::handle_event(event::ptr e)
 	{
-		//cout << "button::handle_event()" << endl;
-		
-		widget::handle_event(e);
-		
+		//cout << "button::handle_event()" << endl;	
 		switch (e->type())
 		{
 			case event::key_up:
@@ -57,18 +54,15 @@ namespace stk
 				switch ( ke->key() )
 				{
 					case key_enter:
-						if (active_)
+						if (pressed_)
 						{
 							cout << "button::handle_event() - emitting signal on_click()" << endl;
-							active_ = false;
+							pressed_ = false;
 							redraw(rect_);
 							on_release();
 						}
+						return;
 						break;
-					default:
-						//mstr: broken in boost_1_30_0 FIXME
-						cout << "button::handle_event() - handing key_up event up to state";
-						parent_.lock()->handle_event(e);
 				}
 				break; // key_up
 			}
@@ -79,47 +73,47 @@ namespace stk
 				{
 					case key_enter:
 						cout << "button::handle_event() - emitting signal on_click()" << endl;
-						active_ = true;
+						pressed_ = true;
 						redraw(rect_);
 						on_press();
+						return;
 						break;
-					default:
-						//mstr: broken in boost_1_30_0 FIXME
-						boost::make_shared(parent_)->handle_event(e);
 				}
 				break; // key_down
 			}
 			// FIXME: this stuff should be moved to application or state I think
 			case event::mouse_motion:
 			{
-				//boost::make_shared(parent_)->handle_event(e);
 				break; // mouse_motion
 			}
 			case event::mouse_down:
 			{
 				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-				if (!active())
+				if (!pressed())
 				{
-					active_ = true;
+					pressed_ = true;
 					redraw(rect_);
 					on_press();
 				}
+				return;
 				break; // mouse_down
 			}
 			case event::mouse_up:
 			{
 				mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-				if (active())
+				if (pressed())
 				{
-					active_ = false;
+					pressed_ = false;
 					redraw(rect_);
 					on_release();
 				}
+				return;
 				break; // mouse_up
 			}
-			default:
-				//mstr: broken in boost_1_30_0 FIXME
-				boost::make_shared(parent_)->handle_event(e);
 		}
+		// fixme: do we want to be calling widget::handle_event ?
+		widget::handle_event(e); 
+		parent_.lock()->handle_event(e);
 	}
+
 }

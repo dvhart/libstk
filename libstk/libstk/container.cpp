@@ -71,11 +71,12 @@ namespace stk
 	void container::draw(surface::ptr surface)
 	{
 		std::vector<widget::ptr>::iterator iter = children_.begin();
+		rectangle temp_rect = redraw_rect_;
+		redraw_rect_ = rectangle();
 		for (iter; iter != children_.end(); iter++)
 		{
-			if ((*iter)->intersects(redraw_rect_)) (*iter)->draw(surface);
+			if ((*iter)->intersects(temp_rect)) (*iter)->draw(surface);
 		}
-		redraw_rect_ = rectangle();
 	}
 
 	void container::redraw(const rectangle& rect)

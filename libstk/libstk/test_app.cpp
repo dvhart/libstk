@@ -9,6 +9,8 @@
 #include "button.h"
 #include "image_panel.h"
 #include "image.h"
+#include "list.h"
+#include "list_item.h"
 #include "progress.h"
 #include "label.h"
 #include "event_system.h"
@@ -93,6 +95,18 @@ int main(int argc, char* argv[])
 			rectangle(10, 50, 150, 30));
 		image_panel::ptr test_image_panel = image_panel::create(test_state, 
 				rectangle(10, 90, 350, 200), image::create("parrots.ppm"));
+		
+		// create a list
+		cout << "test_app - creating a list with items" << endl;
+		list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));
+		list_item::ptr test_item_1 = list_item::create(L"Armenia", "armenia");
+		list_item::ptr test_item_2 = list_item::create(L"Germany", "germany");
+		list_item::ptr test_item_3 = list_item::create(L"Japan", "japan");
+		list_item::ptr test_item_4 = list_item::create(L"United States", "united_states");
+		test_list->add_item(test_item_1);
+		test_list->add_item(test_item_2);
+		test_list->add_item(test_item_3);
+		test_list->add_item(test_item_4);
 		
 		// run the program
 		retval = test_app->run();

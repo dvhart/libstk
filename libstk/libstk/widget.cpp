@@ -26,7 +26,7 @@ namespace stk
 
 	widget::widget(container::ptr parent, const rectangle& rect)
 		: parent_(parent), rect_(rect), focusable_(false), 
-	    active_(false), focused_(false), hover_(false), tab_(0)
+	    pressed_(false), focused_(false), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(container)" << endl;
 		//parent->add_child(widget::ptr(this)); // why is this not being called ?
@@ -34,7 +34,7 @@ namespace stk
 
 	widget::widget(parent::ptr parent, const rectangle& rect)
 		: parent_(parent), rect_(rect), focusable_(false), 
-	    active_(false), focused_(true), hover_(false), tab_(0)
+	    pressed_(false), focused_(true), hover_(false), tab_(0)
 	{
 		cout << "widget::widget(parent)" << endl;
 	}
@@ -67,7 +67,7 @@ namespace stk
 				if (focusable_)
 				{
 					focused_ = false;
-					active_ = false;
+					pressed_ = false;
 					redraw(rect_);
 				}
 				break;
@@ -77,7 +77,7 @@ namespace stk
 				break;
 			case event::mouse_leave:
 				hover_ = false;
-				active_ = false;
+				pressed_ = false;
 				redraw(rect_);
 				break;
 		}

@@ -7,6 +7,8 @@
 #include "rectangle.h"
 #include "image_panel.h"
 #include "image.h"
+#include "list.h"
+#include "list_item.h"
 
 namespace stk
 {
@@ -27,18 +29,18 @@ namespace stk
 			color outline_color_normal_;
 			color outline_color_focused_;
 			color outline_color_hover_;
-			color outline_color_active_;
+			color outline_color_pressed_;
 			
 			color fill_state_color_;
 			color fill_color_normal_;
 			color fill_color_focused_;
 			color fill_color_hover_;
-			color fill_color_active_;
+			color fill_color_pressed_;
 
 			color font_color_normal_;
 			color font_color_focused_;
 			color font_color_hover_;
-			color font_color_active_;
+			color font_color_pressed_;
 			
 		public:
 			static theme::ptr create(stk::surface::ptr surface);
@@ -48,10 +50,11 @@ namespace stk
 			// FIXME: the draw routines need some kind of property map passed in
 			virtual void draw_state(const rectangle& rect, bool focused);
 			virtual void draw_button(const rectangle& rect, const std::wstring& label, 
-				bool active, bool focused, bool hover);
+				bool pressed, bool focused, bool hover);
 			virtual void draw_progress(const rectangle& rect, const std::wstring& label, float range, bool focused); 
 			virtual void draw_label(const rectangle& rect, const std::wstring& text, bool focused);
 			virtual void draw_image_panel(const rectangle& rect, image::ptr img);
+			virtual void draw_list(const rectangle& rect, std::vector<list_item::ptr> items, float selected);
 	};
 }
 

@@ -1,5 +1,5 @@
 MEETING TOPICS
-
+==============
 - usage of signals (only for the user?)
 - global key bindings (accelerators ?)
 - license - define intent
@@ -18,10 +18,13 @@ MEETING TOPICS
       draw routine, perhaps we can just pass the widget itself ?  Marc mentioned
 			a parameter class... but it may just grow to be nearly as big as the widget
 			itself... so why bother...
+- perhaps just define all the widget draw routines in another file, and forget
+      the whole theme class thing.
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
 
 DOCUMENTATION
+=============
 decide on a format
 ie:
     /// This is a brief description, until the dot.
@@ -31,6 +34,7 @@ ie:
 write it!!!!
 
 WIDGETS TO WRITE
+================
 edit_box
 text_area
 spinner
@@ -40,6 +44,7 @@ image
 uberscript_panel (support for HTML, perhaps more strict... XHTML ?)
 
 MEDIA WIDGETS
+=============
 ??
 
 

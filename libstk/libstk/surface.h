@@ -120,6 +120,7 @@ namespace stk
 				// the colors are bytes in the range [0,255]
 				return (byte)((Aa*Ca + Ab*Cb*(1-Aa))/Ao);
 			}
+			
 			byte composite_alpha(byte Aa, byte Ab)
 			{
 				// here the alphas are bytes in the range [0,255]
@@ -152,7 +153,6 @@ namespace stk
 			// need to think on it -- dvhart
 			byte alpha() const { return alpha_; }
 			void alpha(byte a) { alpha_ = a; }
-			// FIXME: should we be using smart pointers here with gcs and rects ?
 			graphics_context::ptr gc() const { return gc_; }
 			void gc(graphics_context::ptr new_gc) { gc_ = new_gc; }
 			void x1(int x) { rect_.x1(x); }
@@ -162,7 +162,14 @@ namespace stk
 			 * are not purely virtual here since we must be able to instantiate a 
 			 * surface class in certain situations.
 			 */
-			virtual void draw_pixel(int x, int y, color clr) { }
+			
+			//**********************************************************************
+			// FIXME: we don't need these to be implemented!!  Make as many surface
+			// methods as possible purely virtual.  Then see if we can axe the whole
+			// put_pixel AND draw_pixel redundancy!!!! --dvhart
+			//**********************************************************************
+			 
+			virtual void draw_pixel(int x, int y, color clr) = 0;//{ }
 			virtual void draw_pixel_aa(int x, int y, double distance, color clr) { }
 			virtual void draw_pixel_aa(int x, int y, unsigned char alpha_a, color clr) { }
 			virtual color read_pixel(int x, int y) const { }

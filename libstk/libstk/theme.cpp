@@ -10,18 +10,18 @@ namespace stk
 	const std::string outline_color_normal_str_  = "0xFFFFFFFF";
 	const std::string outline_color_focused_str_ = "0xFFFFFFFF";
 	const std::string outline_color_hover_str_   = "0xFFFF00FF";
-	const std::string outline_color_active_str_  = "0xFFFF00FF";
+	const std::string outline_color_pressed_str_ = "0xFFFF00FF";
 
 	const std::string fill_state_color_str_      = "0x0C2C4CFF";
 	const std::string fill_color_normal_str_     = "0x185899FF";
 	const std::string fill_color_focused_str_    = "0x2893FFFF";
 	const std::string fill_color_hover_str_      = "0x185899FF";
-	const std::string fill_color_active_str_     = "0x2893FFFF";
+	const std::string fill_color_pressed_str_    = "0x2893FFFF";
 	
 	const std::string font_color_normal_str_     = "0xFFFFFFFF";
 	const std::string font_color_focused_str_    = "0xFFFFFFFF";
 	const std::string font_color_hover_str_      = "0xFFFF00FF";
-	const std::string font_color_active_str_     = "0xFFFF00FF";
+	const std::string font_color_pressed_str_    = "0xFFFF00FF";
 
 	theme::ptr theme::instance_;
 
@@ -38,18 +38,18 @@ namespace stk
 		outline_color_normal_  = surface->gen_color(outline_color_normal_str_);
 		outline_color_focused_ = surface->gen_color(outline_color_focused_str_);
 		outline_color_hover_   = surface->gen_color(outline_color_hover_str_);
-		outline_color_active_  = surface->gen_color(outline_color_active_str_);
+		outline_color_pressed_ = surface->gen_color(outline_color_pressed_str_);
 
 		fill_state_color_      = surface_->gen_color(fill_state_color_str_);
 		fill_color_normal_     = surface->gen_color(fill_color_normal_str_);
 		fill_color_focused_    = surface->gen_color(fill_color_focused_str_);
 		fill_color_hover_      = surface->gen_color(fill_color_hover_str_);
-		fill_color_active_     = surface->gen_color(fill_color_active_str_);
+		fill_color_pressed_    = surface->gen_color(fill_color_pressed_str_);
 
 		font_color_normal_     = surface->gen_color(font_color_normal_str_);
 		font_color_focused_    = surface->gen_color(font_color_focused_str_);
 		font_color_hover_      = surface->gen_color(font_color_hover_str_);
-		font_color_active_     = surface->gen_color(font_color_active_str_);
+		font_color_pressed_    = surface->gen_color(font_color_pressed_str_);
 	}
 
 	theme::~theme()
@@ -82,7 +82,7 @@ namespace stk
 	}
 	
 	void theme::draw_button(const rectangle& rect, const std::wstring& label,
-		bool active, bool focused, bool hover)
+		bool pressed, bool focused, bool hover)
 	{
 		rectangle interior_rect(rect.x1()+3, rect.y1()+3, rect.width()-6, rect.height()-6);
 		rectangle outline_rect(rect.x1()+1, rect.y1()+1, rect.width()-2, rect.height()-2);
@@ -96,11 +96,11 @@ namespace stk
 		//stk::font::ptr the_font = font::create("Arial.ttf", 18);
 		gc->font(the_font);
 		
-		if (active)
+		if (pressed)
 		{
-			gc->fill_color(fill_color_active_); 
-			gc->line_color(outline_color_active_); 
-			gc->font_fill_color(font_color_active_);
+			gc->fill_color(fill_color_pressed_); 
+			gc->line_color(outline_color_pressed_); 
+			gc->font_fill_color(font_color_pressed_);
 		}
 		else if(focused)
 		{
@@ -135,7 +135,7 @@ namespace stk
 		// draw the label for all states
 		surface_->gc(gc);
 		surface_->fill_rect(interior_rect);
-		if (active) surface_->draw_rect(rect);
+		if (pressed) surface_->draw_rect(rect);
 		surface_->draw_rect(outline_rect);
 		surface_->draw_text(rect, label);
 	}
@@ -175,8 +175,8 @@ namespace stk
 		gc->line_color(outline_color_normal_); 
 		try
 		{
-			stk::font::ptr bob = font::create("Arial.ttf", 18);
-			gc->font(bob);
+			stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
+			gc->font(arial_18);
 			gc->font_fill_color(font_color_normal_);
 			surface_->gc(gc);
 			surface_->draw_text(rect, text);
@@ -206,6 +206,40 @@ namespace stk
 		surface_->clip_rect(rect);
 		surface_->draw_rect(rect);
 		surface_->draw_image(rect.x1()+10, rect.y1()+10, img);
+	}
+	
+	void theme::draw_list(const rectangle& rect, std::vector<list_item::ptr> items, float selected)
+	{
+		//cout << "theme::draw_list()" << endl;
+		graphics_context::ptr gc = graphics_context::create();
+		gc->line_color(outline_color_normal_); 
+		gc->fill_color(fill_color_focused_); 
+		gc->font_fill_color(font_color_normal_);
+		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
+		gc->font(arial_18);
+		surface_->gc(gc);
+	
+		// outline the list box
+		surface_->clip_rect(rect);
+		surface_->draw_rect(rect);
+		
+		// draw the highlighted selection
+		rectangle cur_rect;
+		cur_rect.x1(rect.x1() + 2);
+		cur_rect.width(rect.width() - 4);
+		cur_rect.y1(rect.y1() + (int)(selected*25) + 1);
+		cur_rect.height(23);
+		surface_->fill_rect(cur_rect);
+		
+		// draw the text of each item
+		cur_rect.x1(rect.x1() + 10);
+		cur_rect.width(rect.width() - 20);
+		for (int i = 0; i < items.size(); i++)
+		{
+			cur_rect.y1(rect.y1() + i*25);
+			cur_rect.height(25);
+			surface_->draw_text(cur_rect, items[i]->label());
+		}
 	}
 	
 }

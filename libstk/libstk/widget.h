@@ -38,7 +38,9 @@ namespace stk
 			int tab_;
 			
 			// drawing related attributes
-			bool active_;
+			bool pressed_; // does this belong in button only ?
+			               // it is nice to have it here so that handle_event can handle
+										 // the common cases, see handle_event()
 			bool focused_;
 			bool hover_;
 			
@@ -81,8 +83,8 @@ namespace stk
 			/// Set the tab index of the widget
 			/// \todo this is currently not implemented
 			void tab(int val) { tab_ = val; }
-			/// Return the active property of the widget
-			bool active() { return active_; }
+			/// Return the pressed property of the widget
+			bool pressed() { return pressed_; }
 			/// Return the focused property of the widget
 			bool focused() { return focused_; }
 			/// Return the hover property of the widget

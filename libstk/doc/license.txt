@@ -5,10 +5,11 @@
 INTENT
 
 The intent of this license is to allow anyone and everyone to make use of 
-Libstk as is most fitting to their needs and goals.  You may use, modify, link,
-and distribute derived works in binary form under your own terms.  We have 
-chosen the LGPL as the license base and provide the exceptions below to better 
-meet the needs of commercial developers.
+Libstk as is most fitting to their needs and goals.  We have chosen the LGPL 
+as the license base and provide the exceptions below to better meet the needs
+of commercial developers.  You may statically link your programs to the Libstk
+library and distribute them in binary form, the source for modifications to the
+library itself must be made available upon request.
 
 LICENSE
 
@@ -25,12 +26,9 @@ You should have received a copy of the GNU Lesser General Public License along
 with this library; if not, write to the Free Software Foundation, Inc., 
 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
 
-You may contact the copyright holders by writing to:
-WRITEME
-
 EXCEPTION NOTICE
 
-1. You may use, link (staticly or dynamicly), modify and distribute binary 
+1. You may use, link (statically or dynamically), modify and distribute binary 
 versions of works that use this library under your own terms.  
 
 2. If you copy code from files distributed under the terms of the GNU General 
@@ -41,14 +39,9 @@ modified files, you must delete this exception notice from such code and/or
 adjust the licensing conditions notice accordingly.
 
 3. Modifications to the existing library source must be made in accordance with
-this license and be presented for inclusion in the primary distribution of this
-library.  Additions to Libstk, in the form of new widgets, themes, event 
-systems, and surface classes are not considered modifications to the existing
-library and may be licensed under your own terms.
-
-NOTE: this is different from wx-windows, but I *thought* this is want we wanted
-to say.  Or do we want companies to be able to modify the library and not 
-release the source.  You would think I would know what I want...  I hate legalease.
-
+this license and be made available upon request for inclusion in the primary 
+distribution of this library.  Additions to Libstk, in the form of new widgets,
+themes, event systems, and surface classes are not considered modifications to 
+the existing library and may be licensed under your own terms.
 
 
