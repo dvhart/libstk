@@ -19,8 +19,6 @@
 #define STK_WIDGET_H
 
 #include <string>
-#include <map>
-#include <list>
 #include <string>
 #include <sigc++/signal_system.h>
 #include <boost/shared_ptr.hpp>
@@ -30,8 +28,7 @@ namespace stk
 {
 class widget;
 class app;
-typedef boost::shared_ptr<widget> widget_ptr;
-typedef std::map<std::string, widget_ptr> widget_map;
+typedef boost::shared_ptr<widget> Twidget_ptr;
 
 class widget : public SigC::Object
 {
