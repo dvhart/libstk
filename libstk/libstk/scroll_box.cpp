@@ -26,7 +26,7 @@ namespace stk
     }
 
     scroll_box::scroll_box(const rectangle& rect) : container(rect),
-            check_scrollable_(false), v_policy_(never), h_policy_(never)
+            check_scrollable_(true), v_policy_(never), h_policy_(never)
     {
         INFO("constructor");
         focusable_ = true; 
@@ -78,8 +78,10 @@ namespace stk
 
     void scroll_box::add(widget::ptr item)
     {
+        INFO("Adding something to scroll_box");        
         if (check_scrollable_)
         { // we are adding the child widget
+            INFO("Adding child widget to scroll_box");        
             scrollable::ptr scroll_item;
             if (scroll_item = boost::shared_dynamic_cast<scrollable>(item))
             { // item is scrollable, add it directly
@@ -139,7 +141,6 @@ namespace stk
     
     void scroll_box::scroll_policies(scroll_policy v_policy, scroll_policy h_policy)
     {
-        INFO("scroll_policies");
         h_policy_ = h_policy;
         v_policy_ = v_policy;
 
@@ -148,62 +149,56 @@ namespace stk
                 (h_scroll() && h_scroll()->vis_size() < h_scroll()->size()));
         bool vbar = (v_policy == always) || ((v_policy == automatic) && 
                 (v_scroll() && v_scroll()->vis_size() < v_scroll()->size()));
-
-        // if there is no change, return
-        /*
-        if (((hbar && h_scroll_bar_) || (!hbar && !h_scroll_bar_)) &&
-                ((vbar && v_scroll_bar_) || (!vbar && !v_scroll_bar_))) 
-            return;
-        */
-
-        // resize the child rect if necessary (checking saves several method invocations)
-        child_rect_ = rect(); child_rect_.position(point(0, 0));
-        if (vbar) child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
-        if (hbar) child_rect_.y2(child_rect_.y2() - scroll_bar::default_size);
-        //if (child_ && child_->rect() != child_rect_) child_->rect(child_rect_);
-        INFO("  setting child rect: " << child_rect_);
-        if (child_) child_->rect(child_rect_);
-
-        // destroy existing scroll bars
-        if (h_scroll_bar_)
+        
+        // Scrollbar configuration Changed
+        if ((hbar != (bool)h_scroll_bar_) ||
+            (vbar != (bool)v_scroll_bar_) )
         {
-            remove(h_scroll_bar_); // FIXME: should we call h_scroll_bar_->parent(container::ptr()) ?
-            h_scroll_bar_.reset();
-        }
-        if (v_scroll_bar_)
-        {
-            remove(v_scroll_bar_);
-            v_scroll_bar_.reset();
-        }
-
-        // create the new scroll bars
-        scroll_box::ptr this_ptr = boost::shared_static_cast<scroll_box>(shared_from_this());
-        check_scrollable_ = false;
-        if (vbar && hbar)
-        {
-            rectangle v_rect(width()-scroll_bar::default_size, 0, 
-                    scroll_bar::default_size, height()-scroll_bar::default_size);
-            v_scroll_bar_ = scroll_bar::create(this_ptr, v_rect, v_scroll());
-
-            rectangle h_rect(0, height()-scroll_bar::default_size, 
-                    width()-scroll_bar::default_size, scroll_bar::default_size);
-            h_scroll_bar_ = scroll_bar::create(this_ptr, h_rect, h_scroll());
-        }
-        else
-        {
-            if (vbar)
+            
+            // resize the child rect 
+            child_rect_ = rect(); child_rect_.position(point(0, 0));
+            if(hbar)
+                child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
+            if(vbar)
+                child_rect_.y2(child_rect_.y2() - scroll_bar::default_size);
+            if (child_) child_->rect(child_rect_);
+            
+            if (h_scroll_bar_ && !hbar)
             {
+                remove(h_scroll_bar_); // FIXME: should we call h_scroll_bar_->parent(container::ptr()) ?
+                h_scroll_bar_.reset();
+            }
+            if (v_scroll_bar_  && !vbar)
+            {
+                remove(v_scroll_bar_);
+                v_scroll_bar_.reset();
+            } 
+            
+            // create the new scroll bars
+            scroll_box::ptr this_ptr = boost::shared_static_cast<scroll_box>(shared_from_this());
+            check_scrollable_ = false;
+            
+            if (vbar && !v_scroll_bar_)
+            {
+                INFO("Creating Vbar");
                 rectangle v_rect(width()-scroll_bar::default_size, 0, 
-                        scroll_bar::default_size, height());
+                                 scroll_bar::default_size, height());
                 v_scroll_bar_ = scroll_bar::create(this_ptr, v_rect, v_scroll());
             }
-            if (hbar)
+            if (hbar && !h_scroll_bar_)
             {
                 rectangle h_rect(0, height()-scroll_bar::default_size, 
-                        width(), scroll_bar::default_size);
+                                 width(), scroll_bar::default_size);
                 h_scroll_bar_ = scroll_bar::create(this_ptr, h_rect, h_scroll());
             }
         }
+        // Assign the correct scroll modells to the scrollbars
+        if(h_scroll() && h_scroll_bar_)
+            h_scroll_bar_->model(h_scroll());
+        if(v_scroll() && v_scroll_bar_)
+            v_scroll_bar_->model(v_scroll());
+ 
+        
         check_scrollable_ = true;
         redraw(rect());
     }
