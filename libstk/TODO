@@ -1,0 +1,34 @@
+widget destructor should destroy all its children
+
+make all widget functions virtual
+
+use set_text to set a message for stk_progress (toggle showing %|msg)
+
+??Modify stk_font to use 2 font.raw files, one for fill and the other for outline.
+The theme should then have two color also.
+
+??add up,down,left,right widget pointers to stk_widget and a default handler 
+of the same arrow keys for better state navigation - better yet, use a STL container... map?
+
+add member variables for all theme items that are copied from the theme on 
+creation but can be set later so items can be unique, regardless of theme.
+
+finish converting from char * to std::string (stk_font and stk_theme)
+
+abstract SDL
+     typedef SDLKey stkkey;
+
+bind default arguments to signals (like the calling widget)
+
+use vector for list_items (array_o_combos) bad
+ie std::vector <stk_list_item> items;
+items.push_back( stk_list_item("balaslfafdf") );
+
+make item class inside list_box
+ie. stk::list_box::item
+
+let buttons have image and label children... or maybe just as members...
+
+remove the border from the image
+add a frame widget... ??
+

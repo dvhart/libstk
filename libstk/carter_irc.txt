@@ -1,0 +1,527 @@
+--- Looking up irc.openprojects.net..
+--- Connecting to brunner.openprojects.net (212.84.209.27) port 6667..
+--- Connected. Now logging in..
+--- AUTH :*** Looking up your hostname...
+--- AUTH :*** Checking ident
+--- AUTH :*** No identd (auth) response
+--- AUTH :*** Found your hostname
+--- Welcome to the Internet Relay Network dvhart
+--- Your host is brunner.openprojects.net[brunner.openprojects.net/6667], running version dancer-ircd-1.0.31+maint8
+--- dvhart :*** Your host is brunner.openprojects.net[brunner.openprojects.net/6667], running version dancer-ircd-1.0.31+maint8
+--- This server was cobbled together Fri Jul  5 02:09:56 UTC 2002
+--- brunner.openprojects.net dancer-ircd-1.0.31+maint8 abBcCdDeEfFgGhHiIkKlLmMnNopPrRsSUvVwWxXyYzZ0123459*@ bcdefFghiIklmnoPqstv
+--- There are 3211 victims and 3708 hiding on 28 servers
+--- 28 :flagged staff members
+--- 3092 :channels formed
+--- I have 406 clients and 0 servers
+--- Current local  users: 406  Max: 1392
+--- Current global users: 6919  Max: 7653
+--- Highest connection count: 408 (406 clients) (8301 since server was (re)started)
+--- - brunner.openprojects.net Message of the Day - 
+--- - Welcome to brunner.openprojects.net in Berlin, Germany, EU! Thanks
+--- - to Hauke Johannknecht for sponsoring this server.
+--- - 
+--- - BRUNNER, JOHN KILIAN HOUSTON [1934-1995].  The author of The
+--- - Shockwave Rider, Stand on Zanzibar, The Sheep Look Up and
+--- - The Traveller in Black, John Brunner was described as Dave
+--- - Langford as "...cursed by sanity." His work foreshadowed the
+--- - existence of the modern Internet and dealt with such themes as
+--- - pollution, superstition and information overload.  A Hugo-award
+--- - winner, he died in 1995 after suffering a stroke at the World
+--- - Science Fiction Convention in Glasgow.  At the behest of his
+--- - friend Robert Silverberg, he was honored with one last round of
+--- - applause rather than a moment of silence.  The standing ovation
+--- - lasted four minutes.
+--- - 
+--- - OPN/freenode is a service of Peer-Directed Projects Center, a
+--- - Texas nonprofit corporation (application for IRS 501(c)(3)
+--- - tax-exempt status is in progress).  It exists to provide
+--- - facilities to communities involved with free and open source
+--- - software and similar pursuits, as well as to encourage an
+--- - environment in which community members can improve their
+--- - communication and coordination skills, for the betterment of all
+--- - and in the public good.
+--- - 
+--- - Illegal activities, warez, porn, noticeably heavy mp3 trading,
+--- - hax0r activity and various types of antisocial behavior are all
+--- - off-topic for the network and may result in your being barred from
+--- - access. Please respect our rules.
+--- - 
+--- - We cannot guarantee access to users whose IRC clients run on hosts
+--- - with open proxies, IIS servers or other categories of software
+--- - determined to present special risk to our server environment. We
+--- - reserve the right to use automation to attempt to detect such
+--- - software on your host, as you connect to our servers and while you
+--- - remain connected to this network. Your use of the network
+--- - signifies your acceptance of this and other network policies
+--- - (http://openprojects.net/policy.shtml).
+--- - 
+--- - For more information, stop by http://openprojects.net/ .  If you
+--- - need assistance, please join #openprojects, or email
+--- - support@openprojects.net.  Thank you for using the network!
+--- - 
+--- End of /MOTD command.
+-NickServ- This nickname is owned by someone else
+-NickServ- If this is your nickname, type /msg NickServ IDENTIFY <password>
+--> You are now talking on #Linux-coding
+--- Topic for #Linux-coding is http://codec.mine.nu/Great_To_Be_A_Nerd.mp3
+--- Topic for #Linux-coding set by codec`x at Wed Jul 31 11:32:45
+<dvhart> lo all
+>nickserv< identify Cj87K9
+-NickServ- Password accepted - you are now recognized
+--- services. sets mode +e dvhart
+-MemoServ- You have no new memos
+<dvhart> anyone around?
+<dvhart> its saturday! you should be sitting at home in front of your computer!  :-)
+<-- carter|2 has quit (Read error: 110 (Connection timed out))
+<carter__> hi dvhart
+<carter__> hihihi ! :)
+--- carter__ is now known as carter
+* carter is thinking about using libstk @ some project @ work
+<carter> :)
+<dvhart> kewl
+<dvhart> working on libstk now
+<carter> kewl
+<carter> bzw
+<carter> btw
+<carter> do you think libstk should be fixed on  SDL?
+<dvhart> hmmm... I want it to be light weight, but if the drawing engine/ X abstraction could be made modular without too much of a bulk hit... that could be kewl
+<carter> yeah hmmmm
+<dvhart> nwhat did you have in mind ?
+* carter thinks directfb is really kewl
+<carter> but if you use sdl on top of directfb
+<carter> it starts to get too much wrapping layers imo
+<carter> but it would be much work to abstract all this away
+<carter> so maybe we should really stay by using sdl
+<carter> dunno really
+<dvhart> I have a lot to do before I can think about removing SDL
+<carter> yep
+<dvhart> but it is becoming more and more modular
+<dvhart> so if others start to use it, I am sure the development will speed ip
+<carter> yep
+<carter> :)
+<dvhart> a question about references
+<carter> atm my GUI is text based
+<carter> where i want to use it
+<carter> but maybe i'll switch soon
+<dvhart> that would make dvhart happy  *g*
+<dvhart> if I now have a pointer stk_widget * focused_widget
+<carter> hehe :)(
+<dvhart> should I try and use a reference instead?
+<dvhart> I thought references have to be set once?
+<carter> they have
+<carter> it depends on what you want to do
+<carter> pointers arent evil by definition
+<carter> :)
+<dvhart> it maintains the access to the applications focused widget
+<carter> where is it used?
+<carter> sounds ok for this application
+<carter> only prob with pointers is imo memory management
+<carter> and dumb coders
+<dvhart> it is in the stk_app main loop
+<carter> :)
+<carter> wait will have a look
+<dvhart> ok
+<carter> added pkg-config support
+<dvhart> stk_app.(h|cpp)
+<carter> to libstk
+<carter> @ work today
+<carter> but havent added it yet to the cvs
+<dvhart> pkg-config ?
+<dvhart> as in stk-config --cflags?
+<carter> similiar
+<dvhart> kick ass
+<carter> pkg-config is a standardised way for this
+<carter> gnome2 uses it everywhere
+<dvhart> gnome2 is
+<dvhart> ... right
+<carter> so you just call
+<dvhart> saw it when I tried to build rhythm box
+<dvhart> *tried*
+<carter> pkg-config libstk sdl --cflags --libs
+<carter> and it gives you your compile flag
+<dvhart> very kewl!
+<dvhart> thanks
+<carter> even handles dependencies
+<carter> between libraries
+<carter> sdl has no support for it yet :(
+<carter> thats a bit dumb :)
+<dvhart> I am trying to replace the callbacks module now with libsig
+<carter> bool stk_app::set_state(stk_state * val) {
+<carter> thats the place where refs could be helpful
+<carter> IMO
+<dvhart> look at L 354 in stk_app.cpp
+<dvhart> I think I want the signals to accept (stk_widget&, something)
+<dvhart> so the on_keypress uses stk_widget& and SDLKey
+<dvhart> is: focused_widget->on_keypress(focused_widget, event.key.keysym.sym);
+<dvhart> a good way to do it?
+<carter> imo ok
+<carter> you might want to use some typedef
+<carter> to not call SDLkey directly
+<carter> maybe call it 
+<dvhart> why?
+<carter> typedef SDLKey stkKey
+<carter> so you COULD wrap it later
+<dvhart> ah
+<carter> without braking anything
+<dvhart> ok
+<carter> imo the backend should be hidden in every case
+<carter> even if you are fixed on SDL
+<carter> the end user of the lib should use the lib, and doesnt feel likes he's using some helper functions + SDL
+<dvhart> right
+<carter> imo the pointer use there is correct
+<dvhart> so the signal should accept a stk_widget *   ?
+<carter>    for (u_int i = 0; i < key_mappings.size(); i++) {
+<carter> thats a no no imo
+<carter> you should be using iterators
+<dvhart>   SigC::Signal1<void, stk_widget, SDLKey> on_keypress;  // void sig(stk_widget, SDLKey)
+<carter> dvhart: yep it should accept an stk_widget*
+<dvhart> then how do I dix that ?
+<carter> two choices
+<carter> stk_widget pointer
+<carter> or reference
+<carter> so like
+<carter> SigC::Signal2<void,stk_widget*,SDLkey> on_keypress;
+<carter> would i use
+<carter> but stk_widget& is ok too
+<dvhart> but I don't have a reference 
+* carter isnt that a big fan of references
+<carter> why havent you got a reference?
+<carter> you can always make a reference out of a pointer :)
+<dvhart> I have focused_widget
+<dvhart> ah
+<carter> yep
+<dvhart> *blush*
+<carter> so
+<carter> but oh
+<carter> hmm
+<carter> shit
+<carter> we might get into some aliasing problem then
+<carter> hmmmmmmmmmm
+<carter> *think think*
+<carter> you knoiw
+<carter> if you have a pointer
+<carter> to stk_widget
+<carter> but this points
+<carter> to some child widget
+<carter> in the inheritance tree
+<carter> and then
+<carter> you dereference it
+<carter> you might strip of the new virtual functions etc
+<carter> hmmm
+<carter> but ok
+<carter> now
+<carter> no
+<carter> you can use just a refernce
+<carter> and call the signal like:
+<carter> sig(*focused_widget,key);
+<carter> just dont pass it by value
+<carter> everyhting else is ok
+<carter> reference and pointer
+<dvhart> so *pointer is a refrence?
+<carter> *pointer is a value
+<carter> :)
+<carter> simple dereferencing
+<dvhart> if the signature of the called funciton is stk_widget&
+<dvhart> ?
+<carter> then it will be passed as a reference
+<carter> references
+<dvhart> I aplogize, references are confusing the hell out of me, not conceptually, just the syntax
+<carter> are initialized like values
+<carter> not like pointers
+<carter> like
+<carter> int a=5;
+<carter> int &aref=a;
+<carter> not
+<carter> int &aref=&a;
+<carter> that differs from pointers , had some trouble with it too when i first used them  :)
+<dvhart> right
+<dvhart> ok
+<dvhart> so
+<dvhart> SigC::Signal1<void, stk_widget&, SDLKey> on_keypress;  // void sig(stk_widget&, SDLKey)
+<carter> hmmm
+<carter> yep
+<carter> but iam not 100% sure
+<dvhart> then call it:  focused_widget->on_keypress(*focused_widget, event.key.keysym.sym);
+<carter> its a bit late :)
+<carter> yep
+<dvhart> its only 9pm!
+<carter> there is a small posibility of going wrong
+<carter> yep
+<carter> :)
+<carter> worked since 7am
+<carter> you know
+<dvhart> ah
+<carter> if you lets say
+<carter> pass a 
+<carter> stk_button
+<carter> as a value
+<carter> it will fail
+<dvhart> damn! major copile issues
+<carter> cause all the things button added to widget are lost
+<dvhart> ah
+<carter> but the reference should work
+<dvhart> so I can't use the inheritence of C++?
+<carter> you can
+<carter> but not with passing by value
+<carter> the prob is
+<carter> iam not 100%sure
+<carter> of the dereference there
+<carter> doesnt harm it too
+<carter> but it shouldnt
+<carter> thats the whole reason why there are references in c++ :)
+<carter> ah forget it
+<carter> just do it as i told you
+<carter> will work with inheritance :)
+* carter should sleep more *:)))*
+<dvhart> *g*
+<dvhart> as should we all
+<dvhart> what the hell
+<dvhart> ...
+<carter> ???
+<dvhart> stk_app.cpp:354: no match for call to `(SigC::Signal1<void,stk_widget &,SDLKey>) (stk_widget &, SDLKey &)'
+<dvhart> /usr/include/sigc++-1.0/sigc++/basic_signal.h:311: candidates are: void SigC::Signal1<void,stk_widget &,SDLKey>::operator ()(stk_widget &)
+<dvhart> I didn't pass an SDLKey &
+<carter> ahhh
+<carter> dvhart
+<carter> Signal1
+<carter> TAKES ONE argument
+<carter> you should use
+<carter> Signal2
+<dvhart> oh
+<dvhart> I forgot
+<dvhart> its bee a couple weeks since I looked at this last
+<carter> nop
+<carter> ahh
+<carter> MPeg4 Roxxxx
+<carter> :)
+* carter now has 20 episodes ST-Voy on his harddisc :)
+<dvhart> I have a couple xvid from a friend
+<dvhart> *g*
+<carter> and the quality is really good
+* carter is watching caretaker part1 atm
+<dvhart> compile errors are like 5000 char long, can't read in emacs   *groan*
+<carter> lol
+<carter> thats the C++ problem
+<carter> THE
+<carter> templates give you really shitty errors
+<carter> 1 week ago
+<carter> when codec was here
+<carter> i had ONE error
+<carter> going over 50 lines
+<-- sh0ckwave has quit ("BitchX-1.0c19 -- just do it.")
+<dvhart> lol
+<carter> in my terminal :)
+<dvhart> ok one more
+<dvhart> stk_widget.cpp:175: no matching function for call to `SigC::Signal1<void,stk_widget &,SigC::Marshal<void> >::connect (SigC::Slot1<void,basic_string<char,string_char_traits<char>,__default_alloc_template<true,0> > >)'
+<dvhart> /usr/include/sigc++-1.0/sigc++/basic_signal.h:305: candidates are: class SigC::Connection SigC::Signal1<void,stk_widget &,SigC::Marshal<void> >::connect(const SigC::Slot1<void,stk_widget &> &)
+<dvhart> this one has only one argument
+<carter> aehem
+<carter> you are assigning a wrong signal handler
+<carter> signal handler has the signature
+<carter> no
+<carter> right
+<carter> the functon you are assigning
+<carter> has the signature
+<carter> void func(char);
+<carter> you are assigning to
+<carter> signal1<void,std_widget&> signal
+<carter> char != stk_widget$
+<dvhart> oh krap!
+<carter> wah
+<carter> thats CRAP
+<carter> KDE fool you! :)
+<dvhart> forgot to set header too   :-)
+<dvhart> lol @ me
+<dvhart> initialization of non-const reference type `class stk_widget &' ?
+<dvhart> I passed 'this'
+<carter> aehem
+<carter> this is a pointer
+<carter> you dereferenced it right?
+<dvhart> so *this
+<carter> yep
+<dvhart> almost there
+<dvhart> ...
+<dvhart> make
+<dvhart> *blush*
+<dvhart> ok, it linked
+<dvhart> damn, tests dies
+<carter> gdb it
+<dvhart> no, it dies building, looking into it... purely informational rant  *g*
+<dvhart> so in gtk, you pass a gtk_widget * and a void * user data to a callback, what do you pass to a gtk++ signal ?
+<carter> depends on which signal
+<carter> ever programmed any other gui toolkit?
+<dvhart> but never a user_data ?
+<carter> every signal is different
+<carter> like
+<carter> when you have a list view selection changed
+<dvhart> does swing count ? or mfc ?
+<carter> you give it an index
+<carter> user_data
+<dvhart> MFnC that is
+<carter> for WHAT do you need user data?
+<carter> the user cant place data there
+<carter> can he?
+<dvhart> just curious
+<carter> i mean
+<carter> what would you ever pass as user data?
+<carter> the user has NO access to the function call
+<carter> so it cant be user data
+<carter> and any other data 
+<carter> is known when the signal is designed
+<carter> MFC and swing are very bad by design imo
+<carter> in some MFC manual
+<carter> there is even some note
+<dvhart> agreed
+<carter> that you should not make any data members
+<carter> private or protected
+<dvhart> AH
+<dvhart> lol
+<carter> cause the user might want to use the internals
+<carter> of the library
+<carter> thats microsofts style of design
+<dvhart> scarry
+<dvhart> so, I wonder why they have security problems ?   *LOL*
+* carter doesnt :)
+<dvhart> ok it builds and uses signals
+<dvhart> now to axe the old callback system
+<carter> btw
+<carter> you sure you always want  to give the widget used as the first signal argument?
+* carter just saw that most GTK-- signals
+<carter> dont have even that argument
+<carter> clicked etc
+<dvhart> how can I access it then?
+<carter> in gtk-- hasnt got any arguments
+<carter> you can bind it
+<dvhart> *?*
+<carter> thats the real power of sigc++
+<carter> at connection time
+<carter> the user can add additional fixed arguments
+<carter> to a signal
+<carter> look @ sigc++ documentation
+<dvhart> user=programmer ?
+<carter> argument binding
+<carter> yep
+<carter> the user of your gui toolkit i mean
+<dvhart> will ook into it
+<dvhart> right
+<carter> like when you have
+<carter> a signal handler
+<carter> void func(stk_widget* widget);
+<carter> you can  connect it to a signal
+<carter> SigC::Signal0<> sig;
+<carter> so
+<carter> that the pointer passed
+<carter> is always the same
+<carter> for every call
+<carter> you do it like this:
+<carter> sig.connect(SigC::bind(SigC::slot(func),the_widget_pointer));
+<carter> you can bind any number of arguments
+<carter> that makes Gtk-- cool
+<carter> QT lame
+<carter> and gtk+ extremely lame :)
+<dvhart> ok
+<dvhart> so if you wanted a button to increment a progress bar
+<dvhart> you would automatically bind the button to the clicked signal
+<carter> yep
+<dvhart> and in the slot, look up the pbar and call pbar.increment
+<carter> so the clicked signal
+<carter> doesnt need to pass *this
+<dvhart> right
+<carter> imo the better solution
+<carter> leaves the choice to the signal user
+<dvhart> iyo, is the lookup_widget good
+<carter> and has a better performance
+<carter> what lookup?
+<dvhart> so the slot to increment the pbar
+<carter> the pbar
+<carter> is bound at compile time
+<dvhart> do I pass the pbar or look it up in the slot
+<carter> to the signal
+<carter> so you have no lookup
+<dvhart> so the pbar must be instantiated before the button
+<carter> no
+<dvhart> (I am talking about stk_test if you want a reference)
+<carter> only before the signal is connected
+<carter> wait
+<dvhart> ah
+<carter> will open stk_test
+<dvhart> true
+<carter> you bind to  a slot
+<carter> not to a signal
+<carter> so the button can be created any time
+<carter> and there is no lookup in the slot
+<carter> the slot calls the increment function
+<carter> with just the RIGHT arguments
+<carter> the cool thing
+<carter> for the case you mentioned
+<carter> incrementing a progress bar
+<dvhart> and in the slot I refer to the pbar as if it were a passed argument ?
+<carter> you won't even have to write a signal handler func
+<carter> for the button
+<carter> yep
+<carter> it is a passed argument
+<carter> the slot passes it
+<carter> you know
+<carter> signal -> slot -> signal_handler
+<carter> the slot ADDs arguments
+<dvhart> wait no signal handler func? how?
+<carter> to the one he received from the signal
+<carter> dvhart
+<carter> easy
+<carter> i think
+<carter> your progress bar
+<carter> might have a increment function
+<dvhart> bind to pbar.increment()
+<carter> (was an assumption :) )
+<carter> yep
+<carter> exactly
+<carter> :)
+<dvhart> hmmmm
+<carter> so you can bind the signal to the target functions
+<dvhart> badass
+<carter> thats so cool about sigc++ imo
+<carter> but
+<carter> now
+<carter> that i think about it
+<dvhart> arguments might be wrong
+<carter> the progress bar doesnt really needs an increment function
+<carter> no
+<carter> arguments cant be wrong
+<carter> everyhting is type checked
+<carter> :))
+<carter> thats the pure c++ power, not QT :)
+<carter> hmmmmm
+<carter> dvhart: increment for a progress bar is API bloat ,now that i think about it
+<carter> :)
+<carter> there should be just one attribute/property for the progressbar value
+<carter> not any increment functions
+<carter> :)
+<carter> thats what we have arithmetic operators for 
+<dvhart> all I have is set_position
+<carter> :)
+<dvhart> and set_percentage
+<carter> yep
+<carter> thats enough
+<carter> imo set maximum
+<dvhart> right
+<carter> set position
+<carter> is enough
+<dvhart> set_percentage is suff for set_maximum
+<dvhart> oh
+<dvhart> set_range
+<dvhart> is what I called it
+<carter> ok
+<dvhart> hmmm
+<carter> nice name too
+<carter> :)
+<dvhart> lets see if I can implement some of this... *g*
+* carter is afk for 10 mins or so
+<dvhart> might leave binding for tomorrow
+<dvhart> I am going to lunch then a lake party
+<dvhart> see you tomorrow
+<carter> ;))
+<carter> cya !
+<dvhart> thanks for the pointers
+<dvhart> SLEEP
+* dvhart saves buffer

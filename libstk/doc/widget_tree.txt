@@ -1,0 +1,31 @@
+libstk widget hierarchy
+o - initial version
+* - possible extension
+
+o Stk::Application
+o Stk::Theme
+o Stk::Font
+* Stk::Drawable (add all the drawing methods here, maybe only use one surface in widget - a Drawable)
+o Abstract Stk::Widget (maybe derive from Drawable)
+     o Stk::Box - Stk::Widget
+     o Stk::Image - Stk::Widget
+     o Stk::Label - Stk::Widget
+          * Stk::ImageLabel - Stk::Widget
+     o Stk::Progress - Stk::Widget
+     * Stk::Calendar - Stk::Widget
+     * Stk::DrawingArea - Stk::Widget
+     o Stk::Button - Stk::Widget
+          o Stk::CheckButton - Stk::Button
+               * Stk::RadioButton - Stk::CheckButton
+     o Abstract Stk::Editable - Stk::Widget
+          o Stk::Entry - Stk::Editable
+          * Stk::Text - Stk::Editable
+     o Abstract Stk::Container - Stk::Widget
+          o Stk::State - Stk::Container
+          * Stk::Frame - Stk::Container
+          o Stk::List - Stk::Container
+               o Stk::Combo - Stk::List
+               * Stk::Tree - Stk::List
+          o Stk::Item - Stk::Container
+               * Stk::ListItem - Stk::Item
+               * Stk::TreeItem - Stk::Item

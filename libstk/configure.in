@@ -1,0 +1,108 @@
+dnl Process this file with autoconf to produce a configure script.
+
+
+AC_INIT 
+
+dnl Every other copy of the package version number gets its value from here
+AM_INIT_AUTOMAKE(libstk, 0.2.0)
+
+dnl create a config.h file (Automake will add -DHAVE_CONFIG_H)
+AM_CONFIG_HEADER(config.h)
+
+AC_SUBST(VERSION)
+
+ISODATE=`date +%Y-%m-%d`
+AC_SUBST(ISODATE)
+
+AC_CANONICAL_HOST
+
+dnl Checks for programs.
+AC_PROG_INSTALL
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_LIBTOOL
+
+dnl Checks for libraries. (how should this work?)
+dnl AC_CHECK_LIB(SDL, SDL_Init,,AC_MSG_ERROR(libSDL not found))
+AC_CHECK_LIB(m, sqrt,,AC_MSG_ERROR(libm not found))
+
+dnl Checks for header files.
+AC_HEADER_STDC
+dnl add others
+AC_CHECK_HEADERS(unistd.h string.h)
+
+jm_CHECK_TYPE_STRUCT_UTIMBUF
+AC_HEADER_MAJOR
+AC_FUNC_ALLOCA
+AC_STRUCT_TM
+AC_STRUCT_ST_BLOCKS
+AC_FUNC_CLOSEDIR_VOID
+AC_CHECK_FUNCS(mkfifo)
+AC_CHECK_FUNC(mknod)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+
+dnl Checks for library functions.
+
+
+dnl copy xine to fix the prefix=NONE crap
+echo "prefix: ($prefix)"
+echo "ac_default_prefix: ($ac_default_prefix)"
+if test "x$prefix" = xNONE; then
+   prefix="${ac_default_prefix}/stk"
+fi
+if test "x$exec_prefix" = xNONE; then
+   exec_prefix="${prefix}"
+fi 
+
+dnl data dir defines
+STK_LIBDIR="${prefix}/lib"
+eval STK_LIBPATH="$STK_LIBDIR"
+AC_DEFINE_UNQUOTED(STK_LIBDIR, "$STK_LIBPATH")
+AC_SUBST(STK_LIBPATH)
+
+STK_INCLUDEDIR="${prefix}/include"
+eval STK_INCLUDEPATH="$STK_INCLUDEDIR"
+AC_DEFINE_UNQUOTED(STK_INCLUDEDIR, "$STK_INCLUDEPATH")
+AC_SUBST(STK_INCLUDEPATH)
+
+STK_DATADIR="${datadir}"
+eval STK_DATAPATH="$STK_DATADIR"
+AC_DEFINE_UNQUOTED(STK_DATADIR, "$STK_DATAPATH")
+AC_SUBST(STK_DATAPATH)
+
+STK_FONTDIR="$STK_DATADIR/fonts"
+eval STK_FONTPATH="$STK_FONTDIR"
+AC_DEFINE_UNQUOTED(STK_FONTDIR, "$STK_FONTPATH")
+AC_SUBST(STK_FONTPATH)
+
+STK_THEMEDIR="$STK_DATADIR/themes"
+eval STK_THEMEPATH="$STK_THEMEDIR"
+AC_DEFINE_UNQUOTED(STK_THEMEDIR, "$STK_THEMEPATH")
+AC_SUBST(STK_THEMEPATH)
+
+STK_IMAGEDIR="$STK_DATADIR/images"
+eval STK_IMAGEPATH="$STK_IMAGEDIR"
+AC_DEFINE_UNQUOTED(STK_IMAGEDIR, "$STK_IMAGEPATH")
+AC_SUBST(STK_IMAGEPATH)
+
+SDL_CONFIG=`which sdl-config`
+SDL_CFLAGS=`$SDL_CONFIG $sdlconf_args --cflags`
+SDL_LIBS=`$SDL_CONFIG $sdlconf_args --libs`
+echo "SDL_CFLAGS: $SDL_CFLAGS"
+echo "SDL_LIBS: $SDL_LIBS"
+CFLAGS="$CFLAGS $SDL_CFLAGS"
+LDFLAGS="$LDFLAGS $SDL_LIBS"
+
+AC_OUTPUT([
+Makefile 
+doc/Makefile 
+src/Makefile 
+data/Makefile
+data/images/Makefile
+data/themes/Makefile
+data/fonts/Makefile
+data/fonts/font1/Makefile
+data/fonts/font2/Makefile
+tests/Makefile 
+])
