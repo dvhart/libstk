@@ -520,8 +520,8 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
 
         // prepare the font
-        font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
-        gc->font(the_font);
+        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+        gc->font(arial_18);
 
         if (pressed_)
         {
@@ -565,10 +565,24 @@ namespace stk
         surface->gc(gc);
         surface->fill_rect(interior_rect);
 
-        if (pressed_)
-            surface->draw_rect(rect_);
+        if (pressed_) surface->draw_rect(rect_);
         surface->draw_rect(outline_rect);
         surface->draw_text(interior_rect, text_);
+
+        if (focused_)
+        {
+            int sel_min = MIN(selection_start_, selection_end_);
+            std::wstring presel_str = text_.substr(0, sel_min);
+            std::wstring sel_str = text_.substr(sel_min, abs(selection_end_-selection_start_));
+            int sel_x = rect_.x1() + arial_18->draw_len(presel_str);
+            int sel_width = arial_18->draw_len(sel_str);
+            int cursor_x = (selection_start_ > selection_end_) ? sel_x : sel_x+sel_width;
+            
+            // draw the selection
+            surface->draw_rect(rectangle(sel_x, rect_.y1(), sel_width, rect_.height()));
+            // draw the cursor
+            surface->draw_rect(rectangle(cursor_x, rect_.y1(), 2, rect_.height()));
+        }
     }
 
 }

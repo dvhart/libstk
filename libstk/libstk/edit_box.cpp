@@ -2,7 +2,7 @@
  *    FILENAME: edit_box.cpp
  * DESCRIPTION: Edit box widget implementation
  *     AUTHORS: Dirk Hoerner, Darren Hart
- *  START DATE: 23/Jun/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 23/Jun/2003  LAST UPDATE: 27/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -26,10 +26,12 @@ namespace stk
         return new_edit_box;
     }
 
-    edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect)
-        :	widget(parent, rect), text_(text)
+    edit_box::edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect) 
+        : widget(parent, rect), text_(text)
     {
         focusable(true);
+        selection_start_ = 0;
+        selection_end_ = 0;
     }
 
     edit_box::~edit_box()
@@ -44,21 +46,60 @@ namespace stk
         case event::key_down:
         {
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+            int sel_min = MIN(selection_end_, selection_start_);
+            int sel_width = abs(selection_end_-selection_start_);
             switch ( ke->key() )
             {
-             case key_backspace:
-                if (text_.size() > 0) text_.resize(text_.size()-1);
-                redraw(rect_);
-                on_change(text_);
+            case key_backspace:
+                if (selection_end_ != selection_start_)
+                {
+                    text_.erase(sel_min, sel_width);
+                    selection_start_ = selection_end_ = sel_min;
+                    redraw(rect_);
+                    on_change(text_);
+                }
+                else if (selection_end_ > 0)
+                {
+                    sel_min--;
+                    text_.erase(sel_min, 1);
+                    selection_start_ = selection_end_ = sel_min;
+                    redraw(rect_);
+                    on_change(text_);
+                }
+                
                 return;
                 break;
-             case key_delete:
+            case key_delete:
+                if (selection_end_ != selection_start_)
+                {
+                    text_.erase(sel_min, sel_width);
+                    selection_start_ = selection_end_ = sel_min;
+                    redraw(rect_);
+                    on_change(text_);
+                }
+                else if (sel_min < text_.size())
+                {
+                    text_.erase(sel_min, 1);
+                    redraw(rect_);
+                    on_change(text_);
+                }
                 return;
-                INFO("Delete not implemented");
                 break;
-             case key_enter:
+            case key_enter:
                 redraw(rect_);
                 on_confirm(text_);
+                return;
+                break;
+            case key_leftarrow:
+                if (selection_end_ > 0) selection_end_--;
+                if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
+                redraw(rect_);
+                return;
+                break;
+            case key_rightarrow:
+                if (selection_end_ < text_.size()) selection_end_++;
+                if (!(ke->modlist() & mod_shift)) selection_start_ = selection_end_;
+                redraw(rect_);
                 return;
                 break;
             }
@@ -68,11 +109,20 @@ namespace stk
             {
                 INFO("ASCII key received");
                 // FIXME: if text is selected, replace it with the current keystroke character 
-                wchar_t new_char = (wchar_t)ke->key();
+                std::wstring insert_str;
+                insert_str += (wchar_t)ke->key();
                 INFO("Current modifier: " << std::hex << ke->modlist());
                 if ((ke->modlist() & mod_shift) && (ke->key() >= key_a && ke->key() <= key_z)) 
-                    new_char += (wchar_t)('A' - 'a');
-                text_ += new_char;
+                    insert_str[0] += (wchar_t)('A' - 'a');
+                
+                if (selection_end_ != selection_start_)
+                {
+                    text_.erase(sel_min, sel_width);
+                    selection_start_ = selection_end_ = sel_min;
+                }
+ 
+                text_.insert(selection_end_, insert_str);
+                selection_start_ = ++selection_end_;
                 redraw(rect_);
                 on_change(text_);
                 return;
@@ -80,7 +130,7 @@ namespace stk
             else
                 INFO("received unknown key: " << ke->key());
             
-            break; // key_up
+            break; // key_down
         }
         case event::mouse_down:
         {

@@ -2,7 +2,7 @@
  *    FILENAME: font.h
  * DESCRIPTION: Font class for caching glyphs.
  *     AUTHORS: Vernon Mauery, Marc Strämke, Darren Hart
- *  START DATE: 15/Mar/2003  LAST UPDATE: 26/Jul/2003
+ *  START DATE: 15/Mar/2003  LAST UPDATE: 27/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -34,8 +34,6 @@ namespace stk
     private:
 
     protected:
-
-
         static FT_Library lib_;
         static int font_count_;
         FT_Face face_;
@@ -44,20 +42,15 @@ namespace stk
 
     public:
         static font::ptr create(const std::string& fontname, int height, int width=0);
+        // FIXME: this *should* be protected, but font_manager needs to call it (atm)
         font(const std::string& fontname, int height, int width);
         virtual ~font();
         const stk::glyph::ptr glyph(wchar_t c);
-        int draw_len(const std::wstring& text, int kerning_mode=0);
-        int chars_in_rect(const rectangle& rect, const std::wstring& text, int kerning_mode=0);
-        int kerning(wchar_t left, wchar_t right, int kerning_mode=0);
-        int height() const
-        {
-            return height_;
-        }
-        int width() const
-        {
-            return width_;
-        }
+        int draw_len(const std::wstring& text, int kerning_mode = 0);
+        int chars_in_rect(const rectangle& rect, const std::wstring& text, int kerning_mode = 0);
+        int kerning(wchar_t left, wchar_t right, int kerning_mode = 0);
+        int height() const { return height_; }
+        int width() const { return width_; }
     }
     ; //class font
 

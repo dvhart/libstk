@@ -2,7 +2,7 @@
  *    FILENAME: edit_box.h
  * DESCRIPTION: An edit box widget.
  *     AUTHORS: Dirk Hoerner, Darren Hart
- *  START DATE: 23/Jun/2003  LAST UPDATE: 23/Jun/2003
+ *  START DATE: 23/Jun/2003  LAST UPDATE: 27/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -29,6 +29,8 @@ namespace stk
 
 	private:
 		std::wstring text_;
+                int selection_start_;
+                int selection_end_;
 
 	protected:
 		edit_box(container::ptr parent, const std::wstring& text, const rectangle& rect);

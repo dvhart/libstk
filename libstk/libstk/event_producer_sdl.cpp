@@ -28,8 +28,7 @@ namespace stk
     event_producer_sdl::ptr event_producer_sdl::create()
     {
         event_producer_sdl::ptr new_event_producer_sdl(new event_producer_sdl());
-        event_system::get
-            ()->add_producer(new_event_producer_sdl);
+        event_system::get()->add_producer(new_event_producer_sdl);
         return new_event_producer_sdl;
     }
 
@@ -141,6 +140,9 @@ namespace stk
             break;
         case SDLK_SPACE:
             key = key_space;
+            break;
+        case SDLK_DELETE:
+            key = key_delete;
             break;
 
         case SDLK_LEFT:

@@ -13,12 +13,12 @@
 #include <config.h>
 #endif
 
+#include <unistd.h>
 #include <iostream>
 #include <string>
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <unistd.h>
 
 #include "libstk/application.h"
 #include "libstk/event_system.h"
@@ -29,9 +29,7 @@
 #include "libstk/mouse_event.h"
 #include "libstk/state.h"
 #include "libstk/theme.h"
-
-using std::cout;
-using std::endl;
+#include "libstk/logging.h"
 
 namespace stk
 {
@@ -55,26 +53,24 @@ namespace stk
     application::application(surface::ptr surface) :
             surface_(surface), event_system_(event_system::get()), done_(false)
     {
-        cout << "application::application()" << endl;
         // initialize the theme
         theme::create(surface);
     }
 
     application::~application()
     {
-        cout << "application::~application()" << endl;
     }
 
     int application::run()
     {
-        cout << "application::run()" << endl;
+        INFO("Start");
         int retval = 0;
 
         // set the current state and focused_widget_
         if (states_.size() == 0)
         {
             // FIXME: throw something
-            cout << "application::run() - application state count is zero!" << endl;
+            ERROR("application state count is zero!");
             return 1;
         }
         else
@@ -87,7 +83,7 @@ namespace stk
                 focused_widget_.lock()->handle_event(event::create(event::focus));
             else
                 // FIXME: throw something
-                cout << "application::run() - current state has no focusable widgets" << endl;
+                ERROR("current state has no focusable widgets");
                 
         }
         
@@ -155,12 +151,16 @@ namespace stk
 		    }
 		    else
 		    {
-			cout << "application::run() - passing event to focused_widget_" << endl;
+			INFO("passing event to focused_widget_");
 			widget::ptr ptr = focused_widget_.lock();
 			if (!ptr)
-			    cout << "application::run() - no current widget, pass to state ?" << endl;
+                        {
+			    WARN("no current widget, pass to state ?");
+                        }
 			else
+                        {
 			    ptr->handle_event(event_);
+                        }
 		    }
 		}
 		event_ = event_system_->poll_event();
@@ -178,7 +178,7 @@ namespace stk
 
             usleep(1000); // 1 ms
         }
-        cout << "application::run() - leaving" << endl;
+        INFO("Done");
         return retval;
     }
 
@@ -190,13 +190,11 @@ namespace stk
 
     void application::add_state(state::ptr state)
     {
-        cout << "application::add_state()" << endl;
         states_.push_back(state);
     }
 
     void application::add_timer(timer::ptr timer)
     {
-        cout << "application::add_timer()" << endl;
         timers_.push_back(timer);
     }
 
@@ -213,12 +211,9 @@ namespace stk
         switch(e->type())
         {
         case event::key_down:
-            break;
-        case event::key_up:
         {
             // FIXME :Carter: shouldnt this be a polymorphic cast?
             key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-            //cout << "application::handle_event() - key pressed: " << ke->key() << endl;
             switch (ke->key())
             {
             case key_escape:
@@ -228,7 +223,7 @@ namespace stk
             case key_rightarrow:
             case key_downarrow:
             {
-                cout << "application::handle_event() - next pressed" << endl;
+                INFO("next pressed");
                 component::weak_ptr prev_focused_widget = focused_widget_;
                 focused_widget_ = prev_focused_widget.lock()->focus_next();
                 component::weak_ptr temp_widget = prev_focused_widget;
@@ -245,12 +240,12 @@ namespace stk
                 break;
             }
             case key_enter:
-                cout << "application::handle_event() - enter pressed" << endl;
+                INFO("enter pressed");
                 break;
             case key_leftarrow:
             case key_uparrow:
             {
-                cout << "application::handle_event() - prev pressed" << endl;
+                INFO("prev pressed");
                 component::weak_ptr prev_focused_widget = focused_widget_;
                 focused_widget_ = focused_widget_.lock()->focus_prev();
                 component::weak_ptr temp_widget = prev_focused_widget;
@@ -272,6 +267,8 @@ namespace stk
             }
             break;
         }
+        case event::key_up:
+            break;
         case event::mouse_down:
             break;
         case event::mouse_up:
@@ -291,14 +288,12 @@ namespace stk
     // FIXME: this is wrong, what should we do? change to the next state ?
     widget::ptr application::focus_next()
     {
-        cout << "application::focus_next()" << endl;
         return current_state_.lock()->focus_first();
     }
 
     // FIXME: this is wrong, what should we do? change to the previous state ?
     widget::ptr application::focus_prev()
     {
-        cout << "application::focus_prev()" << endl;
         return current_state_.lock()->focus_last();
     }
 
@@ -319,7 +314,7 @@ namespace stk
             focused_widget_.lock()->handle_event(event::create(event::focus));
         else
             // FIXME: throw something
-            cout << "application::run() - current state has no focusable widgets" << endl;
+            ERROR("application::run() - current state has no focusable widgets");
         
         new_cur_state->redraw(new_cur_state->rect());
         return true;
