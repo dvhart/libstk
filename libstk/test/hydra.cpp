@@ -77,6 +77,10 @@ int main(int argc, char* argv[])
     {
         std::cout << "Exception: " << e.what() << std::endl;
     }
+    catch (...)
+    {
+        std::cout << "Unkown exception caught, aborting" << std::endl;
+    }
 
     return retval;
 }

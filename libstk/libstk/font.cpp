@@ -1,24 +1,22 @@
-/******************************************************************************
+/**************************************************************************************************
  *    FILENAME: font.cpp
  * DESCRIPTION: Font class implementation.
  *     AUTHORS: Vernon Mauery, Darren Hart, Marc Straemke
- *  START DATE: 15/Mar/2003  LAST UPDATE: 21/May/2003
+ *  START DATE: 15/Mar/2003  LAST UPDATE: 01/Aug/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available
- *              with the source as license.txt or at 
- *              http://www.libstk.org/index.php?page=docs/license
- *****************************************************************************/
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *              license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
 
 #include <iostream>
 #include <string>
 #include "libstk/font.h"
 #include "libstk/exceptions.h"
+#include "libstk/logging.h"
 
 using std::wstring;
 using std::string;
-using std::cout;
-using std::endl;
 
 namespace stk
 {
@@ -37,13 +35,13 @@ namespace stk
         int error;
         if (font_count_ == 0)
         {
-            //cout << "font::font: initializing FreeType library" << endl;
+            INFO("initializing FreeType library");
             error = FT_Init_FreeType( &lib_ );
             if ( error )
                 throw error_message_exception("font::font: could not initialize Freetype library");
         }
         string filename = string("/usr/share/libstk/fonts/")+fontname;
-        //cout << "font::font: opening font file " << filename << endl;
+        INFO("trying to open font file " << filename);
         error = FT_New_Face( lib_, filename.c_str(), 0, &face_);
         if (error == FT_Err_Unknown_File_Format)
         {
@@ -51,12 +49,13 @@ namespace stk
         }
         else if (error)
         {
+            ERROR("Unable to load font, does " << filename << " exist?");
             throw error_message_exception("font::font: unknown error loading font: " + fontname);
         }
 
         error = FT_Set_Pixel_Sizes(
-                    face_,  // handle to face object
-                    width_,  // char_width in pixels
+                    face_,    // handle to face object
+                    width_,   // char_width in pixels
                     height_); // char_height in pixels
         if (error)
             throw error_message_exception("font::font: could not set font size");
@@ -73,11 +72,12 @@ namespace stk
         // need to do reference counting for the lib handle
         if (--font_count_ == 0)
         {
-            //cout << "font::~font: Done with FreeType library" << endl;
+            INFO("Done with FreeType library");
             FT_Done_FreeType(lib_);
         }
 
         // free the glyphs
+        // WRITEME... (when we actually cache them of course :-) )
     }
 
     const glyph::ptr font::glyph(wchar_t c)
