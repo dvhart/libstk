@@ -481,6 +481,8 @@ namespace stk
             INFO("SCALLING DOWN");
             int sc_x = (int)((1.0/x_factor) + .5);
             int sc_y = (int)((1.0/y_factor) + .5);
+            double nsc_x = (1.0/x_factor);
+            double nsc_y = (1.0/y_factor);
             for (int y=0; y < new_height; y++)
                 for (int x=0; x < new_width; x++)
                 {
@@ -493,7 +495,7 @@ namespace stk
                     {
                         for (int ix=0; ix < sc_x; ix++)
                         {
-                            color pix = data_protect(sc_x*x+ix, sc_y*y+iy);
+                            color pix = data_protect((int)(nsc_x*x+ix), (int)(nsc_y*y+iy));
                             r_sum += ((pix & 0xFF000000) >> 24);
                             g_sum += ((pix & 0x00FF0000) >> 16);
                             b_sum += ((pix & 0x0000FF00) >> 8);
@@ -528,6 +530,7 @@ namespace stk
         {
             INFO("SCALLING X DOWN AND SCALLING Y UP");
             int sc_x = (int)((1.0/x_factor) + .5);
+            double nsc_x = 1.0/x_factor;
             double sc_y = 1/y_factor;
             for (int y=0; y < new_height; y++)
                 for (int x=0; x < new_width; x++)
@@ -539,7 +542,7 @@ namespace stk
                     double a_sum = 0;
                     for (int ix=0; ix < sc_x; ix++)
                     {
-                        color pix = data_protect(sc_x*x+ix, (int)(y*sc_y));
+                        color pix = data_protect((int)(nsc_x*x+ix), (int)(y*sc_y));
                         r_sum += ((pix & 0xFF000000) >> 24);
                         g_sum += ((pix & 0x00FF0000) >> 16);
                         b_sum += ((pix & 0x0000FF00) >> 8);
@@ -559,7 +562,8 @@ namespace stk
         {
             INFO("SCALLING X UP AND SCALLING X DOWN");
             double sc_x = 1/x_factor;
-            int sc_y = (int)((1.0/x_factor) + .5);
+            int sc_y = (int)((1.0/y_factor) + .5);
+            double nsc_y = 1.0/y_factor;
             for (int y=0; y < new_height; y++)
                 for (int x=0; x < new_width; x++)
                 {
@@ -570,7 +574,7 @@ namespace stk
                     double a_sum = 0;
                     for (int iy=0; iy < sc_y; iy++)
                     {
-                            color pix = data_protect((int)(x*sc_x), sc_y*y+iy);
+                            color pix = data_protect((int)(x*sc_x), int(nsc_y*y+iy));
                             r_sum += ((pix & 0xFF000000) >> 24);
                             g_sum += ((pix & 0x00FF0000) >> 16);
                             b_sum += ((pix & 0x0000FF00) >> 8);
