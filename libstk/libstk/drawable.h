@@ -13,6 +13,8 @@
 #ifndef STK_DRAWABLE_H
 #define STK_DRAWABLE_H
 
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <libstk/surface.h>
 #include <libstk/rectangle.h>
 
@@ -21,6 +23,10 @@ namespace stk
     /// An abstract class defining the drawable interface.
     class drawable
     {
+    public:
+        typedef boost::shared_ptr<drawable> ptr;
+        typedef boost::weak_ptr<drawable> weak_ptr;
+
     private:
 
     protected:
