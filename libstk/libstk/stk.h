@@ -75,6 +75,8 @@
 #include <libstk/viewport.h>
 #include <libstk/widget.h>
 #include <libstk/edit_box.h>
-#include <libstk/xine_panel.h>
+#ifdef HAVE_XINE
+# include <libstk/xine_panel.h>
+#endif
 
 #endif
