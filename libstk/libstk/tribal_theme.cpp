@@ -29,6 +29,7 @@
 #include "libstk/theme.h"
 #include "libstk/tribal_theme.h"
 #include "libstk/edit_box.h"
+#include "libstk/spreadsheet.h"
 
 // all draw routines go here with the exception of container as it isn't
 // themeable and only draws its children
@@ -129,11 +130,16 @@ namespace stk
     void state::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        surface->offset(point(0,0));
+        
+        INFO("state::draw");
         graphics_context::ptr gc = graphics_context::create();
         gc->fill_color(color_manager::get()->get_color(
                     color_properties(fill_state_color_str, surface)));
         surface->gc(gc);
         surface->fill_rect(rect_);
+        INFO("Filling rect with x,y,w,h=" << rect_.x1() << "," << rect_.y1() << ","
+             << rect_.width() << "," << rect_.height());
         container::draw(surface); // this will draw all the children - document this for theme howto
     }
 
@@ -559,5 +565,60 @@ namespace stk
         // draw the string text_
         surface->draw_text(interior_rect, text_);
     }
+    void spreadsheet_cell::draw(surface::ptr surface, const rectangle& screen_position)
+    {
+        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, screen_position.width()-6, screen_position.height()-6);
+        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, screen_position.width()-2, screen_position.height()-2);
 
+        graphics_context::ptr gc = graphics_context::create();
+
+        if(focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
+        }
+        gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
+        
+
+        surface->fill_rect(interior_rect);
+
+        surface->draw_rect(outline_rect);
+    }
+    void spreadsheet_cell_text::draw(surface::ptr surface, const rectangle& screen_position)
+    {
+        rectangle interior_rect(screen_position.x1()+3, screen_position.y1()+3, screen_position.width()-6, screen_position.height()-6);
+        rectangle outline_rect(screen_position.x1()+1, screen_position.y1()+1, screen_position.width()-2, screen_position.height()-2);
+        
+        graphics_context::ptr gc = graphics_context::create();
+
+        // prepare the font
+        font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",10));
+        
+        gc->font(the_font);
+        
+        if(focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_focused_str, surface)));
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(color_properties(fill_color_normal_str, surface)));
+        }
+        gc->line_color(color_manager::get()->get_color(color_properties(outline_color_normal_str, surface)));
+
+        gc->font_outline_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
+        gc->font_fill_color(color_manager::get()->get_color(color_properties(font_color_normal_str, surface)));
+
+        surface->gc(gc);
+
+        surface->fill_rect(interior_rect);
+
+        surface->draw_rect(outline_rect);
+        surface->draw_text(interior_rect, text_);
+    }
+
+    
 }
