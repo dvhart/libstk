@@ -1,6 +1,9 @@
 #ifndef STK_MOUSE_EVENT_H
 #define STK_MOUSE_EVENT_H
 
+#include <boost/shared_ptr.hpp>
+#include "event.h"
+
 namespace stk
 {
 	class mouse_event : public event
@@ -18,6 +21,9 @@ namespace stk
 			int button() { return button_; }
 			
 	}; //class mouse_event
+
+	typedef boost::shared_ptr<stk::mouse_event> MouseEvent;
+	
 } // namespace stk
 
 #endif

@@ -50,13 +50,14 @@ namespace stk
 			current_state_ = *states_.begin();
 			// FIXME: is there a better way ?
 			current_widget_ = boost::shared_dynamic_cast<widget>(*states_.begin());
+			hover_widget_ = boost::shared_dynamic_cast<widget>(*states_.begin());
 		}
 		
-		event event_(no_event);
+		Event event_(new event(no_event));
 		while (!done_)
 		{
 			event_ = event_system_->poll_event();
-			if (event_.type() != no_event)
+			if (event_->type() != no_event)
 			{
 				//cout << "application::run() - event received of type: " << event_.type() << endl;
 				if (current_widget_.get() == 0)
@@ -87,13 +88,22 @@ namespace stk
 	}
 
 	// event_handler interface
-	void application::handle_event(event& e)
+	void application::handle_event(boost::shared_ptr<stk::event> e)
 	{
-		switch(e.type())
+		cout << "application::handle_event()" << endl;
+		switch(e->type())
 		{
 			case key_down:
-				//((key_event)e).key(); // this is ugly, should we just use unions ?
+			{		
+				KeyEvent ke = boost::shared_static_cast<key_event>(e);
+				switch ( ke->key() )
+				{
+					case key_esc:
+						quit();
+						break;
+				}
 				break;
+			}
 			case key_up:
 				break;
 			case mouse_down:
@@ -101,6 +111,9 @@ namespace stk
 			case mouse_up:
 				break;
 			case mouse_motion:
+				break;
+			case event_quit:
+				quit();
 				break;
 			default:
 				cout << "application::handle_event - unknown event" << endl;

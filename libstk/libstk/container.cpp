@@ -1,13 +1,20 @@
+#include <iostream>
 #include <boost/weak_ptr.hpp>
+
+#include "widget.h"
 #include "container.h"
 #include "exceptions.h"
+
+using std::cout;
+using std::endl;
 
 namespace stk
 {
 
-	//container::container(boost::weak_ptr<container> parent) : stk::widget(parent)
-	container::container(boost::shared_ptr<container> parent) : stk::widget(parent)
-	{}
+	container::container(boost::shared_ptr<container> parent) : widget(parent)
+	{
+		cout << "container::container()" << endl;
+	}
 
 	container::~container()
 	{}

@@ -7,7 +7,6 @@
 
 #include "parent.h"
 #include "surface.h"
-//#include "state.h"
 #include "widget.h"
 #include "event_system.h"
 
@@ -24,7 +23,7 @@ namespace stk
 			
 			boost::weak_ptr<stk::state> current_state_; 
 			boost::weak_ptr<stk::widget> current_widget_;
-			boost::weak_ptr<stk::state> hover_widget_; 
+			boost::weak_ptr<stk::widget> hover_widget_; 
 			
 			bool done_;
 			
@@ -44,7 +43,7 @@ namespace stk
 			boost::shared_ptr<stk::surface> surface();
 
 			// event_handler interface
-			void handle_event(stk::event& e);
+			virtual void handle_event(boost::shared_ptr<stk::event> e);
 			
 			// parent interface - is this necessary ?
 			virtual boost::shared_ptr<widget> focus_next();

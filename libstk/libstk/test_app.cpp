@@ -19,8 +19,10 @@ using std::endl;
 int main(int argc, char* argv[])
 {
 	// initialize sdl
+	// FIXME: where should this be done ?
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw std::string("Unable to init SDL: " + std::string(SDL_GetError()));
+	atexit(SDL_Quit);
 		
 	// create the app
 	cout << "test_app - creating surface" << endl;
@@ -39,6 +41,7 @@ int main(int argc, char* argv[])
 	// CARTER
 	// FIXME: this won't let me create a button with a state as parent, it wants container
 	// but state is derived from container, do shared/weak pointers not accept derived class pointers?
+	cout << "test_app - creating button" << endl;
 	Button test_button(new button(test_state, "Test Button", 120, 10, 100, 30));
 	
 	test_state->add_child(test_button);

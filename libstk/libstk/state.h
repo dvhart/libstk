@@ -10,16 +10,20 @@ namespace stk
 {
 	class state : public stk::container
 	{
+		private:
+
+		protected:
+			boost::weak_ptr<widget> focused_widget_;
+			
 		public:
-			//state(boost::weak_ptr<stk::application> parent);
 			state(boost::shared_ptr<stk::application> parent);
 			virtual ~state();
 			boost::weak_ptr<widget> focused_widget();
 			void focused_widget(boost::weak_ptr<widget> value);
 
-		private:
-			boost::weak_ptr<widget> focused_widget_;
-			boost::weak_ptr<stk::application> parent_;
+			// event_handler interface
+			virtual void handle_event(boost::shared_ptr<stk::event> e);
+
 	};
 
 	typedef boost::shared_ptr<state> State;

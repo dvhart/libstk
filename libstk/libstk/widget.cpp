@@ -13,9 +13,6 @@ email                : dvhart@byu.edu
 #include <iostream>
 #include <string>
 
-#include <string.h>
-#include <malloc.h>
-
 #include "widget.h"
 #include "container.h"
 
@@ -25,10 +22,10 @@ using std::endl;
 namespace stk
 {
 
-	//widget::widget(boost::weak_ptr<container> parent) : parent_(parent)
 	widget::widget(boost::shared_ptr<container> parent) : parent_(parent)
 	{
 		cout << "widget::widget()" << endl;
+		cout << "widget::widget() - parent pointer is " << std::hex << parent.get() << endl;
 	}
 
 
@@ -36,9 +33,18 @@ namespace stk
 	{
 	}
 
-	// event_handler interface
-	void widget::handle_event(stk::event& e) 
+	// event_handler interface - default back to parent
+	void widget::handle_event(boost::shared_ptr<stk::event> e)
 	{
+		cout << "widget::handle_event()" << endl;
+		// FIXME: what is the best way to access the weak_ptr parent_
+		// should we make it shared first ? (see all other uses torc/te)
+		if (parent_.get() == 0)
+		{
+			// throw something
+			cout << "widget::handle_event() - null parent_ pointer" << endl;
+		}
+		parent_.get()->handle_event(e);
 	}
 
 	// drawable interface

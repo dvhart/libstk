@@ -12,6 +12,7 @@ namespace stk
 		mouse_down,
 		mouse_up,
 		mouse_motion,
+		event_quit,
 		no_event,
 		unknown_event
 	};

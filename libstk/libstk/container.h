@@ -17,7 +17,6 @@ namespace stk
 			container() { }; // empty constructor, needed for creating derived classes ?
 			
 		public:
-			//container(boost::weak_ptr<stk::container> parent);
 			container(boost::shared_ptr<stk::container> parent);
 			~container();
 			virtual bool is_container() { return true;} 
@@ -25,7 +24,7 @@ namespace stk
 			{ return  *children_.begin(); } // default behaviour for a container is to switch into the FIRST child first 
 			
 			// event_handler interface
-			//virtual void handle_event(stk::event& e);
+			//virtual void handle_event(boost::shared_ptr<stk::event> e);
 
 			// drawable interface
 			//virtual boost::shared_ptr<stk::surface> surface() 

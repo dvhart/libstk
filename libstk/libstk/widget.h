@@ -20,21 +20,20 @@ namespace stk
 
 		protected:
 			widget() { }; // empty constructor, needed for creating derived classes ? 
-			boost::weak_ptr<container> parent_;
+			boost::weak_ptr<parent> parent_;
 			int x_;
 			int y_;
 			int width_;
 			int height_;
 			
 		public:
-			//widget(boost::weak_ptr<container> parent);
 			widget(boost::shared_ptr<container> parent);
 			~widget();
 
 			void draw(boost::shared_ptr<stk::surface> surface);
 			
 			// event_handler interface
-			virtual void handle_event(stk::event& e);
+			virtual void handle_event(boost::shared_ptr<stk::event> e);
 
 			// drawable interface
 			virtual boost::shared_ptr<stk::surface> surface(); 

@@ -55,7 +55,10 @@ namespace stk
 		pause,
 		forward,
 		rewind,
-		stop
+		stop,
+
+		// an unkown key
+		key_unknown
 	};
 } // namespace stk
 

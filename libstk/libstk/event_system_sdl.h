@@ -1,6 +1,8 @@
 #ifndef STK_EVENT_SYSTEM_SDL_H
 #define STK_EVENT_SYSTEM_SDL_H
 
+#include <SDL/SDL.h>
+#include "keycode.h"
 #include "event_system.h"
 
 /* possible event calls in SDL
@@ -29,13 +31,14 @@ namespace stk
 	class event_system_sdl : public event_system
 	{
 		private:
-		
+			keycode sdl2stk_key(SDLKey sdl_key);
+
 		protected:
 			
 		public:
 			event_system_sdl();
 			virtual ~event_system_sdl();
-			virtual stk::event poll_event();
+			virtual boost::shared_ptr<stk::event> poll_event();
 	};
 }
 
