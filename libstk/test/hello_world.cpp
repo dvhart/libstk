@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
         std::string surface_type;
         if (argc < 2)
         {
-            throw error_message_exception("Usage: xine_test sdl|dfb|fbdev");
+            throw error_message_exception("Usage: hello_world sdl|dfb|fbdev");
         }
         else
         {
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
                 rectangle(260, 210, 100, 30));
 
         // add a timer (quit after 30 seconds)
-        INFO("xine_test - creating timer to quit after 30 seconds");
+        INFO("hello_world - creating timer to quit after 30 seconds");
         timer::ptr quit_timer = timer::create(30000, true); // every 20 seconds
         quit_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
         test_app->add_timer(quit_timer);

@@ -24,6 +24,9 @@ int main(int argc, char* argv[])
 
     try
     {
+#ifdef HAVE_LOGGING
+        logger::get()->add_target(&cout, LL_Info);
+#endif
         // create the event producer
         // it is automatically registered with the primary event_system
         event_producer_sdl::ptr ep = event_producer_sdl::create();
