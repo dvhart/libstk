@@ -119,7 +119,9 @@ library_include_HEADERS= \
 	event_producer_elotouch.h            stk_c_wrapper.h \
 	switched_panel.h	edit_box.h   text_area.h\
 	numeric_spinner.h config.h           $(headers_sdl) $(headers_dfb) \
-	$(headers_fbdev) $(headers_logging)  $(headers_xine)  $(headers_printing)
+	$(headers_fbdev) $(headers_logging)  $(headers_xine)  \
+	$(headers_printing) font_properties.h scrollable.h \
+	spreadsheet.h 
 
 libstk_la_LDFLAGS= $(SDL_LIBS) $(DIRECTFB_LIBS) $(FREETYPE_LIBS) $(LIBPNG_LIBS) $(XINE_LIBS) -version-info @libstk_libtool_version@ 
 
