@@ -25,7 +25,7 @@ namespace stk
 {
     class list;
 
-    class list_item : public rectangle, public event_handler, public drawable
+    class list_item : public widget
     {
     public:
         typedef boost::weak_ptr<list_item> weak_ptr;
@@ -34,7 +34,6 @@ namespace stk
     private:
 
     protected:
-        boost::weak_ptr<widget> parent_;
         bool current_, selected_;
         list_item(std::wstring label);
         std::wstring label_;
@@ -43,26 +42,12 @@ namespace stk
         static list_item::ptr create(boost::shared_ptr<list> parent, std::wstring label);
         virtual ~list_item();
 
-        /********** RECTANGLE INTERFACE **********/
-        /// Get the rectangular region oocupied by the drawable
-        virtual rectangle rect() { return rectangle(p1_, p2_); }
-
-        /// Set the position and size of the drawable
-        virtual void rect(const rectangle& rect) 
-        { 
-            p1(rect.p1()); 
-            p2(rect.p2()); 
-        }
-        /********** END RECTANGLE INTERFACE **********/
-
         /********** EVENT HANDLER INTERFACE **********/
         virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/
 
         /********** DRAWABLE INTERFACE **********/
-        virtual surface::ptr surface();
         virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-        virtual void redraw(const rectangle& rect, drawable* source = NULL, bool transform = false);
         /********** END DRAWABLE INTERFACE **********/
 
         /********** LIST ITEM INTERFACE **********/

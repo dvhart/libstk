@@ -263,7 +263,7 @@ namespace stk
         graphics_context::ptr gc = graphics_context::create();
         gc->line_color(color_manager::get()->get_color(
                     color_properties(outline_color_normal_str, surface)));
-        if (focused_)
+        if (focused())
             gc->fill_color(color_manager::get()->get_color(
                         color_properties(fill_color_focused_str, surface)));
         else
@@ -281,7 +281,7 @@ namespace stk
         
         // draw each visible item
         int y = 0;
-        if (focused_ && current_ >= 0 && current_ < (int)items_.size()) 
+        if (focused() && current_ >= 0 && current_ < (int)items_.size()) 
             items_[current_]->current(true);
         for (unsigned int i = 0; i < items_.size(); i++)
         {
@@ -292,7 +292,7 @@ namespace stk
             }
             y += items_[i]->height();
         }
-        if (focused_ && current_ >= 0 && current_ < (int)items_.size()) 
+        if (focused() && current_ >= 0 && current_ < (int)items_.size()) 
             items_[current_]->current(false);
         
         // restore the surface offset
@@ -309,7 +309,7 @@ namespace stk
         // FIXME: it shouldn't be!
         
         // FIXME: consider dropping the offsets IFF we change surface offset in list for every item
-        rectangle label_rect(x1()+2, y1()+4, width()-4, height()-4);
+        rectangle label_rect(rect_.x1()+2, rect_.y1()+4, width()-4, height()-4);
         if (selected_) surface->fill_rect(rect());
         if (current_) surface->draw_rect(rect());
         surface->draw_text(label_rect, label_);

@@ -29,7 +29,6 @@
 #include "libstk/event.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
-#include "libstk/list.h"
 #include "libstk/state.h"
 #include "libstk/theme.h"
 #include "libstk/logging.h"
@@ -86,20 +85,15 @@ namespace stk
             ERROR("application state count is zero!");
             return 1;
         }
-        else
-        {
-            // set the current state and find the first focusable widget
-            if(!current_state_.lock()) // Only if the user hasnt set a state yet!
-                current_state_ = *states_.begin();
-            focused_widget_ = (*states_.begin())->focus_next();
-            if (focused_widget_.lock())
-                focused_widget_.lock()->handle_event(event::create(event::focus));
-            else
-                // FIXME: throw something
-                ERROR("current state has no focusable widgets");
 
-        }
-
+        // set the current state and find the first focusable widget
+        if (!current_state_.lock()) // Only if the user hasnt set a state yet!
+            current_state_ = *states_.begin();
+        focused_widget_ = current_state_.lock()->focus_next();
+        if (focused_widget_.lock())
+            focused_widget_.lock()->handle_event(event::create(event::focus));
+        else // FIXME: throw something
+            ERROR("current state has no focusable widgets");
         current_state_.lock()->redraw(surface_->rect());
 
         // enter the main application loop: handle_events, update timers, redraw
@@ -137,8 +131,6 @@ namespace stk
                         } 
 
                         // update focused widget as necessary
-                        // NOTE:: boost docs discourage temporary smart pointers (event::create) as
-                        // arguments, in this case they are safe since they are the only argument
                         if (event_->type() == event::mouse_down && 
                                 hover_ptr && focused_ptr != hover_ptr)
                         {
@@ -156,21 +148,22 @@ namespace stk
                     else // it isn't a mouse event
                     {
                         INFO("passing event to focused_widget_");
-                        widget::ptr focused_widget = focused_widget_.lock();
-                        if (!focused_widget)
+                        if (!focused_widget_.lock())
                         {
-                            WARN("no current widget, pass to state ?");
+                            WARN("no current widget, pass to state, trying to find one");
+                            focused_widget_ = current_state_.lock()->focus_next();
+                            if (focused_widget_.lock())
+                            {
+                                focused_widget_.lock()->handle_event(event::create(event::focus));
+                                current_state_.lock()->redraw(surface_->rect());
+                                focused_widget_.lock()->handle_event(event_);
+                            }
+                            else // FIXME: throw something
+                                ERROR("current state has no focusable widgets");
                         }
                         else
                         {
-                            // FIXME: ugly hack, temporary until we decide if list_items should be
-                            //        widgets and lists should be containers --dvhart
-                            list::ptr focused_list; list_item::ptr cur_item;
-                            if ((focused_list = boost::shared_dynamic_cast<list>(focused_widget)) &&
-                                    (cur_item = focused_list->current()))
-                                cur_item->handle_event(event_);
-                            else
-                                focused_widget->handle_event(event_);
+                            focused_widget_.lock()->handle_event(event_);
                         }
                     }
                 }

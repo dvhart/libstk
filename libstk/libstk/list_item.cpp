@@ -23,9 +23,11 @@ namespace stk
         return new_list_item;
     }
 
-    list_item::list_item(std::wstring label) : label_(label), selected_(false), current_(false)
+    list_item::list_item(std::wstring label) : widget(), label_(label), selected_(false), 
+    current_(false)
     {
         INFO("constructor");
+        focusable_ = true;
     }
 
     list_item::~list_item()
@@ -35,24 +37,12 @@ namespace stk
 
     void list_item::handle_event(event::ptr e)
     {
+        INFO("list_item::handle_event");
         // handle list_item events
         // WRITEME...
 
         // list_item does not inherit from widget, so we have to go to the parent directly
-        parent_.lock()->handle_event(e);
+        widget::handle_event(e);
     }
-
-    surface::ptr list_item::surface()
-    {
-        return parent_.lock()->surface();
-    }
-
-    void list_item::redraw(const rectangle& rect, drawable* source, bool transform)
-    {
-        // FIXME: what is the benefit of copying the rectangle?
-        rectangle redraw_rect(rect);
-        parent_.lock()->redraw(redraw_rect, this, true);
-    }
-
 
 }

@@ -31,27 +31,30 @@
 
 namespace stk
 {
-    /// \todo is widget right.. not a container ?
     /// Titem must be a derivative of list_item
     template<class Titem>
-    class list_template : public widget, public scrollable
+    class list_template : public container, public scrollable
     {
     public:
         typedef boost::shared_ptr<list_template<Titem> > ptr;
         typedef boost::weak_ptr<list_template<Titem> > weak_ptr;
 
     private:
+        // redeclare generic component methods as private, force use of add_item and remove_item
+        virtual void add(boost::shared_ptr<widget> item) { }
+        virtual void remove(boost::shared_ptr<widget> item) { }
+
 
     protected:
         int current_;
-        list_template(const rectangle& rect) : widget(rect), scrollable(), current_(0)
+        list_template(const rectangle& rect) : container(rect), scrollable(), current_(0)
         {
             INFO("constructor");
             focusable(true);
             v_scroll_->vis_size(height());
             h_scroll_->vis_size(width());
         }
-        std::vector<Titem> items_;
+        std::vector<Titem> items_; // FIXME: use the children vector? (if not we have less casting to do)
 
         // scrolling members
         boost::signals::connection v_scroll_con_;
@@ -77,102 +80,96 @@ namespace stk
             // handle list_item selection and clicking here...
             switch (e->type())
             {
-                case event::mouse_down:
-                    {
-                        mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-                        int y = 0;
-                        // FIXME: if CNTRL is pressed, don't deselect everything else
-                        select_none();
-                        for (current_ = 0; current_ < (int)items_.size(); current_++)
-                        {
-                            y += items_[current_]->height();
-                            if (y > me->y()-rect_.y1()+v_scroll_->begin()) break;
-                        }
-                        on_update_current();
-                        if ((unsigned int)current_ < items_.size()) // Crashes otherwise
-                            items_[current_]->selected(true);
-                        redraw(widget::rect());
-                        return;
-                        break;
-                    }
-                case event::key_down:
-                    {
-                        key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                        switch ( ke->fn_key() )
-                        {
-                            case key_uparrow:
-                                if (current_ > 0)
-                                {
-                                    current_--;
-                                    if (items_[current_]->y1() < v_scroll_->begin())
-                                        v_scroll_->begin(items_[current_]->y1());
-                                    on_update_current();
-
-                                    if (!(ke->modlist() & mod_control))
-                                    {
-                                        select_none();
-                                        items_[current_]->selected(true);
-                                    }
-                                    on_update_selection();
-                                }
-                                else 
-                                {
-                                    if (current_ != 0) // superfluous ?
-                                    {
-                                        current_ = 0;
-                                        on_update_current();
-                                    }
-                                    if (current() && !current()->selected())
-                                    {
-                                        current()->selected(true);
-                                        on_update_selection();
-                                    }
-                                }
-                                redraw(widget::rect());
-                                return;
-                                break;
-                            case key_downarrow:
-                                if (current_ < (int)items_.size()-1)
-                                {
-                                    current_++;
-                                    if (items_[current_]->y2() >= v_scroll_->end())
-                                        v_scroll_->begin(v_scroll_->begin()+items_[current_]->height());
-                                    on_update_current();
-
-                                    if (!(ke->modlist() & mod_control))
-                                    {
-                                        select_none();
-                                        items_[current_]->selected(true);
-                                    }
-                                }
-                                else 
-                                {
-                                    if (current_ != items_.size()-1) // superfluous ?
-                                    {
-                                        current_ = items_.size()-1;
-                                        on_update_current();
-                                    }
-                                    if (current() && !current()->selected())
-                                    {
-                                        current()->selected(true);
-                                        on_update_selection();
-                                    }
-                                }
-                                redraw(widget::rect());
-                                return;
-                                break;
-                            case key_enter:
-                                if (!(ke->modlist() & mod_control)) select_none();
-                                items_[current_]->selected(!items_[current_]->selected());
-                                redraw(widget::rect());
-                                return;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+            case event::mouse_down:
+            {
+                INFO("list_template mouse down");
+                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+                int y = 0;
+                // FIXME: if CNTRL is pressed, don't deselect everything else
+                select_none();
+                for (current_ = 0; current_ < (int)items_.size(); current_++)
+                {
+                    y += items_[current_]->height();
+                    if (y > me->y()-rect_.y1()+v_scroll_->begin()) break;
+                }
+                on_update_current();
+                if ((unsigned int)current_ < items_.size()) // Crashes otherwise
+                    items_[current_]->selected(true);
+                redraw(rect());
+                return;
+                break;
             }
-            widget::handle_event(e);
+            case event::key_down:
+            {
+                INFO("list_template key down");
+                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+                switch ( ke->fn_key() )
+                {
+                case key_downarrow:
+                    INFO("  down arrow");
+                    if (current_ < (int)items_.size()-1)
+                    {
+                        current_++;
+                        if (items_[current_]->rect().y2() >= v_scroll_->end())
+                            v_scroll_->begin(v_scroll_->begin()+items_[current_]->height());
+                        on_update_current();
+
+                        if (!(ke->modlist() & mod_control))
+                        {
+                            select_none();
+                            items_[current_]->selected(true);
+                        }
+                    }
+                    else 
+                    {
+                        if (current() && !current()->selected())
+                        {
+                            current()->selected(true);
+                            on_update_selection();
+                        }
+                    }
+                    redraw(rect());
+                    break;
+                    //return;
+                case key_uparrow:
+                    INFO("  up arrow");
+                    if (current_ > 0)
+                    {
+                        current_--;
+                        if (items_[current_]->rect().y1() < v_scroll_->begin())
+                            v_scroll_->begin(items_[current_]->rect().y1());
+                        on_update_current();
+
+                        if (!(ke->modlist() & mod_control))
+                        {
+                            select_none();
+                            items_[current_]->selected(true);
+                        }
+                        on_update_selection();
+                    }
+                    else 
+                    {
+                        if (current() && !current()->selected())
+                        {
+                            current()->selected(true);
+                            on_update_selection();
+                        }
+                    }
+                    redraw(rect());
+                    break;
+                    //return;
+                case key_enter:
+                    if (!(ke->modlist() & mod_control)) select_none();
+                    items_[current_]->selected(!items_[current_]->selected());
+                    redraw(rect());
+                    return;
+                    break;
+                default:
+                    break;
+                }
+            }
+            }
+            container::handle_event(e);
         }
         /********** END EVENT HANDLER INTERFACE **********/
 
@@ -181,17 +178,72 @@ namespace stk
         /********** END DRAWABLE INTERFACE **********/
 
         /********** COMPONENT INTERFACE **********/
-        /// \todo this would have to return a this pointer!!! unless we make list_items a widget and list a container!!!
-        //virtual widget::ptr focus_next();
-        //virtual widget::ptr focus_prev();
+        virtual widget::ptr focus_next()
+        {
+           return current();
+        }
+ 
+        virtual widget::ptr focus_prev()
+        {
+            return current();
+        }
         /********** END COMPONENT INTERFACE **********/
+
+        /********** WIDGET INTERFACE **********/
+        bool focused()
+        {
+            // check ourself
+            if (focused_) return true;
+            // check our children (return true if one of our children is focused)
+            typename std::vector<Titem>::iterator iter = items_.begin();
+            for (; iter != items_.end(); iter++) if ((*iter)->focused()) return true;
+            return false;
+        }
+        /********** END WIDGET INTERFACE **********/
+
+        /********** CONTAINER INTERFACE **********/
+        virtual widget::ptr widget_at(int x, int y)
+        {
+            // if we don't contain this point, return a null pointer
+            if (!rect().contains(x, y)) return widget::ptr();
+
+            // convert to local coordinates
+            x -= rect_.x1();
+            y -= rect_.y1();
+
+            // cycle through the widgets, and return the first that doesn't return a null pointer
+            typename std::vector<Titem>::iterator iter = items_.begin();
+            for (; iter != items_.end(); iter++)
+                if ((*iter)->widget_at(x, y)) return *iter;
+
+            // no children are at this location, return this
+            return shared_from_this();
+        }
+        virtual widget::ptr delegate_mouse_event(mouse_event::ptr me)
+        {
+            INFO("list_template delegate_mouse_event");
+            // pass a mouse event to the appropriate widget
+            typename std::vector<Titem>::iterator iter = items_.begin();
+            for (; iter != items_.end(); iter++)
+            {
+                if ((*iter)->rect().contains(me->x()-rect_.x1(), me->y()-rect_.y1()))
+                {
+                    mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(), 
+                                me->button(), me->type()));
+                    INFO("found an item, delegating and returning");
+                    return (*iter)->delegate_mouse_event(me_to_child);
+                }
+            }
+            return widget::ptr();
+        }
+        /********** END CONTAINER INTERFACE **********/
 
         /********** SCROLLABLE INTERFACE **********/
         virtual void v_scroll(scroll_model::ptr model)
         {
             v_scroll_con_.disconnect();
             v_scroll_ = model;
-            //v_scroll_con_ = model->on_change.connect(boost::bind(&widget::redraw, (widget*)this, widget::rect(), NULL, false));
+            //v_scroll_con_ = model->on_change.connect(boost::bind(&widget::redraw, (widget*)this, rect(), NULL, false));
             v_scroll_->size(height());
             v_scroll_->vis_size(height());
         }
@@ -212,7 +264,7 @@ namespace stk
             // adjust scroll properties
             if (h_scroll_->size() < item->width()) h_scroll_->size(item->width());
             v_scroll_->size(v_scroll_->size()+item->height());
-            redraw(widget::rect());
+            redraw(rect());
             return index;
         }
 
@@ -233,7 +285,7 @@ namespace stk
                     v_scroll_->size(v_scroll_->size()+items_[i]->height());
                 }
                 current_ = MAX(0, MIN(current_, items_.size()-1));
-                redraw(widget::rect());
+                redraw(rect());
             }
         }
 
@@ -273,7 +325,7 @@ namespace stk
             current_ = 0;
             if (sel_change) on_update_selection();
             v_scroll_->size(0);
-            redraw(widget::rect());
+            redraw(rect());
         }
 
         /// Returns the number of elements in the list

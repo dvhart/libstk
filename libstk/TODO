@@ -1,4 +1,5 @@
 consider using point for x,y in mouse event, then rewrite clumsy position().x() code in container
+consider renaming list add_item and remove_item to add and remove to be more like a container
 
 MEETING TOPICS
 ==============
