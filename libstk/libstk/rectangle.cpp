@@ -99,6 +99,24 @@ namespace stk
         }
         return *this;
     }
+    rectangle rectangle::intersection(rectangle &rhs) const
+    {
+        rectangle retval;
+        if(!intersects(rhs))
+        {
+            retval.x1(x1());
+            retval.y1(y1());
+        }
+        else
+        {
+            retval.x1(MAX(x1(),rhs.x1()));
+            retval.x2(MIN(x2(),rhs.x2()));
+            retval.y1(MAX(y1(),rhs.y1()));
+            retval.y2(MIN(y2(),rhs.y2()));
+        }
+        return retval;
+    }
+
 }
 
 std::ostream& operator<<(std::ostream& os, const stk::rectangle& rect)

@@ -48,13 +48,22 @@ namespace stk
         void height(int val) { p2_.y(val + p1_.y() - 1); }
 
         // utilities
+        /// Returns True if the Rectangle is Empty(w==0 h==0)
         bool empty() const { return (!width() && !height()); }
+        /// Returns True if the given Point lies inside the rectangle
         bool contains(int x, int y) const;
+        /// Returns True if the given Point lies inside the rectangle
         bool contains(const point& p) const;
+        /// Returns True if the given rectangle intersects with this one
         bool intersects(const rectangle& rect) const;
+        /// Returns the Lower Left Corner of the Rectangle
         point position() const { return p1_; }
+        /// Sets the Lower Left Corner of the Rectangle
         void position(int x, int y);
+        /// Sets the Lower Left Corner of the Rectangle
         void position(const point& p);
+        /// Returns the Area of intersection between both rectangles (the area they share)
+        rectangle intersection(rectangle &rhs) const;
 
         // operators
         const rectangle operator+(const rectangle& rect) const;
