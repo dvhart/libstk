@@ -139,12 +139,10 @@ namespace stk
 	// optimized pixel routines
 	void surface_sdl::put_pixel(int x_, int y_, color clr)
 	{
-		int x=x_+offset_.x();
-		int y=y_+offset_.y();
+		int x = x_ + offset_.x();
+		int y = y_ + offset_.y();
 		
-		if(!clip_rect_.contains(x,y))
-			return;
-		
+		if(!clip_rect_.contains(x,y)) return;
 		
 		Uint32 sdl_color = (Uint32)clr;
 

@@ -5,13 +5,13 @@ namespace stk
 {
 	rectangle::rectangle(int x1, int y1, int w, int h) : 
 		p1_(point(x1, y1)), p2_(x1 + w - 1, y1 + h - 1) 
-		{
-			// enforce p1 as upper left coordinate
-			// (this assume 0,0 is the upper left corner of the screen (like SDL))
-			if ((x1 > x1+w) || (y1 > y1+h))
-				throw error_message_exception(
-						"x1,y1 must be less than x2,y2");
-		};
+	{
+		// enforce p1 as upper left coordinate
+		// (this assume 0,0 is the upper left corner of the screen (like SDL))
+		if ((x1 > x1+w) || (y1 > y1+h))
+			throw error_message_exception("x1,y1 must be less than x2,y2");
+	}
+	
 	rectangle::rectangle(const point &p1, const point &p2) : p1_(p1), p2_(p2)
 	{
 		// enforce p1 as upper left coordinate
@@ -19,11 +19,13 @@ namespace stk
 		if ((p1.x() > p2.x()) || (p1.y() > p2.y()))
 			throw error_message_exception(
 					"p1.x(),p1.y() must be less than p2.x(),p2.y()");
-	}; 
+	} 
 
 	// utilities
 	bool rectangle::contains(int x, int y) const
-	{ return (x > p1_.x() && x < p2_.x() && y > p1_.y() && y < p2_.y()); }
+	{ 
+		return (x >= p1_.x() && x <= p2_.x() && y >= p1_.y() && y <= p2_.y()); 
+	}
 
 	bool rectangle::intersects(const rectangle& rect) const
 	{

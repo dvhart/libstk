@@ -107,8 +107,8 @@ namespace stk
 	// define the various widget draw routines
 	void state::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
-		surface->clip_rect(rect_);
 		//cout << "state::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(color_manager::get_color(color_properties(fill_state_color_str, surface)));
 		surface->gc(gc);
@@ -119,8 +119,7 @@ namespace stk
 	void button::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "button::draw()" << endl;
-		
-		surface->clip_rect(rect_);
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		
 		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
 		rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
@@ -180,11 +179,12 @@ namespace stk
 	void progress::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "progress::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
 		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
-		stk::font::ptr bob = font::create("Arial.ttf", 18);
-		gc->font(bob);
+		stk::font::ptr arial_18 = font::create("Arial.ttf", 18);
+		gc->font(arial_18);
 		gc->font_fill_color(color_manager::get_color(color_properties(font_color_normal_str, surface)));
 		surface->gc(gc);
 		rectangle progress_rect(rect_.x1()+2, rect_.y1()+2, rect_.width()-4, rect_.height()-4);
@@ -197,6 +197,7 @@ namespace stk
 	void label::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "label::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		graphics_context::ptr gc = graphics_context::create();
 		gc->fill_color(color_manager::get_color(color_properties(fill_color_normal_str, surface)));
 		gc->line_color(color_manager::get_color(color_properties(outline_color_normal_str, surface)));
@@ -217,10 +218,10 @@ namespace stk
 	void image_panel::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "image_panel::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		graphics_context::ptr gc = graphics_context::create();
 		gc->line_color(color_manager::get_color(color_properties(outline_color_focused_str, surface)));
 		surface->gc(gc);
-		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		//surface->draw_rect(rect_);
 		//surface->draw_image(rect_.x1()+10, rect_.y1()+10, image_);
 		surface->draw_image(rect_.x1(), rect_.y1(), image_);
@@ -229,6 +230,7 @@ namespace stk
 	void list::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "list::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		float sel;
 		
 		if (prev_selected_ != selected_)
@@ -262,7 +264,6 @@ namespace stk
 		surface->gc(gc);
 	
 		// outline the list box
-		surface->clip_rect(rect_);
 		surface->draw_rect(rect_);
 		
 		// draw the highlighted selection
@@ -288,6 +289,7 @@ namespace stk
 	void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		//cout << "list_item::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		// draw list is responsible for setting the graphics context!!
 		surface->draw_text(rect_, label_);
 	}
@@ -295,6 +297,7 @@ namespace stk
 	void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		cout << "spinner::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
 		rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
 		graphics_context::ptr gc = graphics_context::create();
@@ -333,8 +336,6 @@ namespace stk
 		gc->font(arial_18);
 		surface->gc(gc);
 	
-		surface->clip_rect(rect_);
-		
 		// fill the spinner box
 		surface->fill_rect(interior_rect); 
 		
@@ -354,25 +355,18 @@ namespace stk
 	void scroll_box::draw(surface::ptr surface, const rectangle& clip_rect)
 	{
 		cout << "scroll_decorator::draw()" << endl;
+		surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 		point scroll_offset;
 		scroll_offset.x(h_scroll()->begin());
 		scroll_offset.y(v_scroll()->begin());
-		surface->offset()+=scroll_offset;
+		surface->offset() += scroll_offset;
 		
 		if (children_.size() > 0)
 		{
-			if (clip_rect.empty())
-			{
-				rectangle temp_rect = rect_;
-				children_[0]->draw(surface, temp_rect);
-			}
-			else
-			{
-				children_[0]->draw(surface, clip_rect);
-			}
+			children_[0]->draw(surface, clip_rect.empty() ? rect_ : clip_rect);
 		}
 		
-		surface->offset()-=scroll_offset;
+		surface->offset() -= scroll_offset;
 	}
 	
 }
