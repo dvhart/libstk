@@ -1,20 +1,3 @@
-/***************************************************************************
-	stk_widget.h  -  description
-	-------------------
-begin                : Sat Apr 27 2002
-copyright            : (C) 2002 by Darren Hart
-email                : dvhart@byu.edu
- ***************************************************************************/
-
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef STK_WIDGET_H
 #define STK_WIDGET_H
 
@@ -22,22 +5,44 @@ email                : dvhart@byu.edu
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
-#include <SDL/SDL.h>
+
+#include "parent.h"
+#include "keycode.h"
 
 namespace stk
 {
+	// always declare objects lower in the hierarchy
 	class widget;
 	class container;
 	class state;
+	
+	// FIXME: work on these names
 	typedef boost::shared_ptr<widget> Twidget_ptr;
 	typedef boost::shared_ptr<container> Tcontainer_ptr;
 
-	class widget 
+	class widget : public parent
 	{
+		private:
+
+		protected:
+			boost::weak_ptr<container> parent_;
+			int x_;
+			int y_;
+			int width_;
+			int height_;
+			
 		public:
-			virtual bool is_container() { return false;} 
 			widget(boost::weak_ptr<container> parent);
 			~widget();
+
+			void draw(boost:shared_ptr<stk::surface> surface);
+			
+			boost::signal<bool ()> on_focus;
+			boost::signal<bool ()> on_unfocus;
+			boost::signal<bool ()> on_mouse_enter;
+			boost::signal<bool ()> on_mouse_leave;
+			boost::signal<bool (stk::keycode)> on_keydown;
+			boost::signal<bool (stk::keycode)> on_keyup;
 
 			/*
 				 The signals currently all return void, however, it may be useful
@@ -67,13 +72,7 @@ namespace stk
 
 				 sorry for the spewage in Marc's beautiful code... :-)
 
-*/
-			boost::signal<void ()> on_focus;
-			boost::signal<void ()> on_unfocus;
-			boost::signal<void (SDLKey)> on_keydown;
-			boost::signal<void (SDLKey)> on_keyup;
-
-			/*
+				 
 			//some cool things we can do with boost::signals
 
 			VideoPanel my_vp(new stk::video_panel);
@@ -88,11 +87,8 @@ namespace stk
 			my_button.on_click.connect(1, boost::bind(&stk::video_panel::play, my_vp));
 
 */
-
-
-		protected:
-			boost::weak_ptr<container> parent_;
-	};
+			
+	}; // class widget
 
 } // namespace stk
 
