@@ -740,7 +740,7 @@ namespace stk
         surface->fill_rect(interior_rect);
         surface->draw_rect(outline_rect);
         
- 
+
         // yellow selection
         if (focused_)
            gc->fill_color(color_manager::get()->get_color(
@@ -750,20 +750,20 @@ namespace stk
         gc->fill_color(color_manager::get()->get_color(
                 color_properties(fill_color_focused_str, surface)));
         //6 pixels of padding (3 from the interior_rect
-        rectangle text_rect = rectangle(6,3,width()-12,height()-6);
-        point cur_pos = draw_text(surface,text_rect,clip_rect);
+        point cur_pos = draw_text(surface,clip_rect);
         if (cur_pos.x() != -1 && selection_end_ == selection_start_ && focused_)
         {// cursor should be drawn
             surface->draw_line(cur_pos.x(), cur_pos.y(), cur_pos.x(), cur_pos.y()+Vera_14->height()+3);
-        }   
+        }
+
     }
     font::ptr text_area::get_font()
     {
         return font_manager::get()->get_font(font_properties("Vera",14));
     }
-    int text_area::text_width()
+    rectangle text_area::text_rectangle()
     {
-        return width()-12;//minus the padding
+        return rectangle(6,3,width()-12,height()-6);
     }
     int text_area::line_spacing()
     {

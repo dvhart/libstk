@@ -113,8 +113,11 @@ int main(int argc, char* argv[])
         // create the main state and a label
         state::ptr test_state = state::create(app);
 
-        
-        text_area::ptr test_area = text_area::create(test_state, std::wstring(L"Hello World\nThis is a really long long long long String.\nHello World"), rectangle(30, 30, 180, 80));
+        scroll_box::ptr text_scroll = scroll_box::create(test_state, 
+                rectangle(30, 30, 200, 150), true, true); 
+        text_area::ptr test_area = text_area::create(text_scroll, 
+                std::wstring(L"Hello World\nThis is a really long long\nlong\nlong String.\nHello World"),
+                rectangle()/*(30, 30, 180, 80)*/,true);
 
         button::ptr quit_button = button::create(test_state, L"Quit", 
                 rectangle(30, 300, 100, 30));

@@ -15,15 +15,14 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/signal.hpp>
-//#include <pair.h>
-
-
+#include <libstk/scrollable.h>
+#include <libstk/scroll_model.h>
 #include <libstk/widget.h>
 #include <libstk/container.h>
 
 namespace stk
 {
-    class text_area : public widget
+    class text_area : public widget, public scrollable
     {
     public:
         typedef boost::shared_ptr<text_area> ptr;
@@ -38,6 +37,12 @@ namespace stk
         int line_start_position(int line);
         /// return the number of characters in line
         int chars_in_line(int line);
+        /// returns the number of lines in text_
+        int total_lines();
+        /// returns the X,Y cordinates of the cursor (y is at the top of the line)
+        void scroll();
+        point cursor_position();
+
         /*
          * draws the text of the text box
          * surface: the surface to draw on
@@ -46,12 +51,12 @@ namespace stk
          * returns: the x,y point of where the cursor should be drawn.
          * The Y position is at the top of the line where the cursor is on.
          */
-        point draw_text(surface::ptr surface, const rectangle& text_rect, const rectangle& clip_rect);
+        point draw_text(surface::ptr surface, const rectangle& clip_rect);
         std::wstring next_line();
 
         //functions implemented in the theme
         font::ptr get_font();
-        int text_width();
+        rectangle text_rectangle();
         int line_spacing();
 
         std::wstring text_;
@@ -59,20 +64,40 @@ namespace stk
         int selection_end_;
         int pressed_;
         int line_; //used to store the line of the cursor
-
+        bool line_wrap_;
+        
         //next_line state variables
         int new_line_;
         std::wstring rest_of_text_;
 
     protected:
-        text_area(const std::wstring& text, const rectangle& rect);
+        
+        text_area(const std::wstring& text, const rectangle& rect, bool line_wrap);
+        void resize();
 
+        //this is called by create to initialize the size
+        void init();
+        boost::signals::connection v_scroll_con_;
     public:
         static text_area::ptr create(container::ptr parent, const std::wstring& text,
-                const rectangle& rect);
+                const rectangle& rect, bool line_wrap);
+
 
         virtual ~text_area();
 
+        /***** RECTANGLE INTERFACE *****/
+
+        virtual void rect(const rectangle& rect) 
+        {
+            widget::rect(rect);
+            init();
+            //h_scroll_->vis_size(width());
+            //v_scroll_->vis_size(height());
+        }
+
+        /***** END RECTANGLE INTERFACE *****/
+
+        /***** TEXT AREA INTERFACE *****/
         std::wstring text() const
         {
             return text_;
@@ -80,10 +105,18 @@ namespace stk
         void text(std::wstring& text)
         {
             text_ = text;
-            redraw(rect());
+            resize();
+            scroll();
+            redraw(widget::rect());
         }
-
-        // API to get/change selection
+        bool line_wrap()
+        {
+            return line_wrap_;
+        }
+        void line_wrap(bool wrap)
+        {
+            line_wrap_ = wrap;
+        }
 
         /*
          * sets the selection
@@ -105,13 +138,23 @@ namespace stk
           * returns the selected text, or "" if nothing is selected. 
           */
          std::wstring selected_text();
+        
+         /***** TEXT AREA INTERFACE *****/
 
         // signals
         /// called when the text is changed
         boost::signal<bool (std::wstring), combiner::logical_or<bool> > on_change;
-
+        /*** DRAWABLE INTERFACE ****/
         virtual void draw(surface::ptr surface, const rectangle& clip_rect);
+        /**** END DRAWABLE INTERFACE ****/
+
+        /**** EVENT HANDLER INTERFACE ****/
         virtual void handle_event(event::ptr e);
+        /**** END EVENT HANDLER INTERFACE ****/
+
+        /*** SCROLLABLE INTERFACE ****/
+        virtual void v_scroll(scroll_model::ptr value);
+        /**** END SCROLLABLE INTERFACE ****/
     };
 }
 
