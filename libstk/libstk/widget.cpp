@@ -85,10 +85,4 @@ namespace stk
 		return parent_.lock()->focus_prev(); 
 	}
 
-	// widget routines
-	void widget::focused(bool val) 
-	{ 
-		focused_ = val; 
-		redraw(rect_); 
-	}
 }

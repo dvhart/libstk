@@ -9,6 +9,10 @@ MEETING TOPICS
 	    combo box are very mouse oriented for example, what types of widgets
 	    are IR Remote friendly ?
 - what image formats do we want to support ? xpm, png, bmp, etc...
+      how do we want to add load routines?  as functors in a map based on magic
+			number?  some way to register a loader?  or KISS and only support a couple
+			simple formats since the user can always convert, say XPM and PPM for
+			simplicity's sake?
 - should we have a color manager, similar to the font manager ?
 - it is getting to be a hassle to define different parameters for each theme
       draw routine, perhaps we can just pass the widget itself ?  Marc mentioned

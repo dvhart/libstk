@@ -90,10 +90,10 @@ int main(int argc, char* argv[])
 	
 		// create an image
 		cout << "test_app - creating an image_panel" << endl;
+		label::ptr test_label3 = label::create(test_state, std::wstring(L"Clipped Image"), 
+			rectangle(10, 50, 150, 30));
 		image_panel::ptr test_image_panel = image_panel::create(test_state, 
-				rectangle(10, 50, 404, 276), image::create("parrots.ppm"));
-		image_panel::ptr test_image_panel2 = image_panel::create(test_state, 
-				rectangle(420, 50, 120, 120), image::create(rectangle(0, 0, 100, 100)));
+				rectangle(10, 90, 350, 200), image::create("parrots.ppm"));
 		
 		// run the program
 		retval = test_app->run();

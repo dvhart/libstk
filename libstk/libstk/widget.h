@@ -89,7 +89,7 @@ namespace stk
 			bool focused() { return focused_; }
 			/// Set the focused property of the widget
 			/// \todo should this return bool, indicating failure to set (ie an unfocsable widget ?)
-			void focused(bool val);
+			void focused(bool val) { focused_ = val; redraw(rect_); }
 			/// Return the hover property of the widget
 			bool hover() { return hover_; } 
 			/// Set the hover property of the widget

@@ -198,6 +198,7 @@ namespace stk
 		graphics_context::ptr gc = graphics_context::create();
 		gc->line_color(outline_color_focused_); 
 		surface_->gc(gc);
+		surface_->clip_rect(rect);
 		surface_->draw_rect(rect);
 		surface_->draw_image(rect.x1()+10, rect.y1()+10, img);
 	}

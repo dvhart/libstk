@@ -1167,9 +1167,16 @@ namespace stk
 	// like most unaccelerated routines, this implementation is really slow
 	void surface::draw_image(int x, int y, image::ptr img)
 	{
-		for (int tx = 0; tx < img->width(); tx++)
+		// trivial clipping tests
+		if (x + img->width() < clip_rect_.x1() || y + img->height() < clip_rect_.y1()) return;
+		if (x > clip_rect_.x2() || y > clip_rect_.y2()) return;
+		
+		// find the area to draw, intersection of img area and clip_rect_
+		int x1 = MAX(0, clip_rect_.x1() - x);
+		int y1 = MAX(0, clip_rect_.y1() - y);
+		for (int tx = x1; tx < MIN(img->width(), clip_rect_.x2() - x + x1); tx++)
 		{
-			for (int ty = 0; ty < img->height(); ty++)
+			for (int ty = y1; ty < MIN(img->height(), clip_rect_.y2() - y + y1); ty++)
 			{
 				// convert the RRGGBBAA image color format to that of the
 				color clr =  img->pixel(tx, ty);

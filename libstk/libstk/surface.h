@@ -136,6 +136,7 @@ namespace stk
 			
 			// member variables common to all surfaces
 			rectangle rect_;      // position on the screen, width and height
+			rectangle clip_rect_; // the clip rectangle, no pixels may be drawn outside this area 
 			byte alpha_;          // opacity (255 is opaque)
 			graphics_context::ptr gc_; // stores graphics settings used by draw routines
 
@@ -144,6 +145,8 @@ namespace stk
 
 			// inline property methods
 			rectangle rect() const { return rect_; }
+			rectangle clip_rect() const { return clip_rect_; }
+			void clip_rect(const rectangle& clip_rectangle) { clip_rect_ = clip_rectangle; }
 			// FIXME: we may not need alpha now that we only have one surface..
 			// it may be nice for special cases where we need another surface
 			// need to think on it -- dvhart
@@ -166,7 +169,21 @@ namespace stk
 			// format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
 			virtual color gen_color(const std::string& str_color) const { }
 			virtual color gen_color(byte r, byte g, byte b, byte a) const { }
-			virtual void lock(rectangle &rect, int flags, color** buf, int &stride) { }
+			
+			/// Set buf to point to a framebuffer in RRGGBBAA format.  
+			/// If this is the native pixel format, then writing to this buffer is
+			/// reflected immediate, if not, it will be translated to the appropriate
+			/// format and written to the real framebuffer when unlock is called
+			/// \param rect The area of the framebuffer requested
+			/// \param flags MARC WHAT DID YOU HAVE IN MIND HERE ?
+			/// \param buf The pointer to be set to the start of the area in the framebuffer
+			/// \param stride The length in pixels between the first column in each row
+			virtual void lock(rectangle& rect, int flags, color** buf, int& stride) { }
+			
+			/// Signal that the user is the done with the framebuffer area aquired with lock.
+			/// If the native pixel format is not RRGGBBAA, then this will convert
+			/// temporary framebuffer data to the native pixel format and write it 
+			/// to the real framebuffer.
 			virtual void unlock() { }
 			virtual void blit(surface &dst_surface) { }
 			virtual void update(const rectangle& u_rect=rectangle()) { }
