@@ -205,12 +205,16 @@ namespace stk
                 if(message[2]==1) //TOUCH
                 {
                     event_.reset(new mouse_event(x,y,1,event::mouse_down));
-//                    INFO("Touch at X=" << prescalex << " Y=" << prescaley <<  " Scaled: X=" << x << " Y=" <<y);
+                    touch_x=x;
+                    touch_y=y;
                 }
                 if(message[2]==4) //UNTOUCH
                 {
+                    if(abs(x-touch_x)<30) // Snap to Touchpos if the deviation is small
+                        x=touch_x;
+                    if(abs(y-touch_y)<30)
+                        y=touch_y;
                     event_.reset(new mouse_event(x,y,1,event::mouse_up));
-                    //INFO("Untouch at X=" << x << " Y=" << y);
                     just_untouched=true;
                 }
             } // message type == T

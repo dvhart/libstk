@@ -25,6 +25,7 @@ namespace stk
         typedef boost::shared_ptr<event_producer_elotouch> ptr;
     private:
         int fd;
+        int touch_x,touch_y;    // Store last touchpos for untouch
         std::queue<unsigned char> buffer;
         bool just_untouched;
     protected:
