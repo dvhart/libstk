@@ -1,7 +1,6 @@
 #include <iostream>
 #include "libstk/label.h"
 #include "libstk/widget.h"
-#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;
@@ -27,9 +26,4 @@ namespace stk
 	{
 	}
 
-	void label::draw(boost::shared_ptr<stk::surface> surface)
-	{
-		theme::instance()->draw_label(rect_, text_, focused_);
-	}
-			
 }

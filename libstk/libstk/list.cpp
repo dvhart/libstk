@@ -1,5 +1,4 @@
 #include "libstk/list.h"
-#include "libstk/theme.h"
 #include "libstk/event.h"
 #include "libstk/key_event.h"
 #include "libstk/mouse_event.h"
@@ -62,36 +61,10 @@ namespace stk
 		widget::handle_event(e); 
 		parent_.lock()->handle_event(e);
 	}
-	
-	void list::draw(surface::ptr surface)
-	{
-		//cout << "list::draw()" << endl;
-		float sel;
 		
-		if (prev_selected_ != selected_)
-		{
-			sel = (float)(prev_selected_) + (float)(selected_ - prev_selected_)*((float)frame_/4.0);
-			if (frame_ < 4) 
-			{
-				frame_++;
-				redraw(rect_);
-			}
-			else 
-			{
-				frame_ = 0;
-				prev_selected_ = selected_;
-			}
-		}
-		else
-		{
-			sel = (float)selected_;
-		}
-		
-		theme::instance()->draw_list(rect_, items_, sel);
-	}
-	
 	void list::add_item(list_item::ptr item)
 	{
 		items_.push_back(item);
+		cout << "list::add_item: items_ count=" << items_.size() << endl;
 	}
 }

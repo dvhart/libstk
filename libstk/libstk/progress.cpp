@@ -2,7 +2,6 @@
 #include <sstream>
 #include "libstk/progress.h"
 #include "libstk/widget.h"
-#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;
@@ -52,11 +51,6 @@ namespace stk
 		redraw(rect_); 
 	}
 	
-	void progress::draw(surface::ptr surface)
-	{	
-		theme::instance()->draw_progress(rect_, label_, percent(), focused_);
-	}
-			
 	void progress::build_label()
 	{
 		// %p, percent_*100 to two decimal places, followed by %

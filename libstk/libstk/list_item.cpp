@@ -1,6 +1,5 @@
 #include "libstk/list.h"
 #include "libstk/list_item.h"
-#include "libstk/theme.h"
 
 namespace stk
 {
@@ -30,10 +29,4 @@ namespace stk
 		parent_.lock()->surface();
 	}
 	
-	void list_item::draw(surface::ptr surface)
-	{
-		theme::instance()->draw_list_item(rect_, label_);
-	}
-
-
 }

@@ -29,7 +29,8 @@ libstk_la_SOURCES =\
 	image_panel.h image_panel.cpp \
 	image.h image.cpp \
 	label.h label.cpp \
-	theme.h theme.cpp \
+	spinner.h spinner.cpp \
+	tribal_theme.cpp \
 	font_mngr.h font_mngr.cpp\
 	exceptions.h 
 
@@ -41,11 +42,11 @@ library_include_HEADERS= \
 	button.h         event_system_sdl.h  label.h        surface.h	\
 	combiners.h      exceptions.h        list.h         surface_dfb.h \
 	combo.h          font.h              list_item.h    surface_sdl.h \
-	container.h      font_mngr.h         mouse_event.h  theme.h	\
+	container.h      font_mngr.h         mouse_event.h  rectangle.h \
 	drawable.h       glyph.h             parent.h       widget.h 	\
 	edge.h           graphics_context.h  point.h		\
 	event.h          image.h             progress.h 	\
-	event_handler.h  image_panel.h       rectangle.h	
+	event_handler.h  image_panel.h
 
 
 bin_PROGRAMS      = test_app

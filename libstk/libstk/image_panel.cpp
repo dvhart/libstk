@@ -1,6 +1,5 @@
 #include "libstk/image_panel.h"
 #include "libstk/image.h"
-#include "libstk/theme.h"
 
 namespace stk
 {
@@ -23,8 +22,4 @@ namespace stk
 	{
 	}
 	
-	void image_panel::draw(surface::ptr surface)
-	{
-		theme::instance()->draw_image_panel(rect_, image_);
-	}
 }

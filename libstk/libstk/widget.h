@@ -53,7 +53,7 @@ namespace stk
 
 			/********** DRAWABLE INTERFACE **********/
 			virtual surface::ptr surface(); 
-			virtual void draw(surface::ptr surface);
+			//virtual void draw(surface::ptr surface);
 			virtual void redraw(const rectangle& rect);
 			/********** END DRAWABLE INTERFACE **********/
 			

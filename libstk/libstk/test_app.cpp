@@ -15,9 +15,9 @@
 #include "libstk/label.h"
 #include "libstk/event_system.h"
 #include "libstk/event_system_sdl.h"
+#include "libstk/spinner.h"
 #include "libstk/surface.h"
 #include "libstk/surface_sdl.h"
-#include "libstk/theme.h"
 #include "libstk/exceptions.h"
 
 using namespace stk;
@@ -50,10 +50,6 @@ int main(int argc, char* argv[])
 		// create the surface
 		cout << "test_app - creating surface" << endl;
 		surface::ptr test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
-		
-		// create the theme
-		cout << "test_app - creating singleton theme" << endl;
-		theme::create(test_surface);
 		
 		// create the event system
 		cout << "test_app - creating event system" << endl;
@@ -103,6 +99,14 @@ int main(int argc, char* argv[])
 		list_item::ptr test_item_2 = list_item::create(test_list, L"Germany", "germany");
 		list_item::ptr test_item_3 = list_item::create(test_list, L"Japan", "japan");
 		list_item::ptr test_item_4 = list_item::create(test_list, L"United States", "united_states");
+		
+		// create a spinner
+		cout << "test_app - creating a spinner with items" << endl;
+		spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30));
+		list_item::ptr test_item_5 = list_item::create(test_spinner, L"Apple", "apple");
+		list_item::ptr test_item_6 = list_item::create(test_spinner, L"Banana", "banana");
+		list_item::ptr test_item_7 = list_item::create(test_spinner, L"Orange", "orange");
+		list_item::ptr test_item_8 = list_item::create(test_spinner, L"Plum", "plum");
 
 		// run the program
 		retval = test_app->run();

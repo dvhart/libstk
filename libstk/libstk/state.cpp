@@ -5,7 +5,6 @@
 #include "libstk/state.h"
 #include "libstk/container.h"
 #include "libstk/application.h"
-#include "libstk/theme.h"
 
 using std::cout;
 using std::endl;
@@ -29,13 +28,6 @@ namespace stk
 
 	state::~state()
 	{
-	}
-	
-	void state::draw(surface::ptr surface)
-	{
-		//cout << "state::draw() - redraw_rect_: " << redraw_rect_ << endl;
-		theme::instance()->draw_state(redraw_rect_, focused_);
-		container::draw(surface);
 	}
 	
 	// event_handler interface - default back to parent

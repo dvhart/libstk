@@ -11,7 +11,7 @@
 
 namespace stk
 {
-	class container : public stk::widget
+	class container : public widget
 	{
 		public:
 			typedef boost::shared_ptr<container> ptr;

@@ -42,11 +42,7 @@ namespace stk
 	widget::~widget()
 	{
 	}
-
-	void widget::draw(surface::ptr surface)
-	{
-	}
-		
+	
 	// event_handler interface - default back to parent
 	void widget::handle_event(event::ptr e)
 	{

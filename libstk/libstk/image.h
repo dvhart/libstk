@@ -1,5 +1,5 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef STK_IMAGE_H
+#define STK_IMAGE_H
 
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>

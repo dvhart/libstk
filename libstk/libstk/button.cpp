@@ -1,7 +1,6 @@
 #include <iostream>
 #include "libstk/button.h"
 #include "libstk/widget.h"
-#include "libstk/theme.h"
 
 // FIXME: should we include these like this, or maybe in one events.h file for convenience ?
 #include "libstk/event.h"
@@ -34,11 +33,6 @@ namespace stk
 	{
 	}
 
-	void button::draw(surface::ptr surface)
-	{
-		theme::instance()->draw_button(rect_, label_, pressed_, focused_, hover_);
-	}
-			
 	// event_handler interface
 	void button::handle_event(event::ptr e)
 	{
