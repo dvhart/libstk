@@ -91,7 +91,9 @@ namespace stk
         // Triggered before STK's drawing code ran  \FIXME what does the return value mean?
         boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_predraw;
         // Triggered after STK's drawing code ran    \FIXME what does the return value mean?
-        boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_postdraw;  
+        boost::signal<bool (stk::rectangle), combiner::logical_or<bool> > on_postdraw;
+        // Triggered before STK receives an event, return true if event was handled in the signal handler
+        boost::signal<bool (event::ptr), combiner::logical_or<bool> > on_event;
     }; // class application
 } // namespace stk
 
