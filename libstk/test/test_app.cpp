@@ -14,9 +14,21 @@
 // stk common include
 #include <libstk/stk.h>
 
-// select our backend
+// backend specific includes (we select it dynamically, so include them all if built)
+#ifdef HAVE_SDL
 #include <libstk/event_producer_sdl.h>
 #include <libstk/surface_sdl.h>
+#endif
+#ifdef HAVE_DFB
+#include <libstk/surface_dfb.h>
+// what would be a good default backend ?
+#endif
+#ifdef HAVE_FBDEV
+#include <libstk/surface_fbdev.h>
+// what would be a good default backend ?
+#endif
+// FIXME: should this be configurable also ?  --enable-elotouch ?
+#include <libstk/event_producer_elotouch.h>
 
 using namespace stk;
 using std::cout;
@@ -49,16 +61,49 @@ bool print_edit_box_text(std::wstring text)
 int main(int argc, char* argv[])
 {
     int retval = 0;
-
+ 
     try
     {
-        // create the event system
-        cout << "test_app - creating event system" << endl;
-        event_producer_sdl::ptr test_event_producer = event_producer_sdl::create();
-
-        // create the surface
-        cout << "test_app - creating surface" << endl;
-        surface::ptr test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
+        std::string surface_type;
+        if (argc < 2)
+        {
+            throw error_message_exception("Usage: test_app sdl|dfb|fbdev");
+        }
+        else
+        {
+            surface_type = std::string(argv[1]);
+        }
+        
+        // select the surface and event system
+        cout << "test_app - selecting surface and event system" << endl;
+        surface::ptr test_surface;
+        event_producer::ptr test_event_producer;
+#ifdef HAVE_SDL
+        if (surface_type == "sdl")
+        {
+            test_surface = surface_sdl::create(rectangle(0, 0, 640, 480));
+            test_event_producer = event_producer_sdl::create();
+        }
+#endif
+#ifdef HAVE_DFB
+        else if (surface_type == "dfb")
+        {
+            test_surface = surface_dfb::create(rectangle(0, 0, 640, 480));
+            // FIXME: use something a bit more generic for the test app
+            test_event_producer = event_producer_elotouch::create("/dev/tts/0");
+        }
+#endif
+#ifdef HAVE_FBDEV
+#ifdef HAVE_SDL // needed for the event_system
+        else if (surface_type == "fbdev")
+        {
+            test_surface = surface_dfb::create(rectangle(0, 0, 640, 480));
+            test_event_producer = event_producer_sdl::create();
+        }
+#endif
+#endif
+        else
+            throw error_message_exception("Unknown surface type");
 
         // create the application
         cout << "test_app - creating application" << endl;
@@ -153,17 +198,16 @@ int main(int argc, char* argv[])
         numeric_spinner::ptr test_numeric_spinner = numeric_spinner::create(test_state, 
                 rectangle(530, 130, 100, 30), 0.0, 10.0, .5, 2, false);
 
-        // add a timer (no_op)
-        cout << "test_app - creating no_op timer" << endl;
-        timer::ptr test_timer = timer::create(5000, true); // every 5 seconds
-        no_op no_op_;
-        test_timer->on_timer.connect(no_op_);
-        test_app->add_timer(test_timer);
-
         // create an edit_box
         cout << "test_app - creating edit_box" << endl;
         edit_box::ptr test_edit = edit_box::create(test_state, L"edit me", rectangle(340, 440, 260, 30));
         test_edit->on_release.connect(&print_edit_box_text);
+        
+        // add a timer (quit after 30 seconds)
+        cout << "test_app - creating timer to quit after 30 seconds" << endl;
+        timer::ptr test_timer = timer::create(30000, true); // every 20 seconds
+        test_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
+        test_app->add_timer(test_timer);
 
         // run the program
         retval = test_app->run();

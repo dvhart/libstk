@@ -150,11 +150,9 @@ int main(int argc, char* argv[])
         numeric_spinner::ptr test_numeric_spinner = numeric_spinner::create(test_state, 
                 rectangle(530, 130, 100, 30), 0.0, 10.0, .5, 2, true);
 
-        // add a timer (no_op)
+        // add a timer (quit after 30 seconds)
         cout << "test_app - creating no_op timer" << endl;
-        timer::ptr test_timer = timer::create(60000, true); // every 20 seconds
-        //      no_op no_op_;
-        //        test_timer->on_timer.connect(no_op_);
+        timer::ptr test_timer = timer::create(30000, true); // every 20 seconds
         test_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
         test_app->add_timer(test_timer);
 
