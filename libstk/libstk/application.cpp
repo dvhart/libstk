@@ -48,9 +48,9 @@ namespace stk
 		else
 		{
 			current_state_ = *states_.begin();
-			// FIXME: is there a better way ?
-			current_widget_ = boost::shared_dynamic_cast<widget>(*states_.begin());
-			hover_widget_ = boost::shared_dynamic_cast<widget>(*states_.begin());
+			// FIXME: ask current_state_ for its first focusable widget
+			current_widget_ = *states_.begin();
+			hover_widget_ = *states_.begin();
 		}
 		
 		Event event_(new event(no_event));
