@@ -38,7 +38,7 @@ namespace stk
         std::wstring text_;
         int selection_start_;
         int selection_end_;
-        bool pressed_; //used to tell if selecting
+        int pressed_;
         int line_; //used to store the line of the cursor
 
     protected:

@@ -763,10 +763,16 @@ namespace stk
                     int cursor_x = Vera_14->draw_len(line_str.substr(0,chars_before_cursor));
                     //draw cursor
 
+                    if ( (chars_before_cursor != (int)line_str.length()) ||
+                          (new_line) ||
+                          ((num_chars+chars_before_cursor) == (int)text_.length()) ) 
+                    {//if the cursor isn't at the end of the line
+                     //or there is a new line
+                     //or if it is at the very end of the text
 
-                    surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
-                            ,line_rect.x1()+cursor_x,line_rect.y2());
-
+                        surface->draw_line(line_rect.x1()+cursor_x, line_rect.y1()
+                                ,line_rect.x1()+cursor_x,line_rect.y2());
+                    }
                     line_ = line_num;//to remember where the cursor is
 
                 }
@@ -832,10 +838,11 @@ namespace stk
             if (ypos+Vera_14->height()+3 >= interior_rect.y2())
                 cont = false;
             //out of text
-            if (rest_of_text.length() == 0)
+            if (rest_of_text.length() == 0 && !new_line)
+            {//need to print the new line
                 cont = false;
+            }
         }
-        INFO("drawing");
     }
     int text_area::region(int x, int y)
     {//finds where in the text the x,y is
