@@ -87,6 +87,13 @@ namespace stk
         return surface_sdl::create(rect);
     }
 
+    void surface_sdl::clip_rect(const rectangle& clip_rectangle)
+    {
+        surface::clip_rect(clip_rectangle);
+        SDL_Rect sdl_rect = rect_to_sdl_rect(clip_rectangle);
+        SDL_SetClipRect(sdl_surface_, &sdl_rect);
+    }
+    
     // FIXME: this should just be surface_impl default
     color surface_sdl::gen_color(const std::string& str_color) const
     {
@@ -344,11 +351,7 @@ namespace stk
 
     void surface_sdl::put_pixel_aa(int x, int y, unsigned char alpha_a, color clr)
     {
-        // FIXME: confirm the format of clr
-        // will it always be in SDL color format?
-        // or will it always be in some 32 bit stk RGBA format ??
         Uint32 color_a = (Uint32)clr;
-
         Uint8 red_a, green_a, blue_a;
         SDL_GetRGB(color_a, sdl_surface_->format, &red_a, &green_a, &blue_a);
 
@@ -375,9 +378,8 @@ namespace stk
         x1 += offset().x();
         y1 += offset().y();
         Uint32 sdl_color = (Uint32)gc_->fill_color();
-        rectangle rect(x1, y1, x2 - x1, y2 - y1);
-        SDL_Rect sdl_rect = rect_to_sdl_rect(rect);
-        SDL_FillRect(sdl_surface_, &sdl_rect, sdl_color);
+        SDL_Rect rect = {x1, y1, x2 - x1, y2 - y1};
+        SDL_FillRect(sdl_surface_, &rect, sdl_color);
     }
 
     void surface_sdl::fill_rect(const rectangle& rect)

@@ -14,7 +14,6 @@ Combo Box - Darren to write
 Edit Box (could be prettier, setting cursor/selection support on click and via API needed)
 Text Area - simple, no line break strategy, just \n and spaces, editable parameter and scroll model
           - wrap visually, don't modify content
-Should widgets be positioned relative to their parent container ? YES
 Markup Area (simple html renderer ?)
 Surface blitting / locking / creation (from app surface ?) - YES, ADD virtual create(...) to surface classes
 Input Capabilities - Marc to write (if deemed necessary, may not be)
@@ -28,7 +27,6 @@ event_producer_directfb
 IR support (IRDA / generic serial / lirc) ?
 Software Pointer (common to all graphic backends) - YES, make part of surface backends
 Document all existing classes / APIs
-Polish the build environment (add checks for boost)
 Add libstk to freshmeat
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion
@@ -44,6 +42,8 @@ dvhart: numeric_spinner added
 dvhart: make all include ifdef defines uniform: ie STK_WIDGET_H or WIDGET_H (atm we use both styles)
 dvhart: rename PARENT INTERFACE to COMPONENT INTERFACE
 dvhart: List Item Height is no longer fixed to 25 pixels, fixed in theme, list, and list_item
+dvhart: widgets are now positioned relative to their parent container
+dvhart: Polish the build environment (added checks for boost, directfb, libpng, freetype, etc)
 
 
 DOCUMENTATION

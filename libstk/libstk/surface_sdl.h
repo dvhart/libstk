@@ -74,7 +74,7 @@ namespace stk
         {
             return sdl_surface_;
         }
-
+            
         // methods which MUST be implemented in derived classes
         inline void put_pixel(int x, int y, color clr);
         inline void put_pixel_aa(int x, int y, double distance, color clr);
@@ -90,6 +90,7 @@ namespace stk
 
         // overridden drawing routines
         // FIXME: make the blit accept "const rectangle&"s
+        virtual void clip_rect(const rectangle& clip_rectangle);
         virtual void blit(surface &dst_surface);
 	virtual void blit(surface &dst_surface, rectangle src_rect, rectangle dst_rect);
         virtual void fill_rect(int x1, int y1, int x2, int y2);

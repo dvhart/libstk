@@ -76,50 +76,17 @@ namespace stk
         }
 
         // inline property methods
-        rectangle rect() const
-        {
-            return rect_;
-        }
-        rectangle clip_rect() const
-        {
-            return clip_rect_;
-        }
-        virtual void clip_rect(const rectangle& clip_rectangle)
-        {
-            clip_rect_ = clip_rectangle;
-        }
-        point offset() const
-        {
-            return offset_;
-        }
-        void offset(const point& newoffset)
-        {
-            offset_ = newoffset;
-        }
-        byte alpha() const
-        {
-            return alpha_;
-        }
-        void alpha(byte a)
-        {
-            alpha_ = a;
-        }
-        graphics_context::ptr gc() const
-        {
-            return gc_;
-        }
-        void gc(graphics_context::ptr new_gc)
-        {
-            gc_ = new_gc;
-        }
-        void x1(int x)
-        {
-            rect_.x1(x);
-        }
-        void y1(int y)
-        {
-            rect_.y1(y);
-        }
+        rectangle rect() const { return rect_; }
+        rectangle clip_rect() const { return clip_rect_; }
+        virtual void clip_rect(const rectangle& clip_rectangle) { clip_rect_ = clip_rectangle; }
+        point offset() const { return offset_; }
+        void offset(const point& newoffset) { offset_ = newoffset; }
+        byte alpha() const { return alpha_; }
+        void alpha(byte a) { alpha_ = a; }
+        graphics_context::ptr gc() const { return gc_; }
+        void gc(graphics_context::ptr new_gc) { gc_ = new_gc; }
+        void x1(int x) { rect_.x1(x); }
+        void y1(int y) { rect_.y1(y); }
 
         // The following methods MUST be implemented in all backend surface classes.
         // In addition to:
