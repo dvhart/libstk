@@ -42,7 +42,7 @@ AC_ARG_ENABLE(fbdev,
 
 if test x$enable_fbdev = xyes; then
   AC_MSG_RESULT([ *** FrameBuffer Support enabled])
-  AC_DEFINE(HAVE_DFB,true,[FrameBuffer Support compiled in])
+  AC_DEFINE(HAVE_FBDEV,true,[FrameBuffer Support compiled in])
 fi
 
 AM_CONDITIONAL(FBDEV, test x$enable_fbdev = xyes)
