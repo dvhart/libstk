@@ -5,7 +5,6 @@ libstk_la_SOURCES =\
 	app.h	app.cpp            \
 	surface.h    surface.cpp   \
 	widget.h     widget.cpp    \
-	events.h     events.cpp    \
 	exceptions.h	           \
 	container.h  container.cpp \
 	state.h state.cpp
@@ -15,11 +14,10 @@ stk_test_SOURCES  = 		   \
 	app.h	app.cpp            \
 	surface.h    surface.cpp   \
 	widget.h     widget.cpp    \
-	events.h     events.cpp    \
 	exceptions.h	           \
 	container.h  container.cpp \
 	state.h state.cpp test.cpp
-stk_test_LDADD = $(SDL_LIBS) $(SIGC_LIBS)
+stk_test_LDADD = $(SDL_LIBS) $(SIGC_LIBS) -lboost_signals
 libstk_la_LDFLAGS =\
 	$(SDL_LIBS)
 
