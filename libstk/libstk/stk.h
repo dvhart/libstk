@@ -52,6 +52,7 @@
 #include <libstk/list.h>
 #include <libstk/list_item.h>
 #include <libstk/mouse_event.h>
+#include <libstk/numeric_spinner.h>
 #include <libstk/point.h>
 #include <libstk/posix_time.h>
 #include <libstk/progress.h>

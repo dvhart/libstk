@@ -45,6 +45,7 @@ libstk_la_SOURCES =\
 	list.h list.cpp \
 	list_item.h list_item.cpp \
 	mouse_event.h mouse_event.cpp \
+	numeric_spinner.h numeric_spinner.cpp \
 	posix_time.h posix_time.cpp \
 	progress.h progress.cpp \
 	rectangle.h rectangle.cpp \
@@ -85,6 +86,7 @@ library_include_HEADERS= \
 	color_manager.h  timer.h             surface_impl.h time_value.h \
 	posix_time.h     viewport.h          hotkey.h \
 	stk_types.h      scroll_bar.h        event_producer.h \
+	numeric_spinner.h \
 	$(headers_sdl)   $(headers_dfb)      config.h       \
 	event_producer_elotouch.h logging.h spreadsheet.h
 

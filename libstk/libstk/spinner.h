@@ -30,21 +30,14 @@ namespace stk
         typedef boost::weak_ptr<spinner> weak_ptr;
         
     private:
-        // region codes
-        /// Region code for the area encompassing the down arrow
-        static const int DOWN_ARROW = 0;
-        /// Region code for the area encompassing the up arrow
-        static const int UP_ARROW   = 1;
-        /// Region code for the area encompassing the label
-        static const int LABEL      = 2;
-
+        /// Region codes
+        enum regions_ { DOWN_ARROW, UP_ARROW, LABEL };
+        /// Return a region code for an x,y coordinate (defined by the theme).
+        /// If the x,y coordinate is over the up arrow, then UP_ARROW is returned.
+        int region(int x, int y);
+        
     protected:
         spinner(container::ptr parent, const rectangle& rect);
-	/// Used to check if a positions lies on the scroll arrows.
-	/// The event handler uses this method to check if the mouseclick should be
-	/// used to scroll up or down
-	bool arrow_clicked(int x,int y);
-	
 
     public:
         static spinner::ptr create(container::ptr parent, const rectangle& rect);
@@ -69,9 +62,6 @@ namespace stk
         /********** END LIST INTERFACE **********/
 
         /********** SPINNER INTERFACE **********/
-        /// Return a region code for an x,y coordinate (defined by the theme).
-        /// If the x,y coordinate is over the up arrow, then UP_ARROW is returned.
-        int region(int x, int y);
         // spinner signals
         ///\todo perhaps this belongs in list ?
         boost::signal<bool (), combiner::logical_or<bool> > on_change;

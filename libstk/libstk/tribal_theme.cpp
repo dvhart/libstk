@@ -3,7 +3,7 @@
  * DESCRIPTION: Default theme for Libstk.  Contains the user_theme class and 
  *              all themeable widget drawing routines.
  *     AUTHORS: Darren Hart, Marc Straemke
- *  START DATE: 27/Apr/2003  LAST UPDATE: 13/May/2003
+ *  START DATE: 27/Apr/2003  LAST UPDATE: 14/Jul/2003
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
@@ -21,6 +21,7 @@
 #include "libstk/label.h"
 #include "libstk/list.h"
 #include "libstk/list_item.h"
+#include "libstk/numeric_spinner.h"
 #include "libstk/progress.h"
 #include "libstk/scroll_box.h"
 #include "libstk/spinner.h"
@@ -341,6 +342,87 @@ namespace stk
         surface->draw_text(rect_, label_);
     }
 
+    void numeric_spinner::draw(surface::ptr surface, const rectangle& clip_rect)
+    {
+        cout << "numeric_spinner::draw()" << endl;
+        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        rectangle interior_rect(rect_.x1()+3, rect_.y1()+3, rect_.width()-6, rect_.height()-6);
+        rectangle outline_rect(rect_.x1()+1, rect_.y1()+1, rect_.width()-2, rect_.height()-2);
+        graphics_context::ptr gc = graphics_context::create();
+
+        if(focused_)
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_focused_str, surface)));
+            if (hover_)
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(
+                            color_properties(font_color_hover_str, surface)));
+            }
+            else
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_focused_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(
+                            color_properties(font_color_focused_str, surface)));
+            }
+        }
+        else
+        {
+            gc->fill_color(color_manager::get()->get_color(
+                        color_properties(fill_color_normal_str, surface)));
+            if (hover_)
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_hover_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(
+                            color_properties(font_color_hover_str, surface)));
+            }
+            else
+            {
+                gc->line_color(color_manager::get()->get_color(
+                            color_properties(outline_color_normal_str, surface)));
+                gc->font_fill_color(color_manager::get()->get_color(
+                            color_properties(font_color_normal_str, surface)));
+            }
+        }
+
+        gc->font_fill_color(color_manager::get()->get_color(
+                    color_properties(font_color_normal_str, surface)));
+        font::ptr arial_18 = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+        gc->font(arial_18);
+        surface->gc(gc);
+
+        // fill the spinner box
+        surface->fill_rect(interior_rect);
+
+        // outline the spinner box
+        surface->draw_rect(outline_rect);
+        if (pressed_)
+            surface->draw_rect(rect_);
+
+        // draw the current value
+        // WRITEME
+        surface->draw_text(interior_rect, label_);
+
+        // draw the arrows
+        theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface);
+        theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
+    }
+    int numeric_spinner::region(int x, int y)
+    {
+        if (x > x2()-15)
+        {
+            if (y > y1()+(height()/2)) return DOWN_ARROW;
+            else return UP_ARROW;
+        }
+        return LABEL;
+    }
+
+
+    
     void spinner::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         cout << "spinner::draw()" << endl;

@@ -21,8 +21,7 @@ namespace stk
     spinner::ptr spinner::create(container::ptr parent, const rectangle& rect)
     {
         spinner::ptr new_spinner(new spinner(parent, rect));
-        parent->add
-        (new_spinner);
+        parent->add(new_spinner);
         return new_spinner;
     }
 

@@ -23,7 +23,7 @@ namespace stk
 {
     class widget;
 
-    /// A class declaring the parent interface.
+    /// A class declaring the component interface.
     /// I think this class is superfluous and its interface should be moved
     /// down to widget. --dvhart
     class component : public event_handler, public drawable
@@ -37,14 +37,13 @@ namespace stk
     protected:
         component()
         { }
-        ;
 
     public:
         virtual ~component()
         { }
-        ;
 
-        /********** PARENT INTERFACE **********/
+
+        /********** COMPONENT INTERFACE **********/
         /// Return the parent, widgets all return a valid pointer.
         /// Return an empty pointer here as not all derived classes have parents.
         virtual component::ptr parent()

@@ -1,0 +1,130 @@
+/**************************************************************************************************
+ *    FILENAME: numeric_spinner.cpp
+ * DESCRIPTION: numeric_spinner widget implementation.
+ *     AUTHORS: Darren Hart
+ *  START DATE: 14/Jul/2003  LAST UPDATE: 14/Jul/2003
+ *
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
+ *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     license.txt or at http://www.libstk.org/index.php?page=docs/license
+ *************************************************************************************************/
+
+#include <sstream>
+#include "libstk/numeric_spinner.h"
+#include "libstk/event.h"
+#include "libstk/key_event.h"
+#include "libstk/mouse_event.h"
+#include "libstk/keycode.h"
+
+namespace stk
+{
+    numeric_spinner::ptr numeric_spinner::create(container::ptr parent, const rectangle& rect,
+            double min, double max, double increment, int precision)
+    {
+        numeric_spinner::ptr new_numeric_spinner(new numeric_spinner(parent, rect, 
+                    min, max, increment, precision));
+        parent->add(new_numeric_spinner);
+        return new_numeric_spinner;
+    }
+
+    numeric_spinner::numeric_spinner(container::ptr parent, const rectangle& rect,
+            double min, double max, double increment, int precision) : 
+        widget(parent, rect), min_(min), max_(max), increment_(increment), value_(min), 
+        precision_(precision)
+    {
+        cout << "numeric_spinner::numeric_spinner()" << endl;
+        focusable(true);
+        build_label();
+    }
+
+    numeric_spinner::~numeric_spinner()
+    {}
+
+    void numeric_spinner::handle_event(event::ptr e)
+    {
+        //cout << "numeric_spinner::handle_event()" << endl;
+        switch (e->type())
+        {
+            case event::key_up:
+            {
+                    key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+                    switch ( ke->key() )
+                    {
+                        case key_enter:
+                        case up_arrow:
+                            value_ = MIN(max_, value_+increment_);
+                            build_label();
+                            on_change();
+                            redraw(rect_);
+                            return;
+                            break;
+                        case down_arrow:
+                            value_ = MAX(min_, value_-increment_);
+                            build_label();
+                            on_change();
+                            redraw(rect_);
+                            return;
+                            break;
+                    }
+                    break;
+            }
+            case event::mouse_up:
+            {
+                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+                if (region(me->x(), me->y()) == UP_ARROW)
+                    value_ = MIN(max_, value_+increment_);
+                else
+                    value_ = MAX(min_, value_-increment_);
+                build_label();
+                on_change();
+                redraw(rect_);
+                return;
+            }
+        }
+        widget::handle_event(e);
+    }
+
+    void numeric_spinner::build_label()
+    {
+        // FIXME: format value_str_ to value_ with precision_ digits after the decimal
+        std::wstringstream num_stream;
+
+        /*if (precision_ > 0)*/ num_stream.setf(std::ios::showpoint);
+        num_stream.precision(precision_);
+        num_stream << value_;
+        label_ = num_stream.str();
+    }
+
+    void numeric_spinner::precision(const int val)
+    {
+        if (val >= 0)
+        {
+            precision_ = val;
+            build_label();
+        }
+        else
+            throw error_message_exception("cannot set precision < 0");
+    }
+    
+    void numeric_spinner::min(const double val)
+    {
+        min_ = val;
+        if (min_ > max_) max_ = min_;
+        if (value_ < min_) value_ = min_;
+        build_label();
+    }
+    
+    void numeric_spinner::max(const double val)
+    {
+        max_ = val;
+        if (max_ < min_) min_ = max_;
+        if (value_ > max_) value_ = max_;
+        build_label();
+    }
+    
+    void numeric_spinner::increment(const double val)
+    {
+        increment_ = val;
+        // FIXME: consider assuring that value_ is min_ + N*increment_
+    }
+}

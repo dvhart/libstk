@@ -144,6 +144,11 @@ int main(int argc, char* argv[])
         list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange");
         list_item::ptr test_item_23 = list_item::create(test_spinner, L"Plum");
 
+        // create a numeric_spinner
+        cout << "test_app - creating a spinner with items" << endl;
+        numeric_spinner::ptr test_numeric_spinner = numeric_spinner::create(test_state, 
+                rectangle(530, 130, 100, 30), 0.0, 10.0, .2, 2);
+        
         // add a timer (no_op)
         cout << "test_app - creating no_op timer" << endl;
         timer::ptr test_timer = timer::create(60000, true); // every 20 seconds
