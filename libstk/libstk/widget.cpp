@@ -88,8 +88,8 @@ namespace stk
             {
                 focused_ = true;
                 redraw(rect());
+                return; // only return if we are focusable, otherwise try our parent
             }
-            return;
             break;
         case event::un_focus:
             if (focusable_)
@@ -97,8 +97,8 @@ namespace stk
                 focused_ = false;
                 pressed_ = false;
                 redraw(rect());
+                return; // only return if we are focusable, otherwise try our parent
             }
-            return;
             break;
         case event::mouse_enter:
             hover_ = true;

@@ -27,7 +27,7 @@ namespace stk
     current_(false)
     {
         INFO("constructor");
-        focusable_ = true;
+        //focusable_ = true;
     }
 
     list_item::~list_item()
@@ -35,12 +35,15 @@ namespace stk
         INFO("destructor");
     }
 
+    // the parent list handles all events
+    /*
     void list_item::handle_event(event::ptr e)
     {
         // handle list_item events
         // ... none atm
         widget::handle_event(e);
     }
+    */
 
     void list_item::selected(bool val) 
     { 

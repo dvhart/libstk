@@ -43,7 +43,8 @@ namespace stk
         virtual ~list_item();
 
         /********** EVENT HANDLER INTERFACE **********/
-        virtual void handle_event(event::ptr e);
+        // the parent list handles all events
+        //virtual void handle_event(event::ptr e);
         /********** END EVENT HANDLER INTERFACE **********/
 
         /********** DRAWABLE INTERFACE **********/

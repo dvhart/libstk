@@ -135,8 +135,8 @@ namespace stk
                         }
                     }
                     redraw(rect());
+                    return;
                     break;
-                    //return;
                 case key_uparrow:
                     INFO("  up arrow");
                     if (current_ > 0)
@@ -162,8 +162,8 @@ namespace stk
                         }
                     }
                     redraw(rect());
+                    return;
                     break;
-                    //return;
                 case key_enter:
                     if (!(multiselect_ && ke->modlist() & mod_control)) select_none();
                     items_[current_]->selected(!items_[current_]->selected());
@@ -184,6 +184,8 @@ namespace stk
         /********** END DRAWABLE INTERFACE **********/
 
         /********** COMPONENT INTERFACE **********/
+        // We handle Up,Down on our own, and Tab just exits the list.
+        /*
         virtual widget::ptr focus_next()
         {
            return current_item();
@@ -193,6 +195,7 @@ namespace stk
         {
             return current_item();
         }
+        */
         /********** END COMPONENT INTERFACE **********/
 
         /********** WIDGET INTERFACE **********/
