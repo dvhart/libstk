@@ -5,7 +5,8 @@
 namespace stk
 {
 
-	container::container(boost::weak_ptr<container> parent) : stk::widget(parent)
+	//container::container(boost::weak_ptr<container> parent) : stk::widget(parent)
+	container::container(boost::shared_ptr<container> parent) : stk::widget(parent)
 	{}
 
 	container::~container()

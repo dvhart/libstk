@@ -27,7 +27,8 @@ namespace stk
 			int height_;
 			
 		public:
-			widget(boost::weak_ptr<container> parent);
+			//widget(boost::weak_ptr<container> parent);
+			widget(boost::shared_ptr<container> parent);
 			~widget();
 
 			void draw(boost::shared_ptr<stk::surface> surface);

@@ -5,22 +5,23 @@
 
 namespace stk
 {
-	
-state::state(boost::weak_ptr<application> parent) : parent_(parent)
-{
-}
 
-state::~state()
-{
-}
+	//state::state(boost::weak_ptr<application> parent) : parent_(parent)
+	state::state(boost::shared_ptr<application> parent) : parent_(parent)
+	{
+	}
 
-boost::weak_ptr<widget> state::focused_widget()
-{
-	return focused_widget_;
-}
+	state::~state()
+	{
+	}
 
-void state::focused_widget(boost::weak_ptr<widget> value)
-{
-	focused_widget_=value;
-}
+	boost::weak_ptr<widget> state::focused_widget()
+	{
+		return focused_widget_;
+	}
+
+	void state::focused_widget(boost::weak_ptr<widget> value)
+	{
+		focused_widget_=value;
+	}
 }

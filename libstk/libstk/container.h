@@ -17,7 +17,8 @@ namespace stk
 			container() { }; // empty constructor, needed for creating derived classes ?
 			
 		public:
-			container(boost::weak_ptr<stk::container> parent);
+			//container(boost::weak_ptr<stk::container> parent);
+			container(boost::shared_ptr<stk::container> parent);
 			~container();
 			virtual bool is_container() { return true;} 
 			virtual boost::weak_ptr<stk::widget> get_active_child()  // called when the tree parser for widget cycling switches focus to a container

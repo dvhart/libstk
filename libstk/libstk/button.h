@@ -15,7 +15,9 @@ namespace stk
 		protected:
 			button() { }; // empty constructor, needed for creating derived classes ?
 		public:
-			button(boost::weak_ptr<container> parent);
+			//button(boost::weak_ptr<container> parent);
+			button(boost::shared_ptr<container> parent, std::string label, 
+					int x, int y, int width, int height);
 			~button();
 
 			// button signals

@@ -11,7 +11,8 @@ namespace stk
 	class state : public stk::container
 	{
 		public:
-			state(boost::weak_ptr<stk::application> parent);
+			//state(boost::weak_ptr<stk::application> parent);
+			state(boost::shared_ptr<stk::application> parent);
 			virtual ~state();
 			boost::weak_ptr<widget> focused_widget();
 			void focused_widget(boost::weak_ptr<widget> value);

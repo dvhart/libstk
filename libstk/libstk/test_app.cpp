@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 	test_state->add_child(test_button);
 	// bind button click to quit
 	// do we need to dereference test_app ?
-	test_button->on_click.connect(boost::bind(&stk::application::quit, test_app.get())); 
+	//test_button->on_click.connect(boost::bind(&stk::application::quit, test_app.get())); 
 
 	// run the program
 	cout << "test_app - run" << endl;
