@@ -175,9 +175,17 @@ namespace stk
 					case down_arrow:
 					{
 						cout << "application::handle_event() - next pressed" << endl;
-						widget::weak_ptr prev_focused_widget = focused_widget_;
-						focused_widget_ = focused_widget_.lock()->focus_next();
-						prev_focused_widget.lock()->handle_event(event::create(event::un_focus)); // this could be done in container focus_next(), but it seems more approppriate to make the calles here, as application is responsible for which widget is focused, not container.  opinions?
+						parent::weak_ptr prev_focused_widget = focused_widget_;
+						focused_widget_ = prev_focused_widget.lock()->focus_next();
+						parent::weak_ptr temp_widget = prev_focused_widget;
+						while (!focused_widget_.lock())
+						{
+							temp_widget = temp_widget.lock()->get_parent();
+							if (!temp_widget.lock())
+								throw error_message_exception("application::handle_event() - unable to find next focusable widget");
+							focused_widget_ = temp_widget.lock()->focus_next();
+						}
+						prev_focused_widget.lock()->handle_event(event::create(event::un_focus)); 
 						focused_widget_.lock()->handle_event(event::create(event::focus));
 						break;
 					}
@@ -188,8 +196,16 @@ namespace stk
 					case up_arrow:
 					{
 						cout << "application::handle_event() - prev pressed" << endl;
-						widget::weak_ptr prev_focused_widget = focused_widget_;
+						parent::weak_ptr prev_focused_widget = focused_widget_;
 						focused_widget_ = focused_widget_.lock()->focus_prev();
+						parent::weak_ptr temp_widget = prev_focused_widget;
+						while (!focused_widget_.lock())
+						{
+							temp_widget = temp_widget.lock()->get_parent();
+							if (!temp_widget.lock())
+								throw error_message_exception("application::handle_event() - unable to find previous focusable widget");
+							focused_widget_ = temp_widget.lock()->focus_prev();
+						}
 						prev_focused_widget.lock()->handle_event(event::create(event::un_focus));
 						focused_widget_.lock()->handle_event(event::create(event::focus));
 						break;

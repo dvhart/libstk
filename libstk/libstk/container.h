@@ -39,14 +39,14 @@ namespace stk
 
 			/********** PARENT INTERFACE **********/
 			/// Return the next focusable widget.
-			/// Find the focused widget, and return the next focusable one if we have 
-			/// no children, or reach the end, ask parent_ for the next widget.
+			/// Find the focused widget, and return the next focusable one.  If we 
+			/// have no children, or reach the end, ask return an empty widget::ptr.
 			virtual widget::ptr focus_next();
 			
 			/// Return the prev focusable widget.
-			/// Find the focused widget, and return the previous focusable one if we 
-			/// have no children, or reach the beginning, ask parent_ for the next 
-			/// widget.
+			/// Find the focused widget, and return the previous focusable one.  If 
+			/// we have no children, or reach the beginning,  return an empty 
+			/// widget::ptr.
 			virtual widget::ptr focus_prev();
 			/// Add a child widget to the children vector
 			virtual void add(widget::ptr w);
@@ -55,6 +55,8 @@ namespace stk
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/
+			/// If any of the children widgets are focused, return true.
+			bool focused();
 			virtual bool is_container() { return true; }
 			/********** END WIDGET INTERFACE **********/
 			

@@ -81,17 +81,4 @@ namespace stk
 		parent_.lock()->redraw(rect);
 	}
 	
-	// parent interface
-	widget::ptr widget::focus_next()
-	{ 
-		// MSTR broken!
-		return parent_.lock()->focus_next(); 
-	}
-
-	widget::ptr widget::focus_prev()
-	{ 
-		// MSTR broken!
-		return parent_.lock()->focus_prev(); 
-	}
-
 }

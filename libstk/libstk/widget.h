@@ -58,10 +58,12 @@ namespace stk
 			/********** END DRAWABLE INTERFACE **********/
 			
 			/********** PARENT INTERFACE **********/
+			/// Return the parent pointer.
+			virtual parent::ptr get_parent() { return parent_.lock(); }
 			/// Pass call along to parent
-			virtual widget::ptr focus_next();
+			//virtual widget::ptr focus_next();
 			/// Pass call along to parent
-			virtual widget::ptr focus_prev();
+			//virtual widget::ptr focus_prev();
 			/********** END PARENT INTERFACE **********/
 			
 			/********** WIDGET INTERFACE **********/

@@ -27,11 +27,16 @@ namespace stk
 			virtual ~parent() { };
 			
 			/********** PARENT INTERFACE **********/
+			/// Return the parent, widgets all return a valid pointer.
+			/// Return an empty pointer here as not all derived classes have parents. 
+			/// FIXME: the parent class should really be called component, then rename this
+			virtual parent::ptr get_parent() { return parent::ptr(); }
 			/// Retrieve the next focusable widget.
-			/// \todo is there a way to use widget::ptr here
-			virtual boost::shared_ptr<widget> focus_next() = 0;
+			/// Implemented by container, here we just return an empty pointer.
+			virtual boost::shared_ptr<widget> focus_next() { return boost::shared_ptr<widget>(); }
 			/// Retrieve the next focusable widget.
-			virtual boost::shared_ptr<widget> focus_prev() = 0;
+			/// Implemented by container, here we just return an empty pointer.
+			virtual boost::shared_ptr<widget> focus_prev() { return boost::shared_ptr<widget>(); }
 			/// Add a child.
 			/// This does nothing by default and is overridden in container.
 			virtual void add(boost::shared_ptr<widget> item) { }
