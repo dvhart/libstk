@@ -47,16 +47,16 @@ int main(int argc, char* argv[])
     std::ofstream debug("debug.log");
     stk::logger::get()->add_target(&std::cerr, stk::LL_Info);
     stk::logger::get()->add_target(&debug, stk::LL_Info);
-    
+
     try
     {
         // create the surface
         cout << "test_app - creating surface" << endl;
         surface::ptr test_surface = surface_dfb::create(rectangle(0, 0, 800, 600));
-        
+
         event_producer_elotouch::ptr test_event_producer = event_producer_elotouch::create("/dev/tts/0");
-        
-        
+
+
         // create the application
         cout << "test_app - creating application" << endl;
         application::ptr test_app = application::create(test_surface);
@@ -68,20 +68,20 @@ int main(int argc, char* argv[])
         // create a button and bind it to application::quit()
         cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
         button::ptr test_button = button::create(test_state, L"Quit",
-                                  rectangle(120, 10, 100, 30));
+                rectangle(120, 10, 100, 30));
         // NOTE: we must use test_app.get() here or we inadvertantly create a circular shared_ptr reference
         // and application (and therefore nothing else) won't get destroyed when we exit()!!!
         test_button->on_release.connect( boost::bind(&stk::application::quit, test_app.get()) );
         button::ptr test_button2 = button::create(test_state, L"No-Op",
-                                   rectangle(240, 10, 100, 30));
- 
+                rectangle(240, 10, 100, 30));
+
         // create a couple labels using ÜberScript
         cout << "test_app - creating labels" << endl;
         label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"),
-                                              rectangle(10, 10, 100, 30));
+                rectangle(10, 10, 100, 30));
         label::ptr test_label2 = label::create(test_state,
-                                               std::wstring(L"stk::tribal_theme"),
-                                               rectangle(490, 10, 150, 30));
+                std::wstring(L"stk::tribal_theme"),
+                rectangle(490, 10, 150, 30));
 
         // create some buttons with hotkeys F1-F4
         cout << "test_app - creating buttons, binding F1-F4" << endl;
@@ -107,11 +107,11 @@ int main(int argc, char* argv[])
         // create an image in a scroll panel
         cout << "test_app - creating an image_panel in a scroll panel" << endl;
         label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"),
-                                               rectangle(10, 50, 150, 30));
+                rectangle(10, 50, 150, 30));
         viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
         // fixme: having to define the rectangle like this is lame, perhaps
         // rect should be relative to the parent container?
-//        image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
+        //        image_panel::ptr test_image_panel = image_panel::create(test_viewport, 
         //              rectangle(10, 90, 400, 300), image::create("parrots.ppm"));
 
         //scroll(test_viewport->h_scroll(),-10);
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 
         // create a spinner
         cout << "test_app - creating a spinner with items" << endl;
-        spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30));
+        spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30), true);
         list_item::ptr test_item_20 = list_item::create(test_spinner, L"Apple");
         list_item::ptr test_item_21 = list_item::create(test_spinner, L"Banana");
         list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange");
@@ -147,13 +147,13 @@ int main(int argc, char* argv[])
         // create a numeric_spinner
         cout << "test_app - creating a spinner with items" << endl;
         numeric_spinner::ptr test_numeric_spinner = numeric_spinner::create(test_state, 
-                rectangle(530, 130, 100, 30), 0.0, 10.0, .2, 2);
-        
+                rectangle(530, 130, 100, 30), 0.0, 10.0, .5, 2, true);
+
         // add a timer (no_op)
         cout << "test_app - creating no_op timer" << endl;
         timer::ptr test_timer = timer::create(60000, true); // every 20 seconds
         //      no_op no_op_;
-//        test_timer->on_timer.connect(no_op_);
+        //        test_timer->on_timer.connect(no_op_);
         test_timer->on_timer.connect( boost::bind(&stk::application::quit, test_app.get()));
         test_app->add_timer(test_timer);
 
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
         cout << "Exception: " << e.what() << endl;
     }
 
-    
+
     stk::logger::get()->remove_target(&std::cerr);
     stk::logger::get()->remove_target(&debug);
     return retval;

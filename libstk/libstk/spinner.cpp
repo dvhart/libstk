@@ -18,18 +18,19 @@
 
 namespace stk
 {
-    spinner::ptr spinner::create(container::ptr parent, const rectangle& rect)
+    spinner::ptr spinner::create(container::ptr parent, const rectangle& rect, bool wrap)
     {
-        spinner::ptr new_spinner(new spinner(parent, rect));
+        spinner::ptr new_spinner(new spinner(parent, rect, wrap));
         parent->add(new_spinner);
         return new_spinner;
     }
 
-    spinner::spinner(container::ptr parent, const rectangle& rect) : list(parent, rect)
-    {
-        cout << "spinner::spinner()" << endl;
-        focusable(true);
-    }
+    spinner::spinner(container::ptr parent, const rectangle& rect, bool wrap) : 
+        list(parent, rect), wrap_(wrap)
+        {
+            cout << "spinner::spinner()" << endl;
+            focusable(true);
+        }
 
     spinner::~spinner()
     {}
@@ -41,38 +42,62 @@ namespace stk
         {
             switch (e->type())
             {
-            case event::key_up:
-            {
-                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                switch ( ke->key() )
-                {
-                case up_arrow:
-                    --selected_%=items_.size();
-                    on_change();
-                    redraw(rect_);
-                    return;
-                    break;
-                case key_enter:
-                case down_arrow:
-                    ++selected_%=items_.size();
-                    on_change();
-                    redraw(rect_);
-                    return;
-                    break;
-                }
-                break;
-            }
-            case event::mouse_up:
-            {
-                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-                if (region(me->x(), me->y()) == UP_ARROW)
-                    --selected_%=items_.size();
-                else
-                    ++selected_%=items_.size();
-                on_change();
-                redraw(rect_);
-                return;
-            }
+                case event::key_up:
+                    {
+                        key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+                        switch ( ke->key() )
+                        {
+                            case up_arrow:
+                                --selected_;
+                                if (selected_ < 0) 
+                                {
+                                    if (wrap_) selected_ %= items_.size();
+                                    else selected_ = 0;
+                                }
+                                on_change();
+                                redraw(rect_);
+                                return;
+                                break;
+                            case key_enter:
+                            case down_arrow:
+                                ++selected_;
+                                if (selected_ >= items_.size())
+                                {
+                                    if (wrap_) selected_ %= items_.size();
+                                    else selected_ = items_.size()-1;
+                                }
+                                on_change();
+                                redraw(rect_);
+                                return;
+                                break;
+                        }
+                        break;
+                    }
+                case event::mouse_up:
+                    {
+                        mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+                        if (region(me->x(), me->y()) == UP_ARROW)
+                        {
+                            --selected_;
+                            if (selected_ < 0) 
+                            {
+                                if (wrap_) selected_ %= items_.size();
+                                else selected_ = 0;
+                            }
+                        }
+                        else
+                        {
+                            ++selected_;
+                            if (selected_ >= items_.size())
+                            {
+                                if (wrap_) selected_ %= items_.size();
+                                else selected_ = items_.size()-1;
+                            }
+                        }
+                        on_change();
+                        redraw(rect_);
+                        return;
+                    }
             }
         }
         widget::handle_event(e);

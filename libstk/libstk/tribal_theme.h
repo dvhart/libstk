@@ -68,7 +68,7 @@ namespace stk
 
         // tribal_theme drawing routines
         /// Draw an arrow in dir o'clock with x,y as its upper left corner.
-        void draw_arrow(int x, int y, int dir, surface::ptr surface);
+        void draw_arrow(int x, int y, int dir, surface::ptr surface, bool fill);
 
         // access to theme colors
         color outline_color_normal() const

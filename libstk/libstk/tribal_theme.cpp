@@ -70,7 +70,7 @@ namespace stk
     user_theme::~user_theme()
     {}
 
-    void user_theme::draw_arrow(int x, int y, int dir, surface::ptr surface)
+    void user_theme::draw_arrow(int x, int y, int dir, surface::ptr surface, bool fill)
     {
         switch (dir)
         {
@@ -80,7 +80,8 @@ namespace stk
             arrow_points.push_back(point(x, y));
             arrow_points.push_back(point(x + 5, y + 5));
             arrow_points.push_back(point(x, y + 10));
-            surface->fill_poly_aa(arrow_points);
+	    if (fill) surface->fill_poly_aa(arrow_points);
+	    else surface->draw_poly_aa(arrow_points);
             break;
         }
         case 6:
@@ -89,7 +90,8 @@ namespace stk
             arrow_points.push_back(point(x, y));
             arrow_points.push_back(point(x + 10, y));
             arrow_points.push_back(point(x + 5, y + 5));
-            surface->fill_poly_aa(arrow_points);
+	    if (fill) surface->fill_poly_aa(arrow_points);
+	    else surface->draw_poly_aa(arrow_points);
             break;
         }
         case 9:
@@ -98,7 +100,8 @@ namespace stk
             arrow_points.push_back(point(x + 5, y));
             arrow_points.push_back(point(x, y + 5));
             arrow_points.push_back(point(x + 5, y + 10));
-            surface->fill_poly_aa(arrow_points);
+	    if (fill) surface->fill_poly_aa(arrow_points);
+	    else surface->draw_poly_aa(arrow_points);
             break;
         }
         case 12:
@@ -107,7 +110,8 @@ namespace stk
             arrow_points.push_back(point(x, y + 5));
             arrow_points.push_back(point(x + 10, y + 5));
             arrow_points.push_back(point(x + 5, y));
-            surface->fill_poly_aa(arrow_points);
+	    if (fill) surface->fill_poly_aa(arrow_points);
+	    else surface->draw_poly_aa(arrow_points);
             break;
         }
 
@@ -408,8 +412,10 @@ namespace stk
         surface->draw_text(interior_rect, label_);
 
         // draw the arrows
-        theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface);
-        theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
+	bool fill_down = wrap_ || (value_ > min_);
+	bool fill_up = wrap_ || (value_ < max_);
+        theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface, fill_up);
+        theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface, fill_down);
     }
     int numeric_spinner::region(int x, int y)
     {
@@ -489,8 +495,10 @@ namespace stk
         items_[selected_]->draw(surface);
 
         // draw the arrows
-        theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface);
-        theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface);
+	bool fill_up = wrap_ || (selected_ > 0);
+	bool fill_down = wrap_ || (selected_ < items_.size()-1);
+        theme::user()->draw_arrow(x2() - 15, y1() + 5, 12, surface, fill_up);
+        theme::user()->draw_arrow(x2() - 15, y2() - 10, 6, surface, fill_down);
     }
     int spinner::region(int x, int y)
     {

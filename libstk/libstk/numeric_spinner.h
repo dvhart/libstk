@@ -22,54 +22,70 @@ namespace stk
 {
     class numeric_spinner : public widget
     {
-    public:
-        typedef boost::shared_ptr<numeric_spinner> ptr;
-        typedef boost::weak_ptr<numeric_spinner> weak_ptr;
-        
-    private:
-        /// Region codes
-        enum regions_ { DOWN_ARROW, UP_ARROW, LABEL };
-        /// Format the label_ string according to value_ and precision_
-        void build_label();
-        /// Return a region code for an x,y coordinate (defined by the theme).
-        /// If the x,y coordinate is over the up arrow, then UP_ARROW is returned.
-        int region(int x, int y);
-        
-    protected:
-        numeric_spinner(container::ptr parent, const rectangle& rect, 
-                double min, double max, double increment, int precision);
-        double min_, max_, increment_, value_;
-        std::wstring label_;
-        int precision_; 
-	
+        public:
+            typedef boost::shared_ptr<numeric_spinner> ptr;
+            typedef boost::weak_ptr<numeric_spinner> weak_ptr;
 
-    public:
-        static numeric_spinner::ptr create(container::ptr parent, const rectangle& rect, 
-                double min, double max, double increment, int precision);
-        virtual ~numeric_spinner();
-        	
-        /********** EVENT HANDLER INTERFACE **********/
-        virtual void handle_event(event::ptr e);
-        /********** END EVENT HANDLER INTERFACE **********/
+        private:
+            /// Region codes
+            enum regions_ { DOWN_ARROW, UP_ARROW, LABEL };
+            /// Format the label_ string according to value_ and precision_
+            void build_label();
+            /// Return a region code for an x,y coordinate (defined by the theme).
+            /// If the x,y coordinate is over the up arrow, then UP_ARROW is returned.
+            int region(int x, int y);
 
-        /********** DRAWABLE INTERFACE **********/
-        virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
-        /********** END DRAWABLE INTERFACE **********/
+        protected:
+            numeric_spinner(container::ptr parent, const rectangle& rect, 
+                    double min, double max, double increment, int precision, bool wrap);
+            /// the minimum value
+            double min_;
+            /// the maximum value
+            double max_;
+            /// the amount to increment value_ when changing it
+            double increment_;
+            /// the value stored in the numeric_spinner
+            double value_;
+            /// the string formatted from value_ and displayed by draw()
+            std::wstring label_;
+            /// number of decimal places to display (BROKEN)
+            int precision_; 
+            /// wrap around from first to last and last to first values
+            bool wrap_;
 
-        /********** NUMERIC SPINNER INTERFACE **********/
-        int precision() const { return precision_; }
-        void precision(const int val);
-        double value() const { return value_; }
-        double min() const { return min_; }
-        void min(const double val);
-        double max() const { return max_; }
-        void max(const double val);
-        double increment() const { return increment_; }
-        void increment(const double val);
-        
-        // numeric_spinner signals
-        boost::signal<bool (), combiner::logical_or<bool> > on_change;
-        /********** END NUMERIC SPINNER INTERFACE **********/
+
+        public:
+            static numeric_spinner::ptr create(container::ptr parent, const rectangle& rect, 
+                    double min, double max, double increment, int precision, bool wrap);
+            virtual ~numeric_spinner();
+
+            /********** EVENT HANDLER INTERFACE **********/
+            virtual void handle_event(event::ptr e);
+            /********** END EVENT HANDLER INTERFACE **********/
+
+            /********** DRAWABLE INTERFACE **********/
+            virtual void draw(surface::ptr surface, const rectangle& clip_rect = rectangle());
+            /********** END DRAWABLE INTERFACE **********/
+
+            /********** COMPONENT INTERFACE **********/
+            /********** END COMPONENT INTERFACE **********/
+
+            /********** NUMERIC SPINNER INTERFACE **********/
+            int precision() const { return precision_; }
+            void precision(int val);
+            double value() const { return value_; }
+            double min() const { return min_; }
+            void min(double val);
+            double max() const { return max_; }
+            void max(double val);
+            double increment() const { return increment_; }
+            void increment(double val);
+            bool wrap() const { return wrap_; }
+            void wrap(bool val) { wrap_ = val; redraw(rect_); }
+
+            // numeric_spinner signals
+            boost::signal<bool (), combiner::logical_or<bool> > on_change;
+            /********** END NUMERIC SPINNER INTERFACE **********/
     };
 }
 

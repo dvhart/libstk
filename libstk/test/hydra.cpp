@@ -37,8 +37,7 @@ int main(int argc, char* argv[])
         state::ptr config_state = state::create(app);
 
         // set up the main state
-        label::ptr main_label = label::create(main_state, std::wstring(L"MAIN"), 
-                rectangle(10, 10, 100, 30));
+        label::ptr main_label = label::create(main_state, L"MAIN", rectangle(10, 10, 100, 30));
         // several buttons
         // go to the config state
         button::ptr config_button = button::create(main_state, L"Config",
@@ -51,22 +50,23 @@ int main(int argc, char* argv[])
         main_quit_button->on_release.connect(boost::bind(&application::quit, app.get()));
 
         // set up the config state
-        label::ptr config_label = label::create(config_state, std::wstring(L"CONFIG"), 
+        label::ptr config_label = label::create(config_state, L"CONFIG", 
                 rectangle(10, 10, 100, 30));
         // several spinners
         // Keyboard spinner
-        label::ptr kb_label = label::create(config_state, std::wstring(L"Keyboard: "), 
+        label::ptr kb_label = label::create(config_state, L"Keyboard: ", 
                 rectangle(400, 90, 100, 30));
-        spinner::ptr kb_spinner = spinner::create(config_state, rectangle(500, 90, 125, 30));
+        spinner::ptr kb_spinner = spinner::create(config_state, 
+                rectangle(500, 90, 125, 30), false);
         list_item::ptr kb_item_phy = list_item::create(kb_spinner, L"Physical");
         list_item::ptr kb_item_osd = list_item::create(kb_spinner, L"On Screen");
         list_item::ptr kb_item_none = list_item::create(kb_spinner, L"None");
         // done button (return to main)
         button::ptr config_done_button = button::create(config_state, L"Done",
                 rectangle(530, 440, 100, 30));
-        config_done_button->on_release.connect( boost::bind(&application::current_state, 
-                    app.get(), main_state) );
-        
+        config_done_button->on_release.connect(boost::bind(&application::current_state, 
+                    app.get(), main_state));
+
         // run the program
         retval = app->run();
     }

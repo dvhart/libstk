@@ -40,8 +40,7 @@ namespace stk
     public:
         static theme::ptr create(surface::ptr surface);
         virtual ~theme();
-        static theme::ptr get
-            ();
+        static theme::ptr get();
         static boost::shared_ptr<user_theme> user();
 
 

@@ -41,9 +41,9 @@ bool scroll_slot(scroll_model::ptr target, int increment)
 
 bool print_edit_box_text(std::wstring text)
 {
-	// FIXME: better idea how to output a wstring?
-	std::cout << "edit_box text: \"" << std::string(text.begin(), text.end()) << "\"" << endl;
-	return true;
+    // FIXME: better idea how to output a wstring?
+    std::cout << "edit_box text: \"" << std::string(text.begin(), text.end()) << "\"" << endl;
+    return true;
 }
 
 int main(int argc, char* argv[])
@@ -71,20 +71,20 @@ int main(int argc, char* argv[])
         // create a button and bind it to application::quit()
         cout << "test_app - creating button, binding on_click to test_app->quit()" << endl;
         button::ptr test_button = button::create(test_state, L"Quit",
-                                  rectangle(120, 10, 100, 30));
+                rectangle(120, 10, 100, 30));
         // NOTE: we must use test_app.get() here or we inadvertantly create a circular shared_ptr reference
         // and application (and therefore nothing else) won't get destroyed when we exit()!!!
         test_button->on_release.connect( boost::bind(&application::quit, test_app.get()) );
         button::ptr test_button2 = button::create(test_state, L"No-Op",
-                                   rectangle(240, 10, 100, 30));
+                rectangle(240, 10, 100, 30));
 
         // create a couple labels using ÜberScript
         cout << "test_app - creating labels" << endl;
         label::ptr test_label = label::create(test_state, std::wstring(L"ÜberScript"),
-                                              rectangle(10, 10, 100, 30));
+                rectangle(10, 10, 100, 30));
         label::ptr test_label2 = label::create(test_state,
-                                               std::wstring(L"stk::tribal_theme"),
-                                               rectangle(490, 10, 150, 30));
+                std::wstring(L"stk::tribal_theme"),
+                rectangle(490, 10, 150, 30));
 
         // create some buttons with hotkeys F1-F4
         cout << "test_app - creating buttons, binding F1-F4" << endl;
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
         // create an image in a scroll panel
         cout << "test_app - creating an image_panel in a scroll panel" << endl;
         label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"),
-                                               rectangle(10, 50, 150, 30));
+                rectangle(10, 50, 150, 30));
         viewport::ptr test_viewport = viewport::create(test_state, rectangle(10, 90, 350, 200));
         // fixme: having to define the rectangle like this is lame, perhaps
         // rect should be relative to the parent container?
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 
         // create a spinner
         cout << "test_app - creating a spinner with items" << endl;
-        spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30));
+        spinner::ptr test_spinner = spinner::create(test_state, rectangle(530, 90, 100, 30), false);
         list_item::ptr test_item_20 = list_item::create(test_spinner, L"Apple");
         list_item::ptr test_item_21 = list_item::create(test_spinner, L"Banana");
         list_item::ptr test_item_22 = list_item::create(test_spinner, L"Orange");
@@ -150,7 +150,7 @@ int main(int argc, char* argv[])
         // create a numeric_spinner
         cout << "test_app - creating a spinner with items" << endl;
         numeric_spinner::ptr test_numeric_spinner = numeric_spinner::create(test_state, 
-                rectangle(530, 130, 100, 30), 0.0, 10.0, .2, 2);
+                rectangle(530, 130, 100, 30), 0.0, 10.0, .5, 2, false);
 
         // add a timer (no_op)
         cout << "test_app - creating no_op timer" << endl;
