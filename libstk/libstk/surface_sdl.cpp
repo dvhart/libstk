@@ -274,6 +274,16 @@ namespace stk
         SDL_MUTEX_UNLOCK;
         return (color)sdl_color;
     }
+    color surface_sdl::rgba_color(color clr) const
+    {
+        byte red, green, blue, alpha;
+        SDL_GetRGBA((unsigned int)clr, sdl_surface_->format, &red, &green, &blue, &alpha);
+        unsigned int ret = red << 24;
+        ret |= green << 16;
+        ret |= blue << 8;
+        ret |= alpha;
+        return (color)ret;
+    }
 
     void surface_sdl::lock()
     {

@@ -192,6 +192,7 @@ namespace stk
 
     color surface_fbdev::get_pixel(int x, int y) const
     {
+        //FIXME this needs to be written
     }
 
     color surface_fbdev::gen_color(const std::string &str_color) const
@@ -203,6 +204,11 @@ namespace stk
     color surface_fbdev::gen_color(byte r, byte g, byte b, byte a) const
     {
         return r << 24 | g << 16 | b << 8 | a;
+    }
+
+    color surface_fbdev::rgba_color(color clr) const
+    {
+        return clr;
     }
 
     void surface_fbdev::lock()

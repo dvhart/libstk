@@ -42,6 +42,7 @@ namespace stk
         color get_pixel(int x, int y) const;
 	
         virtual color gen_color(byte r, byte g, byte b, byte a) const;
+        virtual color rgba_color(color clr) const;
 	virtual void lock();
         virtual void lock(rectangle &rect, int flags, color** buf, int &stride);
         virtual void unlock();

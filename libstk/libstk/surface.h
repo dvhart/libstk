@@ -97,6 +97,8 @@ namespace stk
         // format: "0xRRGGBBAA", [0-255], alpha 255 being opaque
         virtual color gen_color(const std::string& str_color) const = 0;
         virtual color gen_color(byte r, byte g, byte b, byte a) const = 0;
+        // returns 0xRRGGBBAA of the given color
+        virtual color rgba_color(color clr) const = 0;
         /// prepare the surface for durect pixel access
         /// lock can be called recursively, each call to lock should be accompanied 
         /// by one to unlock

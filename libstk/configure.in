@@ -81,7 +81,7 @@ AC_ARG_ENABLE(libjpeg,
         ], [AC_MSG_ERROR( *** libjpeg62 library not found - build will fail)])
 
     ],
-    [AC_MSG_WARN([ *** Libjpeg62 support requested, but pkg-config failed to find it])]
+    [AC_MSG_WARN([ *** Libjpeg62 support requested, but failed to find it])]
     )
 fi    
 AM_CONDITIONAL(LIBJPEG, test x$enable_libjpeg = xyes)

@@ -94,6 +94,30 @@ namespace stk
             message_=message;
         }
     };
+
+    class image_write_exception : image_exception
+    {
+    private:
+        std::string message_;
+        image_write_exception()
+        { } // what is this for ?
+    public:
+        image_write_exception(const std::string& message)
+        {
+            message_ = message;
+        }
+        virtual ~image_write_exception()
+        { }
+        virtual std::string what() const
+        {
+            return message_;
+        }
+        void message(const std::string& message)
+        {
+            message_=message;
+        }
+    };
+        
     
     class image
     {
@@ -119,6 +143,10 @@ namespace stk
         void load_ppmx(const std::string filename);
         void load_png(const std::string filename);
         void load_jpeg(const std::string filename);
+
+        void write(const std::string filename);
+        void write_png(const std::string filename);
+        void write_jpeg(const std::string filename);
         
         //color pixel(int x, int y) const; // \FIXME Needed anymore if we are using offscreen surfaces?
         //void pixel(int x, int y, color new_color); // \FIXME Needed anymore if we are using offscreen surfaces?

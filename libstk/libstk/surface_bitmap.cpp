@@ -100,11 +100,16 @@ namespace stk
     
     color surface_bitmap::gen_color(byte r, byte g, byte b, byte a) const
     {
-        int color = (int)a;
+        unsigned int color = (int)a;
         color |= (int)b << 8;
         color |= (int)g << 16;
         color |= (int)r << 24;
         return color;
+    }
+
+    color surface_bitmap::rgba_color(color clr) const
+    {
+        return clr;
     }
     
     void surface_bitmap::lock()

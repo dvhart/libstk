@@ -131,7 +131,11 @@ namespace stk
     {
         return r << 24 | g << 16 | b << 8 | a;
     }
-    
+   
+    color surface_dfb::rgba_color(color clr) const
+    {
+        return clr;
+    }
     void surface_dfb::lock()
     {
         surface->Lock(surface, (DFBSurfaceLockFlags)(DSLF_WRITE|DSLF_READ), &screen, &pitch);

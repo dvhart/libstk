@@ -166,7 +166,7 @@ namespace stk
         INFO("Destroying png read struct");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 #else
-        ERROR("No support for loading PNG files compiled in!");
+        throw image_read_exception("image::load_png() No support for loading PNG files compiled in!");
 #endif
     }
     
@@ -245,10 +245,7 @@ namespace stk
             (*cinfo.err->format_message) ((jpeg_common_struct*)&cinfo,error_msg);
             jpeg_destroy_decompress(&cinfo);
             fclose(infile);
-
-
             throw image_read_exception("image::load_jpeg() " + std::string(error_msg));
-            return;
         }
         //intialize JPEG Compression object
         jpeg_create_decompress(&cinfo);
@@ -276,7 +273,7 @@ namespace stk
             // Assume put_scanline_someplace wants a pointer and sample count.
             // Copy into surface
             for (int i=0; i<row_stride/3; i++) {
-                stk::color pixel_color = offscreen_surface->gen_color((unsigned char)buffer[0][i*3],(unsigned char)buffer[0][i*3+1],(unsigned char)buffer[0][i*3+2],255);
+                stk::color pixel_color = offscreen_surface->gen_color(buffer[0][i*3],buffer[0][i*3+1],buffer[0][i*3+2],255);
                 offscreen_surface->draw_pixel(i,y,pixel_color);
             }
             y++;
@@ -286,7 +283,159 @@ namespace stk
         jpeg_destroy_decompress(&cinfo);
         fclose(infile);
 #else
-     ERROR("No support for loading JPEG files compiled in!");
+     throw image_read_exception("image::load_jpeg() No support for loading JPEG files compiled in!");
+#endif
+    }
+
+    void image::write(std::string filename)
+    {
+        // switch on extension
+        // that's the only way to find the format
+        if (filename.find(".ppm") != std::string::npos)
+            throw image_write_exception("image::write() Cannot Write .ppm files");
+        else if (filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos)
+            write_jpeg(filename);
+        else if (filename.find(".png") != std::string::npos)
+            write_png(filename);
+        else
+            throw image_write_exception("image::write() Unrecognized Extention");
+
+    }
+
+    void image::write_png(std::string filename)
+    {
+#ifdef HAVE_LIBPNG
+        INFO("Writing PNG file: " << filename);
+        //open file
+        FILE *fp = fopen(filename.c_str(), "wb");
+        if (!fp)
+            throw image_file_exception("image::write_png - could not open file: " + filename);
+        //create structures
+        png_structp png_ptr = png_create_write_struct ( PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
+        if(!png_ptr)
+            throw image_write_exception("image::write_png - Couldnt create PNG write structure");
+        png_infop info_ptr = png_create_info_struct(png_ptr);
+        if (!info_ptr)
+        {
+            png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+            throw image_write_exception("image::write_png - Couldnt create PNG info structure");
+        }
+        //handle errors
+        if(setjmp(png_jmpbuf(png_ptr)))
+        {
+            png_destroy_write_struct(&png_ptr, &info_ptr);
+            fclose(fp);
+            throw image_read_exception("image::load_png - PNG error");
+        }
+        //FIXME - should we have a write row function call back?
+        //set the io
+        png_init_io(png_ptr, fp);
+        //set up the header info
+        png_set_IHDR(png_ptr, info_ptr, offscreen_surface->rect().width(), offscreen_surface->rect().height(), 
+                8/*bit depth*/, PNG_COLOR_TYPE_RGB_ALPHA,  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
+                PNG_FILTER_TYPE_BASE);
+        //set color palette
+        png_colorp palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof (png_color));
+        png_set_PLTE(png_ptr, info_ptr, palette, PNG_MAX_PALETTE_LENGTH);
+        //write header information
+        png_write_info(png_ptr, info_ptr);
+        //write image
+        unsigned int y,x;
+        unsigned int height = offscreen_surface->rect().height();
+        unsigned int width = offscreen_surface->rect().width();
+        png_byte *img_row = new png_byte[width*4];
+        png_bytep row_pointers[1];
+        row_pointers[0] = &img_row[0];
+        for (y = 0; y < height; y++)
+        {
+            for (x = 0; x < width; x++)
+            {
+                color pix = offscreen_surface->read_pixel(x, y);
+                pix = offscreen_surface->rgba_color(pix);
+                //printf("%x ",pix);
+                img_row[x*4] =  (pix & 0xFF000000) >> 24; //red
+                img_row[x*4+1] = (pix & 0x00FF0000) >> 16;//green
+                img_row[x*4+2] = (pix & 0x0000FF00) >> 8;//blue
+                img_row[x*4+3] = 255 - (pix && 0x000000FF);//alpha
+            }
+            png_write_rows(png_ptr, &row_pointers[0], 1);
+        }
+        //write end
+        png_write_end(png_ptr, info_ptr);
+        //free the pallate
+        png_free(png_ptr, palette);
+        palette=NULL;
+        delete(img_row);
+        png_destroy_write_struct(&png_ptr, &info_ptr);
+        fclose(fp);
+#else
+        throw image_write_exception("image::write_png() No support for writting PNG files compiled in!");
+#endif
+    }
+
+    void image::write_jpeg(std::string filename)
+    {
+#ifdef HAVE_LIBJPEG
+        INFO("Writing JPEG file: " << filename);
+        struct jpeg_compress_struct cinfo;
+        struct my_error_mgr jerr;
+        //open file for writting
+        FILE * outfile;
+	if ((outfile = fopen(filename.c_str(), "wb")) == NULL)
+            throw image_file_exception("image::write_jpeg() Could not open "+filename+" for writting.");
+        //set error handling routine
+        cinfo.err = jpeg_std_error(&jerr.pub);
+        jerr.pub.error_exit = my_error_exit;
+        /* Establish the setjmp return context for my_error_exit to use. */
+        if (setjmp(jerr.setjmp_buffer)) {
+            /* If we get here, the JPEG code has signaled an error.
+            * We need to clean up the JPEG object, close the input file, and return.
+            nti*/
+            char error_msg[200];
+            (*cinfo.err->format_message) ((jpeg_common_struct*)&cinfo,error_msg);
+            jpeg_destroy_compress(&cinfo);
+            fclose(outfile);
+            throw image_read_exception("image::load_jpeg() " + std::string(error_msg));
+        }
+        //create compression struct
+        jpeg_create_compress(&cinfo);
+        //open file and set destination
+	jpeg_stdio_dest(&cinfo, outfile);
+        //set compression options
+        cinfo.image_width = offscreen_surface->rect().width();
+        cinfo.image_height = offscreen_surface->rect().height();
+        cinfo.input_components = 3;
+        cinfo.in_color_space = JCS_RGB;
+        jpeg_set_defaults(&cinfo);
+        //start compression
+        jpeg_start_compress(&cinfo,TRUE);
+        //make a buffer to store one line of pixels
+        unsigned char* img_buffer = new unsigned char[offscreen_surface->rect().width()*3];
+        JSAMPROW row_pointer[1];
+        row_pointer[0] = &img_buffer[0];
+        //write pixels
+        int y = 0;
+        while(cinfo.next_scanline < cinfo.image_height)
+        {
+            //put line in buffer
+            for (int x = 0; x < offscreen_surface->rect().width(); x++)
+            {
+                color pix = offscreen_surface->read_pixel(x, y);
+                pix = offscreen_surface->rgba_color(pix);
+                //printf("%x ",pix);
+                img_buffer[x*3] =  (pix & 0xFF000000) >> 24; //red
+                img_buffer[x*3+1] = (pix & 0x00FF0000) >> 16;//green
+                img_buffer[x*3+2] = (pix & 0x0000FF00) >> 8;//blue
+            }
+            //write line
+            jpeg_write_scanlines(&cinfo,row_pointer,1);
+            y++;
+        }
+        delete(img_buffer);
+        jpeg_finish_compress(&cinfo);
+        jpeg_destroy_compress(&cinfo);
+#else
+        throw image_write_exception("image::write_jpeg() No support for writting JPEG files compiled in!")
 #endif
     }
 }
