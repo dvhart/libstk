@@ -5,6 +5,9 @@ MEETING TOPICS
 - should we use rectangle::ptr, string::ptr, etc everywhere?  it is awkward to have 
       a method receive a "const rectangle&" and a "image::ptr"
 
+"application::current_state(state::ptr) now returns bool to ease use
+        as a slot, removed stk:: prefix in test_app.cpp" (change by darren):(marc) This is plain wrong api wise in my opinion, we need binders on the return type instead! Imo boost can do this cant it? Otherwise i'll code some, changing the API to return a dummy value for a common use is simply wrong in a world of generic programming ;)
+
 
 TASKS (Some duplicated items here and below)
 ============================================
