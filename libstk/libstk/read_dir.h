@@ -38,12 +38,15 @@ namespace stk
             long inode() const { return dir_entry_.d_ino; }
             unsigned char type() const { return dir_entry_.d_type; }
             std::string filename() const { return std::string(dir_entry_.d_name); }
+            bool operator < (const dir_entry& rhs) const
+            {
+                return filename() < rhs.filename();
+            }
 
         protected:
             dir_entry(dirent *d)
             {
                 dir_entry_ = *d;
-                //memcpy(&dir_entry_, d, sizeof(dirent));
             }
 
             dirent dir_entry_;

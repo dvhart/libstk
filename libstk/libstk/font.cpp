@@ -39,7 +39,7 @@ namespace stk
     font::font(const font_properties& prop)
             : height_(prop.height)
     {
-        INFO("constructor");
+        INFO("constructor: " << prop.fontname << ": " << prop.height << " pt, style " << (int)prop.style);
         int error;
         // FIXME: consider using a freetype_backend (like dfb_backend and sdl_data)
         if (font_count_ == 0)
@@ -152,7 +152,8 @@ namespace stk
                 ((face->style_flags & FT_STYLE_FLAG_ITALIC) ?
                  font_properties::italic : font_properties::plain);
 
-            INFO(filename << ": face 0: size " << prop.height << ", style " << face_style);
+            INFO(filename);
+            INFO(face->family_name << ": " << prop.height << " pt, style " << face_style);
 
             if (face_style == prop.style)
             {
