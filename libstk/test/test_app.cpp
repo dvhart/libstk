@@ -70,16 +70,17 @@ int main(int argc, char* argv[])
 #endif
         
         std::string surface_type;
-        std::string available_surfaces;
+        std::string available_surfaces = "[ ";
 #ifdef HAVE_SDL
-        available_surfaces += "sdl";
+        available_surfaces += "sdl |";
 #endif
 #ifdef HAVE_DIRECTFB
-        available_surfaces += " dfb";
+        available_surfaces += " dfb |";
 #endif
 #ifdef HAVE_FBDEV
         available_surfaces += " fbdev";
 #endif
+        available_surfaces += " ]";
 
         if (argc < 2)
         {
