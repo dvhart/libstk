@@ -35,7 +35,7 @@ namespace stk
 		public:
 			event_system_sdl();
 			virtual ~event_system_sdl();
-			virtual Event poll_event();
+			virtual stk::event poll_event();
 	};
 }
 

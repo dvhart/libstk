@@ -20,20 +20,17 @@ namespace stk
 {
 	surface_sdl::surface_sdl(SDL_Surface &new_surface)
 	{
+		cout << "surface_sdl::surface_sdl()" << endl;
 		sdl_surface_ = &new_surface;
 		rect_.x1(0); rect_.y1(0);
 		rect_.w(sdl_surface_->w);
 		rect_.h(sdl_surface_->h);
 	}
 
-	surface_sdl::surface_sdl(rectangle &rect) : surface(rect)
+	surface_sdl::surface_sdl(const rectangle &rect) : surface(rect)
 	{
-		SDL_Surface *temp_surface;
-		temp_surface = SDL_CreateRGBSurface(SDL_SRCALPHA, rect.w(), rect.h(),
-				32, RMASK, GMASK, BMASK, AMASK);
-		sdl_surface_ = SDL_DisplayFormatAlpha(temp_surface);
-		SDL_FreeSurface(temp_surface);
-		SDL_SetAlpha(sdl_surface_, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
+		cout << "surface_sdl::surface_sdl()" << endl;	
+		sdl_surface_ = SDL_SetVideoMode(rect.w(), rect.h(), 32, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
 	}
 
 	surface_sdl::~surface_sdl()

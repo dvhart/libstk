@@ -12,8 +12,8 @@ namespace stk
 		protected:
 			
 		public:
-			drawable();
-			~drawable();
+			drawable() { };
+			~drawable() { };
 			virtual boost::shared_ptr<stk::surface> surface() = 0;
 			
 	}; // class drawable

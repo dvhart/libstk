@@ -7,18 +7,20 @@
 
 #include "parent.h"
 #include "surface.h"
-#include "state.h"
+//#include "state.h"
 #include "widget.h"
 #include "event_system.h"
 
 namespace stk
 {
+	class state;
+
 	class application : public parent
 	{
 		private:
 			boost::shared_ptr<stk::surface> surface_;
 			boost::shared_ptr<stk::event_system> event_system_;
-			stl::list<boost::shared_ptr<stk::state>> states_;
+			std::list<boost::shared_ptr<stk::state> > states_;
 			
 			boost::weak_ptr<stk::state> current_state_; 
 			boost::weak_ptr<stk::widget> current_widget_;
@@ -45,6 +47,8 @@ namespace stk
 			void handle_event(stk::event& e);
 			
 			// parent interface - is this necessary ?
+			virtual boost::shared_ptr<widget> focus_next();
+			virtual boost::shared_ptr<widget> focus_prev();
 			void add_child(boost::shared_ptr<widget>);
 			
 			// do we want to make these available?
@@ -54,6 +58,9 @@ namespace stk
 			boost::weak_ptr<state> hover_widget();
 			
 	}; // class application
+	
+	typedef boost::shared_ptr<application> Application;
+
 } // namespace stk
 
 #endif

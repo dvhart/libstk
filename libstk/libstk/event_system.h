@@ -12,10 +12,13 @@ namespace stk
 		protected:
 			
 		public:
-			event_system();
-			virtual ~event_system();
-			virtual Event poll_event() = 0;
+			event_system() { };
+			virtual ~event_system() { };
+			virtual stk::event poll_event() = 0;
 	};
+
+	typedef boost::shared_ptr<stk::event_system> EventSystem;
+
 }
 
 #endif

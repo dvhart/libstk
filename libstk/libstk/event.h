@@ -11,7 +11,9 @@ namespace stk
 		key_up,
 		mouse_down,
 		mouse_up,
-		mouse_motion
+		mouse_motion,
+		no_event,
+		unknown_event
 	};
 	
 	class event

@@ -11,20 +11,15 @@
 
 namespace stk
 {
-	// always declare objects lower in the hierarchy
-	class widget;
 	class container;
 	class state;
 	
-	// FIXME: work on these names
-	typedef boost::shared_ptr<widget> Twidget_ptr;
-	typedef boost::shared_ptr<container> Tcontainer_ptr;
-
 	class widget : public parent
 	{
 		private:
 
 		protected:
+			widget() { }; // empty constructor, needed for creating derived classes ? 
 			boost::weak_ptr<container> parent_;
 			int x_;
 			int y_;
@@ -35,7 +30,18 @@ namespace stk
 			widget(boost::weak_ptr<container> parent);
 			~widget();
 
-			void draw(boost:shared_ptr<stk::surface> surface);
+			void draw(boost::shared_ptr<stk::surface> surface);
+			
+			// event_handler interface
+			virtual void handle_event(stk::event& e);
+
+			// drawable interface
+			virtual boost::shared_ptr<stk::surface> surface(); 
+
+			// parent interface
+			virtual boost::shared_ptr<widget> focus_next();
+			virtual boost::shared_ptr<widget> focus_prev();
+			virtual void add_child(boost::shared_ptr<widget>);
 			
 			boost::signal<bool ()> on_focus;
 			boost::signal<bool ()> on_unfocus;
@@ -89,7 +95,6 @@ namespace stk
 */
 			
 	}; // class widget
-
 } // namespace stk
 
 #endif

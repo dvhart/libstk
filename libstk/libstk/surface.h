@@ -19,12 +19,13 @@
 #ifndef STK_SURFACE_H
 #define STK_SURFACE_H
 
+#include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
 #include "point.h"
 #include "rectangle.h"
 #include "graphics_context.h"
 #include "stk.h"
-#include <string>
-#include <vector>
 
 /* stk::surface provides an interface to be implemented by all backend 
  * surface implementations.  In general, one creates a screen from one of
@@ -219,6 +220,9 @@ namespace stk
 			virtual void fill_ellipse_aa(const rectangle &rect);
 			virtual void fill_poly_aa(const std::vector<point> points);
 	};
+
+	typedef boost::shared_ptr<stk::surface> Surface;
+	
 } //end namespace stk
 
 #endif

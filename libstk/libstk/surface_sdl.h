@@ -6,16 +6,6 @@ copyright            : (C) 2002 by Darren Hart
 email                : dvhart@byu.edu
  ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
-
 #ifndef STK_SURFACE_SDL_H
 #define STK_SURFACE_SDL_H
 
@@ -69,7 +59,7 @@ namespace stk
 			}
 		public:
 			surface_sdl(SDL_Surface &new_surface);
-			surface_sdl(rectangle &rect);
+			surface_sdl(const rectangle &rect);
 			~surface_sdl();
 
 			SDL_Surface *sdl_surface() const { return sdl_surface_; };

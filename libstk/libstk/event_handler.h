@@ -12,8 +12,8 @@ namespace stk
 		protected:
 			
 		public:
-			event_handler();
-			~event_handler();
+			event_handler() { };
+			~event_handler() { };
 			virtual void handle_event(stk::event& e) = 0;
 			
 	}; // class event_handler

@@ -11,41 +11,51 @@ namespace stk
 {
 	event_system_sdl::event_system_sdl()
 	{
+		cout << "event_system_sdl::event_system_sdl()" << endl;
 	}
 
 	event_system_sdl::~event_system_sdl()
 	{
 	}
 
-	Event event_system_sdl::poll_event()
+	event event_system_sdl::poll_event()
 	{
+		cout << "event_system_sdl::poll_event()" << endl;
 		// enter the event loop
 		SDL_Event new_event;
-		Event event_;
+		event event_(no_event);
 		if (SDL_PollEvent(&new_event))
 		{
+			cout << "event_system_sdl::poll_event() - event received of type: " << (int)(new_event.type) << endl;
 			switch(new_event.type)
 			{
 				case SDL_KEYDOWN:
-					event_.reset(new key_event());
+					cout << "SDL_KEYDOWN" << endl;
+					return key_event();
 					break;
 				case SDL_KEYUP:
-					event_.reset(new key_event());
+					cout << "SDL_KEYUP" << endl;
+					return key_event();
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					event_.reset(new mouse_event());
+					cout << "SDL_MOUSEBUTTONDOWN" << endl;
+					return mouse_event();
 					break;
 				case SDL_MOUSEBUTTONUP:
-					event_.reset(new mouse_event());
+					cout << "SDL_MOUSEBUTTONUP" << endl;
+					return mouse_event();
 					break;
 				case SDL_MOUSEMOTION:
-					event_.reset(new mouse_event());
+					cout << "SDL_MOUSEMOTION" << endl;
+					return mouse_event();
 					break;
 				case SDL_QUIT:
+					cout << "SDL_QUIT" << endl;
 					break;
 				default:
 					// throw something
-					cout << "event_system_sdl::poll_event - unknown event type" << endl;
+					cout << "event_system_sdl::poll_event() - unknown event type" << endl;
+					return event(unknown_event);
 			}
 		}
 		return event_;
