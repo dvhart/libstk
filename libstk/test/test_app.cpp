@@ -33,6 +33,9 @@
 // FIXME: should this be configurable also ?  --enable-elotouch ?
 #include <libstk/event_producer_elotouch.h>
 
+// FIXME: use configure variables
+#include <libstk/event_producer_input.h>
+
 using namespace stk;
 
 void help(const std::string& progname, int exitval);
@@ -87,7 +90,9 @@ int main(int argc, char* argv[])
         else if (surface_type == "sdl")
         {
             test_surface = surface_sdl::create(rectangle(0, 0, 640, 480), false);
-            test_event_producer = event_producer_sdl::create();
+            //test_event_producer = event_producer_sdl::create();
+            //INFO("CREATING INPUT EVENT PRODUCER");
+            test_event_producer = event_producer_input::create("/dev/input/event0");
         }
 #endif
 #ifdef HAVE_DIRECTFB
@@ -157,6 +162,7 @@ int main(int argc, char* argv[])
         test_progress->percent(0.64);
 
         // create an image in a scroll box
+        // FIXME: we can't TAB or ARROW out of the box once one of the image or scrollbars are focused
         INFO("app - creating an image_panel in a scroll_box");
         label::ptr test_label3 = label::create(test_state, std::wstring(L"Scrollable Image"),
                 rectangle(10, 50, 150, 30));

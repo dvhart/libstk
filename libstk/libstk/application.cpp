@@ -86,8 +86,9 @@ namespace stk
             return 1;
         }
 
-        // set the current state and find the first focusable widget
-        if (!current_state_.lock()) // Only if the user hasnt set a state yet!
+        // set the current state if the user hasn't set one
+        // and find the first focusable widget
+        if (!current_state_.lock())
             current_state_ = *states_.begin();
         focused_widget_ = current_state_.lock()->focus_next();
         if (focused_widget_.lock())
@@ -150,7 +151,11 @@ namespace stk
                     else // it isn't a mouse event
                     {
                         INFO("passing event to focused_widget_");
-                        if (!focused_widget_.lock())
+                        if (focused_widget_.lock())
+                        {
+                            focused_widget_.lock()->handle_event(event_);
+                        }
+                        else
                         {
                             WARN("no current widget, pass to state, trying to find one");
                             focused_widget_ = current_state_.lock()->focus_next();
@@ -162,10 +167,6 @@ namespace stk
                             }
                             else // FIXME: throw something
                                 ERROR("current state has no focusable widgets");
-                        }
-                        else
-                        {
-                            focused_widget_.lock()->handle_event(event_);
                         }
                     }
                 }
@@ -276,7 +277,7 @@ namespace stk
                             {
                                 INFO("next pressed");
                                 component::weak_ptr prev_focused_widget = focused_widget_;
-                                focused_widget_ = prev_focused_widget.lock()->focus_next();
+                                focused_widget_ = focused_widget_.lock()->focus_next();
                                 component::weak_ptr temp_widget = prev_focused_widget;
                                 while (!focused_widget_.lock())
                                 {

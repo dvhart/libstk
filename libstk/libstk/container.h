@@ -80,7 +80,7 @@ namespace stk
 
         /********** WIDGET INTERFACE **********/
         /// If any of the children widgets are focused, return true.
-        bool focused();
+        virtual bool focused() const;
         virtual bool is_container() { return true; }
         /********** END WIDGET INTERFACE **********/
 

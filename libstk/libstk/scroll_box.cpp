@@ -157,10 +157,8 @@ namespace stk
             
             // resize the child rect 
             child_rect_ = rect(); child_rect_.position(point(0, 0));
-            if(hbar)
-                child_rect_.y2(child_rect_.y2() - scroll_bar::default_size);
-            if(vbar)
-                child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
+            if (hbar) child_rect_.y2(child_rect_.y2() - scroll_bar::default_size);
+            if (vbar) child_rect_.x2(child_rect_.x2() - scroll_bar::default_size);
             if (child_) child_->rect(child_rect_);
             
             if (h_scroll_bar_ && !hbar)
@@ -192,12 +190,9 @@ namespace stk
                 h_scroll_bar_ = scroll_bar::create(this_ptr, h_rect, h_scroll());
             }
         }
-        // Assign the correct scroll modells to the scrollbars
-        if(h_scroll() && h_scroll_bar_)
-            h_scroll_bar_->model(h_scroll());
-        if(v_scroll() && v_scroll_bar_)
-            v_scroll_bar_->model(v_scroll());
- 
+        // Assign the correct scroll models to the scrollbars
+        if (h_scroll() && h_scroll_bar_) h_scroll_bar_->model(h_scroll());
+        if (v_scroll() && v_scroll_bar_) v_scroll_bar_->model(v_scroll());
         
         check_scrollable_ = true;
         redraw(rect());

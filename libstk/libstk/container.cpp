@@ -146,7 +146,7 @@ namespace stk
 
     widget::ptr container::focus_next()
     {
-        INFO("container::focus_next()");
+        INFO("focus_next()");
         // walk through the children, find the focused, and return the next
         // return an empty pointer if we reach the end.
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -162,10 +162,12 @@ namespace stk
                     if (!(*iter)->visible()) continue;
                     if ((*iter)->focusable()) return *iter;
                 }
-                break;
+                // we reached the end of the focusable widgets
+                return widget::ptr();
             }
         }
         // there isn't a focused widget, so find the first focusable widget
+        INFO("returning first focusable widget");
         iter = children_.begin();
         while (iter != children_.end() )
         {
@@ -179,7 +181,7 @@ namespace stk
 
     widget::ptr container::focus_prev()
     {
-        INFO("container::focus_prev()");
+        INFO("focus_prev()");
         // walk through the children, find the focused, and return the prev
         // return an empty pointer if we reach the beginning.
         std::vector<widget::ptr>::iterator iter = children_.begin();
@@ -194,28 +196,32 @@ namespace stk
                     // and ensure leaf widgets return shared_from_this()
                     if ((*--iter)->focusable()) return *iter;
                 }
-                break;
+                // we reached the beginning of the focusable widgets
+                return widget::ptr();
             }
         }
         // there isn't a focused widget, so find the first focusable widget
-        iter = children_.begin();
-        while (iter != children_.end() )
+        INFO("returning last focusable widget");
+        iter = children_.end();
+        while (iter != children_.begin() )
         {
-            if ((*iter)->focusable()) return *iter;
-            iter++;
+            if ((*--iter)->focusable()) return *iter;
         }
         // no focusable widgets, so return an empty pointer        
         return widget::ptr();
     }
 
-    bool container::focused()
+    bool container::focused() const
     {
-        INFO("container::focused()");
         // check ourself
         if (focused_) return true;
         // check our children (return true if one of our children is focused)
-        std::vector<widget::ptr>::iterator iter = children_.begin();
-        for (; iter != children_.end(); iter++) if ((*iter)->focused()) return true;
+        std::vector<widget::ptr>::const_iterator iter = children_.begin();
+        for (; iter != children_.end(); iter++)
+        {
+            if ((*iter)->focused())
+                return true;
+        }
         return false;
     }
 

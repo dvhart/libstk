@@ -36,13 +36,15 @@ namespace stk
 
     state::state(application::ptr parent) : container(parent->surface()->rect())
     {
-        INFO("state::state()");
+        INFO("constructor");
         parent_ = boost::shared_static_cast<component>(parent);
         focusable_ = false;
     }
 
     state::~state()
-    {}
+    {
+        INFO("destructor");
+    }
 
     // event_handler interface - default back to parent
     void state::handle_event(event::ptr e)
@@ -98,6 +100,71 @@ namespace stk
         //if (temp_widget)
         //temp_widget->focused(true);
         return temp_widget;
+    }
+
+    widget::ptr state::focus_next()
+    {
+        INFO("focus_next()");
+        // walk through the children, find the focused, and return the next
+        // return an empty pointer if we reach the end.
+        std::vector<widget::ptr>::iterator iter = children_.begin();
+        for (; iter != children_.end(); iter++)
+        {
+            if ((*iter)->focused())
+            {
+                // find the next focusable widget
+                while (++iter != children_.end() )
+                {
+                    // FIXME: consider using same pattern as widget_at() ie call focus_next on the children as well
+                    // and ensure leaf widgets return shared_from_this()
+                    if (!(*iter)->visible()) continue;
+                    if ((*iter)->focusable()) return *iter;
+                }
+                break;
+            }
+        }
+        // there isn't a focused widget, so find the first focusable widget
+        INFO("returning first focusable widget");
+        iter = children_.begin();
+        while (iter != children_.end() )
+        {
+            if (!(*iter)->visible()) continue;
+            if ((*iter)->focusable()) return *iter;
+            iter++;
+        }
+        // no focusable widgets, so return an empty pointer        
+        return widget::ptr();
+    }
+
+    widget::ptr state::focus_prev()
+    {
+        INFO("focus_prev()");
+        // walk through the children, find the focused, and return the prev
+        // return an empty pointer if we reach the beginning.
+        std::vector<widget::ptr>::iterator iter = children_.begin();
+        for (; iter != children_.end(); iter++)
+        {
+            if ((*iter)->focused())
+            {
+                // find the previous focusable widget
+                while (iter != children_.begin())
+                {
+                    // FIXME: consider using same pattern as widget_at() ie call focus_prev on the children as well
+                    // and ensure leaf widgets return shared_from_this()
+                    if ((*--iter)->focusable()) return *iter;
+                }
+                break;
+            }
+        }
+        // there isn't a focused widget, so find the last focusable widget
+        INFO("returning last focusable widget");
+        iter = children_.end();
+        while (iter != children_.begin() )
+        {
+            if ((*--iter)->focusable()) return *iter;
+        }
+        // no focusable widgets, so return an empty pointer        
+        return widget::ptr();
     }
 
 }

@@ -51,6 +51,15 @@ namespace stk
         /********** END DRAWABLE INTERFACE **********/
 
         /********** COMPONENT INTERFACE **********/
+        /// Return the next focusable widget.
+        /// Find the focused widget, and return the next focusable one.  If we
+        /// reach the end, return the first focusable widget.
+        virtual widget::ptr focus_next();
+        /// Return the prev focusable widget.
+        /// Find the focused widget, and return the previous focusable one.  If
+        /// we reach the beginning return the last focusable widget.
+        virtual widget::ptr focus_prev();
+
         // virtual void parent(boost::shared_ptr<container> parent); // see private above
         /********** END COMPONENT INTERFACE **********/
 

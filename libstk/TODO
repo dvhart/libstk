@@ -9,6 +9,8 @@ should we call redraw(rect()) whenever a widget is resized?  just add the call b
   on_resize call
 Fix focusable initialization, it should be set only by widget's constructor and passed up the
   hierarchy by all derived widgets, using default values as appropriate
+Rename focus_next|prev to next|prev_focusable, since the widget is simply returned, not made 
+  focusable.
 
 MEETING TOPICS
 ==============
@@ -38,6 +40,7 @@ Document all existing classes / APIs
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion
 Add STL style iterator interface to container
+Make all methods that can be const, const (remember to update derived virtual funcs as well)
 
 COMPLETED TASKS
 ===============
