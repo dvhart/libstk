@@ -14,6 +14,8 @@
 #ifndef STK_H
 #define STK_H
 
+#include <libstk/config.h>
+
 // boost headers
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
@@ -57,7 +59,6 @@
 #include <libstk/scroll_bar.h>
 #include <libstk/scroll_box.h>
 #include <libstk/scroll_model.h>
-#include <libstk/sdl_data.h>
 #include <libstk/spinner.h>
 #include <libstk/state.h>
 #include <libstk/stk_types.h>
