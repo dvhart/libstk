@@ -185,6 +185,7 @@ namespace stk
     void list::clear()
     {
         items_.clear();
+        v_scroll_->size(0);
         redraw(widget::rect());
     }
     int list::size()
