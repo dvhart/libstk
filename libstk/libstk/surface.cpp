@@ -18,10 +18,14 @@
 #include <math.h>
 #include <vector>
 #include <list>
+#include <iostream>
 #include "SDL.h"
 #include "surface.h"
 
 using namespace stk;
+using std::cout;
+using std::endl;
+using std::cerr;
 
 surface::surface(SDL_Surface &new_surface)
 {
@@ -1127,8 +1131,8 @@ Uint32 surface::gen_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     return SDL_MapRGBA(surface_->format, r, g, b, a);
 }
 
-void surface::blit(surface &screen, SDL_Rect *src_rect = NULL,
-                   SDL_Rect *dst_rect = NULL)
+void surface::blit(surface &screen, SDL_Rect *src_rect,
+                   SDL_Rect *dst_rect)
 {
     // blit the local surface to the parent surface (screen)
     if (surface_ && SDL_BlitSurface(surface_, src_rect,
