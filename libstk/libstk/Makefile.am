@@ -33,8 +33,8 @@ libstk_la_SOURCES =\
 	label.h label.cpp \
 	scroll_box.h scroll_box.cpp \
 	spinner.h spinner.cpp \
-	font_manager.h font_manager.cpp\
-	exceptions.h scroll_modell.h scroll_modell.cpp\
+	font_manager.h font_manager.cpp \
+	exceptions.h scroll_model.h scroll_model.cpp \
 	theme.h theme.cpp \
 	timer.h timer.cpp \
 	tribal_theme.h tribal_theme.cpp 
@@ -51,7 +51,7 @@ library_include_HEADERS= \
 	drawable.h       glyph.h             component.h    widget.h 	\
 	edge.h           graphics_context.h  point.h		    image.h \
 	event.h          progress.h 	       scroll_box.h  	event_handler.h \
-	image_panel.h spinner.h scroll_modell.h theme.h color_manager.h \
+	image_panel.h spinner.h scroll_model.h theme.h color_manager.h \
 	timer.h
 
 

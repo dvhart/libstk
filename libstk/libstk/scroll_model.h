@@ -10,8 +10,8 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
 
-#ifndef SCROLL_MODELL_H
-#define SCROLL_MODELL_H
+#ifndef SCROLL_MODEL_H
+#define SCROLL_MODEL_H
 
 #include <boost/smart_ptr.hpp>
 #include <boost/signal.hpp>
@@ -19,11 +19,11 @@
 namespace stk
 {
 	/// This class describes the modell or data associated with scrolling
-	class scroll_modell
+	class scroll_model
 	{
 		public:
-			typedef boost::shared_ptr<scroll_modell> ptr;	
-			typedef boost::weak_ptr<scroll_modell> weak_ptr;
+			typedef boost::shared_ptr<scroll_model> ptr;	
+			typedef boost::weak_ptr<scroll_model> weak_ptr;
 		private:
 			/// The Size of the Scrollable area
 			int size_;
@@ -32,13 +32,13 @@ namespace stk
 			/// The End of the Visible Area
 			int end_;
 		public:
+			scroll_model();
 			int size();
 			void size(int newsize);
 			int begin();
 			void begin(int value);
 			int end();
 			void end(int value);
-			scroll_modell();
 
 			boost::signal<void () > on_change;
 	};

@@ -30,8 +30,8 @@ namespace stk
 			const rectangle& rect) : container(parent, rect)
 	{
 		focusable_ = true;
-		h_scroll(scroll_modell::ptr(new scroll_modell));
-		v_scroll(scroll_modell::ptr(new scroll_modell));
+		h_scroll(scroll_model::ptr(new scroll_model));
+		v_scroll(scroll_model::ptr(new scroll_model));
 	}
 			
 	scroll_box::~scroll_box()
@@ -39,11 +39,11 @@ namespace stk
 	}
 	
 	
-	scroll_modell::ptr scroll_box::h_scroll()
+	scroll_model::ptr scroll_box::h_scroll()
 	{
 		return h_scroll_;
 	}
-	void scroll_box::h_scroll(scroll_modell::ptr value)
+	void scroll_box::h_scroll(scroll_model::ptr value)
 	{
 		h_scroll_con.disconnect();
 		h_scroll_=value;
@@ -51,11 +51,11 @@ namespace stk
 		h_scroll_->size(rect_.width());
 	}
 			
-	scroll_modell::ptr scroll_box::v_scroll()
+	scroll_model::ptr scroll_box::v_scroll()
 	{
 		return v_scroll_;
 	}	
-	void scroll_box::v_scroll(scroll_modell::ptr value)
+	void scroll_box::v_scroll(scroll_model::ptr value)
 	{
 		v_scroll_con.disconnect();
 		v_scroll_=value;

@@ -1,6 +1,6 @@
 /******************************************************************************
- *    FILENAME: scroll_modell.cpp
- * DESCRIPTION: Scroll_modell class implementation.
+ *    FILENAME: scroll_model.cpp
+ * DESCRIPTION: Scroll_model class implementation.
  *     AUTHORS: Marc Straemke, Darren Hart
  *  START DATE: 13/May/2003  LAST UPDATE: 14/May/2003
  *
@@ -10,42 +10,42 @@
  *              http://www.libstk.org/index.php?page=docs/license
  *****************************************************************************/
  
-#include "scroll_modell.h"
+#include "scroll_model.h"
 
 namespace stk
 {
 
-	scroll_modell::scroll_modell() : begin_(0),end_(1),size_(1)
+	scroll_model::scroll_model() : begin_(0),end_(1),size_(1)
 	{}
 	
-	int scroll_modell::size()
+	int scroll_model::size()
 	{
 		return size_;
 	}
 	
-	void scroll_modell::size(int newsize)
+	void scroll_model::size(int newsize)
 	{
 		size_=newsize;
 		on_change();
 	}
 	
-	int scroll_modell::begin()
+	int scroll_model::begin()
 	{
 		return begin_;
 	}
 	
-	void scroll_modell::begin(int value)
+	void scroll_model::begin(int value)
 	{
 		begin_=value;
 		on_change();
 	}
 	
-	int scroll_modell::end()
+	int scroll_model::end()
 	{
 		return end_;
 	}
 	
-	void scroll_modell::end(int value)
+	void scroll_model::end(int value)
 	{
 		end_=value;
 		on_change();

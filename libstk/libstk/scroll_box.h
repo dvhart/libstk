@@ -16,7 +16,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include "libstk/container.h"
-#include "scroll_modell.h"
+#include "scroll_model.h"
 
 namespace stk
 {
@@ -41,9 +41,9 @@ namespace stk
 			/// the horizontal position of the scroll area (first x value in the window)
 			int hposition_; */
 		
-			scroll_modell::ptr h_scroll_; 
+			scroll_model::ptr h_scroll_; 
 			boost::signals::connection h_scroll_con;
-			scroll_modell::ptr v_scroll_; 
+			scroll_model::ptr v_scroll_; 
 			boost::signals::connection v_scroll_con;
 		
 			/// helper function to redraw the whole widget
@@ -80,11 +80,11 @@ namespace stk
 			/********** END PARENT INTERFACE **********/
 
 			/********** SCROLL BOX INTERFACE **********/
-			scroll_modell::ptr h_scroll(); 
-			void h_scroll(scroll_modell::ptr value); 
+			scroll_model::ptr h_scroll(); 
+			void h_scroll(scroll_model::ptr value); 
 			
-			scroll_modell::ptr v_scroll(); 
-			void v_scroll(scroll_modell::ptr value); 
+			scroll_model::ptr v_scroll(); 
+			void v_scroll(scroll_model::ptr value); 
 			/********** END SCROLL BOX INTERFACE **********/
 	};
 }

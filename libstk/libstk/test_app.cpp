@@ -50,7 +50,7 @@ struct no_op
 	}
 };
 
-bool scroll_slot(stk::scroll_modell::ptr target,int increment)
+bool scroll_slot(stk::scroll_model::ptr target,int increment)
 {
 	std::cout << "Scrolling, old begin=" << target->begin() << " old end=" << target->end() << " size=" << target->size();
 	target->begin(target->begin()+increment);
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
 		scroll_left->on_release.connect(boost::bind(&scroll_slot,test_scroll->h_scroll(),-10));
 		button::ptr scroll_right=button::create(test_state,L"Scroll+",rectangle(200,300,90,40));		scroll_right->on_release.connect(boost::bind(&scroll_slot,test_scroll->h_scroll(),10));
 		
-		//void scroll(stk::scroll_modell::ptr target,int increment)
+		//void scroll(stk::scroll_model::ptr target,int increment)
 		// create a list
 		cout << "test_app - creating a list with items" << endl;
 		list::ptr test_list = list::create(test_state, rectangle(370, 90, 150, 200));
