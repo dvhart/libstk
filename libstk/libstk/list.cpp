@@ -28,8 +28,7 @@ namespace stk
     }
 
     list::list(container::ptr parent, const rectangle& rect,
-               scroll_model::ptr v_scroll) : widget(parent, rect), current_(-1), selected_(0),
-            prev_selected_(0), v_scroll_(v_scroll)
+               scroll_model::ptr v_scroll) : widget(parent, rect), current_(0), v_scroll_(v_scroll)
     {
         INFO("constructor");
         focusable(true);
@@ -50,12 +49,14 @@ namespace stk
         {
             mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
             int y = 0;
-            for (selected_ = 0; selected_ < items_.size(); selected_++)
+            // FIXME: if CNTRL is pressed, don't deselect everything else
+            select_none();
+            for (current_ = 0; current_ < items_.size(); current_++)
             {
-                y += items_[selected_]->height();
+                y += items_[current_]->height();
                 if (y > me->y()-rect_.y1()) break;
             }
-            current_ = selected_;
+            items_[current_]->selected(true);
             redraw(rect_);
             return;
             break;
@@ -72,30 +73,37 @@ namespace stk
                     if (items_[current_]->y1() < v_scroll_->begin())
                         v_scroll_->begin(items_[current_]->y1());
                     on_update_current();
-                    if (!(ke->modlist() & mod_control)) 
+
+                    if (!(ke->modlist() & mod_control))
                     {
-                        selected_ = current_;
-                        on_update_selection();
+                        select_none();
+                        items_[current_]->selected(true);
                     }
-                    redraw(rect_);
+                    on_update_selection();
                 }
                 else current_ = 0;
+                redraw(rect_);
                 return;
                 break;
             case key_downarrow:
-                if (current_ < items_.size() - 1)
+                if (current_ < items_.size()-1)
                 {
                     current_++;
                     if (items_[current_]->y2() >= v_scroll_->end())
                         v_scroll_->begin(v_scroll_->begin()+items_[current_]->height());
-                    if (!(ke->modlist() & mod_control)) selected_ = current_;
-                    redraw(rect_);
+                    if (!(ke->modlist() & mod_control))
+                    {
+                        select_none();
+                        items_[current_]->selected(true);
+                    }
                 }
-                else current_ = items_.size();
+                else current_ = items_.size()-1;
+                redraw(rect_);
                 return;
                 break;
             case key_enter:
-                selected_ = current_;
+                if (!(ke->modlist() & mod_control)) select_none();
+                items_[current_]->selected(!items_[current_]->selected());
                 redraw(rect_);
                 return;
                 break;
@@ -128,15 +136,28 @@ namespace stk
         items_.erase(items_.begin()+index);
         redraw(rect_);
     }
-    int list::selected()
+
+    std::vector<list_item::ptr> list::selection()
     {
-        return selected_;
+        std::vector<list_item::ptr> selection_;
+        for (int i = 0; i < items_.size(); i++) 
+        {
+            if (items_[i]->selected())
+                selection_.push_back(items_[i]);
+        }
+        return selection_;
     }
-    void list::selected(int index)
+
+    void list::select_none()
     {
-        selected_=index;
-        redraw(rect_);
+        for (int i = 0; i < items_.size(); i++) items_[i]->selected(false);
     }
+    
+    void list::select_all()
+    {
+        for (int i = 0; i < items_.size(); i++) items_[i]->selected(true);
+    }
+    
     list_item::ptr list::operator[](int index)
     {
         return items_.at(index);

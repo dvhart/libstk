@@ -9,6 +9,7 @@ TASKS (Some duplicated items here and below)
 ============================================
 Axe pointless bool returns in API and create a bind_return syntax
 Spinner - (AUTOCOMPLETE, NO EDIT)
+Template list_item for users to derive from
 Purge all magic numbers
 Scrollbars - Marc to finish
 Scrollbox - Marc to finish
@@ -18,21 +19,18 @@ Text Area - simple, no line break strategy, just \n and spaces, editable paramet
           - wrap visually, don't modify content
 Markup Area (simple html renderer ?)
 Surface blitting / locking / creation (from app surface ?) - YES, ADD virtual create(...) to surface classes
-Input Capabilities - Marc to write (if deemed necessary, may not be)
-Template list_item for users to derive from
-Image (png loader, own surface, blit) - Marc todo after images have surface members
-SDL - look into offscreen surfaces (can they be created prior to the main screen?)
 surface: finish locking and add pixel_format routine
 surface_fbdev - Vernon to finish
+SDL - look into offscreen surfaces (can they be created prior to the main screen?)
+Software Pointer (common to all graphic backends) - YES, make part of surface backends
+Input Capabilities - Marc to write (if deemed necessary, may not be)
 event_producer_linux - Darren to finish
 event_producer_directfb
 IR support (IRDA / generic serial / lirc) ?
-Software Pointer (common to all graphic backends) - YES, make part of surface backends
 Document all existing classes / APIs
 Get libstk license approved by OSI
 Finalize font interface / implementation - more discussion
 Video Panel - more discussion needed
-add multiselect to list
 
 COMPLETED TASKS
 ===============
@@ -47,6 +45,8 @@ dvhart: widgets are now positioned relative to their parent container
 dvhart: Polish the build environment (added checks for boost, directfb, libpng, freetype, etc)
 dvhart: Added libstk to freshmeat
 dvhart: Converted all output to new logger
+carter: Image (png loader, own surface, blit)
+dvhart: added multiselect to list
 
 DOCUMENTATION
 =============

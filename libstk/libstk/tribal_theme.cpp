@@ -276,21 +276,21 @@ namespace stk
 
         // draw each item
         int y = 0;
-        if (selected_ >= 0 && selected_ < items_.size()) items_[selected_]->selected(true);
-        if (current_ >= 0 && current_ < items_.size()) items_[current_]->current(true);
+        if (focused_ && current_ >= 0 && current_ < items_.size()) items_[current_]->current(true);
         for (int i = 0; i < items_.size(); i++)
         {
             if (y+items_[i]->height() > v_scroll_->begin() && y < v_scroll_->end())
             {
-                // FIXME: the clip_rect setting in list_item doesn't account for offset
-                items_[i]->draw(surface, surface->clip_rect());
+                items_[i]->draw(surface);
             }
             y += items_[i]->height();
         }
-        if (selected_ >= 0 && selected_ < items_.size()) items_[selected_]->selected(false);
-        if (current_ >= 0 && current_ < items_.size()) items_[current_]->current(false);
+        if (focused_ && current_ >= 0 && current_ < items_.size()) items_[current_]->current(false);
         
         surface->offset(surface->offset() + point(0, v_scroll_->begin()));
+
+        // set the clip rect back to the list rect_ (not the last list_item)
+        surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
 
         // outline the list box
         rectangle outline_rect = rect_;
@@ -301,7 +301,8 @@ namespace stk
     void list_item::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         // FIXME: rect doesn't account for offset (this breaks drawing lists on directfb surfaces)
-        //surface->clip_rect(clip_rect.empty() ? rect_ : clip_rect);
+        rectangle new_clip_rect = rect_; new_clip_rect.position(surface->offset());
+        //surface->clip_rect(clip_rect.empty() ? new_clip_rect : clip_rect);
         
         // draw list is responsible for setting the graphics context!!
         // FIXME: it shouldn't be!
@@ -447,11 +448,11 @@ namespace stk
 
         // draw the selected item's label
         // FIXME: this is major frellin' hideous stupid hackish kludge!
-        surface->draw_text(interior_rect, items_[selected_]->label());
+        surface->draw_text(interior_rect, items_[current_]->label());
 
         // draw the arrows
-	bool fill_up = wrap_ || (selected_ > 0);
-	bool fill_down = wrap_ || (selected_ < items_.size()-1);
+	bool fill_up = wrap_ || (current_ > 0);
+	bool fill_down = wrap_ || (current_ < items_.size()-1);
         theme::user()->draw_arrow(width()-15, 5, 12, surface, fill_up);
         theme::user()->draw_arrow(width()-15, height()-10, 6, surface, fill_down);
     }

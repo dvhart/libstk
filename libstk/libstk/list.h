@@ -13,6 +13,7 @@
 #ifndef STK_LIST_H
 #define STK_LIST_H
 
+#include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 #include <libstk/rectangle.h>
@@ -33,7 +34,7 @@ namespace stk
     private:
 
     protected:
-        int current_, selected_, prev_selected_;
+        int current_;
         list(container::ptr parent, const rectangle& rect,
              scroll_model::ptr v_scroll = scroll_model::create());
         std::vector<list_item::ptr> items_;
@@ -63,10 +64,12 @@ namespace stk
 
 
         /********** LIST INTERFACE **********/
-        virtual int add_item(list_item::ptr item);  /// Appends a new Item to the listbox, returns the index of the object added
-        virtual void remove_item(int index);  // removes the item at the specified index
-        virtual int selected(); /// returns the index of the selected item
-        virtual void selected(int index); /// sets the index of the selected item
+        /// Appends a new item to the listbox, returns the index of the object added
+        virtual int add_item(list_item::ptr item);  
+        virtual void remove_item(int index);  // removes the item at the specified index 
+        virtual std::vector<list_item::ptr> selection();
+        virtual void select_none();
+        virtual void select_all();
         virtual list_item::ptr operator[](int index); /// returns the list_item at the specified location
         virtual void clear();   /// Erases the entire content of the list
         virtual int size();     /// Returns the number of elements in the list

@@ -43,65 +43,80 @@ namespace stk
         {
             switch (e->type())
             {
-                case event::key_down:
+            case event::key_down:
+            {
+                key_event::ptr ke = boost::shared_static_cast<key_event>(e);
+                switch ( ke->fn_key() )
+                {
+                case key_uparrow:
+                    --current_;
+                    if (current_ < 0) 
                     {
-                        key_event::ptr ke = boost::shared_static_cast<key_event>(e);
-                        switch ( ke->fn_key() )
-                        {
-                            case key_uparrow:
-                                --selected_;
-                                if (selected_ < 0) 
-                                {
-                                    if (wrap_) selected_ %= items_.size();
-                                    else selected_ = 0;
-                                }
-                                on_change();
-                                redraw(rect_);
-                                return;
-                                break;
-                            case key_enter:
-                            case key_downarrow:
-                                ++selected_;
-                                if (selected_ >= items_.size())
-                                {
-                                    if (wrap_) selected_ %= items_.size();
-                                    else selected_ = items_.size()-1;
-                                }
-                                on_change();
-                                redraw(rect_);
-                                return;
-                                break;
-                        }
-                        break;
+                        if (wrap_) current_ %= items_.size();
+                        else current_ = 0;
                     }
-                case event::mouse_up:
+                    on_change();
+                    redraw(rect_);
+                    return;
+                    break;
+                case key_enter:
+                case key_downarrow:
+                    ++current_;
+                    if (current_ >= items_.size())
                     {
-                        mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
-                        if (region(me->x(), me->y()) == UP_ARROW)
-                        {
-                            --selected_;
-                            if (selected_ < 0) 
-                            {
-                                if (wrap_) selected_ %= items_.size();
-                                else selected_ = 0;
-                            }
-                        }
-                        else
-                        {
-                            ++selected_;
-                            if (selected_ >= items_.size())
-                            {
-                                if (wrap_) selected_ %= items_.size();
-                                else selected_ = items_.size()-1;
-                            }
-                        }
-                        on_change();
-                        redraw(rect_);
-                        return;
+                        if (wrap_) current_ %= items_.size();
+                        else current_ = items_.size()-1;
                     }
+                    on_change();
+                    redraw(rect_);
+                    return;
+                    break;
+                }
+                break;
+            }
+            case event::mouse_up:
+            {
+                mouse_event::ptr me = boost::shared_static_cast<mouse_event>(e);
+                if (region(me->x(), me->y()) == UP_ARROW)
+                {
+                    --current_;
+                    if (current_ < 0) 
+                    {
+                        if (wrap_) current_ %= items_.size();
+                        else current_ = 0;
+                    }
+                }
+                else
+                {
+                    ++current_;
+                    if (current_ >= items_.size())
+                    {
+                        if (wrap_) current_ %= items_.size();
+                        else current_ = items_.size()-1;
+                    }
+                }
+                on_change();
+                redraw(rect_);
+                return;
+            }
             }
         }
         widget::handle_event(e);
+    }
+
+    int spinner::selected()
+    {
+        return current_;
+    }
+    void spinner::selected(int index)
+    {
+        if (index >= 0 && index < items_.size())
+        {
+            current_ = index;
+            redraw(rect_);
+        }
+        else
+            throw error_message_exception("spinner::selected() - index out of bounds");
     }
 
 }
