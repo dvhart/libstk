@@ -29,6 +29,7 @@ libstk_la_SOURCES =\
 	image.h image.cpp \
 	label.h label.cpp \
 	theme.h theme.cpp \
+	font_mngr.h font_mngr.cpp\
 	exceptions.h 
 	
 bin_PROGRAMS      = test_app
@@ -60,6 +61,7 @@ test_app_SOURCES  = \
 	image.h image.cpp \
 	label.h label.cpp \
 	theme.h theme.cpp \
+	font_mngr.h font_mngr.cpp\
 	exceptions.h \
 	test_app.cpp
 	

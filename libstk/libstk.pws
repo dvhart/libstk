@@ -1,6 +1,40 @@
 
+[filenumbers]
+0=33
+1=21
+2=17
+3=67
+4=36
+5=17
+6=51
+7=54
+8=9
+9=37
+
+[filemarkers]
+0=
+1=
+2=
+3=
+4=
+5=
+6=
+7=
+8=
+9=
+
 [executer]
 RunInTerminal=true
 
 [Project DBase]
 ShowLocals=true
+
+[filelist]
+0=/home/carter/libstk/src/application.cpp
+1=/home/carter/libstk/src/test_app.cpp
+2=/home/carter/libstk/doc/libstk.xml
+3=/home/carter/libstk/src/theme.cpp
+4=/home/carter/libstk/src/font.h
+5=/home/carter/libstk/src/font.cpp
+6=/home/carter/libstk/src/font_mngr.h
+7=/home/carter/libstk/src/font_mngr.cpp

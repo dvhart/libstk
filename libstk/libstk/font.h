@@ -14,16 +14,16 @@
 */
 
 namespace stk
-{
+{	
 	class font
 	{
 		public:
 			typedef boost::shared_ptr<stk::font> ptr;
-
+			typedef boost::weak_ptr<stk::font> weak_ptr;
 		private:
 
 		protected:
-			font(const std::string& fontname, int height, int width);
+			
 
 			static FT_Library lib_;
 			static int font_count_;
@@ -33,6 +33,7 @@ namespace stk
 
 		public:
 			static font::ptr create(const std::string& fontname, int height, int width=0);
+			font(const std::string& fontname, int height, int width);
 			virtual ~font();
 			const stk::glyph::ptr glyph(wchar_t c); 
 			int draw_len(const std::wstring& text, int kerning_mode=0);

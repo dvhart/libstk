@@ -2,6 +2,8 @@
 #include "graphics_context.h"
 #include "exceptions.h"
 
+#include <font_mngr.h>
+
 namespace stk
 {
 	theme::ptr theme::instance_;
@@ -15,7 +17,6 @@ namespace stk
 	theme::theme(stk::surface::ptr surface) : surface_(surface)
 	{
 		cout << "theme::theme()" << endl;
-
 		// prepare our colors
 		outline_color_normal_  = surface->gen_color(outline_color_normal_str_);
 		outline_color_focused_ = surface->gen_color(outline_color_focused_str_);
@@ -62,7 +63,9 @@ namespace stk
 		graphics_context::ptr gc = graphics_context::create();
 		
 		// prepare the font
-		stk::font::ptr the_font = font::create("Arial.ttf", 18);
+		
+		font::ptr the_font = font_manager::get()->get_font(font_properties("Arial.ttf",18));
+		//stk::font::ptr the_font = font::create("Arial.ttf", 18);
 		gc->font(the_font);
 		
 		if (active)
