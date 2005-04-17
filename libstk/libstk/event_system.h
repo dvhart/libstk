@@ -32,7 +32,7 @@ namespace stk
 
     private:
         event_system();
-        static event_system::ptr instance_;
+        static event_system::weak_ptr instance_;
         boost::mutex queue_mutex; // FIXME: make this configurable
         std::queue<event::ptr> events_;
         std::list<boost::shared_ptr<event_producer> > event_producers_;
@@ -41,6 +41,7 @@ namespace stk
         static event_system::ptr get();
         ~event_system();
         void add_producer(boost::shared_ptr<event_producer> producer);
+        void remove_producer(boost::shared_ptr<event_producer> producer);
         event::ptr poll_event();
         void push_event(event::ptr e);
     };

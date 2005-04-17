@@ -14,20 +14,23 @@
 namespace stk
 {
     // static class members
-    theme::ptr theme::instance_;
+    theme::weak_ptr theme::instance_;
     boost::shared_ptr<user_theme> theme::user_theme_;
 
     theme::theme(surface::ptr surface) : surface_(surface)
     {}
 
     theme::~theme()
-    {}
+    {
+        user_theme_.reset();
+    }
 
     theme::ptr theme::get()
     {
-        if (!instance_)
+        theme::ptr instance = instance_.lock();
+        if (!instance)
             throw error_message_exception("theme::get() - instance_ null, call create() first");
-        return instance_;
+        return instance ;
     }
 
     boost::shared_ptr<user_theme> theme::user()

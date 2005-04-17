@@ -33,7 +33,7 @@ namespace stk
 
     private:
         theme(surface::ptr surface);
-        static theme::ptr instance_;
+        static theme::weak_ptr instance_;
         surface::ptr surface_; // if there are multiple surfaces, it may not
         // make sense to store a reference to one here
 

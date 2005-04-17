@@ -41,9 +41,10 @@ namespace stk
     // define the theme create constructor here (we need the user_theme header - tribal_theme.h)
     theme::ptr theme::create(surface::ptr surface)
     {
-        instance_ = theme::ptr(new theme(surface));
+        theme::ptr instance = theme::ptr(new theme(surface)); 
+        instance_ = instance;
         user_theme_ = boost::shared_ptr<user_theme>(new user_theme(surface));
-        return instance_;
+        return instance;
     }
 
 
