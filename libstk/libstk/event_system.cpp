@@ -20,12 +20,15 @@
 
 namespace stk
 {
-    event_system::ptr event_system::instance_;
+    event_system::weak_ptr event_system::instance_;
 
     event_system::ptr event_system::get()
     {
-        if (!instance_) instance_.reset(new event_system());
-        return instance_;
+        event_system::ptr instance = instance_.lock();
+        if (!instance)
+            instance.reset(new event_system());
+        instance_ = instance;
+        return instance;
     }
 
     event_system::event_system()
@@ -43,6 +46,10 @@ namespace stk
         event_producers_.push_back(producer);
     }
 
+    void event_system::remove_producer( boost::shared_ptr< event_producer > producer )
+    {
+        event_producers_.remove(producer);
+    }
     event::ptr event_system::poll_event()
     {
         // lock the queue FIXME: make this configuarable
@@ -81,4 +88,5 @@ namespace stk
     }
 
 }
+
 
