@@ -1,10 +1,10 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: Directfb event producer backend.
- *     AUTHORS: Marc Strämke
+ *     AUTHORS: Marc StrÃ¤mke
  *  START DATE: 2004/Aug/21
  *
- *   COPYRIGHT: 2004 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
+ *   COPYRIGHT: 2004 by Darren Hart, Vernon Mauery, Marc StrÃ¤mke, Dirk HÃ¶rner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
@@ -299,14 +299,24 @@ namespace stk
             case DIET_BUTTONRELEASE:
                 event_.reset(new mouse_event(axis_pos[0], axis_pos[1], inputevent.button, event::mouse_up));
                 break;
-            case DIET_AXISMOTION:
+            case DIET_AXISMOTION:            
                 switch(inputevent.axis)
                 {
                 case DIAI_X:
-                    axis_pos[0]=inputevent.axisabs;
+                    if(inputevent.flags&DIEF_AXISABS)
+                        axis_pos[0]=inputevent.axisabs;
+                    else
+                        axis_pos[0]+=inputevent.axisrel;
+                    if(axis_pos[0]<0)
+                        axis_pos[0]=0;
                     break;
                 case DIAI_Y:
-                    axis_pos[1]=inputevent.axisabs;
+                    if(inputevent.flags&DIEF_AXISABS)
+                        axis_pos[1]=inputevent.axisabs;
+                    else
+                        axis_pos[1]+=inputevent.axisrel;
+                    if(axis_pos[1]<0)
+                        axis_pos[1]=0;
                     break;
                 default:
                     axis_pos[inputevent.axis-DIAI_X]=inputevent.axisabs;
