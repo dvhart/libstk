@@ -1,3 +1,9 @@
+2005-04-19 14:13  dvhart
+
+	* ChangeLog, libstk/application.cpp, libstk/application.h:
+	  Added a theme_ member variable to application to have an owner
+	  for the theme singleton object.
+
 2005-04-19 12:10  dvhart
 
 	* ChangeLog, configure.in, configure_all.sh: changed configure.in

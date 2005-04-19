@@ -19,15 +19,15 @@ namespace stk
             p1_(point(x1, y1)), p2_(x1 + w, y1 + h)
     {
         int temp;
-        if(p1_.x()>p2_.x())
+        if (p1_.x() > p2_.x())
         {
-            temp=p2_.x();
+            temp = p2_.x();
             p2_.x(p1_.x());
             p1_.x(p2_.x());
         }
-        if(p1_.y()>p2_.y())
+        if (p1_.y() > p2_.y())
         {
-            temp=p2_.y();
+            temp = p2_.y();
             p2_.y(p1_.y());
             p1_.y(p2_.y());
         }
@@ -90,7 +90,7 @@ namespace stk
 
     bool rectangle::contains(const point& p) const
     {
-        return (p.x(), p.y());
+        return contains(p.x(), p.y());
     }
 
     bool rectangle::intersects(const rectangle& rect) const
@@ -158,7 +158,7 @@ namespace stk
     rectangle rectangle::intersection(const rectangle& rhs) const
     {
         rectangle retval;
-        if(!intersects(rhs))
+        if (!intersects(rhs))
         {
             retval.x1(x1());
             retval.y1(y1());
