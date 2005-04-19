@@ -27,13 +27,13 @@ int main(int argc, char* argv[])
 #ifdef HAVE_LOGGING
         logger::get()->add_target(&std::cout, LL_Info);
 #endif
-        // create the event producer
-        // it is automatically registered with the primary event_system
-        event_producer_sdl::ptr ep = event_producer_sdl::create();
         // create the primary surface
         surface::ptr screen = surface_sdl::create(rectangle(0, 0, 640, 480));
         // create the application
         application::ptr app = application::create(screen);
+        // create the event producer
+        // it is automatically registered with the primary event_system
+        event_producer_sdl::ptr ep = event_producer_sdl::create();
 
         // create the states
         state::ptr main_state = state::create(app);

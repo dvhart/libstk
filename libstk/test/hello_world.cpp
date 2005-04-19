@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
         // select the surface and event system
         INFO("selecting surface and event system");
         surface::ptr screen;
+        application::ptr app;
         event_producer::ptr ep;
         if (0) { }
 #ifdef HAVE_SDL
@@ -72,6 +73,8 @@ int main(int argc, char* argv[])
         {
             INFO("creating sdl surface");
             screen = surface_sdl::create(rectangle(0, 0, 640, 480), false); // not full screen
+            INFO("creating application");
+            app = application::create(screen);
             INFO("creating sdl event_producer");
             ep = event_producer_sdl::create();
         }
@@ -80,6 +83,8 @@ int main(int argc, char* argv[])
         else if (surface_type == "dfb")
         {
             screen = surface_dfb::create(rectangle(0, 0, 640, 480));
+            INFO("creating application");
+            app = application::create(screen);
             // FIXME: use something a bit more generic for the test app
             ep = event_producer_elotouch::create("/dev/tts/0");
         }
@@ -88,6 +93,8 @@ int main(int argc, char* argv[])
         else if (surface_type == "fbdev")
         {
             screen = surface_fbdev::create(rectangle(0, 0, 1024, 768));
+            INFO("creating application");
+            app = application::create(screen);
 #ifdef HAVE_SDL // needed for the event_system
             ep = event_producer_sdl::create();
 #endif
@@ -96,9 +103,6 @@ int main(int argc, char* argv[])
         else
             throw error_message_exception("Unknown surface type");
 
-        
-        // create the application
-        application::ptr app = application::create(screen);
 
         // create the main state and a label
         state::ptr test_state = state::create(app, PACKAGE_PIXMAPS_DIR"/tribal_bg.png");

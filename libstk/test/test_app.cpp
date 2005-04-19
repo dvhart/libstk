@@ -84,12 +84,15 @@ int main(int argc, char* argv[])
         // select the surface and event system
         INFO("app - selecting surface and event system");
         surface::ptr test_surface;
+        application::ptr app;
         event_producer::ptr test_event_producer;
         if (0) { }
 #ifdef HAVE_SDL
         else if (surface_type == "sdl")
         {
             test_surface = surface_sdl::create(rectangle(0, 0, 640, 480), false);
+            INFO("app - creating application");
+            app = application::create(test_surface);
             test_event_producer = event_producer_sdl::create();
             //INFO("CREATING INPUT EVENT PRODUCER");
             //test_event_producer = event_producer_input::create("/dev/input/event0");
@@ -99,6 +102,8 @@ int main(int argc, char* argv[])
         else if (surface_type == "dfb")
         {
             test_surface = surface_dfb::create(rectangle(0, 0, 640, 480));
+            INFO("app - creating application");
+            app = application::create(test_surface);
             // FIXME: use something a bit more generic for the test app
             test_event_producer = event_producer_elotouch::create("/dev/tts/0");
         }
@@ -108,16 +113,14 @@ int main(int argc, char* argv[])
         else if (surface_type == "fbdev")
         {
             test_surface = surface_fbdev::create(rectangle(0, 0, 640, 480));
+            INFO("app - creating application");
+            app = application::create(test_surface);
             test_event_producer = event_producer_sdl::create();
         }
 #endif
 #endif
         else
             throw error_message_exception("Unknown surface type");
-
-        // create the application
-        INFO("app - creating application");
-        application::ptr app = application::create(test_surface);
 
         // create the main state
         INFO("app - creating state");
