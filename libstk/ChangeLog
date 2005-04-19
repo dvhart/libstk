@@ -1,3 +1,20 @@
+2005-04-19 12:10  dvhart
+
+	* ChangeLog, configure.in, configure_all.sh: changed configure.in
+	  to test for libboost_signals and libboost_threads, rather than
+	  specific versions of those libs
+
+2005-04-19 12:07  dvhart
+
+	* test/xine_test.cpp: updated xine_test per the singleton changes
+
+2005-04-19 12:03  dvhart
+
+	* test/: hello_world.cpp, hydra.cpp, test_app.cpp, test_area.cpp:
+	  Updated test applications to create the application BEFORE the
+	  event_producers per Marc's changes to the singleton
+	  implementations to use weak_ptrs.
+
 2005-04-17 03:30  carter
 
 	* libstk/: event_system.h, theme.cpp, theme.h, tribal_theme.cpp:

@@ -65,7 +65,7 @@ namespace stk
         surface_(surface), event_system_(event_system::get()), done_(false)
     {
         // initialize the theme
-        theme::create(surface);
+        theme_ = theme::create(surface);
     }
 
     application::~application()

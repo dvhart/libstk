@@ -22,6 +22,7 @@
 #include <libstk/widget.h>
 #include <libstk/event_system.h>
 #include <libstk/timer.h>
+#include <libstk/theme.h>
 
 namespace stk
 {
@@ -40,6 +41,7 @@ namespace stk
         static application::weak_ptr instance_;
         surface::ptr surface_;
         event_system::ptr event_system_;
+        theme::ptr theme_;
         Tstates states_;
         Ttimers timers_;
         Ttimers new_timers_;
