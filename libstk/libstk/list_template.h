@@ -170,6 +170,8 @@ namespace stk
                     redraw(rect());
                     return;
                     break;
+                default:
+                    break;
                 }
             }
             default:
