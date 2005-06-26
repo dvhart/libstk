@@ -1,11 +1,11 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: Templated abstract list base class
- *     AUTHORS: Darren Hart, Marc Strämke
+ *     AUTHORS: Darren Hart, Marc Strï¿½ke
  *  START DATE: 2003/Mar/03
  *
  *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Straemke, Dirk Hoerner
- *     LICENSE: This software is licenced under the Libstk license available with the source as 
+ *     LICENSE: This software is licenced under the Libstk license available with the source as
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
 
@@ -45,7 +45,7 @@ namespace stk
         virtual void remove(boost::shared_ptr<widget> item) { }
 
     protected:
-        list_template(const rectangle& rect = rectangle(), bool multiselect = false) : 
+        list_template(const rectangle& rect = rectangle(), bool multiselect = false) :
             container(rect), scrollable(), current_(0), multiselect_(multiselect)
         {
             INFO("constructor");
@@ -61,14 +61,14 @@ namespace stk
         boost::signals::connection v_scroll_con_;
 
     public:
-        static typename list_template<Titem>::ptr create(container::ptr parent, const rectangle& rect, 
+        static typename list_template<Titem>::ptr create(container::ptr parent, const rectangle& rect,
                 bool multiselect = false)
         {
             typename list_template<Titem>::ptr new_list_template(
                     new list_template<Titem>(rect, multiselect));
             new_list_template->on_resize.connect(boost::function<bool()>(
-                        (boost::bind(&scrollable::update_vis_sizes, new_list_template.get(), 
-                                     boost::bind(&rectangle::height, new_list_template.get()), 
+                        (boost::bind(&scrollable::update_vis_sizes, new_list_template.get(),
+                                     boost::bind(&rectangle::height, new_list_template.get()),
                                      boost::bind(&rectangle::width, new_list_template.get())),
                          true)));
             new_list_template->parent(parent);
@@ -126,7 +126,7 @@ namespace stk
                             on_update_selection();
                         }
                     }
-                    else 
+                    else
                     {
                         if (current_item() && !current_item()->selected())
                         {
@@ -153,7 +153,7 @@ namespace stk
                         }
                         on_update_selection();
                     }
-                    else 
+                    else
                     {
                         if (current_item() && !current_item()->selected())
                         {
@@ -170,10 +170,10 @@ namespace stk
                     redraw(rect());
                     return;
                     break;
-                default:
-                    break;
                 }
             }
+            default:
+                break;
             }
             container::handle_event(e);
         }
@@ -190,7 +190,7 @@ namespace stk
         {
            return current_item();
         }
- 
+
         virtual widget::ptr focus_prev()
         {
             return current_item();
@@ -236,7 +236,7 @@ namespace stk
             {
                 if ((*iter)->rect().contains(me->x()-rect_.x1(), me->y()-rect_.y1()))
                 {
-                    mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(), 
+                    mouse_event::ptr me_to_child(new mouse_event(me->x()-rect_.x1(), me->y()-rect_.y1(),
                                 me->button(), me->type()));
                     return (*iter)->delegate_mouse_event(me_to_child);
                 }
@@ -273,13 +273,13 @@ namespace stk
             return index;
         }
 
-        // removes the item at the specified index 
+        // removes the item at the specified index
         virtual void remove_item(unsigned int index)
         {
             Titem item = items_.at(index);
 
             items_.erase(items_.begin()+index);
-            
+
             // Regenerate Item positions
             v_scroll_->size(0);
             for (unsigned int i = 0; i < items_.size(); i++)
@@ -295,7 +295,7 @@ namespace stk
         virtual std::vector<Titem> selection()
         {
             std::vector<Titem> selection_;
-            for (unsigned int i = 0; i < items_.size(); i++) 
+            for (unsigned int i = 0; i < items_.size(); i++)
             {
                 if (items_[i]->selected())
                     selection_.push_back(items_[i]);
@@ -344,7 +344,7 @@ namespace stk
         virtual Titem current_item()
         {
             if (current_ < items_.size()) return items_[current_];
-            return Titem(); 
+            return Titem();
         }
 
         /// Returs the current index
@@ -360,7 +360,7 @@ namespace stk
             if (current_item()) current_item()->current(false);
             if (index < items_.size())
                 current_ = index;
-            else 
+            else
                 current_ = 0;
             if (current_item())
             {
