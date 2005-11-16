@@ -180,13 +180,13 @@ namespace stk
             {
                 INFO("Creating Vbar");
                 rectangle v_rect(width()-scroll_bar::default_size, 0, 
-                                 scroll_bar::default_size, height());
+                                 scroll_bar::default_size, height()-scroll_bar::default_size);
                 v_scroll_bar_ = scroll_bar::create(this_ptr, v_rect, v_scroll());
             }
             if (hbar && !h_scroll_bar_)
             {
                 rectangle h_rect(0, height()-scroll_bar::default_size, 
-                                 width(), scroll_bar::default_size);
+                                 width()-scroll_bar::default_size, scroll_bar::default_size);
                 h_scroll_bar_ = scroll_bar::create(this_ptr, h_rect, h_scroll());
             }
         }
