@@ -12,7 +12,8 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libstk.pc
 
 pixmapsdir = $(datadir)/libstk/pixmaps
-pixmaps_DATA = pixmaps/tribal_bg.png
+pixmaps_DATA = pixmaps/tribal_bg.png \
+               pixmaps/parrots.png
 
 fontsdir = $(datadir)/libstk/fonts
 fonts_DATA = fonts/VeraIt.ttf     fonts/VeraMono.ttf \

@@ -171,9 +171,11 @@ int main(int argc, char* argv[])
                 rectangle(10, 50, 150, 30));
         scroll_box::ptr test_scroll_box = scroll_box::create(test_state, 
                 rectangle(10, 90, 350, 200), scroll_box::automatic, scroll_box::automatic);
+
+        // catch a failure and try to use a local image if the installed one fails
+        image::ptr parrots = image::create(test_scroll_box->surface(), PACKAGE_PIXMAPS_DIR"/parrots.png");
         image_panel::ptr test_image_panel = image_panel::create(test_scroll_box, 
-                rectangle(0, 0, 384, 256), image::create(test_scroll_box->surface(), 
-                    "parrotsg.jpg"));
+                rectangle(0, 0, 384, 256), parrots);
         
         button::ptr scroll_left = button::create(test_state,L"Scroll-", 
 			rectangle(100, 300, 90, 40));
