@@ -1,13 +1,13 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: Direct FB surface implementation.
- *     AUTHORS: Marc Strämke, Darren Hart
+ *     AUTHORS: Marc StrÃ¤mke, Darren Hart
  *  START DATE: 2003/Mar/03
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc StrÃ¤mke, Dirk HÃ¶rner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page = docs/license
- *************************************************************************************************/
+ ****************************************************** *******************************************/
 
 #include "libstk/surface_dfb.h"
 #include "libstk/backend_dfb.h"
@@ -15,6 +15,8 @@
 #include "libstk/overlay_dfb.h"
 #include "logging.h"
 #include <iostream>
+
+#include "utility.h"
 
 namespace stk
 {
@@ -32,6 +34,8 @@ namespace stk
         if (primary)
         {
             dsc.caps = static_cast<DFBSurfaceCapabilities>( DSCAPS_FLIPPING | DSCAPS_PRIMARY) ;
+            dsc.flags = (DFBSurfaceDescriptionFlags)( dsc.flags | DSDESC_PIXELFORMAT);
+            dsc.pixelformat = DSPF_RGB32; // \FIXME Hardcode a format with alpha for now!
         }
         else
         {
@@ -60,12 +64,12 @@ namespace stk
             INFO("Pixel format is = " << backend_handle->format);
         }
         
-        INFO("surface create");
+        INFO("surface create:this = 0x" << std::hex << (int)this << std::dec << " Backtrace:" << backtrace() );
     }
     
     surface_dfb::~surface_dfb()
     {
-        INFO("destructor");
+        INFO("destructor:this = 0x" << std::hex << (int)this << std::dec);
         surface->Release(surface);
     }
     
@@ -124,10 +128,21 @@ namespace stk
         y += offset_.y();
         int color=0;
         unsigned char *image_data;
-        int pitch;
-        surface->Lock(surface, DSLF_READ, (void**)&image_data, &pitch);
-        color=(int)image_data[pitch*y+x*4] << 24 | (int)image_data[pitch*y+x*4+1] << 16 | (int)image_data[pitch*y+x*4+2] << 8 | (int)image_data[pitch*y+x*4+3] ;
-        surface->Unlock(surface);
+        int pitch=this->pitch;
+
+        image_data = (unsigned char*)screen;
+	if(locked)
+	{
+            color=*(int*)(image_data+(pitch*y+x*4));
+                //<< 24 | (int)image_data[pitch*y+x*4+1] << 16 | (int)image_data[pitch*y+x*4+2] << 8 | (int)image_data[pitch*y+x*4+3] ;
+        }
+	else
+	{
+            surface->Lock(surface, DSLF_READ, (void**)&image_data, &pitch);
+            color=*(int*)(image_data+(pitch*y+x*4));
+            surface->Unlock(surface);
+ 	}
+       
         return color;
     }
     
@@ -291,7 +306,17 @@ namespace stk
             surface->SetClip(surface, &region); 
         }
     }
+    void surface_dfb::draw_image(int x, int y, image::ptr img)
+    {
+        x+=offset().x();
+        y+=offset().y();
+        
+        surface_dfb::ptr source = boost::dynamic_pointer_cast<surface_dfb>(img->offscreen_surface);   
+        surface->SetBlittingFlags(surface, DSBLIT_BLEND_ALPHACHANNEL);
 
+        surface->Blit(surface, source->surface, NULL, x, y);
+    }
+    
 /*    void surface_dfb::draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode)
     {
         

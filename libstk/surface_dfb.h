@@ -1,10 +1,10 @@
 /**************************************************************************************************
  *     CVS $Id$
  * DESCRIPTION: The surface backend for Direct FB.
- *     AUTHORS: Marc Strämke, Darren Hart
+ *     AUTHORS: Marc StrÃ¤mke, Darren Hart
  *  START DATE: 2003/May/13
  *
- *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc Strämke, Dirk Hörner
+ *   COPYRIGHT: 2003 by Darren Hart, Vernon Mauery, Marc StrÃ¤mke, Dirk HÃ¶rner
  *     LICENSE: This software is licenced under the Libstk license available with the source as 
  *              license.txt or at http://www.libstk.org/index.php?page=docs/license
  *************************************************************************************************/
@@ -52,7 +52,7 @@ namespace stk
         inline void put_pixel(int x, int y, color clr);
         inline void put_pixel_aa(int x, int y, double distance, color clr);
         inline void put_pixel_aa(int x, int y, unsigned char alpha_a, color clr);
-        inline color get_pixel(int x, int y) const;
+        color get_pixel(int x, int y) const;
         virtual color gen_color(const std::string &str_color) const;
         virtual color gen_color(byte r, byte g, byte b, byte a) const;
         virtual color rgba_color(color clr) const;
@@ -74,7 +74,7 @@ namespace stk
         virtual surface::ptr create_surface(const rectangle& rect);
 
         virtual void clip_rect(const rectangle& clip_rectangle);
-
+        virtual void draw_image(int x, int y, image::ptr img);
 //        virtual void draw_text(const rectangle& rect, const std::wstring &text, int kerning_mode);
         
     };
