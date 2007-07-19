@@ -13,7 +13,59 @@ namespace stk
     spreadsheet::spreadsheet(const stk::rectangle& rect): widget(rect)
     {
     }
-
+    spreadsheet::row_iterator spreadsheet::focused_row()
+    {
+        bool found_it = false;
+        column_iterator iter;
+        int row=0;
+        for(iter=columns_.begin();
+            iter!=columns_.end(); iter++)
+        {
+            row = 0;
+            for(column_info::Tcells::iterator cell = iter->cells.begin();
+                cell!=iter->cells.end(); cell++)
+            {
+                if(*cell == focused_cell_)
+                {
+                    found_it = true;
+                    break;
+                }
+                row++;
+            }
+            if(found_it)
+                break;
+        }
+        return rows_.begin()+row;
+    }
+    spreadsheet::column_iterator spreadsheet::focused_column()
+    {
+        bool found_it = false;
+        spreadsheet::column_iterator iter;
+        int row;
+        for(iter=columns_.begin();
+            iter!=columns_.end(); iter++)
+        {
+            row = 0;
+            for(column_info::Tcells::iterator cell = iter->cells.begin();
+                cell!=iter->cells.end(); cell++)
+            {
+                if(*cell == focused_cell_)
+                {
+                    found_it = true;
+                    break;
+                }
+                row++;
+            }
+            if(found_it)
+                break;
+        }
+        return iter;
+    }
+    spreadsheet_cell::ptr spreadsheet::focused_cell()
+    {
+        return focused_cell_;
+    }
+    
     void spreadsheet::draw(surface::ptr surface, const rectangle& clip_rect)
     {
         surface->clip_rect(clip_rect.empty() ? rect() : clip_rect);
@@ -67,10 +119,10 @@ namespace stk
                     break;
                 ypos += col->height;
             }
-            if (focused_cell)
+            if (focused_cell_)
             {
-                focused_cell->handle_event(event::create(event::un_focus));
-                focused_cell.reset();
+                focused_cell_->handle_event(event::create(event::un_focus));
+                focused_cell_.reset();
             }
             if (col!=columns_end() && row != rows_end())
             {
@@ -80,8 +132,8 @@ namespace stk
              
                 if (cell != col->cells.end())
                 {
-                    focused_cell =* cell;
-                    focused_cell->handle_event(event::create(event::focus));
+                    focused_cell_ =* cell;
+                    focused_cell_->handle_event(event::create(event::focus));
                 }
             }
             
@@ -91,8 +143,8 @@ namespace stk
             break;
         }
         default:
-            if (focused_cell)
-                focused_cell->handle_event(e);
+            if (focused_cell_)
+                focused_cell_->handle_event(e);
             return;
         }
         widget::handle_event(e);
@@ -153,6 +205,11 @@ namespace stk
         rows_.push_back(row);
         redraw(rect());
     }
+    void spreadsheet::rows_insert(spreadsheet::row_iterator before, row_info row)
+    {
+        rows_.insert(before, row);
+        redraw(rect());
+    }
     void spreadsheet::rows_clear()
     {
         rows_.clear();
@@ -176,6 +233,11 @@ namespace stk
     void spreadsheet::columns_push_back(column_info column)
     {
         columns_.push_back(column);
+        redraw(rect());
+    }
+    void spreadsheet::columns_insert(spreadsheet::column_iterator before, column_info column)
+    {
+        columns_.insert(before, column);
         redraw(rect());
     }
     void spreadsheet::columns_clear()

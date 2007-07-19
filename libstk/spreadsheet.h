@@ -84,7 +84,7 @@ namespace stk
         scroll_model::ptr h_scroll_;
         boost::signals::connection h_scroll_con;
         
-        stk::spreadsheet_cell::ptr focused_cell;
+        stk::spreadsheet_cell::ptr focused_cell_;
 
     public:
 
@@ -94,17 +94,25 @@ namespace stk
         row_iterator rows_begin();
         row_iterator rows_end();
         void rows_erase(row_iterator row);
+        void rows_insert(row_iterator before, row_info row);
         void rows_push_back(row_info row);
         void rows_clear();
-
+        
         // Column stl style interface
         typedef Tcolumns::iterator column_iterator;
         typedef Tcolumns::const_iterator const_column_iterator;
         column_iterator columns_begin();
         column_iterator columns_end();
         void columns_erase(column_iterator column);
+        void columns_insert(column_iterator before, column_info column);
         void columns_push_back(column_info column);
         void columns_clear();
+
+
+        spreadsheet::row_iterator focused_row();
+        spreadsheet::column_iterator focused_column();
+        spreadsheet_cell::ptr focused_cell();
+
 
         /// Creates a new spreadsheet and registers it with parent
         static spreadsheet::ptr create(container::ptr parent, const rectangle& rect);
